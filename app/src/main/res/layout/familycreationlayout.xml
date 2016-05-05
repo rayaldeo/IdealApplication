@@ -1,0 +1,154 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:theme="@style/AppTheme"
+    android:layout_height="match_parent">
+
+
+
+
+    <ListView
+        android:id="@+id/familyChoiceList"
+        android:background="@color/signatureColorOne"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:listSelector="@drawable/state_selector"
+        android:choiceMode="singleChoice"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentBottom="true"
+        android:padding="@dimen/paddingOnFamilyCreationDialog">
+    </ListView>
+
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/friendsAmountEditText"
+        android:hint="@string/friendsAmountTextView_String"
+        android:gravity="fill_horizontal"
+        android:background="@color/amount_background"
+        android:padding="@dimen/paddingOnFamilyCreationDialog"
+        android:elevation="@dimen/elevation_shadow_amount"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:digits="0123456789."
+        android:inputType="numberDecimal"
+        android:maxLength="10"
+        android:visibility="invisible"
+        android:layout_alignParentStart="true" />
+        <!--android:visibility="invisible"-->
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/influenceAmountEditText"
+        android:hint="@string/influenceAmountTextView_String"
+        android:gravity="fill_horizontal"
+        android:background="@color/amount_background"
+        android:padding="@dimen/paddingOnFamilyCreationDialog"
+        android:elevation="@dimen/elevation_shadow_amount"
+        android:layout_above="@+id/friendsAmountEditText"
+        android:layout_alignParentLeft="true"
+        android:digits="0123456789."
+        android:inputType="numberDecimal"
+        android:maxLength="10"
+        android:visibility="invisible"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/wealthAmountEditText"
+        android:hint="@string/wealthAmountTextView_String"
+        android:gravity="fill_horizontal"
+        android:background="@color/amount_background"
+        android:padding="@dimen/paddingOnFamilyCreationDialog"
+        android:elevation="@dimen/elevation_shadow_amount"
+        android:layout_above="@+id/influenceAmountEditText"
+        android:layout_alignParentLeft="true"
+        android:digits="0123456789."
+        android:inputType="numberDecimal"
+        android:maxLength="10"
+        android:visibility="invisible"
+        android:layout_alignParentStart="true" />
+
+    <Switch
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/cusomFamilyToggle_String"
+        android:id="@+id/customFamilySwitch"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:checked="false"
+        android:padding="@dimen/paddingOnFamilyCreationDialog" />
+
+
+    <!--<SlidingDrawer
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:content="@+id/content"
+        android:handle="@+id/custom_Family_Button"
+        android:id="@+id/slidingDrawer"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="117dp">
+
+        <Button
+            android:id="@+id/custom_Family_Button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/custom_Family_Button_String" />
+
+        <LinearLayout
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/amountTextView"
+                android:hint="@string/enter_amount"
+                android:gravity="fill_horizontal"
+                android:background="@color/amount_background"
+                android:padding="@dimen/textView_padding"
+                android:elevation="@dimen/elevation_shadow_amount" />
+
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/amountTextView2"
+                android:hint="@string/enter_amount"
+                android:gravity="fill_horizontal"
+                android:background="@color/amount_background"
+                android:padding="@dimen/textView_padding"
+                android:elevation="@dimen/elevation_shadow_amount" />
+
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/amountTextView3"
+                android:hint="@string/enter_amount"
+                android:gravity="fill_horizontal"
+                android:background="@color/amount_background"
+                android:padding="@dimen/textView_padding"
+                android:elevation="@dimen/elevation_shadow_amount" />
+        </LinearLayout>
+
+
+    </SlidingDrawer>--><!--This widget is deprecated-->
+
+
+
+
+</RelativeLayout>

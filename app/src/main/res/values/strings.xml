@@ -1,0 +1,57 @@
+<resources>
+    <string name="app_name">IdealApplication</string>
+    <string name="action_settings">Settings</string>
+    <string name="profilePicture_fragment">profilePicture</string>
+    <string name="profilePicture">Profile Picture</string>
+    <string name="getJob_text">MyJob</string>
+    <string name="getCountry_text">MyCountry</string>
+    <string name="getTax_text">CountryTax</string>
+    <string name="ExtraInformation_text">New Text</string>
+    <string name="job_Button">Select a Job</string>
+    <string name="school_Button">Go to School</string>
+    <string name="physical_Button">Work on Physical</string>
+    <string name="socialize_button">Socialize with People</string>
+    <string name="moveTo_Button">Change Country</string>
+    <string name="overallWelathTextView">overallWealth</string>
+    <string name="influenceTextView">influence</string>
+    <string name="overallWealthPercantage">Percentage</string>
+    <string name="influencePercentageString">Percantage</string>
+    <string name="playerNameText"></string>
+    <string name="enterName_hint">Enter Name</string>
+    <string name="profileImageprofileiamgedialog">Profile Image</string>
+    <string name="neighbourhoodTextView">Neigbourhood</string>
+    <string name="friendsTextView">Friends</string>
+    <string name="professionalAssociatesTextView">Professional Associates</string>
+    <string name="looksTextView">Looks</string>
+    <string name="worshippersTextView">Worshippers</string>
+    <string name="custom_Family_Button_String">Custom Family</string>
+    <string name="enter_amount">Enter Amount</string>
+    <string name="customFamilyButton_String">Custom Family</string>
+    <string name="friendsAmountTextView_String">Friends</string>
+    <string name="influenceAmountTextView_String">Influence</string>
+    <string name="wealthAmountTextView_String">Wealth</string>
+    <string name="customFamily">Custom Family</string>
+    <string name="cusomFamilyToggle_String">Custom Family</string>
+
+    <string-array name="countries">
+        <item>Irada</item>
+        <item>Itican</item>
+        <item>Albaq</item>
+        <item>Trinentina</item>
+        <item>Albico</item>
+        <item>Ugeria</item>
+        <item>Portada</item>
+        <item>Kuwador</item>
+        <item>Ukrark</item>
+        <item>Rany</item>
+        <item>Heaven</item>
+    </string-array>
+
+    <string-array name="familyTypes">
+        <item>Poor Family</item>
+        <item>Middle Family</item>
+        <item>Rich Family</item>
+
+    </string-array>
+
+</resources>
