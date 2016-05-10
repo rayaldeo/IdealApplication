@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">IdealApplication</string>
     <string name="action_settings">Settings</string>
@@ -13,26 +12,30 @@
     <string name="physical_Button">Work on Physical</string>
     <string name="socialize_button">Socialize with People</string>
     <string name="moveTo_Button">Change Country</string>
-    <string name="overallWelathTextView">overallWealth</string>
+    <string name="overallWelathTextView">OverallWealth</string>
     <string name="influenceTextView">influence</string>
     <string name="overallWealthPercantage">Percentage</string>
     <string name="influencePercentageString">Percantage</string>
-    <string name="playerNameText">New Text</string>
+    <string name="playerNameText"></string>
     <string name="enterName_hint">Enter Name</string>
-    <string name="countries">Countries</string>
     <string name="profileImageprofileiamgedialog">Profile Image</string>
-    <string name="neighbourhoodTextView">Neigbourhood</string>
-    <string name="friendsTextView">Friends</string>
-    <string name="professionalAssociatesTextView">Professional Associates</string>
-    <string name="looksTextView">Looks</string>
-    <string name="worshippersTextView">Worshippers</string>
+    <string name="neighbourhoodTextView_text">Neigbourhood</string>
+    <string name="friendsTextView_text">Friends</string>
+    <string name="professionalAssociatesTextView_text">Professional Associates</string>
+    <string name="looksTextView_text">Looks</string>
+    <string name="worshippersTextView_text">Worshippers</string>
     <string name="custom_Family_Button_String">Custom Family</string>
+    <string name="enter_amount">Enter Amount</string>
     <string name="customFamilyButton_String">Custom Family</string>
     <string name="friendsAmountTextView_String">Friends</string>
     <string name="influenceAmountTextView_String">Influence</string>
     <string name="wealthAmountTextView_String">Wealth</string>
     <string name="customFamily">Custom Family</string>
     <string name="cusomFamilyToggle_String">Custom Family</string>
+    <string name ="tax_text">Tax</string>
+    <string name ="poorFamily_text">Poor Family</string>
+    <string name ="middleFamily_text">Middle Family</string>
+    <string name ="richFamily_text">Rich Family</string>
 
     <string-array name="countries">
         <item>Irada</item>
@@ -47,4 +50,12 @@
         <item>Rany</item>
         <item>Heaven</item>
     </string-array>
+
+    <string-array name="familyTypes">
+        <item>@string/poorFamily_text</item>
+        <item>@string/middleFamily_text</item>
+        <item>@string/richFamily_text</item>
+
+    </string-array>
+
 </resources>

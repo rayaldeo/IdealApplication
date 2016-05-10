@@ -27,10 +27,12 @@
             android:layout_height="wrap_content"
             android:text="@string/playerNameText"
             android:id="@+id/playerNameTextView"
-            android:layout_gravity="left|bottom"
+            android:layout_gravity="center|bottom"
             android:textSize="25sp"
             android:inputType="textPersonName"
-            android:hint="@string/enterName_hint" />
+            android:hint="@string/enterName_hint"
+            android:gravity="center"
+            android:textAlignment="center" />
     </FrameLayout>
 
     <LinearLayout
@@ -159,6 +161,11 @@
             android:id="@+id/jobButton"
             android:layout_gravity="top|left|center_vertical"
             android:padding="15dp"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            android:background="@drawable/button_style"
             android:elevation="@dimen/button_elevation" />
 
         <Button
@@ -169,6 +176,11 @@
             android:id="@+id/schoolButton"
             android:layout_gravity="top|left|center_vertical"
             android:padding="15dp"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            android:background="@drawable/button_style"
             android:elevation="@dimen/button_elevation" />
 
         <Button
@@ -179,6 +191,11 @@
             android:id="@+id/physicalButton"
             android:layout_gravity="top|left|center_vertical"
             android:padding="15dp"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            android:background="@drawable/button_style"
             android:elevation="@dimen/button_elevation" />
 
         <Button
@@ -189,6 +206,11 @@
             android:id="@+id/socializeButton"
             android:layout_gravity="top|left|center_vertical"
             android:padding="15dp"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            android:background="@drawable/button_style"
             android:elevation="@dimen/button_elevation" />
 
         <Button
@@ -199,6 +221,11 @@
             android:id="@+id/moveToButton"
             android:layout_gravity="top|left|center_vertical"
             android:padding="15dp"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            android:background="@drawable/button_style"
             android:elevation="@dimen/button_elevation"
            />
     </LinearLayout>

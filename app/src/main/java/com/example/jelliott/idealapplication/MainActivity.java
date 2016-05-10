@@ -2,11 +2,9 @@ package com.example.jelliott.idealapplication;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,17 +14,17 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
-import java.io.IOException;
+
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 
@@ -92,8 +90,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     /* public interface to communicate with the host activity*/
     public interface multiChoiceListDialogListener{
-        public void onOkay(ArrayList<Integer> arrayList);
-        public void onCancel();
+        void onOkay(ArrayList<Integer> arrayList);
+        void onCancel();
     }
 
     private Human human;
@@ -177,8 +175,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         init();
         makeYourName();
-        selectACountry();
         selectAFamilyType();
+        selectACountry();
+
 
 
     }
@@ -259,16 +258,32 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     }
 
     public void makeYourName(){
-        final EditText userName = new EditText(this);
+
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        //Set up First Name Text View
+        final EditText userNameFirst = new EditText(this);
+        userNameFirst.setHint("Enter In First Name");
+        layout.addView(userNameFirst);
+
+        //Setup the Last Name Text View
+        final EditText userNameFamily = new EditText(this);
+        userNameFamily.setHint("Enter In Last Name");
+        layout.addView(userNameFamily);
+
 
         AlertDialog ad = new AlertDialog.Builder(this)
+
                 .setMessage("Enter in a Name(MAX:11 CHARACTERS)")
                         //.setIcon(R.drawable.ic_launcher)
                 .setTitle("IDEAL")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        firstNamePart = userName.getText().toString();
+                        firstNamePart = userNameFirst.getText().toString();
                         playerNameTextView.setText(firstNamePart);
+                        lastNamePart =userNameFamily.getText().toString();
+
 
 
                     }
@@ -284,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     }
                 })
                 .setCancelable(false)
-                .setView(userName)
+                .setView(layout)
                 .create();
 
         ad.show();
@@ -297,7 +312,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
          //Call the XML List view and set it with  the countries array
         LayoutInflater inflater = getLayoutInflater();
-        View convertView = (View) inflater.inflate(R.layout.countrieslistlayout, null);
+        View convertView = inflater.inflate(R.layout.countrieslistlayout, null);
         alertDialog.setView(convertView);
         alertDialog.setTitle("Choose a Country");
 
@@ -310,6 +325,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
                 //This "try" statement is used so that if the user presses the "Yes" button without selecting something..the application would not call a Null Pointer/Crash
                try{
+                   //This returns the object attached to to selected item in the listView
                     checkedItem = countrieslistView.getAdapter().getItem(countrieslistView.getCheckedItemPosition());
 
                     //Getting the selected string Country from Counties Class
@@ -425,47 +441,47 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         //Call the XML List view and set it with  the countries array
         LayoutInflater inflater = getLayoutInflater();
-        View convertView = (View) inflater.inflate(R.layout.profileimagedialog, null);
+        View convertView = inflater.inflate(R.layout.profileimagedialog, null);
         //alertDialogProfile.setView(convertView);
         alertDialogProfile.setContentView(R.layout.profileimagedialog);
 
         //keepStatsUpToDate(human.getOverAllWealth(), human.getInfluence(), human.getJob(),human.getCountry(),tax);
         //userNameTextView.setText(firstNamePart);
-        alertDialogProfile.setTitle(firstNamePart + "'s Profile");
+        alertDialogProfile.setTitle(firstNamePart+" "+lastNamePart + "'s Profile");
 
         playerNameTextViewprofileDialog=(TextView)alertDialogProfile.findViewById(R.id.playerNameTextViewprofileDialog);
-        playerNameTextViewprofileDialog.setText(firstNamePart);
+        playerNameTextViewprofileDialog.setText(firstNamePart+" "+lastNamePart );
 
         overAllWealthTextViewprofileDialog =(TextView) alertDialogProfile.findViewById(R.id.overAllWealthTextViewprofileDialog);
-        overAllWealthTextViewprofileDialog.setText("Wealth:\n"+currencyFormat.format(human.getOverAllWealth()));
+        overAllWealthTextViewprofileDialog.setText(getString(R.string.overallWelathTextView)+": \n"+currencyFormat.format(human.getOverAllWealth()));
 
         influenceTextViewprofileDialog=(TextView)alertDialogProfile.findViewById(R.id.influenceTextViewprofileDialog);
-        influenceTextViewprofileDialog.setText("Influence:\n"+influenceAmount);
+        influenceTextViewprofileDialog.setText(getString(R.string.influenceTextView)+": \n"+influenceAmount);
 
         jobTextViewprofileDialog=(TextView)alertDialogProfile.findViewById(R.id.jobTextViewprofileDialog);
-        jobTextViewprofileDialog.setText("Job:" + human.getJob());
+        jobTextViewprofileDialog.setText(getString(R.string.getJob_text)+":"+human.getJob());
 
         countryTextViewprofileDialog=(TextView)alertDialogProfile.findViewById(R.id.countryTextViewprofileDialog);
-        countryTextViewprofileDialog.setText("Country:"+human.getCountryString());
+        countryTextViewprofileDialog.setText(getString(R.string.getCountry_text)+":"+human.getCountryString());
 
         neighbourhoodTextViewprofileDialog=(TextView)alertDialogProfile.findViewById(R.id.neighbourhoodTextViewprofileDialog);
-        neighbourhoodTextViewprofileDialog.setText("Neighbourhood:"+human.getNeighborhood());
+        neighbourhoodTextViewprofileDialog.setText(getString(R.string.neighbourhoodTextView_text)+":"+human.getNeighborhood());
 
         taxTextViewprofileDialog=(TextView)alertDialogProfile.findViewById(R.id.taxTextViewprofileDialog );
-        taxTextViewprofileDialog.setText("Tax:"+currencyFormat.format(tax));
+        taxTextViewprofileDialog.setText(getText(R.string.tax_text)+":"+currencyFormat.format(tax));
 
         userfriendsTextViewprofileDialog=(TextView)alertDialogProfile.findViewById(R.id.userfriendsTextViewprofileDialog);
-        userfriendsTextViewprofileDialog.setText("Friends:"+human.getFriends());
+        userfriendsTextViewprofileDialog.setText(getText(R.string.friendsTextView_text)+":"+human.getFriends());
 
 
         professionalAssociatesTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.professionalAssociatesTextViewprofileDialog);
-        professionalAssociatesTextViewprofileDialog.setText("Professional Associates:"+human.getProfessionalAssociates());
+        professionalAssociatesTextViewprofileDialog.setText(getText(R.string.professionalAssociatesTextView_text)+":"+human.getProfessionalAssociates());
 
         worshippersTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.worshippersTextViewprofileDialog);
-        worshippersTextViewprofileDialog.setText("Worshippers:"+human.getWorshippers());
+        worshippersTextViewprofileDialog.setText(getText(R.string.worshippersTextView_text)+":"+human.getWorshippers());
 
         looksTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.looksTextViewprofileDialog);
-        looksTextViewprofileDialog.setText("Looks:"+human.getLooks());
+        looksTextViewprofileDialog.setText(getText(R.string.looksTextView_text)+":"+human.getLooks());
 
 
         alertDialogProfile.show();
@@ -502,7 +518,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         //Call the XML List view and set it with  the countries array
         LayoutInflater inflater = getLayoutInflater();
-        View convertView = (View) inflater.inflate(R.layout.familycreationlayout, null, false);
+        View convertView = inflater.inflate(R.layout.familycreationlayout, null, false);
         alertDialog.setView(convertView);
        final ListView familyListView = (ListView) convertView.findViewById(R.id.familyChoiceList);
        final EditText friendsAmountEditText=(EditText) convertView.findViewById(R.id.friendsAmountEditText);
@@ -545,7 +561,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                                     Object checkedItem;
                                     if (customFamilySwitch.isChecked()) {
                                         try {
-                                            //Construtor being called:public Family( double familyWealthA,double influenceA,int friendsA)
+                                            //Constructor being called:public Family( double familyWealthA,double influenceA,int friendsA)
                                             family = new Family(Double.parseDouble(wealthAmountEditText.getText().toString()), Double.parseDouble(influenceAmountEditText.getText().toString()),
                                                     Integer.parseInt(friendsAmountEditText.getText().toString()));
 
@@ -558,18 +574,56 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                                     } else {
 
 
-                                        //This code gets the checked item, and catching the (Null Pointer) exception if nothing is selected
+                                        //This  try/catch block code catches the (Null Pointer) exception if nothing is selected
                                         try {
 
                                             checkedItem = familyListView.getAdapter().getItem(familyListView.getCheckedItemPosition());
+
+                                            //Getting the selected string Country from Counties Class
+                                            String selectedFamilyType = checkedItem.toString();
+                                            Toast.makeText(MainActivity.this, "You have selected " + selectedFamilyType,
+                                                    Toast.LENGTH_LONG).show();
+                                            switch (selectedFamilyType) {
+                                                case "Rich Family":
+                                                    father = new FamilyMember(true, familyName, Jobs.BUSINESSOWNER, countryOfUser, randomNum * 20, (int) (randomNum * 1.5));
+                                                    mother = new FamilyMember(false, familyName, Jobs.BANKTER, countryOfUser, randomNum * 20, (int) (randomNum * 1.5));
+                                                    sister = new FamilyMember(false, familyName, Jobs.NOJOB, countryOfUser, randomNum * 20, (int) (randomNum * 1.5));
+                                                    brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 20, (int) (randomNum * 1.5));
+                                                    family = new Family(familyName, brother,sister, father,mother);
+                                                    keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), job, countryOfUser,
+                                                            tax);
+
+                                                    break;
+                                                case "Middle Family":
+                                                    father = new FamilyMember(true, familyName, Jobs.FIREFIGHTER, countryOfUser, randomNum * 20, (int) (randomNum * 1.5));
+                                                    mother = new FamilyMember(false, familyName, Jobs.FIREFIGHTER, countryOfUser, randomNum * 20, (int) (randomNum * 1.5));
+                                                    sister = new FamilyMember(false, familyName, Jobs.NOJOB, countryOfUser, randomNum * 20, (int) (randomNum * 1.5));
+                                                    brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 20, (int) (randomNum * 1.5));
+                                                    family = new Family(familyName, brother,sister, father,mother);
+                                                    keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), job, countryOfUser,
+                                                            tax);
+
+                                                    break;
+                                                default:
+                                                    father = new FamilyMember(true, familyName, Jobs.BEGGER, countryOfUser, randomNum * 20, (int) (randomNum * 1.5));
+                                                    mother = new FamilyMember(false, familyName, Jobs.PACKINGBOY, countryOfUser, randomNum * 20, (int) (randomNum * 1.5));
+                                                    sister = new FamilyMember(false, familyName, Jobs.INTERN, countryOfUser, randomNum * 20, (int) (randomNum * 1.5));
+                                                    brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 20, (int) (randomNum * 1.5));
+                                                    family = new Family(familyName, brother, sister, father, mother);
+                                                    keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), job, countryOfUser,
+                                                            tax);
+
+                                                    break;
+                                            }
+
                                             Toast.makeText(MainActivity.this, "You have selected " + checkedItem.toString(),
                                                     Toast.LENGTH_LONG).show();
-                                        } catch (Exception e) {
-                                            Toast.makeText(MainActivity.this, "A Family Type is needed",
-                                                    Toast.LENGTH_LONG).show();
+                                       } catch (Exception e) {
+                                           Toast.makeText(MainActivity.this, "A Family Type is needed",
+                                                  Toast.LENGTH_LONG).show();
                                             selectAFamilyType();
 
-                                        }
+                                       }
                                     }
                                 }
 
@@ -579,8 +633,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     );
 
 
-            familyListView.setAdapter(adapter);
-            alertDialog.show();
+        familyListView.setAdapter(adapter);
+        alertDialog.show();
 
 
         }
@@ -596,7 +650,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         //Call the XML List view and set it with  the countries array
         LayoutInflater inflater = getLayoutInflater();
-        View convertView = (View) inflater.inflate(R.layout.profileimagedialog, null);
+        View convertView = inflater.inflate(R.layout.profileimagedialog, null);
         //alertDialogProfile.setView(convertView);
         alertDialogProfile.setContentView(R.layout.profileimagedialog);
 
