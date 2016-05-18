@@ -25,9 +25,20 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/age_Turn_text"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:layout_gravity="center|bottom"
+            android:textSize="25sp"
+            android:id="@+id/age_Turn_textView" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:text="@string/playerNameText"
             android:id="@+id/playerNameTextView"
-            android:layout_gravity="center|bottom"
+            android:layout_gravity="center_horizontal|top"
             android:textSize="25sp"
             android:inputType="textPersonName"
             android:hint="@string/enterName_hint"
@@ -49,7 +60,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/overallWelathTextView"
+            android:text="@string/overallWelathTextView_text"
             android:id="@+id/overAllWealthTextView"
             android:layout_gravity="top"
             android:textColor="#ff8a54"
@@ -160,13 +171,20 @@
             android:text="@string/job_Button"
             android:id="@+id/jobButton"
             android:layout_gravity="top|left|center_vertical"
-            android:padding="15dp"
+
             android:shadowColor="#A8A8A8"
             android:shadowDx="0"
             android:shadowDy="0"
             android:shadowRadius="5"
             android:background="@drawable/button_style"
             android:elevation="@dimen/button_elevation" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/schoolAttendanceAmount_text"
+            android:id="@+id/schoolAttendanceAmountTextView"
+           />
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -175,13 +193,20 @@
             android:text="@string/school_Button"
             android:id="@+id/schoolButton"
             android:layout_gravity="top|left|center_vertical"
-            android:padding="15dp"
+
             android:shadowColor="#A8A8A8"
             android:shadowDx="0"
             android:shadowDy="0"
             android:shadowRadius="5"
             android:background="@drawable/button_style"
             android:elevation="@dimen/button_elevation" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/workingOnPhysicalApp_text"
+            android:id="@+id/workingOnPhysicalAppTextView"
+           />
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -190,13 +215,20 @@
             android:text="@string/physical_Button"
             android:id="@+id/physicalButton"
             android:layout_gravity="top|left|center_vertical"
-            android:padding="15dp"
+
             android:shadowColor="#A8A8A8"
             android:shadowDx="0"
             android:shadowDy="0"
             android:shadowRadius="5"
             android:background="@drawable/button_style"
             android:elevation="@dimen/button_elevation" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/socialisingWithFriends_text"
+            android:id="@+id/socialisingWithFriendsTextView"
+             />
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -205,13 +237,19 @@
             android:text="@string/socialize_button"
             android:id="@+id/socializeButton"
             android:layout_gravity="top|left|center_vertical"
-            android:padding="15dp"
+
             android:shadowColor="#A8A8A8"
             android:shadowDx="0"
             android:shadowDy="0"
             android:shadowRadius="5"
             android:background="@drawable/button_style"
             android:elevation="@dimen/button_elevation" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Price To Move"
+            android:id="@+id/priceToMoveTextView" />
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -220,7 +258,7 @@
             android:text="@string/moveTo_Button"
             android:id="@+id/moveToButton"
             android:layout_gravity="top|left|center_vertical"
-            android:padding="15dp"
+
             android:shadowColor="#A8A8A8"
             android:shadowDx="0"
             android:shadowDy="0"

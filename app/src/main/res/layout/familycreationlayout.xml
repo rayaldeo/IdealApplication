@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/wealthAmountEditText"
-        android:hint="@string/wealthAmountTextView_String"
+        android:hint="@string/overallWelathTextView_text"
         android:gravity="fill_horizontal"
         android:background="@color/amount_background"
         android:padding="@dimen/paddingOnFamilyCreationDialog"

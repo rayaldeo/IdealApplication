@@ -46,7 +46,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/overallWelathTextView"
+            android:text="@string/overallWelathTextView_text"
             android:id="@+id/overAllWealthTextViewprofileDialog"
             android:layout_gravity="top"
             android:textColor="#ff8a54"

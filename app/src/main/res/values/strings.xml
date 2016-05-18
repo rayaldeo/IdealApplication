@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">IdealApplication</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Information About Application</string>
     <string name="profilePicture_fragment">profilePicture</string>
     <string name="profilePicture">Profile Picture</string>
-    <string name="getJob_text">MyJob</string>
-    <string name="getCountry_text">MyCountry</string>
+    <string name="getJob_text">Job</string>
+    <string name="getCountry_text">Country</string>
     <string name="getTax_text">CountryTax</string>
     <string name="ExtraInformation_text">New Text</string>
     <string name="job_Button">Select a Job</string>
@@ -12,7 +12,7 @@
     <string name="physical_Button">Work on Physical</string>
     <string name="socialize_button">Socialize with People</string>
     <string name="moveTo_Button">Change Country</string>
-    <string name="overallWelathTextView">OverallWealth</string>
+    <string name="overallWelathTextView_text">Wealth</string>
     <string name="influenceTextView">influence</string>
     <string name="overallWealthPercantage">Percentage</string>
     <string name="influencePercentageString">Percantage</string>
@@ -29,13 +29,17 @@
     <string name="customFamilyButton_String">Custom Family</string>
     <string name="friendsAmountTextView_String">Friends</string>
     <string name="influenceAmountTextView_String">Influence</string>
-    <string name="wealthAmountTextView_String">Wealth</string>
+
     <string name="customFamily">Custom Family</string>
     <string name="cusomFamilyToggle_String">Custom Family</string>
     <string name ="tax_text">Tax</string>
     <string name ="poorFamily_text">Poor Family</string>
     <string name ="middleFamily_text">Middle Family</string>
     <string name ="richFamily_text">Rich Family</string>
+    <string name="age_Turn_text">AGE/TURN</string>
+    <string name="schoolAttendanceAmount_text">School Attendance</string>
+    <string name="workingOnPhysicalApp_text">Physical Apperance</string>
+    <string name="socialisingWithFriends_text">Socialize</string>
 
     <string-array name="countries">
         <item>Irada</item>
@@ -58,4 +62,32 @@
 
     </string-array>
 
+
+    <string-array name="genieChoices">
+        <item>(1)Improve your physical Appearance</item>
+        <item>(2)Increase the number of Worshippers</item>
+        <item>(3)Increase the number of Friends</item>
+        <item>(4)Increase the number of Professional Associates</item>
+        <item>(5)Increase you Influence</item>
+        <item>(6)Increase your Wealth</item>
+        <item>(7)Choose any job you desire</item>
+        <item>(0)Special</item>
+
+    </string-array>
+
+    <string-array name="jobChoices">
+        <item>(1)Beggar</item>
+        <item>(2)Vagrant</item>
+        <item>(3)Intern</item>
+        <item>(4)PackingBoy</item>
+        <item>(5)Firefighter</item>
+        <item>(6)Banker</item>
+        <item>(7)Scientist</item>
+        <item>(8)Independent</item>
+        <item>(9)Business Owner</item>
+        <item>(10)King</item>
+        <item>(11)God</item>
+        <item>(12)Omega</item>
+
+    </string-array>
 </resources>

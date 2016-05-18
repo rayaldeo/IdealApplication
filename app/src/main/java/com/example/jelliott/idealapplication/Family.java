@@ -85,7 +85,7 @@ public class Family {
             this.familyWealth = familyWealthA;
         }
 
-        public void setFamilyInfluence(int familyInfluenceA) {
+        public void setFamilyInfluence(double familyInfluenceA) {
             this.familyInfluence = familyInfluenceA;
         }
 
