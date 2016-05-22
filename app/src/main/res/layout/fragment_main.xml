@@ -150,6 +150,9 @@
             android:text="@string/ExtraInformation_text"
             android:id="@+id/informationalTextView"
             android:layout_weight="1.05"
+            android:maxLines = "9"
+
+            android:scrollbars = "vertical"
             android:padding="1dp" />
 
     </LinearLayout>

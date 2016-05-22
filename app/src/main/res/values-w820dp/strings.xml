@@ -40,6 +40,9 @@
     <string name="schoolAttendanceAmount_text">School Attendance</string>
     <string name="workingOnPhysicalApp_text">Physical Apperance</string>
     <string name="socialisingWithFriends_text">Socialize</string>
+    <string name="idealLifeParameters_button_text">New Button</string>
+    <string name="familyButton_txt">Accept Family</string>
+    <string name="accept_Country_text">Accept Country</string>
 
     <string-array name="countries">
         <item>Irada</item>
@@ -89,6 +92,18 @@
         <item>(11)God</item>
         <item>(12)Omega</item>
 
+    </string-array>
+
+
+    <string-array name="planets_array">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
     </string-array>
 
 </resources>

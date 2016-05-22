@@ -4,7 +4,9 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,6 +76,11 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private TextView taxTextViewprofileDialog;
     private TextView worshippersTextViewprofileDialog;
 
+    //For the Progress Bars
+    private static final int PROGRESS = 0x1;
+    private Handler mHandler;
+    private int mProgressStatusOverAllWealth = 0,mProgressStatusInfluence=0;
+
 
 
     /*//TextViews on the FamilyType Dialog
@@ -89,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private ImageView profileImage;
 
     //Separate Dialogs
-    private Dialog alertDialogProfile;
+    private Dialog alertDialogProfile,alertDialogJob;
     //private Dialog alertDialog;
 
     /* array list to save the indexes of the array items*/
@@ -139,11 +147,13 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         setContentView(R.layout.activity_main);
         //Before ANYTHING CREATE A HUMAN TO SET THE BASIC VARIABLES OF A HUMAN
         human = new Human();
+
         //setting the Java variables with the XML id:Initialization
         jobTextView = (TextView) findViewById(R.id.jobTextView);
         countryTextView = (TextView) findViewById(R.id.countryTextView);
         taxTextView = (TextView) findViewById(R.id.taxTextView);
         informationalTextView = (TextView) findViewById(R.id.informationalTextView);
+        informationalTextView.setMovementMethod(new ScrollingMovementMethod());
         overallWealthTextView = (TextView) findViewById(R.id.overAllWealthTextView);
         overallWealthPercentageTextView = (TextView) findViewById(R.id.overallWealthPercentage);
         influenceTextView = (TextView) findViewById(R.id.influenceTextView);
@@ -178,23 +188,29 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         //Progress Bars
         overallWealthProgressBar = (ProgressBar) findViewById(R.id.overallWealthProgressBar);
         influenceProgressBar = (ProgressBar) findViewById(R.id.influenceProgressBar);
+        mHandler = new Handler();
         //Setting the Progress Bars
         calculateTheProgressBarPercentage();
+
+
 
         //Setting Values of all fields
         //Setting the overallWealth from java to XML
         keepStatsUpToDate(overallWealthDefault, influenceAmountDefault, human.getJob(), human.getCountry(), human.getCountry().getTaxes());
         age_Turn_textView.setText("Age:" + Integer.toString(age));
-        workingOnPhysicalAppTextView.setText("Physical Appearance:"+Integer.toString(workingOnPhysicalApp));
+        workingOnPhysicalAppTextView.setText("Physical Appearance:" + Integer.toString(workingOnPhysicalApp));
         socialisingWithFriendsTextView.setText("Socialize Amount:"+Integer.toString(socialisingWithFriends));
         schoolAttendanceAmountTextView.setText("School Attendance:"+Integer.toString(schoolAttendanceAmount));
-        priceToMoveTextView.setText("Price:"+ Double.toString(0.0));
+        priceToMoveTextView.setText("Price:" + Double.toString(0.0));
         informationalTextView.setText("Welcome and Good Luck!");
+
+
 
         init();
         makeYourName();
         selectAFamilyType();
         selectACountry();
+        //idealLifeParameters();
 
 
     }
@@ -223,35 +239,106 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         return super.onOptionsItemSelected(item);
     }
 
+
+
     private void calculateTheProgressBarPercentage() {
+
+
         /*
         Calculating the percentage of the wealth/Influence first and then figuring out if they are <=0 before updating the actual progress Bar...
         So that no number less than Zero is placed into the progressBar and potentially crashing the program
          */
         //Calculate the OverAllWealth Percentage
-        double overallwealthvalue = ((human.getOverAllWealth() / maxOverallWealth) * overallWealthProgressBar.getMax());
-        if (human.getOverAllWealth() <= 0 || overallwealthvalue <= 0) {
-            overallWealthProgressBar.setProgress(0);
-        } else {
-            overallWealthProgressBar.setProgress((int) overallwealthvalue);
-            String valueString;
-            overallWealthPercentageTextView.setText(valueString = percentFormat.format(overallwealthvalue) + "%");
+        double overallwealthvalue = (((human.getOverAllWealth())/ maxOverallWealth)*100);//Complete the whole percentage equation and then convert number to Int for the Progress Bars
+        //Calculate the influence Percentage
+         double influencevalue = (((human.getInfluence()) / maxInfluence)*100);
+        //Don't need to get the product of (human.getOverAllWealth() / maxOverallWealth) and 100 because the percentFormat already multiplies product
+
+        /*if (human.getOverAllWealth() <= 0 || overallwealthvalue <= 0) {
+            overallWealthProgressBar.setProgress(overallwealthvalue);
+            overallWealthPercentageTextView.setText(percentFormat.format(overallwealthvalue));
 
         }
-        //Calculate the influence Percentage
-        double influencevalue = ((human.getInfluence() / maxInfluence) * influenceProgressBar.getMax());
         if (human.getInfluence() <= 0 || influencevalue <= 0) {
 
-            influenceProgressBar.setProgress(0);
-        } else {
+            influenceProgressBar.setProgress(influencevalue);
+            influencePercentageTextView.setText(percentFormat.format(influencevalue));
+        } else {*/
+            // mProgressStatusOverAllWealth = 0,getmProgressStatusInfluence=0
+             final int overAllWealthProgress = (int) overallwealthvalue;
+             final int influenceProgress = (int) influencevalue;
+            // Start lengthy operation in a background thread
+            new Thread(new Runnable() {
+                public void run() {
+                    while (mProgressStatusOverAllWealth < overAllWealthProgress) {
+                        mProgressStatusOverAllWealth+=1;//Progress Bars can not accept a value less than one..so 0.5 will not work
 
-            influenceProgressBar.setProgress((int) influencevalue);
-            String valueString;
-            influencePercentageTextView.setText(valueString = percentFormat.format(influencevalue) + "%");
+                            // Update the progress bar
+                            mHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    System.out.println("A");
+                                     overallWealthProgressBar.setProgress(mProgressStatusOverAllWealth);
+                                    overallWealthPercentageTextView.setText(mProgressStatusOverAllWealth+ "%");
+                                }
+                            });
 
-        }
+                        try {
+                            // Sleep for 200 milliseconds.
+                            //Just to display the progress slowly
+                            Thread.sleep(900);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
 
 
+                }
+
+            }).start();
+
+
+        // Start lengthy operation in a background thread
+        new Thread(new Runnable() {
+            public void run() {
+                while (mProgressStatusInfluence < influenceProgress) {
+                    mProgressStatusInfluence+=1;//Progress Bars can not accept a value less than one..so 0.5 will not work
+
+                    // Update the progress bar
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            System.out.println("A");
+                            influenceProgressBar.setProgress(mProgressStatusInfluence );
+                            influencePercentageTextView.setText(mProgressStatusInfluence+ "%");
+                        }
+                    });
+                    try {
+                        // Sleep for 200 milliseconds.
+                        //Just to display the progress slowly
+                        Thread.sleep(900);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+            }
+
+        }).start();
+
+
+
+            //influenceProgressBar.setProgress((int) influencevalue );
+             informationalTextView.setText("InfluenceProgress"+influenceProgress+" WealthProgress "+overAllWealthProgress+" overallwealthvalue: "+overallwealthvalue+" influencevalue "+influencevalue);
+            //String valueString;
+            //influencePercentageTextView.setText(valueString = percentFormat.format(influencevalue) );
+            //overallWealthProgressBar.setProgress((int) overallwealthvalue);
+
+            //overallWealthPercentageTextView.setText(valueString = percentFormat.format(overallwealthvalue) );
+
+
+        //}
     }
 
     @Override
@@ -591,30 +678,30 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                                                 Toast.LENGTH_LONG).show();
                                         switch (selectedFamilyType) {
                                             case "Rich Family":
-                                                father = new FamilyMember(true, familyName, Jobs.BUSINESSOWNER, countryOfUser, randomNum * 20, (int) (randomNum * 1.5));
-                                                mother = new FamilyMember(false, familyName, Jobs.BANKTER, countryOfUser, randomNum * 20, (int) (randomNum * 1.5));
-                                                sister = new FamilyMember(false, familyName, Jobs.NOJOB, countryOfUser, randomNum * 20, (int) (randomNum * 1.5));
-                                                brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 20, (int) (randomNum * 1.5));
+                                                father = new FamilyMember(true, familyName, Jobs.BUSINESSOWNER, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
+                                                mother = new FamilyMember(false, familyName, Jobs.BANKTER, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
+                                                sister = new FamilyMember(false, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
+                                                brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
                                                 family = new Family(familyName, brother, sister, father, mother);
                                                 keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), job, countryOfUser,
                                                         tax);
 
                                                 break;
                                             case "Middle Family":
-                                                father = new FamilyMember(true, familyName, Jobs.FIREFIGHTER, countryOfUser, randomNum * 20, (int) (randomNum * 1.5));
-                                                mother = new FamilyMember(false, familyName, Jobs.FIREFIGHTER, countryOfUser, randomNum * 20, (int) (randomNum * 1.5));
-                                                sister = new FamilyMember(false, familyName, Jobs.NOJOB, countryOfUser, randomNum * 20, (int) (randomNum * 1.5));
-                                                brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 20, (int) (randomNum * 1.5));
+                                                father = new FamilyMember(true, familyName, Jobs.FIREFIGHTER, countryOfUser, randomNum * 150, (int) (randomNum * 1.5));
+                                                mother = new FamilyMember(false, familyName, Jobs.FIREFIGHTER, countryOfUser, randomNum * 150, (int) (randomNum * 1.5));
+                                                sister = new FamilyMember(false, familyName, Jobs.NOJOB, countryOfUser, randomNum * 150, (int) (randomNum * 1.5));
+                                                brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 150, (int) (randomNum * 1.5));
                                                 family = new Family(familyName, brother, sister, father, mother);
                                                 keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), job, countryOfUser,
                                                         tax);
 
                                                 break;
                                             default:
-                                                father = new FamilyMember(true, familyName, Jobs.BEGGER, countryOfUser, randomNum * 20, (int) (randomNum * 1.5));
-                                                mother = new FamilyMember(false, familyName, Jobs.PACKINGBOY, countryOfUser, randomNum * 20, (int) (randomNum * 1.5));
-                                                sister = new FamilyMember(false, familyName, Jobs.INTERN, countryOfUser, randomNum * 20, (int) (randomNum * 1.5));
-                                                brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 20, (int) (randomNum * 1.5));
+                                                father = new FamilyMember(true, familyName, Jobs.BEGGER, countryOfUser, randomNum * 75, (int) (randomNum * 1.5));
+                                                mother = new FamilyMember(false, familyName, Jobs.PACKINGBOY, countryOfUser, randomNum * 75, (int) (randomNum * 1.5));
+                                                sister = new FamilyMember(false, familyName, Jobs.INTERN, countryOfUser, randomNum * 75, (int) (randomNum * 1.5));
+                                                brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 75, (int) (randomNum * 1.5));
                                                 family = new Family(familyName, brother, sister, father, mother);
                                                 keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), job, countryOfUser,
                                                         tax);
@@ -1163,7 +1250,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 wealth = 100000;
                 break;
             case 7:
-                selectAJob();
+                //selectAJob();
 
                 switch (value) {
                     case 0:
@@ -1312,19 +1399,73 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     }
 
 
-    public void selectAJob(){
-        informationalTextView.setText("Choose a job of your liking,get the job, and permanently unlock it for life!");
-        informationalTextView.setText("Very Low Paying Jobs:(0)Begger (1)Vagrant" + ("\n") +
+    public void idealLifeParameters(){
+        informationalTextView.setText("Choose a job ");
+        informationalTextView.setText("\"Choose a job \"Very Low Paying Jobs:(0)Begger (1)Vagrant" + ("\n") +
                 "Low Paying Jobs that add greater Influence: (2)Intern" + ("\n") +
                 "Average Paying Jobs with low Influence: (3)Packingboy (4)Firefighter (5) Banker" + ("\n") +
                 "Medium Paying Jobs with High Influence: (6)Scientist (7)Independent" + ("\n") +
                 "Highest Paying Jobs: (8)Business Owner (9)King (10)Sultan" + ("\n") +
                 "Divine Jobs: (11)God" + ("\n"));
-        //value = scanner.nextInt();
-        //*while (value < 0 || value > 11 /*|| Integer.valueOf(value)*/){
-        //informationalTextView.setText("You did not put in a good command.The Genie Left");
-        //chancesOfLife();
-        //}
+
+        final Spinner selectAFamily_spinnnerOne,selectACountry_spinnnerTwo;
+
+
+        AlertDialog.Builder alertDialogidealLife = new AlertDialog.Builder(MainActivity.this);
+        //Call the XML List view and set it with  the countries array
+        LayoutInflater inflater = getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.ideallife_parameters_layout, null);
+        alertDialogidealLife.setView(convertView);
+
+
+
+        alertDialogidealLife.setTitle("Set Up the Parameters for your life")
+        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                Object checkedItem;
+
+                    }
+                 })
+
+                .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+
+                    }
+                })
+                .setCancelable(false);
+
+
+
+        //Pick A Family
+        selectAFamily_spinnnerOne =(Spinner)convertView.findViewById(R.id.selectAFamily_spinnnerOne);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.familyTypes, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
+        // Apply the adapter to the spinner
+
+
+
+        selectACountry_spinnnerTwo =(Spinner)convertView.findViewById(R.id.selectACountry_spinnnerTwo);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapterTwo = ArrayAdapter.createFromResource(this,
+                R.array.countries, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapterTwo.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
+
+
+        // Apply the adapter to the spinner
+        selectAFamily_spinnnerOne.setAdapter(adapter);
+        selectACountry_spinnnerTwo.setAdapter(adapterTwo);
+
+
+
+
+
+
+        alertDialogidealLife.show();
 
     }
 
