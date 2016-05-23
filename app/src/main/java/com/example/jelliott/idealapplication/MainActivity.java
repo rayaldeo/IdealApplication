@@ -190,13 +190,13 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         influenceProgressBar = (ProgressBar) findViewById(R.id.influenceProgressBar);
         mHandler = new Handler();
         //Setting the Progress Bars
-        calculateTheProgressBarPercentage();
+        //calculateTheProgressBarPercentage(maxOverallWealth,maxInfluence);
 
 
 
         //Setting Values of all fields
         //Setting the overallWealth from java to XML
-        keepStatsUpToDate(overallWealthDefault, influenceAmountDefault, human.getJob(), human.getCountry(), human.getCountry().getTaxes());
+        //keepStatsUpToDate(overallWealthDefault, influenceAmountDefault, human.getJob(), human.getCountry(), human.getCountry().getTaxes());
         age_Turn_textView.setText("Age:" + Integer.toString(age));
         workingOnPhysicalAppTextView.setText("Physical Appearance:" + Integer.toString(workingOnPhysicalApp));
         socialisingWithFriendsTextView.setText("Socialize Amount:"+Integer.toString(socialisingWithFriends));
@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         makeYourName();
         selectAFamilyType();
         selectACountry();
-        //idealLifeParameters();
+        idealLifeParameters();
 
 
     }
@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
 
-    private void calculateTheProgressBarPercentage() {
+    private void calculateTheProgressBarPercentage(Double overallWealthA, Double influenceAmountA) {
 
 
         /*
@@ -249,44 +249,44 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         So that no number less than Zero is placed into the progressBar and potentially crashing the program
          */
         //Calculate the OverAllWealth Percentage
-        double overallwealthvalue = (((human.getOverAllWealth())/ maxOverallWealth)*100);//Complete the whole percentage equation and then convert number to Int for the Progress Bars
+        double overallwealthvalue = ((overallWealthA/ maxOverallWealth)*100);//Complete the whole percentage equation and then convert number to Int for the Progress Bars
         //Calculate the influence Percentage
-         double influencevalue = (((human.getInfluence()) / maxInfluence)*100);
+         double influencevalue = ((influenceAmountA / maxInfluence)*100);
         //Don't need to get the product of (human.getOverAllWealth() / maxOverallWealth) and 100 because the percentFormat already multiplies product
 
-        /*if (human.getOverAllWealth() <= 0 || overallwealthvalue <= 0) {
-            overallWealthProgressBar.setProgress(overallwealthvalue);
-            overallWealthPercentageTextView.setText(percentFormat.format(overallwealthvalue));
+       if (overallWealthA <= 1 || overallwealthvalue <= 1) {
+            overallWealthProgressBar.setProgress(1);
+            overallWealthPercentageTextView.setText("<"+percentFormat.format(0.01));
 
         }
-        if (human.getInfluence() <= 0 || influencevalue <= 0) {
+        if (influenceAmountA <= 1 || influencevalue <= 1) {
 
-            influenceProgressBar.setProgress(influencevalue);
-            influencePercentageTextView.setText(percentFormat.format(influencevalue));
-        } else {*/
+            influenceProgressBar.setProgress(1);
+            influencePercentageTextView.setText("<"+percentFormat.format(0.01));
+        } else {
             // mProgressStatusOverAllWealth = 0,getmProgressStatusInfluence=0
-             final int overAllWealthProgress = (int) overallwealthvalue;
-             final int influenceProgress = (int) influencevalue;
+            final int overAllWealthProgress = (int) overallwealthvalue;
+            final int influenceProgress = (int) influencevalue;
             // Start lengthy operation in a background thread
             new Thread(new Runnable() {
                 public void run() {
                     while (mProgressStatusOverAllWealth < overAllWealthProgress) {
-                        mProgressStatusOverAllWealth+=1;//Progress Bars can not accept a value less than one..so 0.5 will not work
+                        mProgressStatusOverAllWealth += 1;//Progress Bars can not accept a value less than one..so 0.5 will not work
 
-                            // Update the progress bar
-                            mHandler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    System.out.println("A");
-                                     overallWealthProgressBar.setProgress(mProgressStatusOverAllWealth);
-                                    overallWealthPercentageTextView.setText(mProgressStatusOverAllWealth+ "%");
-                                }
-                            });
+                        // Update the progress bar
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                //System.out.println("A");
+                                overallWealthProgressBar.setProgress(mProgressStatusOverAllWealth);
+                                overallWealthPercentageTextView.setText(mProgressStatusOverAllWealth + "%");
+                            }
+                        });
 
                         try {
                             // Sleep for 200 milliseconds.
                             //Just to display the progress slowly
-                            Thread.sleep(900);
+                            Thread.sleep(450);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -296,7 +296,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 }
 
             }).start();
-
 
         // Start lengthy operation in a background thread
         new Thread(new Runnable() {
@@ -308,7 +307,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            System.out.println("A");
+                            //System.out.println("A");
                             influenceProgressBar.setProgress(mProgressStatusInfluence );
                             influencePercentageTextView.setText(mProgressStatusInfluence+ "%");
                         }
@@ -316,18 +315,15 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     try {
                         // Sleep for 200 milliseconds.
                         //Just to display the progress slowly
-                        Thread.sleep(900);
+                        Thread.sleep(450);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
 
-
             }
 
         }).start();
-
-
 
             //influenceProgressBar.setProgress((int) influencevalue );
              informationalTextView.setText("InfluenceProgress"+influenceProgress+" WealthProgress "+overAllWealthProgress+" overallwealthvalue: "+overallwealthvalue+" influencevalue "+influencevalue);
@@ -338,13 +334,13 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             //overallWealthPercentageTextView.setText(valueString = percentFormat.format(overallwealthvalue) );
 
 
-        //}
+        }
     }
 
     @Override
-    public void onClick(DialogInterface dialog, int which) {
+    public void onClick(DialogInterface dialog, int which) { }
 
-    }
+
 
     public void init() {
 
@@ -465,7 +461,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                             Toast.LENGTH_LONG).show();
                     //Once this  country is valid for use by the user, and it exist...then set the other variables
                     //Update Stats accordingly
-                    keepStatsUpToDate(overallWealthDefault, influenceAmountDefault, job, countryOfUser, countryOfUser.getTaxes());
+                        countryOfUser=getThisCountry(checkedItem.toString());
                 } catch (Exception e) {
                     Toast.makeText(MainActivity.this, "A Country is needed",
                             Toast.LENGTH_LONG).show();
@@ -1369,7 +1365,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         jobTextView.setText(getString(R.string.getJob_text) + human.getJob());
         countryTextView.setText(getString(R.string.getCountry_text) + ":" + human.getCountryString());
         taxTextView.setText(getString(R.string.getTax_text) + ":" + currencyFormat.format(tax));
-        calculateTheProgressBarPercentage();
+        calculateTheProgressBarPercentage(overallWealthA, influenceAmountA);
         /*neighbourhoodTextView.setText("Neighbourhood:"+human.getNeighborhood());
         userFriendsTextView.setText("Friends:"+human.getFriends());
         professionalAssociatesTextView.setText("Professional Associates:"+human.getProfessionalAssociates());

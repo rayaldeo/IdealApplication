@@ -14,7 +14,7 @@
         android:layout_height="200dp"
 
         style="@style/AppTheme"
-        android:background="@drawable/abc_btn_switch_to_on_mtrl_00012"
+        android:background="@color/signatureColorOne"
         android:spinnerMode="dropdown"
         android:paddingBottom="@dimen/padding_for_jobselection"
         android:paddingRight="@dimen/padding_for_jobselection"
@@ -33,9 +33,10 @@
         android:layout_alignParentStart="false"
 
         style="@style/AppTheme"
-        android:background="@drawable/abc_textfield_search_default_mtrl_alpha"
+
         android:spinnerMode="dropdown"
         android:nestedScrollingEnabled="true"
+        android:background="@color/signatureColorOne"
         android:layout_below="@+id/selectAFamily_spinnnerOne"
         android:paddingLeft="@dimen/padding_for_jobselection"
         android:paddingBottom="@dimen/padding_for_jobselection"
