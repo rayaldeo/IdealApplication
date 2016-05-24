@@ -10,7 +10,7 @@ package com.example.jelliott.idealapplication;
 
 public class Human {
 
-    private int looks;
+    private int looks,influence;
     private String color,neighborhood="nothing",name,countryName;
     //private  NameGenerator generatedName = new NameGenerator();
     private Integer friends,professionAssociates,worshippers;
@@ -18,7 +18,7 @@ public class Human {
     private Jobs job;
     private Countries country;
     private double initialWealth;
-    private double overAllWealth,influence;
+    private double overAllWealth;
     private double income;
     private double familyWealth;
 
@@ -100,7 +100,7 @@ public class Human {
 
     public double getFamilyWealth(){return familyWealth;}
 
-    public double getInfluence(){return influence;}
+    public int getInfluence(){return influence;}
 
     public double getOverAllWealth(){return overAllWealth;}
 
@@ -136,7 +136,7 @@ public class Human {
 
     public void setFamilyWealth(double familyWealthA){ familyWealth=familyWealthA;}
 
-    public void setInfluence(double influenceA){ influence=influenceA;}
+    public void setInfluence(int influenceA){ influence=influenceA;}
 
     //Setting the amount of wealth is player has
     public void setWealth(double wealthA){ initialWealth =wealthA;}

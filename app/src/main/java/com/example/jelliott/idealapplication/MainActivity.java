@@ -36,12 +36,12 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private static final NumberFormat percentFormat = NumberFormat.getPercentInstance();
     private static final NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     private static final double maxOverallWealth = 10000000.0;
-    private static final double maxInfluence = 2000000.0;
+    private static final int maxInfluence = 2000000;
 
 
-    private double influenceAmountDefault = 500000.0;
+    private int influenceAmountDefault = 500000;
     private double overallWealthDefault = 5000000.0;
-    private double influence;
+    private int influence;
 
     private TextView jobTextView;
     private TextView countryTextView;
@@ -75,6 +75,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private TextView countryTextViewprofileDialog;
     private TextView taxTextViewprofileDialog;
     private TextView worshippersTextViewprofileDialog;
+
+
 
     //For the Progress Bars
     private static final int PROGRESS = 0x1;
@@ -199,18 +201,18 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         //keepStatsUpToDate(overallWealthDefault, influenceAmountDefault, human.getJob(), human.getCountry(), human.getCountry().getTaxes());
         age_Turn_textView.setText("Age:" + Integer.toString(age));
         workingOnPhysicalAppTextView.setText("Physical Appearance:" + Integer.toString(workingOnPhysicalApp));
-        socialisingWithFriendsTextView.setText("Socialize Amount:"+Integer.toString(socialisingWithFriends));
-        schoolAttendanceAmountTextView.setText("School Attendance:"+Integer.toString(schoolAttendanceAmount));
+        socialisingWithFriendsTextView.setText("Socialize Amount:" + Integer.toString(socialisingWithFriends));
+        schoolAttendanceAmountTextView.setText("School Attendance:" + Integer.toString(schoolAttendanceAmount));
         priceToMoveTextView.setText("Price:" + Double.toString(0.0));
-        informationalTextView.setText("Welcome and Good Luck!");
+        //informationalTextView.setText("Welcome and Good Luck!");
 
 
 
-        init();
-        makeYourName();
+        //init();
+        //makeYourName();
         selectAFamilyType();
         selectACountry();
-        idealLifeParameters();
+        //idealLifeParameters();
 
 
     }
@@ -241,7 +243,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
 
-    private void calculateTheProgressBarPercentage(Double overallWealthA, Double influenceAmountA) {
+    private void calculateTheProgressBarPercentage(Double overallWealthA, int influenceAmountA) {
 
 
         /*
@@ -251,22 +253,22 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         //Calculate the OverAllWealth Percentage
         double overallwealthvalue = ((overallWealthA/ maxOverallWealth)*100);//Complete the whole percentage equation and then convert number to Int for the Progress Bars
         //Calculate the influence Percentage
-         double influencevalue = ((influenceAmountA / maxInfluence)*100);
+         int influencevalue = ((influenceAmountA / maxInfluence)*100);
         //Don't need to get the product of (human.getOverAllWealth() / maxOverallWealth) and 100 because the percentFormat already multiplies product
 
-       if (overallWealthA <= 1 || overallwealthvalue <= 1) {
+       if (overallWealthA <= 1 || overallwealthvalue <= 1||overallWealthA <= 0 || overallwealthvalue <= 0||overallWealthTextView.getText().length()<=6) {
             overallWealthProgressBar.setProgress(1);
             overallWealthPercentageTextView.setText("<"+percentFormat.format(0.01));
 
         }
-        if (influenceAmountA <= 1 || influencevalue <= 1) {
+        if (influenceAmountA <= 1 || influencevalue <= 1||influenceAmountA <= 0 || influencevalue <= 0||influenceTextView.getText().length()<=5) {
 
             influenceProgressBar.setProgress(1);
             influencePercentageTextView.setText("<"+percentFormat.format(0.01));
         } else {
             // mProgressStatusOverAllWealth = 0,getmProgressStatusInfluence=0
             final int overAllWealthProgress = (int) overallwealthvalue;
-            final int influenceProgress = (int) influencevalue;
+            final int influenceProgress = influencevalue;
             // Start lengthy operation in a background thread
             new Thread(new Runnable() {
                 public void run() {
@@ -286,7 +288,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                         try {
                             // Sleep for 200 milliseconds.
                             //Just to display the progress slowly
-                            Thread.sleep(450);
+                            Thread.sleep(225);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -315,7 +317,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     try {
                         // Sleep for 200 milliseconds.
                         //Just to display the progress slowly
-                        Thread.sleep(450);
+                        Thread.sleep(225);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -327,6 +329,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
             //influenceProgressBar.setProgress((int) influencevalue );
              informationalTextView.setText("InfluenceProgress"+influenceProgress+" WealthProgress "+overAllWealthProgress+" overallwealthvalue: "+overallwealthvalue+" influencevalue "+influencevalue);
+            System.out.println("InfluenceProgress"+influenceProgress+" WealthProgress "+overAllWealthProgress+" overallwealthvalue: "+overallwealthvalue+" influencevalue "+influencevalue);
             //String valueString;
             //influencePercentageTextView.setText(valueString = percentFormat.format(influencevalue) );
             //overallWealthProgressBar.setProgress((int) overallwealthvalue);
@@ -616,8 +619,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     // The toggle is enabled
-                    Toast.makeText(MainActivity.this, "All Values need to be greater than 0 or you will have to create a new Family",
-                            Toast.LENGTH_LONG).show();
+                    //Toast.makeText(MainActivity.this, "All Values need to be greater than 0 or you will have to create a new Family",
+                            //Toast.LENGTH_LONG).show();
                     friendsAmountEditText.setVisibility(View.VISIBLE);
                     influenceAmountEditText.setVisibility(View.VISIBLE);
                     wealthAmountEditText.setVisibility(View.VISIBLE);
@@ -646,10 +649,13 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 Object checkedItem;
                                 if (customFamilySwitch.isChecked()) {
+
                                     try {
                                         //Constructor being called:public Family( double familyWealthA,double influenceA,int friendsA)
-                                        family = new Family(Double.parseDouble(wealthAmountEditText.getText().toString()), Double.parseDouble(influenceAmountEditText.getText().toString()),
+                                        family = new Family(Double.parseDouble(wealthAmountEditText.getText().toString()), Integer.parseInt(influenceAmountEditText.getText().toString()),
                                                 Integer.parseInt(friendsAmountEditText.getText().toString()));
+                                        //family = new Family(10000000.0, 1000000,1000000);
+                                        informationalTextView.setText("FamilyWealth:"+family.getFamilyWealth()+"FamilyInfluence:" +family.getFamilyInfluence());
                                         keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), job, countryOfUser,
                                                 tax);
                                         human.setFriends(Integer.parseInt(friendsAmountEditText.getText().toString()));
@@ -668,12 +674,12 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
                                         checkedItem = familyListView.getAdapter().getItem(familyListView.getCheckedItemPosition());
 
-                                        //Getting the selected string Country from Counties Class
+                                        //Getting the String from the selected item from the Family List View
                                         String selectedFamilyType = checkedItem.toString();
                                         Toast.makeText(MainActivity.this, "You have selected " + selectedFamilyType,
                                                 Toast.LENGTH_LONG).show();
                                         switch (selectedFamilyType) {
-                                            case "Rich Family":
+                                            case"Rich Family":
                                                 father = new FamilyMember(true, familyName, Jobs.BUSINESSOWNER, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
                                                 mother = new FamilyMember(false, familyName, Jobs.BANKTER, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
                                                 sister = new FamilyMember(false, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
@@ -683,7 +689,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                                                         tax);
 
                                                 break;
-                                            case "Middle Family":
+                                            case"Middle Family":
                                                 father = new FamilyMember(true, familyName, Jobs.FIREFIGHTER, countryOfUser, randomNum * 150, (int) (randomNum * 1.5));
                                                 mother = new FamilyMember(false, familyName, Jobs.FIREFIGHTER, countryOfUser, randomNum * 150, (int) (randomNum * 1.5));
                                                 sister = new FamilyMember(false, familyName, Jobs.NOJOB, countryOfUser, randomNum * 150, (int) (randomNum * 1.5));
@@ -1332,7 +1338,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         human.setJob(job);
         human.setIncome(job.getIncome());
         human.setOverAllwealth((human.getOverAllWealth() + job.getIncome() + wealth));
-        human.setInfluence(((human.getInfluence() + job.getInfluence() + influenceA)));
+        human.setInfluence((int)((human.getInfluence() + job.getInfluence() + influenceA)));
         human.setProfessionalAssociates(human.getProfessionalAssociates() + professionalAssociatesA);
         human.setFriends(human.getFriends() + friendsA);
         human.setLooks(human.getLooks() + looksA);
@@ -1352,7 +1358,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     }
 
-    public void keepStatsUpToDate(Double overallWealthA, Double influenceAmountA, Jobs jobA, Countries countryA,
+    public void keepStatsUpToDate(Double overallWealthA, int influenceAmountA, Jobs jobA, Countries countryA,
                                   Double taxA) {
         human.setOverAllwealth(overallWealthA);
         human.setInfluence(influenceAmountA);
@@ -1365,7 +1371,23 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         jobTextView.setText(getString(R.string.getJob_text) + human.getJob());
         countryTextView.setText(getString(R.string.getCountry_text) + ":" + human.getCountryString());
         taxTextView.setText(getString(R.string.getTax_text) + ":" + currencyFormat.format(tax));
-        calculateTheProgressBarPercentage(overallWealthA, influenceAmountA);
+
+        //This "if" statement is going to see whether our percentage function will give something less than 1...which the progress bars can no handle
+        if (overallWealthTextView.getText().length() <= 6 || overallWealthA <1000000) {
+            overallWealthProgressBar.setProgress(1);
+            overallWealthPercentageTextView.setText("<1%");
+
+
+        }if(influenceTextView.getText().length() <= 5){
+            influenceProgressBar.setProgress(1);
+            influencePercentageTextView.setText("<1%");
+
+        }else{
+            calculateTheProgressBarPercentage(overallWealthA, influenceAmountA);
+
+        }
+
+        //calculateTheProgressBarPercentage(1.0, 1);
         /*neighbourhoodTextView.setText("Neighbourhood:"+human.getNeighborhood());
         userFriendsTextView.setText("Friends:"+human.getFriends());
         professionalAssociatesTextView.setText("Professional Associates:"+human.getProfessionalAssociates());
@@ -1374,7 +1396,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     }
 
 
-    public void updatingStateOfFamily(double wealthA, double influenceA) {
+    public void updatingStateOfFamily(double wealthA, int influenceA) {
         family.setFamilyWealth(family.getFamilyWealth() + mother.getIncome() + brother.getIncome() + sister.getIncome() + father.getIncome() + wealthA);
         family.setFamilyInfluence(family.getFamilyInfluence() + influenceA);
         if (family.getFamilyFriends() > countryOfUser.getRequiredFriends() || family.getFamilyWealth() > countryOfUser.getRequireedWealth()

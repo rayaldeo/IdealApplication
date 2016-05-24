@@ -33,10 +33,13 @@
     <string name="customFamily">Custom Family</string>
     <string name="cusomFamilyToggle_String">Custom Family</string>
     <string name ="tax_text">Tax</string>
+
     <string name ="poorFamily_text">Poor Family</string>
     <string name ="middleFamily_text">Middle Family</string>
     <string name ="richFamily_text">Rich Family</string>
+
     <string name="age_Turn_text">AGE/TURN</string>
+
     <string name="schoolAttendanceAmount_text">School Attendance</string>
     <string name="workingOnPhysicalApp_text">Physical Apperance</string>
     <string name="socialisingWithFriends_text">Socialize</string>

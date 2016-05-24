@@ -14,8 +14,8 @@ public class Family {
 
 
         private ArrayList<FamilyMember> family = new ArrayList<FamilyMember>();
-        private int familyFriends,familyWorshippers;
-        private double familyWealth,familyInfluence;
+        private int familyFriends,familyWorshippers,familyInfluence;
+        private double familyWealth;
         private  String familyName,familyFatherName,familyMotherName,familyBrotherName,familySisterName,neighborhood;
         private FamilyMember father,brother, sister,mother;
         private Countries country;
@@ -28,7 +28,7 @@ public class Family {
         this.familyFriends=0;
     }
 
-    public Family( double familyWealthA,double influenceA,int friendsA){
+    public Family( double familyWealthA,int influenceA,int friendsA){
         this.familyWealth=familyWealthA;
         this.familyInfluence=influenceA;
         this.familyFriends=friendsA;
@@ -67,7 +67,7 @@ public class Family {
             return familyWealth;
         }
 
-        public double getFamilyInfluence() {
+        public int getFamilyInfluence() {
             return familyInfluence;
         }
 
@@ -85,7 +85,7 @@ public class Family {
             this.familyWealth = familyWealthA;
         }
 
-        public void setFamilyInfluence(double familyInfluenceA) {
+        public void setFamilyInfluence(int familyInfluenceA) {
             this.familyInfluence = familyInfluenceA;
         }
 
