@@ -30,17 +30,19 @@
     <string name="friendsAmountTextView_String">Friends</string>
     <string name="influenceAmountTextView_String">Influence</string>
 
-    <string name="customFamily">Custom Family</string>
+
     <string name="cusomFamilyToggle_String">Custom Family</string>
     <string name ="tax_text">Tax</string>
 
     <string name ="poorFamily_text">Poor Family</string>
     <string name ="middleFamily_text">Middle Family</string>
     <string name ="richFamily_text">Rich Family</string>
+    <string name ="customFamily_text">Custom Family</string>
 
     <string name="age_Turn_text">AGE/TURN</string>
+
     <string name="schoolAttendanceAmount_text">School Attendance</string>
-    <string name="workingOnPhysicalApp_text">Physical Apperance</string>
+    <string name="workingOnPhysicalApp_text">Physical Appearance</string>
     <string name="socialisingWithFriends_text">Socialize</string>
     <string name="idealLifeParameters_button_text">New Button</string>
     <string name="familyButton_txt">Accept Family</string>
@@ -64,7 +66,6 @@
         <item>@string/poorFamily_text</item>
         <item>@string/middleFamily_text</item>
         <item>@string/richFamily_text</item>
-
     </string-array>
 
 

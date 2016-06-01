@@ -25,7 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -77,11 +76,10 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private TextView worshippersTextViewprofileDialog;
 
 
-
     //For the Progress Bars
     private static final int PROGRESS = 0x1;
     private Handler mHandler;
-    private int mProgressStatusOverAllWealth = 0,mProgressStatusInfluence=0;
+    private int mProgressStatusOverAllWealth = 0, mProgressStatusInfluence = 0;
 
 
 
@@ -99,24 +97,18 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private ImageView profileImage;
 
     //Separate Dialogs
-    private Dialog alertDialogProfile,alertDialogJob;
+    private Dialog alertDialogProfile, alertDialogJob;
     //private Dialog alertDialog;
 
     /* array list to save the indexes of the array items*/
     private List<String> selectedItemIndexList;
     private int turn = 0;
 
-    /* public interface to communicate with the host activity*/
-    public interface multiChoiceListDialogListener {
-        void onOkay(ArrayList<Integer> arrayList);
-
-        void onCancel();
-    }
 
     private Human human;
     private Jobs job;
     //private Neighborhood neighborhood;
-    private int age = 0, schoolAttendanceAmount=0, socialisingWithFriends=0, workingOnPhysicalApp=0;
+    private int age = 0, schoolAttendanceAmount = 0, socialisingWithFriends = 0, workingOnPhysicalApp = 0;
     private int value, looks = 0, worshippers = 0, friends = 0, professionAssocites = 0;
     private double wealth = 0.0, tax = 0.0;
     private Boolean banker = false, independent = false, buisnessowner = false, king = false, intern = false, male;
@@ -140,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private boolean influencActivation = false;
     private boolean heavenBoolean = false;
     boolean dialogShown;
-    private  int tempNum =age-10;
+    private int tempNum = age - 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,10 +155,10 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         playerNameTextView = (TextView) findViewById(R.id.playerNameTextView);
         age_Turn_textView = (TextView) findViewById(R.id.age_Turn_textView);
         //TextViews with the Buttons on fragment_main.xml
-        workingOnPhysicalAppTextView= (TextView) findViewById(R.id.workingOnPhysicalAppTextView);
-        socialisingWithFriendsTextView= (TextView) findViewById(R.id.socialisingWithFriendsTextView);
-        schoolAttendanceAmountTextView= (TextView) findViewById(R.id.schoolAttendanceAmountTextView);
-        priceToMoveTextView= (TextView)findViewById(R.id.priceToMoveTextView);
+        workingOnPhysicalAppTextView = (TextView) findViewById(R.id.workingOnPhysicalAppTextView);
+        socialisingWithFriendsTextView = (TextView) findViewById(R.id.socialisingWithFriendsTextView);
+        schoolAttendanceAmountTextView = (TextView) findViewById(R.id.schoolAttendanceAmountTextView);
+        priceToMoveTextView = (TextView) findViewById(R.id.priceToMoveTextView);
 
         //Buttons
         changeCountryButton = (Button) findViewById(R.id.moveToButton);
@@ -192,8 +184,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         influenceProgressBar = (ProgressBar) findViewById(R.id.influenceProgressBar);
         mHandler = new Handler();
         //Setting the Progress Bars
-        //calculateTheProgressBarPercentage(maxOverallWealth,maxInfluence);
-
+        //calculateTheProgressBarPercentage(overallWealthDefault,5000000);
 
 
         //Setting Values of all fields
@@ -207,12 +198,12 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         //informationalTextView.setText("Welcome and Good Luck!");
 
 
-
         //init();
         //makeYourName();
         selectAFamilyType();
         selectACountry();
         //idealLifeParameters();
+        //getAJob();
 
 
     }
@@ -242,76 +233,76 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     }
 
 
-
-    private void calculateTheProgressBarPercentage(Double overallWealthA, int influenceAmountA) {
-
+    private void calculateTheProgressBarPercentage(Double overallWealthA, int influenceAmountA) {//The Influence Progress Bar Percentage is not very accurate...May not be a big issue
 
         /*
         Calculating the percentage of the wealth/Influence first and then figuring out if they are <=0 before updating the actual progress Bar...
         So that no number less than Zero is placed into the progressBar and potentially crashing the program
          */
         //Calculate the OverAllWealth Percentage
-        double overallwealthvalue = ((overallWealthA/ maxOverallWealth)*100);//Complete the whole percentage equation and then convert number to Int for the Progress Bars
+        double overallwealthvalue = ((overallWealthA / maxOverallWealth) * 100);//Complete the whole percentage equation and then convert number to Int for the Progress Bars
         //Calculate the influence Percentage
-         int influencevalue = ((influenceAmountA / maxInfluence)*100);
+         double influencevalue = ((influenceAmountA*1.0) / (maxInfluence*1.0) * 100);
         //Don't need to get the product of (human.getOverAllWealth() / maxOverallWealth) and 100 because the percentFormat already multiplies product
 
-       if (overallWealthA <= 1 || overallwealthvalue <= 1||overallWealthA <= 0 || overallwealthvalue <= 0||overallWealthTextView.getText().length()<=6) {
+        if (overallWealthA <= 1 || overallwealthvalue <= 1 || overallWealthA <= 0 || overallwealthvalue <= 0) {
             overallWealthProgressBar.setProgress(1);
-            overallWealthPercentageTextView.setText("<"+percentFormat.format(0.01));
+            overallWealthPercentageTextView.setText("<" + percentFormat.format(0.01));
 
         }
-        if (influenceAmountA <= 1 || influencevalue <= 1||influenceAmountA <= 0 || influencevalue <= 0||influenceTextView.getText().length()<=5) {
+        if (influenceAmountA <= 1 || influencevalue <= 1 || influenceAmountA <= 0 || influencevalue <= 0) {
 
             influenceProgressBar.setProgress(1);
-            influencePercentageTextView.setText("<"+percentFormat.format(0.01));
-        } else {
-            // mProgressStatusOverAllWealth = 0,getmProgressStatusInfluence=0
-            final int overAllWealthProgress = (int) overallwealthvalue;
-            final int influenceProgress = influencevalue;
-            // Start lengthy operation in a background thread
-            new Thread(new Runnable() {
-                public void run() {
-                    while (mProgressStatusOverAllWealth < overAllWealthProgress) {
-                        mProgressStatusOverAllWealth += 1;//Progress Bars can not accept a value less than one..so 0.5 will not work
+            influencePercentageTextView.setText("<" + percentFormat.format(0.01));
+        }
 
-                        // Update the progress bar
-                        mHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                //System.out.println("A");
-                                overallWealthProgressBar.setProgress(mProgressStatusOverAllWealth);
-                                overallWealthPercentageTextView.setText(mProgressStatusOverAllWealth + "%");
-                            }
-                        });
-
-                        try {
-                            // Sleep for 200 milliseconds.
-                            //Just to display the progress slowly
-                            Thread.sleep(225);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-
-                }
-
-            }).start();
-
+        // mProgressStatusOverAllWealth = 0,getmProgressStatusInfluence=0
+        //overAllWealthProgress muct be changed to int because Progress Bars does not accept Doubles
+        final int overAllWealthProgress = (int) overallwealthvalue;
+        final int influenceProgress = (int)influencevalue;
         // Start lengthy operation in a background thread
         new Thread(new Runnable() {
             public void run() {
-                while (mProgressStatusInfluence < influenceProgress) {
-                    mProgressStatusInfluence+=1;//Progress Bars can not accept a value less than one..so 0.5 will not work
+                while (mProgressStatusOverAllWealth < overAllWealthProgress) {
+                    mProgressStatusOverAllWealth += 1;//Progress Bars can not accept a value less than one..so 0.5 will not work
 
                     // Update the progress bar
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
                             //System.out.println("A");
-                            influenceProgressBar.setProgress(mProgressStatusInfluence );
-                            influencePercentageTextView.setText(mProgressStatusInfluence+ "%");
+                            overallWealthProgressBar.setProgress(mProgressStatusOverAllWealth);
+                            overallWealthPercentageTextView.setText(mProgressStatusOverAllWealth + "%");
+                        }
+                    });
+
+                    try {
+                        // Sleep for 200 milliseconds.
+                        //Just to display the progress slowly
+                        Thread.sleep(225);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+            }
+
+        }).start();
+
+        // Start lengthy operation in a background thread
+        new Thread(new Runnable() {
+            public void run() {
+                while (mProgressStatusInfluence < influenceProgress) {
+                    mProgressStatusInfluence += 1;//Progress Bars can not accept a value less than one..so 0.5 will not work
+
+                    // Update the progress bar
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            //System.out.println("A");
+                            influenceProgressBar.setProgress(mProgressStatusInfluence);
+                            influencePercentageTextView.setText(mProgressStatusInfluence + "%");
                         }
                     });
                     try {
@@ -327,23 +318,21 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         }).start();
 
-            //influenceProgressBar.setProgress((int) influencevalue );
-             informationalTextView.setText("InfluenceProgress"+influenceProgress+" WealthProgress "+overAllWealthProgress+" overallwealthvalue: "+overallwealthvalue+" influencevalue "+influencevalue);
-            System.out.println("InfluenceProgress"+influenceProgress+" WealthProgress "+overAllWealthProgress+" overallwealthvalue: "+overallwealthvalue+" influencevalue "+influencevalue);
-            //String valueString;
-            //influencePercentageTextView.setText(valueString = percentFormat.format(influencevalue) );
-            //overallWealthProgressBar.setProgress((int) overallwealthvalue);
+        //influenceProgressBar.setProgress((int) influencevalue );
+        informationalTextView.setText("Influence Parameter:"+influenceAmountA+"InfluenceProgress" + influencevalue + " WealthProgress " + overAllWealthProgress + " overallwealthvalue: " + overallwealthvalue + " influencevalue " + influencevalue);
+        System.out.println("Influence Parameter:"+influenceAmountA+"InfluenceProgress" + influencevalue + " WealthProgress " + overAllWealthProgress + " overallwealthvalue: " + overallwealthvalue + " influencevalue " + influencevalue);
+        //String valueString;
+        //influencePercentageTextView.setText(valueString = percentFormat.format(influencevalue) );
+        //overallWealthProgressBar.setProgress((int) overallwealthvalue);
 
-            //overallWealthPercentageTextView.setText(valueString = percentFormat.format(overallwealthvalue) );
+        //overallWealthPercentageTextView.setText(valueString = percentFormat.format(overallwealthvalue) );
 
 
-        }
     }
 
     @Override
-    public void onClick(DialogInterface dialog, int which) { }
-
-
+    public void onClick(DialogInterface dialog, int which) {
+    }
 
     public void init() {
 
@@ -464,7 +453,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                             Toast.LENGTH_LONG).show();
                     //Once this  country is valid for use by the user, and it exist...then set the other variables
                     //Update Stats accordingly
-                        countryOfUser=getThisCountry(checkedItem.toString());
+                    countryOfUser = getThisCountry(checkedItem.toString());
                 } catch (Exception e) {
                     Toast.makeText(MainActivity.this, "A Country is needed",
                             Toast.LENGTH_LONG).show();
@@ -539,6 +528,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     public void CreateFamily() {
     }
+
 
     public void profilePictureDialog() {
 
@@ -620,22 +610,38 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 if (isChecked) {
                     // The toggle is enabled
                     //Toast.makeText(MainActivity.this, "All Values need to be greater than 0 or you will have to create a new Family",
-                            //Toast.LENGTH_LONG).show();
+                    //Toast.LENGTH_LONG).show();
+                    familyListView.setEnabled(false);
+                    familyListView.setItemChecked(0, false);
+                    familyListView.setItemChecked(1,false);
+                    familyListView.setItemChecked(2,false);
+                    familyListView.setItemChecked(3,false);
                     friendsAmountEditText.setVisibility(View.VISIBLE);
                     influenceAmountEditText.setVisibility(View.VISIBLE);
                     wealthAmountEditText.setVisibility(View.VISIBLE);
-                    familyListView.setAdapter(null);
+
                 } else {
                     // The toggle is disabled
-                    selectAFamilyType();
+                   //isChecked=false;
+                    //selectAFamilyType();
+                    familyListView.setEnabled(true);
+                    familyListView.setItemChecked(0, false);
+                    familyListView.setItemChecked(1,false);
+                    familyListView.setItemChecked(2,false);
+                    familyListView.setItemChecked(3, false);
+                    friendsAmountEditText.setVisibility(View.INVISIBLE);
+                    influenceAmountEditText.setVisibility(View.INVISIBLE);
+                    wealthAmountEditText.setVisibility(View.INVISIBLE);
+
                 }
             }
         });
-
         alertDialog
-               /* //Use this Button to unlock the Custom Family Text View
-                .setNeutralButton("Custom Family", new DialogInterface.OnClickListener() {
+                //Use this Button to unlock the Custom Family Text View-> Don't use this because in an
+                // AlertDialog all the attached buttons close the Dialog
+                /*.setNeutralButton("Custom Family", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
+
 
                         friendsAmountEditText.setVisibility(View.VISIBLE);
                         influenceAmountEditText.setVisibility(View.VISIBLE);
@@ -655,7 +661,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                                         family = new Family(Double.parseDouble(wealthAmountEditText.getText().toString()), Integer.parseInt(influenceAmountEditText.getText().toString()),
                                                 Integer.parseInt(friendsAmountEditText.getText().toString()));
                                         //family = new Family(10000000.0, 1000000,1000000);
-                                        informationalTextView.setText("FamilyWealth:"+family.getFamilyWealth()+"FamilyInfluence:" +family.getFamilyInfluence());
+                                        informationalTextView.setText("FamilyWealth:" + family.getFamilyWealth() + "FamilyInfluence:" + family.getFamilyInfluence());
                                         keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), job, countryOfUser,
                                                 tax);
                                         human.setFriends(Integer.parseInt(friendsAmountEditText.getText().toString()));
@@ -667,19 +673,16 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
                                     }
                                 } else {
-
-
                                     //This  try/catch block code catches the (Null Pointer) exception if nothing is selected
                                     try {
-
                                         checkedItem = familyListView.getAdapter().getItem(familyListView.getCheckedItemPosition());
-
                                         //Getting the String from the selected item from the Family List View
                                         String selectedFamilyType = checkedItem.toString();
                                         Toast.makeText(MainActivity.this, "You have selected " + selectedFamilyType,
                                                 Toast.LENGTH_LONG).show();
                                         switch (selectedFamilyType) {
-                                            case"Rich Family":
+
+                                            case "Rich Family":
                                                 father = new FamilyMember(true, familyName, Jobs.BUSINESSOWNER, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
                                                 mother = new FamilyMember(false, familyName, Jobs.BANKTER, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
                                                 sister = new FamilyMember(false, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
@@ -689,7 +692,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                                                         tax);
 
                                                 break;
-                                            case"Middle Family":
+                                            case "Middle Family":
                                                 father = new FamilyMember(true, familyName, Jobs.FIREFIGHTER, countryOfUser, randomNum * 150, (int) (randomNum * 1.5));
                                                 mother = new FamilyMember(false, familyName, Jobs.FIREFIGHTER, countryOfUser, randomNum * 150, (int) (randomNum * 1.5));
                                                 sister = new FamilyMember(false, familyName, Jobs.NOJOB, countryOfUser, randomNum * 150, (int) (randomNum * 1.5));
@@ -710,7 +713,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
                                                 break;
                                         }
-
                                         Toast.makeText(MainActivity.this, "You have selected " + checkedItem.toString(),
                                                 Toast.LENGTH_LONG).show();
                                     } catch (Exception e) {
@@ -726,12 +728,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                         }
 
                 );
-
-
         familyListView.setAdapter(adapter);
         alertDialog.show();
-
-
     }
 
     //This Method is used to display stats of the Family during the Tutorial Stages
@@ -791,7 +789,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         alertDialogProfile.show();
 
     }
-
 
     public void chancesOfLife() {
         try {
@@ -1136,9 +1133,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     }
 
-
-
-
     public void genieDoSomething() {
 
         Jobs temjobA = human.getJob(); ///I must undo any changes if the user doesn't comply with my instructions
@@ -1215,6 +1209,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             informationalTextView.setText("You get a slight boost in wealth, worshippers,friends,looks,professional associates, and influence");
         }
     }
+
     public void selectingAWish(int numberSelection) {
         //looks=0,worshippers=0,friends=0,professionAssocites=0,influence=0
 
@@ -1338,7 +1333,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         human.setJob(job);
         human.setIncome(job.getIncome());
         human.setOverAllwealth((human.getOverAllWealth() + job.getIncome() + wealth));
-        human.setInfluence((int)((human.getInfluence() + job.getInfluence() + influenceA)));
+        human.setInfluence((int) ((human.getInfluence() + job.getInfluence() + influenceA)));
         human.setProfessionalAssociates(human.getProfessionalAssociates() + professionalAssociatesA);
         human.setFriends(human.getFriends() + friendsA);
         human.setLooks(human.getLooks() + looksA);
@@ -1373,19 +1368,17 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         taxTextView.setText(getString(R.string.getTax_text) + ":" + currencyFormat.format(tax));
 
         //This "if" statement is going to see whether our percentage function will give something less than 1...which the progress bars can no handle
-        if (overallWealthTextView.getText().length() <= 6 || overallWealthA <1000000) {
-            overallWealthProgressBar.setProgress(1);
-            overallWealthPercentageTextView.setText("<1%");
+        if (overallWealthTextView.getText().length() <= 5 || overallWealthA < 1000000) {
+            overallWealthA = 1.0;
 
-
-        }if(influenceTextView.getText().length() <= 5){
-            influenceProgressBar.setProgress(1);
-            influencePercentageTextView.setText("<1%");
-
-        }else{
-            calculateTheProgressBarPercentage(overallWealthA, influenceAmountA);
 
         }
+        if (influenceTextView.getText().length() <= 4) {
+            influenceAmountA = 1;
+
+        }
+
+        calculateTheProgressBarPercentage(overallWealthA, influenceAmountA);
 
         //calculateTheProgressBarPercentage(1.0, 1);
         /*neighbourhoodTextView.setText("Neighbourhood:"+human.getNeighborhood());
@@ -1394,7 +1387,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         looksTextView.setText("Attractiveness:"+human.getLooks());*/
 
     }
-
 
     public void updatingStateOfFamily(double wealthA, int influenceA) {
         family.setFamilyWealth(family.getFamilyWealth() + mother.getIncome() + brother.getIncome() + sister.getIncome() + father.getIncome() + wealthA);
@@ -1417,7 +1409,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     }
 
 
-    public void idealLifeParameters(){
+    public void idealLifeParameters() {
         informationalTextView.setText("Choose a job ");
         informationalTextView.setText("\"Choose a job \"Very Low Paying Jobs:(0)Begger (1)Vagrant" + ("\n") +
                 "Low Paying Jobs that add greater Influence: (2)Intern" + ("\n") +
@@ -1426,7 +1418,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 "Highest Paying Jobs: (8)Business Owner (9)King (10)Sultan" + ("\n") +
                 "Divine Jobs: (11)God" + ("\n"));
 
-        final Spinner selectAFamily_spinnnerOne,selectACountry_spinnnerTwo;
+        final Spinner selectAFamily_spinnnerOne, selectACountry_spinnnerTwo;
 
 
         AlertDialog.Builder alertDialogidealLife = new AlertDialog.Builder(MainActivity.this);
@@ -1436,14 +1428,13 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         alertDialogidealLife.setView(convertView);
 
 
-
         alertDialogidealLife.setTitle("Set Up the Parameters for your life")
-        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                Object checkedItem;
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        Object checkedItem;
 
                     }
-                 })
+                })
 
                 .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
@@ -1454,9 +1445,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 .setCancelable(false);
 
 
-
         //Pick A Family
-        selectAFamily_spinnnerOne =(Spinner)convertView.findViewById(R.id.selectAFamily_spinnnerOne);
+        selectAFamily_spinnnerOne = (Spinner) convertView.findViewById(R.id.selectAFamily_spinnnerOne);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.familyTypes, android.R.layout.simple_spinner_item);
@@ -1465,8 +1455,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         // Apply the adapter to the spinner
 
 
-
-        selectACountry_spinnnerTwo =(Spinner)convertView.findViewById(R.id.selectACountry_spinnnerTwo);
+        selectACountry_spinnnerTwo = (Spinner) convertView.findViewById(R.id.selectACountry_spinnnerTwo);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapterTwo = ArrayAdapter.createFromResource(this,
                 R.array.countries, android.R.layout.simple_spinner_item);
@@ -1475,12 +1464,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
         // Apply the adapter to the spinner
-        selectAFamily_spinnnerOne.setAdapter(adapter);
+        //selectAFamily_spinnnerOne.setAdapter(adapter);
         selectACountry_spinnnerTwo.setAdapter(adapterTwo);
-
-
-
-
 
 
         alertDialogidealLife.show();
@@ -1489,16 +1474,17 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     public void worshippersFollow(boolean worshippersFollow) {
 
-        if(worshippersFollow && tempNum !=age) {
+        if (worshippersFollow && tempNum != age) {
 
-            human.setWorshippers(human.getWorshippers()+100);
+            human.setWorshippers(human.getWorshippers() + 100);
             System.out.println("You attracted 100 worshippers");
             tempNum++;
 
-        }if(worshippersFollow && god){
+        }
+        if (worshippersFollow && god) {
 
 
-            human.setWorshippers(human.getWorshippers()+1000);
+            human.setWorshippers(human.getWorshippers() + 1000);
             System.out.println("You attracted 1000 worshippers");
 
 
@@ -1506,17 +1492,356 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     }
 
     public void getAJob() {
-        //Scanner and the if statement will always be Loading for a wrong option while everything so if the user places anything outside the desired options then that user will be  placed back
-        //to the top of case 1
+
+
+        //Creating a Layout for the EditTextViews
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        //Set up First Name Text View
+        final Button jobLabel = new Button(this);
+        jobLabel.setHint("JobOne");
+        layout.addView(jobLabel);
+
+        //Set up First Name Text View
+        final Button jobLabelOne = new Button(this);
+        jobLabelOne.setHint("JobOne");
+       layout.addView(jobLabelOne);
+
+        //Set up First Name Text View
+        final Button jobLabelTwo = new Button(this);
+        jobLabelTwo.setHint("JobOne");
+        layout.addView(jobLabelTwo);
+
+        //Set up First Name Text View
+        final Button jobLabelThree = new Button(this);
+        jobLabelThree.setHint("JobOne");
+        layout.addView(jobLabelThree);
+
+        //Set up First Name Text View
+        final Button jobLabelFour = new Button(this);
+        jobLabelFour.setHint("JobFour");
+       jobLabelFour.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               makeYourName();
+
+           }
+       });
+
+        layout.addView(jobLabelFour);
+
+        AlertDialog ad = new AlertDialog.Builder(this)
+
+                .setMessage("Enter in a Name(MAX:11 CHARACTERS)")
+                        //.setIcon(R.drawable.ic_launcher)
+                .setTitle("IDEAL")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+
+
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        makeYourName();
+                    }
+                })
+                .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        makeYourName();
+                    }
+                })
+                .setCancelable(true)
+                .setView(layout)
+                .create();
+        ad.getWindow().getAttributes().verticalMargin = 1.0F;
+        ad.show();
+
+
+
+
         informationalTextView.setText("Get a job: Raises you overall wealth" + "\n" +
                 "Raises the amount of professional Associates" + "\n" +
                 "Raises your influence" + "\n" +
                 "Raises your amount of friends slightly");
+        switch (value) {
+            case 1:
+                //Scanner and the if statement will always be Loading for a wrong option while everything so if the user places anything outside the desired options then that user will be  placed back
+                //to the top of case 1
+                System.out.println("Get a job: Raises you overall wealth" + "\n" +
+                        "Raises the amount of professional Associates" + "\n" +
+                        "Raises your influence" + "\n" +
+                        "Raises your amount of friends slightly");
+                //System.out.println(human.getCountry());
+
+                if (age < 20) {
+                    System.out.println("(1)Packing Boy" + ("\n") +
+                            "(2)Intern" + ("\n"));
+                    //value = scanner.nextInt();
+                    while (value < 0 || value > 2 || value == 0/*|| Integer.valueOf(value)*/) {
+                        System.out.println("You did not put in a valid command");
+                        //this.makeLifeDecisions();
+                    }
+
+                    System.out.println("\n");
+
+                    switch (value) {
+                        case 1:
+                            job = Jobs.PACKINGBOY;
+                            professionAssocites = 100;
+                            friends = 10;
+                            break;
+                        case 2:
+                            job = Jobs.INTERN;
+                            professionAssocites = 500;
+                            friends = 15;
+                            break;
+                    }
+
+                } else {
+                    //System.out.println("It got past the else");
+                    //The Human will be old enough to move into his own country..So use getter from human
+                    if (human.getCountry() == Countries.Irada ||
+                            human.getCountry() == Countries.Itican ||
+                            human.getCountry() == Countries.Albaq) {
+                        //System.out.println("It is in the first if statement :)");
+                        System.out.println("\n You can only choose jobs that you have access to....Press 0 to go back if you have access to no jobs"
+                                + "\n" + "(1)Beggar:" + begger
+                                + "\n" + "(2)Vagrant:" + vagrant
+                                + "\n" + "(3)Packing Boy:" + packingboy);
+                        //value = scanner.nextInt();
+                        while (value < 0 || value > 3 || value == 0/*|| Integer.valueOf(value)*/) {
+                            System.out.println("You did not put in a valid command");
+                            //this.makeLifeDecisions();
+                        }
+                        switch (value) {
+                            case 1:
+                                if (begger) {
+                                    job = Jobs.BEGGER;
+                                    professionAssocites = 10;
+                                    friends = 0;
+                                } else {
+                                    System.out.println("You do not have access to this job");
+                                    //makeLifeDecisions();
+                                }
+                                break;
+                            case 2:
+                                if (vagrant) {
+                                    job = Jobs.VAGRANT;
+                                    professionAssocites = 0;
+                                    friends = 0;
+                                } else {
+                                    System.out.println("You do not have access to this job");
+                                    //makeLifeDecisions();
+                                }
+                                break;
+                            case 3:
+                                if (packingboy) {
+                                    job = Jobs.PACKINGBOY;
+                                    professionAssocites = 10;
+                                    friends = 0;
+                                } else {
+                                    System.out.println("You do not have access to this job");
+                                    //makeLifeDecisions();
+                                }
+
+                                break;
+
+                        }
+                    }
+                    if (human.getCountry() == Countries.Trinentina ||
+                            human.getCountry() == Countries.Albico ||
+                            human.getCountry() == Countries.Ugeria ||
+                            human.getCountry() == Countries.Portada) {
+
+                        System.out.println("\n You can only choose jobs that you have access to....Press 0 to go back if you have access to no jobs"
+
+                                + "\n" + "(1)Firefighter:" + firefighter
+                                + "\n" + "(2)Banker:" + banker
+                                + "\n" + "(3)Scientist:" + scientist);
+                       // value = scanner.nextInt();
+                        while (value < 0 || value > 3 /*|| Integer.valueOf(value)*/) {
+                            System.out.println("You did not put in a valid command");
+                            //this.makeLifeDecisions();
+                        }
+                        switch (value) {
+                            case 1:
+                                if (firefighter) {
+                                    job = Jobs.FIREFIGHTER;
+                                    professionAssocites = 0;
+                                    friends = 0;
+                                } else {
+                                    System.out.println("You do not have access to this job");
+                                    //makeLifeDecisions();
+                                }
+                                break;
+                            case 2:
+                                if (banker) {
+                                    job = Jobs.BANKTER;
+                                    professionAssocites = 10;
+                                    friends = 0;
+                                } else {
+                                    System.out.println("You do not have access to this job");
+                                    //makeLifeDecisions();
+                                }
+
+                                break;
+
+                            case 3:
+                                if (scientist) {
+                                    job = Jobs.SCIENTIST;
+                                    professionAssocites = 10;
+                                    friends = 0;
+                                } else {
+                                    System.out.println("You do not have access to this job");
+                                    //makeLifeDecisions();
+                                }
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                break;
+                        }
+
+                    }
+                    if (human.getCountry() == Countries.Kuwador ||
+                            human.getCountry() == Countries.Ukrark ||
+                            human.getCountry() == Countries.Rany) {
+                        System.out.println("\n You can only choose jobs that you have access to....Press 0 to go back if you have access to no jobs"
+                                + "\n" + "(1)Banker:" + banker
+                                + "\n" + "(2)Scientist:" + scientist
+                                + "\n" + "(3)Independent:" + independent
+                                + "\n" + "(4)Business Owner:" + buisnessowner);
+
+                        //value = scanner.nextInt();
+                        while (value < 0 || value > 4 || value == 0/*|| Integer.valueOf(value)*/) {
+                            System.out.println("You did not put in a valid command");
+                            //this.makeLifeDecisions();
+                        }
+                        switch (value) {
+                            case 1:
+                                if (banker) {
+                                    job = Jobs.BANKTER;
+                                    professionAssocites = 100;
+                                    friends = 100;
+                                } else {
+                                    System.out.println("You do not have access to this job");
+                                    //makeLifeDecisions();
+                                }
+
+                                break;
+
+                            case 2:
+                                if (scientist) {
+                                    job = Jobs.SCIENTIST;
+                                    professionAssocites = 100;
+                                    friends = 100;
+                                } else {
+                                    System.out.println("You do not have access to this job");
+                                    //makeLifeDecisions();
+                                }
+                                break;
+
+                            case 3:
+                                if (independent) {
+                                    job = Jobs.INDEPENDENT;
+                                    professionAssocites = 100000;
+                                    friends = 10000000;
+                                } else {
+                                    System.out.println("You do not have access to this job");
+                                    //makeLifeDecisions();
+                                }
+                                break;
+                            case 4:
+                                if (buisnessowner) {
+                                    job = Jobs.BUSINESSOWNER;
+                                    professionAssocites = 10000;
+                                    friends = 10000;
+                                } else {
+                                    System.out.println("You do not have access to this job");
+                                    //makeLifeDecisions();
+                                }
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                break;
+
+                        }
+                    }
+                    if (human.getCountry() == Countries.Heaven) {
+
+                        //A boolean will be returned for the access level of all jobs
+                        System.out.println("\n You can only choose jobs that you have access to....Press 0 to go back if you have access to no jobs"
+                                + "\n" + "(1)Independent:" + independent
+                                + "\n" + "(2)King:" + king
+                                + "\n" + "(3)Sultan:" + sultan);
+
+                        //value = scanner.nextInt();
+                        while (value < 0 || value > 9 || value == 0/*|| Integer.valueOf(value)*/) {
+                            System.out.println("You did not put in a valid command");
+                            //this.makeLifeDecisions();
+                        }
+                        switch (value) {
+
+                            case 1:
+                                if (independent) {
+                                    job = Jobs.INDEPENDENT;
+                                    professionAssocites = 200000;
+                                    friends = 2000000;
+                                } else {
+                                    System.out.println("You do not have access to this job");
+                                    //makeLifeDecisions();
+                                }
+                                break;
+
+                            case 2:
+                                // private Boolean banker,independent,buisnessowner,king,intern;
+                                if (king) {
+                                    job = Jobs.KING;
+                                    professionAssocites = 2000000;
+                                    friends = 2000000;
+                                } else {
+                                    System.out.println("You do not have access to this job");
+                                   // makeLifeDecisions();
+                                }
+                                break;
+                            case 3:
+                                if (king && sultan) {
+                                    job = Jobs.SULTAN;
+                                    professionAssocites = 100000000;
+                                    friends = 100000;
+
+                                } else {
+                                    System.out.println("You don't have access to this job");
+                                    //makeLifeDecisions();
+                                }
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                break;
+                        }
+
+                    }
+                }
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                break;
+
+        }
+
 
     }
-
-
-
 
 }
 
