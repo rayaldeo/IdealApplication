@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -203,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         selectAFamilyType();
         selectACountry();
         //idealLifeParameters();
-        //getAJob();
+        getAJob();
 
 
     }
@@ -242,7 +243,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         //Calculate the OverAllWealth Percentage
         double overallwealthvalue = ((overallWealthA / maxOverallWealth) * 100);//Complete the whole percentage equation and then convert number to Int for the Progress Bars
         //Calculate the influence Percentage
-         double influencevalue = ((influenceAmountA*1.0) / (maxInfluence*1.0) * 100);
+        double influencevalue = ((influenceAmountA * 1.0) / (maxInfluence * 1.0) * 100);
         //Don't need to get the product of (human.getOverAllWealth() / maxOverallWealth) and 100 because the percentFormat already multiplies product
 
         if (overallWealthA <= 1 || overallwealthvalue <= 1 || overallWealthA <= 0 || overallwealthvalue <= 0) {
@@ -259,7 +260,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         // mProgressStatusOverAllWealth = 0,getmProgressStatusInfluence=0
         //overAllWealthProgress muct be changed to int because Progress Bars does not accept Doubles
         final int overAllWealthProgress = (int) overallwealthvalue;
-        final int influenceProgress = (int)influencevalue;
+        final int influenceProgress = (int) influencevalue;
         // Start lengthy operation in a background thread
         new Thread(new Runnable() {
             public void run() {
@@ -319,8 +320,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         }).start();
 
         //influenceProgressBar.setProgress((int) influencevalue );
-        informationalTextView.setText("Influence Parameter:"+influenceAmountA+"InfluenceProgress" + influencevalue + " WealthProgress " + overAllWealthProgress + " overallwealthvalue: " + overallwealthvalue + " influencevalue " + influencevalue);
-        System.out.println("Influence Parameter:"+influenceAmountA+"InfluenceProgress" + influencevalue + " WealthProgress " + overAllWealthProgress + " overallwealthvalue: " + overallwealthvalue + " influencevalue " + influencevalue);
+        informationalTextView.setText("Influence Parameter:" + influenceAmountA + "InfluenceProgress" + influencevalue + " WealthProgress " + overAllWealthProgress + " overallwealthvalue: " + overallwealthvalue + " influencevalue " + influencevalue);
+        System.out.println("Influence Parameter:" + influenceAmountA + "InfluenceProgress" + influencevalue + " WealthProgress " + overAllWealthProgress + " overallwealthvalue: " + overallwealthvalue + " influencevalue " + influencevalue);
         //String valueString;
         //influencePercentageTextView.setText(valueString = percentFormat.format(influencevalue) );
         //overallWealthProgressBar.setProgress((int) overallwealthvalue);
@@ -613,21 +614,21 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     //Toast.LENGTH_LONG).show();
                     familyListView.setEnabled(false);
                     familyListView.setItemChecked(0, false);
-                    familyListView.setItemChecked(1,false);
-                    familyListView.setItemChecked(2,false);
-                    familyListView.setItemChecked(3,false);
+                    familyListView.setItemChecked(1, false);
+                    familyListView.setItemChecked(2, false);
+                    familyListView.setItemChecked(3, false);
                     friendsAmountEditText.setVisibility(View.VISIBLE);
                     influenceAmountEditText.setVisibility(View.VISIBLE);
                     wealthAmountEditText.setVisibility(View.VISIBLE);
 
                 } else {
                     // The toggle is disabled
-                   //isChecked=false;
+                    //isChecked=false;
                     //selectAFamilyType();
                     familyListView.setEnabled(true);
                     familyListView.setItemChecked(0, false);
-                    familyListView.setItemChecked(1,false);
-                    familyListView.setItemChecked(2,false);
+                    familyListView.setItemChecked(1, false);
+                    familyListView.setItemChecked(2, false);
                     familyListView.setItemChecked(3, false);
                     friendsAmountEditText.setVisibility(View.INVISIBLE);
                     influenceAmountEditText.setVisibility(View.INVISIBLE);
@@ -1493,356 +1494,273 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     public void getAJob() {
 
-
+        professionAssocites = 0;
+        friends = 0;
         //Creating a Layout for the EditTextViews
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
+        //creating instance of custom view
 
-        //Set up First Name Text View
-        final Button jobLabel = new Button(this);
-        jobLabel.setHint("JobOne");
-        layout.addView(jobLabel);
+        //Beggar//1
+        final Button jobButtonBeggar = new Button(this);
+        jobButtonBeggar.setHint("Beggar");
+        //layout.addView(jobButtonBeggar);
+        jobButtonBeggar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        //Set up First Name Text View
-        final Button jobLabelOne = new Button(this);
-        jobLabelOne.setHint("JobOne");
-       layout.addView(jobLabelOne);
+                professionAssocites = 10;
+                //makeYourName();
 
-        //Set up First Name Text View
-        final Button jobLabelTwo = new Button(this);
-        jobLabelTwo.setHint("JobOne");
-        layout.addView(jobLabelTwo);
+            }
+        });
 
-        //Set up First Name Text View
-        final Button jobLabelThree = new Button(this);
-        jobLabelThree.setHint("JobOne");
-        layout.addView(jobLabelThree);
+        //Vagrant//2
+        final Button jobButtonVagrant = new Button(this);
+        jobButtonVagrant.setHint("Vagrant");
+        //layout.addView(jobButtonVagrant);
+        jobButtonVagrant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //makeYourName();
 
-        //Set up First Name Text View
-        final Button jobLabelFour = new Button(this);
-        jobLabelFour.setHint("JobFour");
-       jobLabelFour.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               makeYourName();
+            }
+        });
 
-           }
-       });
+        //Intern//3
+        final Button jobButtonIntern = new Button(this);
+        jobButtonIntern.setHint("Intern");
+        //layout.addView(jobButtonIntern);
+        jobButtonIntern.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //makeYourName();
 
-        layout.addView(jobLabelFour);
+            }
+        });
 
-        AlertDialog ad = new AlertDialog.Builder(this)
+        //PackingBoy//4
+        final Button jobButtonPackingBoy = new Button(this);
+        jobButtonPackingBoy.setHint("Packingboy");
+        //layout.addView(jobButtonPackingBoy);
+        jobButtonPackingBoy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //makeYourName();
 
-                .setMessage("Enter in a Name(MAX:11 CHARACTERS)")
-                        //.setIcon(R.drawable.ic_launcher)
-                .setTitle("IDEAL")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
+            }
+        });
+
+        //Firefighter//5
+        final Button jobButtonFirefighter = new Button(this);
+        jobButtonFirefighter.setHint("Firefighter");
+        //layout.addView(jobButtonFirefighter);
+        jobButtonFirefighter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //makeYourName();
+
+            }
+        });
+
+        //Banker//6
+        final Button jobButtonBanker = new Button(this);
+        jobButtonBanker.setHint("Banker");
+        //layout.addView(jobButtonBanker);
+        jobButtonBanker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //makeYourName();
+
+            }
+        });
+
+        //Scientist//7
+        final Button jobButtonScientist = new Button(this);
+        jobButtonScientist.setHint("Scienctist");
+        //layout.addView(jobButtonScientist);
+        jobButtonScientist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //makeYourName();
+
+            }
+        });
+
+        //Independent//8
+        final Button jobButtonIndependent = new Button(this);
+        jobButtonIndependent.setHint("Independent");
+        //layout.addView(jobButtonIndependent);
+        jobButtonIndependent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //makeYourName();
+
+            }
+        });
+
+        //Buisness Owner//9
+        final Button jobButtonBusinessOwner = new Button(this);
+        jobButtonBusinessOwner.setHint("BusinessOwner");
+        //layout.addView(jobButtonBusinessOwner);
+        jobButtonBusinessOwner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //makeYourName();
+
+            }
+        });
+
+        //King//10
+        final Button jobButtonKing = new Button(this);
+        jobButtonKing.setHint("King");
+        //layout.addView(jobButtonKing);
+        jobButtonKing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //makeYourName();
+
+            }
+        });
+
+        //Sultan//11
+        final Button jobButtonSultan = new Button(this);
+        jobButtonSultan.setHint("Sultan");
+        //layout.addView(jobButtonSultan);
+        jobButtonSultan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //makeYourName();
+
+            }
+        });
+
+        //Omega//12
+        final Button jobButtonOmega = new Button(this);
+        jobButtonOmega.setHint("\u03A9" + "mega");
+        //layout.addView(jobButtonOmega);
+        jobButtonOmega.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //makeYourName();
+
+            }
+        });
+        //Make the AlertDialog Scrollable
 
 
+        //If statments to show only certain Buttons
+        if (age < 20) {
+            layout.addView(jobButtonPackingBoy);//PackingBoy
+            layout.addView(jobButtonIntern);//Intern
+        } else {
+            if (human.getCountry() == Countries.Irada ||
+                    human.getCountry() == Countries.Itican ||
+                    human.getCountry() == Countries.Albaq) {
 
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        makeYourName();
-                    }
-                })
-                .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        makeYourName();
-                    }
-                })
-                .setCancelable(true)
-                .setView(layout)
-                .create();
-        ad.getWindow().getAttributes().verticalMargin = 1.0F;
-        ad.show();
+                if (begger) {
+                    layout.addView(jobButtonBeggar);
+                }//Begger
+
+                if (vagrant) {
+                    layout.addView(jobButtonVagrant);
+                }//Vagrant
+
+                if (packingboy) {
+                    layout.addView(jobButtonPackingBoy);
+                }//PackingBoy
+
+            }
+            if (human.getCountry() == Countries.Trinentina ||
+                    human.getCountry() == Countries.Albico ||
+                    human.getCountry() == Countries.Ugeria ||
+                    human.getCountry() == Countries.Portada) {
 
 
+                if (firefighter) {
+                    layout.addView(jobButtonFirefighter);
+                }//FIREFIGHTER;
+                if (banker) {
+                    layout.addView(jobButtonBanker);
+                }//BANKER;
+                if (scientist) {
+                    layout.addView(jobButtonScientist);
+                }//Scientist;
+
+            }
+            if (human.getCountry() == Countries.Kuwador ||
+                    human.getCountry() == Countries.Ukrark ||
+                    human.getCountry() == Countries.Rany) {
+
+                if (banker) {
+                    layout.addView(jobButtonBanker);
+                }//BANKER;
+                if (scientist) {
+                    layout.addView(jobButtonScientist);
+                }//Scientist;
+                if (independent) {
+                    layout.addView(jobButtonIndependent);
+                }//Independent;
+                if (buisnessowner) {
+                    layout.addView(jobButtonBusinessOwner);
+                }//BusinessOwner;
 
 
-        informationalTextView.setText("Get a job: Raises you overall wealth" + "\n" +
-                "Raises the amount of professional Associates" + "\n" +
-                "Raises your influence" + "\n" +
-                "Raises your amount of friends slightly");
-        switch (value) {
-            case 1:
-                //Scanner and the if statement will always be Loading for a wrong option while everything so if the user places anything outside the desired options then that user will be  placed back
-                //to the top of case 1
-                System.out.println("Get a job: Raises you overall wealth" + "\n" +
-                        "Raises the amount of professional Associates" + "\n" +
-                        "Raises your influence" + "\n" +
-                        "Raises your amount of friends slightly");
-                //System.out.println(human.getCountry());
+            }
+            if (human.getCountry() == Countries.Heaven) {
+                System.out.println("\n You can only choose jobs that you have access to....Press 0 to go back if you have access to no jobs"
+                        + "\n" + "(1)Independent:" + independent
+                        + "\n" + "(2)King:" + king
+                        + "\n" + "(3)Sultan:" + sultan);
+                if (independent) {
+                    layout.addView(jobButtonIndependent);
+                }//Independent;
+                if (king) {
+                    layout.addView(jobButtonKing);
+                }//KING;
+                if (king && sultan) {
+                    layout.addView(jobButtonKing);
+                }//SULTAN
 
-                if (age < 20) {
-                    System.out.println("(1)Packing Boy" + ("\n") +
-                            "(2)Intern" + ("\n"));
-                    //value = scanner.nextInt();
-                    while (value < 0 || value > 2 || value == 0/*|| Integer.valueOf(value)*/) {
-                        System.out.println("You did not put in a valid command");
-                        //this.makeLifeDecisions();
-                    }
-
-                    System.out.println("\n");
-
-                    switch (value) {
-                        case 1:
-                            job = Jobs.PACKINGBOY;
-                            professionAssocites = 100;
-                            friends = 10;
-                            break;
-                        case 2:
-                            job = Jobs.INTERN;
-                            professionAssocites = 500;
-                            friends = 15;
-                            break;
-                    }
-
-                } else {
-                    //System.out.println("It got past the else");
-                    //The Human will be old enough to move into his own country..So use getter from human
-                    if (human.getCountry() == Countries.Irada ||
-                            human.getCountry() == Countries.Itican ||
-                            human.getCountry() == Countries.Albaq) {
-                        //System.out.println("It is in the first if statement :)");
-                        System.out.println("\n You can only choose jobs that you have access to....Press 0 to go back if you have access to no jobs"
-                                + "\n" + "(1)Beggar:" + begger
-                                + "\n" + "(2)Vagrant:" + vagrant
-                                + "\n" + "(3)Packing Boy:" + packingboy);
-                        //value = scanner.nextInt();
-                        while (value < 0 || value > 3 || value == 0/*|| Integer.valueOf(value)*/) {
-                            System.out.println("You did not put in a valid command");
-                            //this.makeLifeDecisions();
-                        }
-                        switch (value) {
-                            case 1:
-                                if (begger) {
-                                    job = Jobs.BEGGER;
-                                    professionAssocites = 10;
-                                    friends = 0;
-                                } else {
-                                    System.out.println("You do not have access to this job");
-                                    //makeLifeDecisions();
-                                }
-                                break;
-                            case 2:
-                                if (vagrant) {
-                                    job = Jobs.VAGRANT;
-                                    professionAssocites = 0;
-                                    friends = 0;
-                                } else {
-                                    System.out.println("You do not have access to this job");
-                                    //makeLifeDecisions();
-                                }
-                                break;
-                            case 3:
-                                if (packingboy) {
-                                    job = Jobs.PACKINGBOY;
-                                    professionAssocites = 10;
-                                    friends = 0;
-                                } else {
-                                    System.out.println("You do not have access to this job");
-                                    //makeLifeDecisions();
-                                }
-
-                                break;
-
-                        }
-                    }
-                    if (human.getCountry() == Countries.Trinentina ||
-                            human.getCountry() == Countries.Albico ||
-                            human.getCountry() == Countries.Ugeria ||
-                            human.getCountry() == Countries.Portada) {
-
-                        System.out.println("\n You can only choose jobs that you have access to....Press 0 to go back if you have access to no jobs"
-
-                                + "\n" + "(1)Firefighter:" + firefighter
-                                + "\n" + "(2)Banker:" + banker
-                                + "\n" + "(3)Scientist:" + scientist);
-                       // value = scanner.nextInt();
-                        while (value < 0 || value > 3 /*|| Integer.valueOf(value)*/) {
-                            System.out.println("You did not put in a valid command");
-                            //this.makeLifeDecisions();
-                        }
-                        switch (value) {
-                            case 1:
-                                if (firefighter) {
-                                    job = Jobs.FIREFIGHTER;
-                                    professionAssocites = 0;
-                                    friends = 0;
-                                } else {
-                                    System.out.println("You do not have access to this job");
-                                    //makeLifeDecisions();
-                                }
-                                break;
-                            case 2:
-                                if (banker) {
-                                    job = Jobs.BANKTER;
-                                    professionAssocites = 10;
-                                    friends = 0;
-                                } else {
-                                    System.out.println("You do not have access to this job");
-                                    //makeLifeDecisions();
-                                }
-
-                                break;
-
-                            case 3:
-                                if (scientist) {
-                                    job = Jobs.SCIENTIST;
-                                    professionAssocites = 10;
-                                    friends = 0;
-                                } else {
-                                    System.out.println("You do not have access to this job");
-                                    //makeLifeDecisions();
-                                }
-                                try {
-                                    Thread.sleep(1000);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                                break;
-                        }
-
-                    }
-                    if (human.getCountry() == Countries.Kuwador ||
-                            human.getCountry() == Countries.Ukrark ||
-                            human.getCountry() == Countries.Rany) {
-                        System.out.println("\n You can only choose jobs that you have access to....Press 0 to go back if you have access to no jobs"
-                                + "\n" + "(1)Banker:" + banker
-                                + "\n" + "(2)Scientist:" + scientist
-                                + "\n" + "(3)Independent:" + independent
-                                + "\n" + "(4)Business Owner:" + buisnessowner);
-
-                        //value = scanner.nextInt();
-                        while (value < 0 || value > 4 || value == 0/*|| Integer.valueOf(value)*/) {
-                            System.out.println("You did not put in a valid command");
-                            //this.makeLifeDecisions();
-                        }
-                        switch (value) {
-                            case 1:
-                                if (banker) {
-                                    job = Jobs.BANKTER;
-                                    professionAssocites = 100;
-                                    friends = 100;
-                                } else {
-                                    System.out.println("You do not have access to this job");
-                                    //makeLifeDecisions();
-                                }
-
-                                break;
-
-                            case 2:
-                                if (scientist) {
-                                    job = Jobs.SCIENTIST;
-                                    professionAssocites = 100;
-                                    friends = 100;
-                                } else {
-                                    System.out.println("You do not have access to this job");
-                                    //makeLifeDecisions();
-                                }
-                                break;
-
-                            case 3:
-                                if (independent) {
-                                    job = Jobs.INDEPENDENT;
-                                    professionAssocites = 100000;
-                                    friends = 10000000;
-                                } else {
-                                    System.out.println("You do not have access to this job");
-                                    //makeLifeDecisions();
-                                }
-                                break;
-                            case 4:
-                                if (buisnessowner) {
-                                    job = Jobs.BUSINESSOWNER;
-                                    professionAssocites = 10000;
-                                    friends = 10000;
-                                } else {
-                                    System.out.println("You do not have access to this job");
-                                    //makeLifeDecisions();
-                                }
-                                try {
-                                    Thread.sleep(1000);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                                break;
-
-                        }
-                    }
-                    if (human.getCountry() == Countries.Heaven) {
-
-                        //A boolean will be returned for the access level of all jobs
-                        System.out.println("\n You can only choose jobs that you have access to....Press 0 to go back if you have access to no jobs"
-                                + "\n" + "(1)Independent:" + independent
-                                + "\n" + "(2)King:" + king
-                                + "\n" + "(3)Sultan:" + sultan);
-
-                        //value = scanner.nextInt();
-                        while (value < 0 || value > 9 || value == 0/*|| Integer.valueOf(value)*/) {
-                            System.out.println("You did not put in a valid command");
-                            //this.makeLifeDecisions();
-                        }
-                        switch (value) {
-
-                            case 1:
-                                if (independent) {
-                                    job = Jobs.INDEPENDENT;
-                                    professionAssocites = 200000;
-                                    friends = 2000000;
-                                } else {
-                                    System.out.println("You do not have access to this job");
-                                    //makeLifeDecisions();
-                                }
-                                break;
-
-                            case 2:
-                                // private Boolean banker,independent,buisnessowner,king,intern;
-                                if (king) {
-                                    job = Jobs.KING;
-                                    professionAssocites = 2000000;
-                                    friends = 2000000;
-                                } else {
-                                    System.out.println("You do not have access to this job");
-                                   // makeLifeDecisions();
-                                }
-                                break;
-                            case 3:
-                                if (king && sultan) {
-                                    job = Jobs.SULTAN;
-                                    professionAssocites = 100000000;
-                                    friends = 100000;
-
-                                } else {
-                                    System.out.println("You don't have access to this job");
-                                    //makeLifeDecisions();
-                                }
-                                try {
-                                    Thread.sleep(1000);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                                break;
-                        }
-
-                    }
-                }
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                break;
-
+            }
         }
 
 
+            final ScrollView scrollView = new ScrollView(this);
+            scrollView.addView(layout);
+
+            AlertDialog ad = new AlertDialog.Builder(this)
+
+                    .setMessage("Enter in a Name(MAX:11 CHARACTERS)")
+                            //.setIcon(R.drawable.ic_launcher)
+                    .setTitle("IDEAL")
+                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+
+
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            getAJob();
+                        }
+                    })
+                    .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            getAJob();
+                        }
+                    })
+                    .setCancelable(true)
+                    .setView(scrollView)
+                    .create();
+            ad.getWindow().getAttributes().verticalMargin = 1.0F;
+
+            ad.show();
+
+
+        }
+
     }
 
-}
 
 

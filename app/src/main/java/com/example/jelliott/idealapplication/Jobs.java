@@ -20,7 +20,7 @@ public enum Jobs {
 
 
     /*Average Paying Jobs with low Influence*/
-    PACKINGBOY("Packaingboy",150,40),
+    PACKINGBOY("Packingboy",150,40),
     FIREFIGHTER("Firefighter",350,10),
     BANKTER("Banker",100,50),
 
