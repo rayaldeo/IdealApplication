@@ -5,7 +5,7 @@
     <string name="profilePicture">Profile Picture</string>
     <string name="getJob_text">Job</string>
     <string name="getCountry_text">Country</string>
-    <string name="getTax_text">CountryTax</string>
+
     <string name="ExtraInformation_text">New Text</string>
     <string name="job_Button">Select a Job</string>
     <string name="school_Button">Go to School</string>
@@ -16,7 +16,6 @@
     <string name="influenceTextView">influence</string>
     <string name="overallWealthPercantage">Percentage</string>
     <string name="influencePercentageString">Percantage</string>
-    <string name="playerNameText"></string>
     <string name="enterName_hint">Enter Name</string>
     <string name="profileImageprofileiamgedialog">Profile Image</string>
     <string name="neighbourhoodTextView_text">Neigbourhood</string>
@@ -47,6 +46,7 @@
     <string name="idealLifeParameters_button_text">New Button</string>
     <string name="familyButton_txt">Accept Family</string>
     <string name="accept_Country_text">Accept Country</string>
+    <string name="playerNameText">playerNameText</string>
 
     <string-array name="countries">
         <item>Irada</item>

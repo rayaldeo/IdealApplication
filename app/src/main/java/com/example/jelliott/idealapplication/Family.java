@@ -13,7 +13,7 @@ public class Family {
 
 
 
-        private ArrayList<FamilyMember> family = new ArrayList<FamilyMember>();
+        private ArrayList<FamilyMember> family = new ArrayList<>();
         private int familyFriends,familyWorshippers,familyInfluence;
         private double familyWealth;
         private  String familyName,familyFatherName,familyMotherName,familyBrotherName,familySisterName,neighborhood;
@@ -32,6 +32,7 @@ public class Family {
         this.familyWealth=familyWealthA;
         this.familyInfluence=influenceA;
         this.familyFriends=friendsA;
+        this.familyWorshippers=0;
     }
 
         //FamilyMemeber Constructor

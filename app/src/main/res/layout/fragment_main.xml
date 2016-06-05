@@ -139,7 +139,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/getTax_text"
+            android:text="@string/tax_text"
             android:id="@+id/taxTextView"
             android:padding="1dp"
             android:textSize="20sp" />

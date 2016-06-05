@@ -107,8 +107,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
     private Human human;
-    private Jobs job;
-    //private Neighborhood neighborhood;
     private int age = 0, schoolAttendanceAmount = 0, socialisingWithFriends = 0, workingOnPhysicalApp = 0;
     private int value, looks = 0, worshippers = 0, friends = 0, professionAssocites = 0;
     private double wealth = 0.0, tax = 0.0;
@@ -204,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         selectAFamilyType();
         selectACountry();
         //idealLifeParameters();
-        getAJob();
+        //getAJob();
 
 
     }
@@ -663,8 +661,10 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                                                 Integer.parseInt(friendsAmountEditText.getText().toString()));
                                         //family = new Family(10000000.0, 1000000,1000000);
                                         informationalTextView.setText("FamilyWealth:" + family.getFamilyWealth() + "FamilyInfluence:" + family.getFamilyInfluence());
-                                        keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), job, countryOfUser,
-                                                tax);
+                                        //keepStatsUpToDate(Double overallWealthA, int influenceAmountA, Jobs jobA, Countries countryA,
+                                                //Double taxA, int looksA, int worshippersA, int friendsA, int professionalAssociatesA)
+                                        keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), human.getJob(), countryOfUser,
+                                                tax,human.getLooks(),human.getWorshippers(),family.getFamilyFriends(),human.getProfessionalAssociates());
                                         human.setFriends(Integer.parseInt(friendsAmountEditText.getText().toString()));
 
                                     } catch (Exception e) {
@@ -689,8 +689,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                                                 sister = new FamilyMember(false, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
                                                 brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
                                                 family = new Family(familyName, brother, sister, father, mother);
-                                                keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), job, countryOfUser,
-                                                        tax);
+                                                keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), human.getJob(), countryOfUser,
+                                                        tax,human.getLooks(),human.getWorshippers(),family.getFamilyFriends(),human.getProfessionalAssociates());
+
 
                                                 break;
                                             case "Middle Family":
@@ -699,8 +700,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                                                 sister = new FamilyMember(false, familyName, Jobs.NOJOB, countryOfUser, randomNum * 150, (int) (randomNum * 1.5));
                                                 brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 150, (int) (randomNum * 1.5));
                                                 family = new Family(familyName, brother, sister, father, mother);
-                                                keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), job, countryOfUser,
-                                                        tax);
+                                                keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), human.getJob(), countryOfUser,
+                                                        tax,human.getLooks(),human.getWorshippers(),family.getFamilyFriends(),human.getProfessionalAssociates());
 
                                                 break;
                                             default:
@@ -709,8 +710,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                                                 sister = new FamilyMember(false, familyName, Jobs.INTERN, countryOfUser, randomNum * 75, (int) (randomNum * 1.5));
                                                 brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 75, (int) (randomNum * 1.5));
                                                 family = new Family(familyName, brother, sister, father, mother);
-                                                keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), job, countryOfUser,
-                                                        tax);
+                                                keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), human.getJob(), countryOfUser,
+                                                        tax,human.getLooks(),human.getWorshippers(),family.getFamilyFriends(),human.getProfessionalAssociates());
 
                                                 break;
                                         }
@@ -1136,7 +1137,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     public void genieDoSomething() {
 
-        Jobs temjobA = human.getJob(); ///I must undo any changes if the user doesn't comply with my instructions
+        final Jobs temjobA = human.getJob(); ///I must undo any changes if the user doesn't comply with my instructions
         if (age > 19) {
             informationalTextView.setText("You magically found a genie and he is able to grant you three wishes!");
 
@@ -1159,6 +1160,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     public void onClick(DialogInterface dialog, int whichButton) {
 
                         Object checkedItem;
+                        Double tempwealthA=0.0;
 
                         //This "try" statement is used so that if the user presses the "Yes" button without selecting something..the application would not call a Null Pointer/Crash
                         try {
@@ -1171,16 +1173,19 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                             //Once this  country is valid for use by the user, and it exist...then set the other variables
                             //Update Stats accordingly
                             selectingAWish(value);
-                            keepStatsUpToDate(overallWealthDefault, influenceAmountDefault, job, countryOfUser, countryOfUser.getTaxes());
+                            //keepStatsUpToDate(overallWealthDefault, influenceAmountDefault, job, countryOfUser, countryOfUser.getTaxes());
+                            keepStatsUpToDate(overallWealthDefault, influenceAmountDefault, temjobA, countryOfUser,
+                                    tax,human.getLooks(),human.getWorshippers(),human.getFriends(),human.getProfessionalAssociates());
                         } catch (Exception e) {
                             Toast.makeText(MainActivity.this, "You forfeit your wish",
                                     Toast.LENGTH_LONG).show();
                             chancesOfLife();///I may need this..I am not sure right now though
 
 
-                            updatingStateOfHuman(job, looks, worshippers, friends, professionAssocites, influence);
+                            keepStatsUpToDate(overallWealthDefault, influenceAmountDefault, temjobA, countryOfUser,
+                                    tax, human.getLooks(), human.getWorshippers(), human.getFriends(), human.getProfessionalAssociates());
                             worshippers = 0;
-                            wealth = 0;
+                            tempwealthA = 0.0;
                             friends = 0;
                             looks = 0;
                             professionAssocites = 0;
@@ -1206,14 +1211,17 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
         } else {
-            updatingStateOfHuman(Jobs.NOJOB, 1, 10, 10, 10, 100);
+            //updatingStateOfHuman(Jobs.NOJOB, 1, 10, 10, 10, 100);
+            keepStatsUpToDate(overallWealthDefault, influenceAmountDefault, Jobs.NOJOB, countryOfUser,
+                    tax, human.getLooks(), human.getWorshippers(), human.getFriends(), human.getProfessionalAssociates());
             informationalTextView.setText("You get a slight boost in wealth, worshippers,friends,looks,professional associates, and influence");
         }
     }
 
     public void selectingAWish(int numberSelection) {
         //looks=0,worshippers=0,friends=0,professionAssocites=0,influence=0
-
+        Jobs tempJobA;
+        Double tempWealthA;
         switch (numberSelection) {
             case 1:
                 //Looks
@@ -1245,59 +1253,59 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             case 6:
                 //Wealth
                 informationalTextView.setText("You got 100000 wealth");
-                wealth = 100000;
+                tempWealthA = 100000.0;
                 break;
             case 7:
                 //selectAJob();
 
                 switch (value) {
                     case 0:
-                        job = Jobs.BEGGER;
+                        tempJobA = Jobs.BEGGER;
                         begger = true;
                         break;
                     case 1:
-                        job = Jobs.VAGRANT;
+                        tempJobA = Jobs.VAGRANT;
                         vagrant = true;
                         break;
                     case 2:
-                        job = Jobs.INTERN;
+                        tempJobA = Jobs.INTERN;
                         intern = true;
                         break;
                     case 3:
-                        job = Jobs.PACKINGBOY;
+                        tempJobA = Jobs.PACKINGBOY;
                         packingboy = true;
                         break;
                     case 4:
-                        job = Jobs.FIREFIGHTER;
+                        tempJobA = Jobs.FIREFIGHTER;
                         firefighter = true;
                         break;
                     case 5:
-                        job = Jobs.BANKTER;
+                        tempJobA = Jobs.BANKTER;
                         banker = true;
                         break;
                     case 6:
-                        job = Jobs.SCIENTIST;
+                        tempJobA = Jobs.SCIENTIST;
                         scientist = true;
                         break;
                     case 7:
-                        job = Jobs.INDEPENDENT;
+                        tempJobA = Jobs.INDEPENDENT;
                         independent = true;
                         break;
                     case 8:
-                        job = Jobs.BUSINESSOWNER;
+                        tempJobA = Jobs.BUSINESSOWNER;
                         buisnessowner = true;
                         break;
                     case 9:
-                        job = Jobs.KING;
+                        tempJobA = Jobs.KING;
                         king = true;
                         break;
                     case 10:
-                        job = Jobs.SULTAN;
+                        tempJobA = Jobs.SULTAN;
                         sultan = true;
                         god = true;
                         break;
                     case 11:
-                        job = Jobs.GOD;
+                        tempJobA = Jobs.GOD;
                         heavenBoolean = true;
                         informationalTextView.setText("You have also gained access to heaven");
                         sultan = true;
@@ -1305,21 +1313,21 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                         break;
 
                 }
-                System.out.print("\nYou are now a(n) " + job.getName() + ("\n"));
-                updatingStateOfHuman(job, 0, 0, 0, 0, 0);
+                //System.out.print("\nYou are now a(n) " + tempJobA.getName() + ("\n"));
+                //keepStatsUpToDate(job, 0, 0, 0, 0, 0);
                 //CharDetails();
-                informationalTextView.setText("\n");
+                //informationalTextView.setText("\n");
 
                 break;
             case 0:
                 //Become Omega
 
                 omega = true;
-                job = Jobs.OMEGA;
-                System.out.print("\nYou are now an " + job.getName() + ("\n"));
+                tempJobA = Jobs.OMEGA;
+                System.out.print("\nYou are now an " + tempJobA.getName() + ("\n"));
                 heavenBoolean = true;
                 informationalTextView.setText("You have also gained access to heaven");
-                updatingStateOfHuman(job, 0, 0, 0, 0, 0);
+                //keepStatsUpToDate(job, 0, 0, 0, 0, 0);
                 //CharDetails();
                 informationalTextView.setText("\n");
 
@@ -1329,16 +1337,24 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     }
 
     //Need to update for the Price to Move to another country
-    public void updatingStateOfHuman(Jobs job, int looksA, int worshippersA, int friendsA, int professionalAssociatesA, double influenceA) {
-
-        human.setJob(job);
-        human.setIncome(job.getIncome());
-        human.setOverAllwealth((human.getOverAllWealth() + job.getIncome() + wealth));
-        human.setInfluence((int) ((human.getInfluence() + job.getInfluence() + influenceA)));
+    public void keepStatsUpToDate(Double overallWealthA, int influenceAmountA, Jobs jobA, Countries countryA,
+                                  Double taxA, int looksA, int worshippersA, int friendsA, int professionalAssociatesA) {
+        human.setJob(jobA);
+        human.setIncome(jobA.getIncome());
+        human.setOverAllwealth((human.getOverAllWealth() + jobA.getIncome() + overallWealthA+wealth));
+        human.setInfluence((human.getInfluence() + jobA.getInfluence() + influenceAmountA));
         human.setProfessionalAssociates(human.getProfessionalAssociates() + professionalAssociatesA);
         human.setFriends(human.getFriends() + friendsA);
         human.setLooks(human.getLooks() + looksA);
         human.setWorshippers(human.getWorshippers() + worshippersA);
+        tax = taxA;
+        overallWealthTextView.setText(getString(R.string.overallWelathTextView_text) + "\n" + currencyFormat.format(human.getOverAllWealth()));
+        String influenceAmountString = Double.toString(human.getInfluence());
+        influenceTextView.setText(getString(R.string.influenceAmountTextView_String) + "\n" + influenceAmountString);
+        jobTextView.setText(getString(R.string.getJob_text) + ":" + human.getJob());
+        countryTextView.setText(getString(R.string.getCountry_text) + ":" + human.getCountryString());
+        taxTextView.setText(getString(R.string.tax_text) + ":" + currencyFormat.format(tax));
+
         if (human.getFriends() > countryOfUser.getRequiredFriends() || human.getOverAllWealth() > countryOfUser.getRequireedWealth()
                 && human.getInfluence() > countryOfUser.getRequiredInfluence()) {
             human.setNeighborhood(countryOfUser.getRichNeighborHood());
@@ -1351,22 +1367,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         } else {
             human.setNeighborhood(countryOfUser.getPoorNeighborHood());
         }
-
-    }
-
-    public void keepStatsUpToDate(Double overallWealthA, int influenceAmountA, Jobs jobA, Countries countryA,
-                                  Double taxA) {
-        human.setOverAllwealth(overallWealthA);
-        human.setInfluence(influenceAmountA);
-        human.setJob(jobA);
-        human.setCountries(countryA);
-        tax = taxA;
-        overallWealthTextView.setText(getString(R.string.overallWelathTextView_text) + "\n" + currencyFormat.format(human.getOverAllWealth()));
-        String influenceAmountString = Double.toString(human.getInfluence());
-        influenceTextView.setText(getString(R.string.influenceAmountTextView_String) + "\n" + influenceAmountString);
-        jobTextView.setText(getString(R.string.getJob_text) + human.getJob());
-        countryTextView.setText(getString(R.string.getCountry_text) + ":" + human.getCountryString());
-        taxTextView.setText(getString(R.string.getTax_text) + ":" + currencyFormat.format(tax));
 
         //This "if" statement is going to see whether our percentage function will give something less than 1...which the progress bars can no handle
         if (overallWealthTextView.getText().length() <= 5 || overallWealthA < 1000000) {

@@ -11,7 +11,7 @@ package com.example.jelliott.idealapplication;
 public enum Jobs {
 
     /*Very Low Paying Jobs */
-    NOJOB("null",1,1),/*This is the default state for a job*/
+    NOJOB("null",0,0),/*This is the default state for a job*/
     BEGGER("Begger",5,5),
     VAGRANT("Vagrant",10,10),
 
