@@ -3,6 +3,7 @@ package com.example.jelliott.idealapplication;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -82,8 +83,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private Handler mHandler;
     private int mProgressStatusOverAllWealth = 0, mProgressStatusInfluence = 0;
 
-
-
     /*//TextViews on the FamilyType Dialog
     private EditText friendsAmountEditText;
     private EditText influenceAmountEditText;
@@ -93,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private ProgressBar overallWealthProgressBar;
     private ProgressBar influenceProgressBar;
 
-    private Button changeCountryButton, customFamilyButton;
+    private Button changeCountryButton,selectAJobButton;
 
     private ImageView profileImage;
 
@@ -110,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private int age = 0, schoolAttendanceAmount = 0, socialisingWithFriends = 0, workingOnPhysicalApp = 0;
     private int value, looks = 0, worshippers = 0, friends = 0, professionAssocites = 0;
     private double wealth = 0.0, tax = 0.0;
-    private Boolean banker = false, independent = false, buisnessowner = false, king = false, intern = false, male;
+
     private Family family;
     private Countries countryOfUser;
     //private Scanner scanner=new Scanner(System.in);
@@ -118,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private String familyName, firstNamePart, lastNamePart;
     Random rand = new Random();
     int randomNum = rand.nextInt((50 - 1) + 1);
+    private Boolean banker = false, independent = false, buisnessowner = false, king = false, intern = false;
     private boolean begger = false;
     private boolean vagrant = false;
     private boolean packingboy = false;
@@ -166,6 +166,13 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 selectACountry();
             }
         });
+        selectAJobButton=(Button) findViewById(R.id.jobButton);
+        selectAJobButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                selectAJob();
+            }
+        });
+
 
 
         //Profile Image
@@ -202,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         selectAFamilyType();
         selectACountry();
         //idealLifeParameters();
-        //getAJob();
+        //selectAJob();
 
 
     }
@@ -451,8 +458,33 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     Toast.makeText(MainActivity.this, "You have selected " + checkedItem.toString(),
                             Toast.LENGTH_LONG).show();
                     //Once this  country is valid for use by the user, and it exist...then set the other variables
+
                     //Update Stats accordingly
+                    //Get the Proper Neighborhood
+                    if (human.getFriends() > human.getCountry().getRequiredFriends() || human.getOverAllWealth() > human.getCountry().getRequireedWealth()
+                            && human.getInfluence() > human.getCountry().getRequiredInfluence()) {
+                        human.setNeighborhood(human.getCountry().getRichNeighborHood());
+
+
+                    } else if (human.getFriends() == human.getCountry().getRequiredFriends() || human.getOverAllWealth() == human.getCountry().getRequireedWealth()
+                            && human.getInfluence() == human.getCountry().getRequiredInfluence()) {
+                        human.setNeighborhood(human.getCountry().getMiddleNeighborHood());
+
+                    } else {
+                        human.setNeighborhood(human.getCountry().getPoorNeighborHood());
+                    }
+                    //Update Country
                     countryOfUser = getThisCountry(checkedItem.toString());
+                    human.setCountries(countryOfUser);
+                    countryTextView.setText("Country:" + human.getCountry());
+                    //Update Tax
+                    //You can chain .get commands as long as that .get returns a class/object with its own getters
+                    taxTextView.setText("Tax:" + currencyFormat.format(human.getCountry().getTaxes()));
+                    tax=human.getCountry().getTaxes();
+
+                    //Update the Amount of money it Costs to move from current Country to Next
+                    //Tax+BasePrice(100)*CountryMultiplier
+                    priceToMoveTextView.setText("Price"+currencyFormat.format((human.getCountry().getTaxes()+100)*human.getCountry().getMultiplier()));
                 } catch (Exception e) {
                     Toast.makeText(MainActivity.this, "A Country is needed",
                             Toast.LENGTH_LONG).show();
@@ -611,6 +643,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     //Toast.makeText(MainActivity.this, "All Values need to be greater than 0 or you will have to create a new Family",
                     //Toast.LENGTH_LONG).show();
                     familyListView.setEnabled(false);
+                    familyListView.setBackgroundColor(Color.parseColor("#696969"));
                     familyListView.setItemChecked(0, false);
                     familyListView.setItemChecked(1, false);
                     familyListView.setItemChecked(2, false);
@@ -624,6 +657,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     //isChecked=false;
                     //selectAFamilyType();
                     familyListView.setEnabled(true);
+                    familyListView.setBackgroundColor(Color.parseColor("#ff8a54"));
                     familyListView.setItemChecked(0, false);
                     familyListView.setItemChecked(1, false);
                     familyListView.setItemChecked(2, false);
@@ -662,9 +696,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                                         //family = new Family(10000000.0, 1000000,1000000);
                                         informationalTextView.setText("FamilyWealth:" + family.getFamilyWealth() + "FamilyInfluence:" + family.getFamilyInfluence());
                                         //keepStatsUpToDate(Double overallWealthA, int influenceAmountA, Jobs jobA, Countries countryA,
-                                                //Double taxA, int looksA, int worshippersA, int friendsA, int professionalAssociatesA)
-                                        keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), human.getJob(), countryOfUser,
-                                                tax,human.getLooks(),human.getWorshippers(),family.getFamilyFriends(),human.getProfessionalAssociates());
+                                        //Double taxA, int looksA, int worshippersA, int friendsA, int professionalAssociatesA)
+                                        keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), human.getJob(),
+                                                tax, human.getLooks(), human.getWorshippers(), family.getFamilyFriends(), human.getProfessionalAssociates());
                                         human.setFriends(Integer.parseInt(friendsAmountEditText.getText().toString()));
 
                                     } catch (Exception e) {
@@ -689,8 +723,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                                                 sister = new FamilyMember(false, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
                                                 brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
                                                 family = new Family(familyName, brother, sister, father, mother);
-                                                keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), human.getJob(), countryOfUser,
-                                                        tax,human.getLooks(),human.getWorshippers(),family.getFamilyFriends(),human.getProfessionalAssociates());
+                                                keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), human.getJob(),
+                                                        tax, human.getLooks(), human.getWorshippers(), family.getFamilyFriends(), human.getProfessionalAssociates());
 
 
                                                 break;
@@ -700,8 +734,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                                                 sister = new FamilyMember(false, familyName, Jobs.NOJOB, countryOfUser, randomNum * 150, (int) (randomNum * 1.5));
                                                 brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 150, (int) (randomNum * 1.5));
                                                 family = new Family(familyName, brother, sister, father, mother);
-                                                keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), human.getJob(), countryOfUser,
-                                                        tax,human.getLooks(),human.getWorshippers(),family.getFamilyFriends(),human.getProfessionalAssociates());
+                                                keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), human.getJob(),
+                                                        tax, human.getLooks(), human.getWorshippers(), family.getFamilyFriends(), human.getProfessionalAssociates());
 
                                                 break;
                                             default:
@@ -710,8 +744,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                                                 sister = new FamilyMember(false, familyName, Jobs.INTERN, countryOfUser, randomNum * 75, (int) (randomNum * 1.5));
                                                 brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 75, (int) (randomNum * 1.5));
                                                 family = new Family(familyName, brother, sister, father, mother);
-                                                keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), human.getJob(), countryOfUser,
-                                                        tax,human.getLooks(),human.getWorshippers(),family.getFamilyFriends(),human.getProfessionalAssociates());
+                                                keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), human.getJob(),
+                                                        tax, human.getLooks(), human.getWorshippers(), family.getFamilyFriends(), human.getProfessionalAssociates());
 
                                                 break;
                                         }
@@ -1174,7 +1208,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                             //Update Stats accordingly
                             selectingAWish(value);
                             //keepStatsUpToDate(overallWealthDefault, influenceAmountDefault, job, countryOfUser, countryOfUser.getTaxes());
-                            keepStatsUpToDate(overallWealthDefault, influenceAmountDefault, temjobA, countryOfUser,
+                            keepStatsUpToDate(overallWealthDefault, influenceAmountDefault, temjobA,
                                     tax,human.getLooks(),human.getWorshippers(),human.getFriends(),human.getProfessionalAssociates());
                         } catch (Exception e) {
                             Toast.makeText(MainActivity.this, "You forfeit your wish",
@@ -1182,7 +1216,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                             chancesOfLife();///I may need this..I am not sure right now though
 
 
-                            keepStatsUpToDate(overallWealthDefault, influenceAmountDefault, temjobA, countryOfUser,
+                            keepStatsUpToDate(overallWealthDefault, influenceAmountDefault, temjobA,
                                     tax, human.getLooks(), human.getWorshippers(), human.getFriends(), human.getProfessionalAssociates());
                             worshippers = 0;
                             tempwealthA = 0.0;
@@ -1212,7 +1246,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         } else {
             //updatingStateOfHuman(Jobs.NOJOB, 1, 10, 10, 10, 100);
-            keepStatsUpToDate(overallWealthDefault, influenceAmountDefault, Jobs.NOJOB, countryOfUser,
+            keepStatsUpToDate(overallWealthDefault, influenceAmountDefault, Jobs.NOJOB,
                     tax, human.getLooks(), human.getWorshippers(), human.getFriends(), human.getProfessionalAssociates());
             informationalTextView.setText("You get a slight boost in wealth, worshippers,friends,looks,professional associates, and influence");
         }
@@ -1337,7 +1371,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     }
 
     //Need to update for the Price to Move to another country
-    public void keepStatsUpToDate(Double overallWealthA, int influenceAmountA, Jobs jobA, Countries countryA,
+    public void keepStatsUpToDate(Double overallWealthA, int influenceAmountA, Jobs jobA, /*Countries countryA,*/
                                   Double taxA, int looksA, int worshippersA, int friendsA, int professionalAssociatesA) {
         human.setJob(jobA);
         human.setIncome(jobA.getIncome());
@@ -1347,6 +1381,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         human.setFriends(human.getFriends() + friendsA);
         human.setLooks(human.getLooks() + looksA);
         human.setWorshippers(human.getWorshippers() + worshippersA);
+        //human.setCountries(countryA);
         tax = taxA;
         overallWealthTextView.setText(getString(R.string.overallWelathTextView_text) + "\n" + currencyFormat.format(human.getOverAllWealth()));
         String influenceAmountString = Double.toString(human.getInfluence());
@@ -1355,18 +1390,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         countryTextView.setText(getString(R.string.getCountry_text) + ":" + human.getCountryString());
         taxTextView.setText(getString(R.string.tax_text) + ":" + currencyFormat.format(tax));
 
-        if (human.getFriends() > countryOfUser.getRequiredFriends() || human.getOverAllWealth() > countryOfUser.getRequireedWealth()
-                && human.getInfluence() > countryOfUser.getRequiredInfluence()) {
-            human.setNeighborhood(countryOfUser.getRichNeighborHood());
-
-
-        } else if (human.getFriends() == countryOfUser.getRequiredFriends() || human.getOverAllWealth() == countryOfUser.getRequireedWealth()
-                && human.getInfluence() == countryOfUser.getRequiredInfluence()) {
-            human.setNeighborhood(countryOfUser.getMiddleNeighborHood());
-
-        } else {
-            human.setNeighborhood(countryOfUser.getPoorNeighborHood());
-        }
 
         //This "if" statement is going to see whether our percentage function will give something less than 1...which the progress bars can no handle
         if (overallWealthTextView.getText().length() <= 5 || overallWealthA < 1000000) {
@@ -1492,13 +1515,14 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         }
     }
 
-    public void getAJob() {
+    public void selectAJob() {
 
         professionAssocites = 0;
         friends = 0;
         //Creating a Layout for the EditTextViews
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setBackgroundColor(Color.parseColor("#ff8a54"));
         //creating instance of custom view
 
         //Beggar//1
@@ -1510,7 +1534,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             public void onClick(View v) {
 
                 professionAssocites = 10;
-                //makeYourName();
+               human.setJob(Jobs.BEGGER);
 
             }
         });
@@ -1522,7 +1546,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         jobButtonVagrant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //makeYourName();
+                human.setJob(Jobs.VAGRANT);
 
             }
         });
@@ -1534,19 +1558,19 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         jobButtonIntern.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //makeYourName();
+                human.setJob(Jobs.INTERN);
 
             }
         });
 
         //PackingBoy//4
         final Button jobButtonPackingBoy = new Button(this);
-        jobButtonPackingBoy.setHint("Packingboy");
+        jobButtonPackingBoy.setHint("Packing Boy");
         //layout.addView(jobButtonPackingBoy);
         jobButtonPackingBoy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //makeYourName();
+                human.setJob(Jobs.PACKINGBOY);
 
             }
         });
@@ -1558,7 +1582,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         jobButtonFirefighter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //makeYourName();
+                human.setJob(Jobs.FIREFIGHTER);
 
             }
         });
@@ -1570,19 +1594,19 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         jobButtonBanker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //makeYourName();
+                human.setJob(Jobs.BANKTER);
 
             }
         });
 
         //Scientist//7
         final Button jobButtonScientist = new Button(this);
-        jobButtonScientist.setHint("Scienctist");
+        jobButtonScientist.setHint("Scientist");
         //layout.addView(jobButtonScientist);
         jobButtonScientist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //makeYourName();
+                human.setJob(Jobs.SCIENTIST);
 
             }
         });
@@ -1594,19 +1618,19 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         jobButtonIndependent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //makeYourName();
+                human.setJob(Jobs.INDEPENDENT);
 
             }
         });
 
         //Buisness Owner//9
         final Button jobButtonBusinessOwner = new Button(this);
-        jobButtonBusinessOwner.setHint("BusinessOwner");
+        jobButtonBusinessOwner.setHint("Business Owner");
         //layout.addView(jobButtonBusinessOwner);
         jobButtonBusinessOwner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //makeYourName();
+                human.setJob(Jobs.BUSINESSOWNER);
 
             }
         });
@@ -1618,7 +1642,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         jobButtonKing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //makeYourName();
+                human.setJob(Jobs.KING);
 
             }
         });
@@ -1630,7 +1654,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         jobButtonSultan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //makeYourName();
+                human.setJob(Jobs.SULTAN);
 
             }
         });
@@ -1642,7 +1666,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         jobButtonOmega.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //makeYourName();
+                human.setJob(Jobs.OMEGA);
 
             }
         });
@@ -1658,17 +1682,11 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     human.getCountry() == Countries.Itican ||
                     human.getCountry() == Countries.Albaq) {
 
-                if (begger) {
-                    layout.addView(jobButtonBeggar);
-                }//Begger
+                if (begger) { layout.addView(jobButtonBeggar); }//Begger
 
-                if (vagrant) {
-                    layout.addView(jobButtonVagrant);
-                }//Vagrant
+                if (vagrant) { layout.addView(jobButtonVagrant);}//Vagrant
 
-                if (packingboy) {
-                    layout.addView(jobButtonPackingBoy);
-                }//PackingBoy
+                if (packingboy) {  layout.addView(jobButtonPackingBoy);  }//PackingBoy
 
             }
             if (human.getCountry() == Countries.Trinentina ||
@@ -1677,61 +1695,50 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     human.getCountry() == Countries.Portada) {
 
 
-                if (firefighter) {
-                    layout.addView(jobButtonFirefighter);
-                }//FIREFIGHTER;
-                if (banker) {
-                    layout.addView(jobButtonBanker);
-                }//BANKER;
-                if (scientist) {
-                    layout.addView(jobButtonScientist);
-                }//Scientist;
+                if (firefighter) { layout.addView(jobButtonFirefighter);  }//FIREFIGHTER;
+
+                if (banker) { layout.addView(jobButtonBanker);  }//BANKER;
+
+                if (scientist) { layout.addView(jobButtonScientist);  }//Scientist;
 
             }
             if (human.getCountry() == Countries.Kuwador ||
                     human.getCountry() == Countries.Ukrark ||
                     human.getCountry() == Countries.Rany) {
 
-                if (banker) {
-                    layout.addView(jobButtonBanker);
-                }//BANKER;
-                if (scientist) {
-                    layout.addView(jobButtonScientist);
-                }//Scientist;
-                if (independent) {
-                    layout.addView(jobButtonIndependent);
-                }//Independent;
-                if (buisnessowner) {
-                    layout.addView(jobButtonBusinessOwner);
-                }//BusinessOwner;
+                if (banker) { layout.addView(jobButtonBanker);   }//BANKER;
 
 
+                if (scientist) {  layout.addView(jobButtonScientist);   }//Scientist;
+
+
+                if (independent) {  layout.addView(jobButtonIndependent); }//Independent;
+
+
+                if (buisnessowner) {  layout.addView(jobButtonBusinessOwner);  }//BusinessOwner;
             }
             if (human.getCountry() == Countries.Heaven) {
                 System.out.println("\n You can only choose jobs that you have access to....Press 0 to go back if you have access to no jobs"
                         + "\n" + "(1)Independent:" + independent
                         + "\n" + "(2)King:" + king
                         + "\n" + "(3)Sultan:" + sultan);
-                if (independent) {
-                    layout.addView(jobButtonIndependent);
-                }//Independent;
-                if (king) {
-                    layout.addView(jobButtonKing);
-                }//KING;
-                if (king && sultan) {
-                    layout.addView(jobButtonKing);
-                }//SULTAN
+                if (independent) {layout.addView(jobButtonIndependent);  }//Independent;
+
+
+                if (king) {  layout.addView(jobButtonKing);  }//KING;
+
+
+                if (king && sultan) { layout.addView(jobButtonKing);  }//SULTAN
 
             }
         }
-
 
             final ScrollView scrollView = new ScrollView(this);
             scrollView.addView(layout);
 
             AlertDialog ad = new AlertDialog.Builder(this)
 
-                    .setMessage("Enter in a Name(MAX:11 CHARACTERS)")
+                    .setMessage("Select A Job. \n Current Country:"+human.getCountry())
                             //.setIcon(R.drawable.ic_launcher)
                     .setTitle("IDEAL")
                     .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
@@ -1742,19 +1749,20 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     })
                     .setNegativeButton("No", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
-                            getAJob();
+                            selectAJob();
                         }
                     })
                     .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
-                            getAJob();
+                            selectAJob();
                         }
                     })
                     .setCancelable(true)
                     .setView(scrollView)
                     .create();
-            ad.getWindow().getAttributes().verticalMargin = 1.0F;
 
+             //Use this command to control the positioning of your alertDialog
+            //ad.getWindow().getAttributes().verticalMargin = 1.1F;
             ad.show();
 
 
