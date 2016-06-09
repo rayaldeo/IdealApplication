@@ -49,7 +49,7 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="fill_parent"
         android:layout_alignTop="@+id/frameLayout"
         android:layout_toRightOf="@+id/frameLayout"
         android:layout_toEndOf="@+id/frameLayout"
@@ -160,7 +160,7 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="fill_parent"
         android:layout_below="@+id/frameLayout"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -186,8 +186,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/schoolAttendanceAmount_text"
-            android:id="@+id/schoolAttendanceAmountTextView"
-           />
+            android:id="@+id/schoolAttendanceAmountTextView" />
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -208,8 +207,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/workingOnPhysicalApp_text"
-            android:id="@+id/workingOnPhysicalAppTextView"
-           />
+            android:id="@+id/workingOnPhysicalAppTextView" />
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -230,8 +228,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/socialisingWithFriends_text"
-            android:id="@+id/socialisingWithFriendsTextView"
-             />
+            android:id="@+id/socialisingWithFriendsTextView" />
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -251,7 +248,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Price To Move"
+            android:text="@string/priceToMove_Text"
             android:id="@+id/priceToMoveTextView" />
 
         <Button
@@ -267,8 +264,7 @@
             android:shadowDy="0"
             android:shadowRadius="5"
             android:background="@drawable/button_style"
-            android:elevation="@dimen/button_elevation"
-           />
+            android:elevation="@dimen/button_elevation" />
     </LinearLayout>
 
 </RelativeLayout>

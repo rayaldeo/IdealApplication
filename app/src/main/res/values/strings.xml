@@ -46,6 +46,7 @@
     <string name="familyButton_txt">Accept Family</string>
     <string name="accept_Country_text">Accept Country</string>
     <string name="playerNameText">playerNameText</string>
+    <string name="priceToMove_Text">Price To Move</string>
 
     <string-array name="countries">
         <item>Irada</item>

@@ -1,23 +1,22 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drawer_layout"
-    android:layout_width="match_parent"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:theme="@style/AppTheme"
-    android:layout_height="match_parent">
-
-
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/backgroundColor">
 
 
     <ListView
         android:id="@+id/familyChoiceList"
         android:background="@color/signatureColorOne"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:listSelector="@drawable/state_selector"
         android:choiceMode="singleChoice"
-        android:layout_alignParentTop="false"
-        android:layout_alignParentBottom="true"
-        android:padding="@dimen/paddingOnFamilyCreationDialog">
+        android:padding="@dimen/paddingOnFamilyCreationDialog"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
     </ListView>
 
 
@@ -31,12 +30,12 @@
         android:background="@color/amount_background"
         android:padding="@dimen/paddingOnFamilyCreationDialog"
         android:elevation="@dimen/elevation_shadow_amount"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
         android:digits="0123456789."
         android:inputType="numberDecimal"
         android:maxLength="7"
         android:visibility="invisible"
+        android:layout_below="@+id/influenceAmountEditText"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
         <!--android:visibility="invisible"-->
 
@@ -50,12 +49,12 @@
         android:background="@color/amount_background"
         android:padding="@dimen/paddingOnFamilyCreationDialog"
         android:elevation="@dimen/elevation_shadow_amount"
-        android:layout_above="@+id/friendsAmountEditText"
-        android:layout_alignParentLeft="true"
         android:digits="0123456789."
         android:inputType="numberDecimal"
         android:maxLength="7"
         android:visibility="invisible"
+        android:layout_below="@+id/wealthAmountEditText"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <EditText
@@ -68,12 +67,12 @@
         android:background="@color/amount_background"
         android:padding="@dimen/paddingOnFamilyCreationDialog"
         android:elevation="@dimen/elevation_shadow_amount"
-        android:layout_above="@+id/influenceAmountEditText"
-        android:layout_alignParentLeft="true"
         android:digits="0123456789."
         android:inputType="numberDecimal"
         android:maxLength="7"
         android:visibility="invisible"
+        android:layout_below="@+id/customFamilySwitch"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <Switch
@@ -81,11 +80,13 @@
         android:layout_height="wrap_content"
         android:text="@string/cusomFamilyToggle_String"
         android:id="@+id/customFamilySwitch"
-        android:layout_centerVertical="true"
+        android:checked="false"
+        android:padding="@dimen/paddingOnFamilyCreationDialog"
+        android:layout_below="@+id/familyChoiceList"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:checked="false"
-        android:padding="@dimen/paddingOnFamilyCreationDialog" />
+        android:textColor="#ffffff"
+        android:textSize="20dp" />
 
 
     <!--<SlidingDrawer

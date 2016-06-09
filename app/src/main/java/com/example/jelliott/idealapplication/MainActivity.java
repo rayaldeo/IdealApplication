@@ -3,7 +3,11 @@ package com.example.jelliott.idealapplication;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -26,6 +31,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.List;
@@ -92,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private ProgressBar overallWealthProgressBar;
     private ProgressBar influenceProgressBar;
 
-    private Button changeCountryButton,selectAJobButton;
+    private Button changeCountryButton,selectAJobButton,schoolButton;
 
     private ImageView profileImage;
 
@@ -107,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     private Human human;
     private int age = 0, schoolAttendanceAmount = 0, socialisingWithFriends = 0, workingOnPhysicalApp = 0;
-    private int value, looks = 0, worshippers = 0, friends = 0, professionAssocites = 0;
+    private int value, looks = 0, worshippers = 0, friends = 0, professionalAssociates = 0;
     private double wealth = 0.0, tax = 0.0;
 
     private Family family;
@@ -132,6 +139,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private boolean heavenBoolean = false;
     boolean dialogShown;
     private int tempNum = age - 10;
+    //For selecting and image
+    private static final int SELECT_PHOTO = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,15 +170,21 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         //Buttons
         changeCountryButton = (Button) findViewById(R.id.moveToButton);
-        changeCountryButton.setOnClickListener(new View.OnClickListener() {
+        changeCountryButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 selectACountry();
             }
         });
         selectAJobButton=(Button) findViewById(R.id.jobButton);
-        selectAJobButton.setOnClickListener(new View.OnClickListener() {
+        selectAJobButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 selectAJob();
+            }
+        });
+        schoolButton=(Button) findViewById(R.id.schoolButton);
+        schoolButton.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                goToSchool();
             }
         });
 
@@ -177,11 +192,22 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         //Profile Image
         profileImage = (ImageView) findViewById(R.id.profileImageView);
-        profileImage.setOnClickListener(new View.OnClickListener() {
+        profileImage.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 profilePictureDialog();
 
+            }
+        });
+
+        profileImage.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+                profileImage.setImageURI(photoPickerIntent.getData());
+                return false;
             }
         });
 
@@ -557,9 +583,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     }
 
-    public void CreateFamily() {
-    }
-
 
     public void profilePictureDialog() {
 
@@ -643,7 +666,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     //Toast.makeText(MainActivity.this, "All Values need to be greater than 0 or you will have to create a new Family",
                     //Toast.LENGTH_LONG).show();
                     familyListView.setEnabled(false);
-                    familyListView.setBackgroundColor(Color.parseColor("#696969"));
+                    familyListView.setBackgroundColor(Color.parseColor("#191919"));
                     familyListView.setItemChecked(0, false);
                     familyListView.setItemChecked(1, false);
                     familyListView.setItemChecked(2, false);
@@ -681,7 +704,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                         wealthAmountEditText.setVisibility(View.VISIBLE);
                     }
                 })*/
-
+                .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener()
 
                         {
@@ -1222,7 +1245,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                             tempwealthA = 0.0;
                             friends = 0;
                             looks = 0;
-                            professionAssocites = 0;
+                            professionalAssociates = 0;
                             influence = 0;
 
 
@@ -1253,7 +1276,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     }
 
     public void selectingAWish(int numberSelection) {
-        //looks=0,worshippers=0,friends=0,professionAssocites=0,influence=0
+        //looks=0,worshippers=0,friends=0,professionalAssociates=0,influence=0
         Jobs tempJobA;
         Double tempWealthA;
         switch (numberSelection) {
@@ -1277,7 +1300,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             case 4:
                 //ProfessionalAssociates
                 informationalTextView.setText("You got 1000 professional Associates");
-                professionAssocites = 1000;
+                professionalAssociates = 1000;
                 break;
             case 5:
                 //Influence
@@ -1517,7 +1540,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     public void selectAJob() {
 
-        professionAssocites = 0;
+        professionalAssociates = 0;
         friends = 0;
         //Creating a Layout for the EditTextViews
         LinearLayout layout = new LinearLayout(this);
@@ -1529,12 +1552,14 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         final Button jobButtonBeggar = new Button(this);
         jobButtonBeggar.setHint("Beggar");
         //layout.addView(jobButtonBeggar);
-        jobButtonBeggar.setOnClickListener(new View.OnClickListener() {
+        jobButtonBeggar.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                professionAssocites = 10;
+                professionalAssociates = 0;
+                friends = 10;
                human.setJob(Jobs.BEGGER);
+
 
             }
         });
@@ -1543,9 +1568,11 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         final Button jobButtonVagrant = new Button(this);
         jobButtonVagrant.setHint("Vagrant");
         //layout.addView(jobButtonVagrant);
-        jobButtonVagrant.setOnClickListener(new View.OnClickListener() {
+        jobButtonVagrant.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                professionalAssociates = 0;
+                friends = 25;
                 human.setJob(Jobs.VAGRANT);
 
             }
@@ -1555,9 +1582,11 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         final Button jobButtonIntern = new Button(this);
         jobButtonIntern.setHint("Intern");
         //layout.addView(jobButtonIntern);
-        jobButtonIntern.setOnClickListener(new View.OnClickListener() {
+        jobButtonIntern.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                professionalAssociates = 500;
+                friends = 15;
                 human.setJob(Jobs.INTERN);
 
             }
@@ -1567,9 +1596,11 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         final Button jobButtonPackingBoy = new Button(this);
         jobButtonPackingBoy.setHint("Packing Boy");
         //layout.addView(jobButtonPackingBoy);
-        jobButtonPackingBoy.setOnClickListener(new View.OnClickListener() {
+        jobButtonPackingBoy.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                professionalAssociates = 50;
+                friends = 10;
                 human.setJob(Jobs.PACKINGBOY);
 
             }
@@ -1579,9 +1610,11 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         final Button jobButtonFirefighter = new Button(this);
         jobButtonFirefighter.setHint("Firefighter");
         //layout.addView(jobButtonFirefighter);
-        jobButtonFirefighter.setOnClickListener(new View.OnClickListener() {
+        jobButtonFirefighter.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                professionalAssociates = 100;
+                friends = 25;
                 human.setJob(Jobs.FIREFIGHTER);
 
             }
@@ -1591,9 +1624,12 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         final Button jobButtonBanker = new Button(this);
         jobButtonBanker.setHint("Banker");
         //layout.addView(jobButtonBanker);
-        jobButtonBanker.setOnClickListener(new View.OnClickListener() {
+        jobButtonBanker.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                professionalAssociates = 200;
+                friends = 50;
                 human.setJob(Jobs.BANKTER);
 
             }
@@ -1603,9 +1639,11 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         final Button jobButtonScientist = new Button(this);
         jobButtonScientist.setHint("Scientist");
         //layout.addView(jobButtonScientist);
-        jobButtonScientist.setOnClickListener(new View.OnClickListener() {
+        jobButtonScientist.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                professionalAssociates = 200;
+                friends = 75;
                 human.setJob(Jobs.SCIENTIST);
 
             }
@@ -1615,9 +1653,11 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         final Button jobButtonIndependent = new Button(this);
         jobButtonIndependent.setHint("Independent");
         //layout.addView(jobButtonIndependent);
-        jobButtonIndependent.setOnClickListener(new View.OnClickListener() {
+        jobButtonIndependent.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                professionalAssociates = 300;
+                friends = 100;
                 human.setJob(Jobs.INDEPENDENT);
 
             }
@@ -1627,9 +1667,11 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         final Button jobButtonBusinessOwner = new Button(this);
         jobButtonBusinessOwner.setHint("Business Owner");
         //layout.addView(jobButtonBusinessOwner);
-        jobButtonBusinessOwner.setOnClickListener(new View.OnClickListener() {
+        jobButtonBusinessOwner.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                professionalAssociates = 500;
+                friends = 200;
                 human.setJob(Jobs.BUSINESSOWNER);
 
             }
@@ -1639,9 +1681,11 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         final Button jobButtonKing = new Button(this);
         jobButtonKing.setHint("King");
         //layout.addView(jobButtonKing);
-        jobButtonKing.setOnClickListener(new View.OnClickListener() {
+        jobButtonKing.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                professionalAssociates = 1000;
+                friends = 500;
                 human.setJob(Jobs.KING);
 
             }
@@ -1651,9 +1695,11 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         final Button jobButtonSultan = new Button(this);
         jobButtonSultan.setHint("Sultan");
         //layout.addView(jobButtonSultan);
-        jobButtonSultan.setOnClickListener(new View.OnClickListener() {
+        jobButtonSultan.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                professionalAssociates = 1500;
+                friends = 1000;
                 human.setJob(Jobs.SULTAN);
 
             }
@@ -1663,9 +1709,11 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         final Button jobButtonOmega = new Button(this);
         jobButtonOmega.setHint("\u03A9" + "mega");
         //layout.addView(jobButtonOmega);
-        jobButtonOmega.setOnClickListener(new View.OnClickListener() {
+        jobButtonOmega.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                professionalAssociates = 3000;
+                friends = 2000;
                 human.setJob(Jobs.OMEGA);
 
             }
@@ -1718,10 +1766,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 if (buisnessowner) {  layout.addView(jobButtonBusinessOwner);  }//BusinessOwner;
             }
             if (human.getCountry() == Countries.Heaven) {
-                System.out.println("\n You can only choose jobs that you have access to....Press 0 to go back if you have access to no jobs"
-                        + "\n" + "(1)Independent:" + independent
-                        + "\n" + "(2)King:" + king
-                        + "\n" + "(3)Sultan:" + sultan);
+
                 if (independent) {layout.addView(jobButtonIndependent);  }//Independent;
 
 
@@ -1743,6 +1788,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     .setTitle("IDEAL")
                     .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
+                            jobTextView.setText(human.getJob().getName());
+                            keepStatsUpToDate(0.0,0,human.getJob(),human.getCountry().getTaxes(),0,0,friends,professionalAssociates);
 
 
                         }
@@ -1757,7 +1804,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                             selectAJob();
                         }
                     })
-                    .setCancelable(true)
+                    .setCancelable(false)
                     .setView(scrollView)
                     .create();
 
@@ -1767,6 +1814,153 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
         }
+
+
+    public void goToSchool(){
+        //Increment and Update the amount of times this user went to school
+        schoolAttendanceAmount++;
+        schoolAttendanceAmountTextView.setText("School Attendance:" + Integer.toString(schoolAttendanceAmount));
+        AlertDialog ad = new AlertDialog.Builder(this)
+                .setNeutralButton("Confrim", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                    }
+                })
+
+                .setMessage("Go a school:Raises the amount of professional Associates" + "\n" +
+                        "Unlocks jobs" + "\n" +
+                        "Raises the amount of friends"+"\n"+
+                        "You got charged:$" + 2500 * human.getCountry().getMultiplier()+"\n"+
+                        "School Attendance:"+schoolAttendanceAmount)
+                        //.setIcon(R.drawable.ic_launcher)
+                .setTitle("IDEAL:Going to School")
+                .setCancelable(true)
+                .create();
+
+
+        //This DIalog is used to show which jobs were unlocked
+        AlertDialog adNotifier = new AlertDialog.Builder(this)
+                .setNeutralButton("Confrim", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                    }
+                })
+
+
+                .setTitle("IDEAL:Going to School")
+                .setCancelable(true)
+                .create();
+
+
+       if (human.getOverAllWealth() >= 1 && human.getInfluence() >= 1 || schoolAttendanceAmount>=0) {
+            if (!begger) {
+                begger = true;
+                adNotifier.setMessage("You have unlocked the Begger Job");
+                adNotifier.setCancelable(true);
+                //adNotifier.create();
+                ad.show();
+                adNotifier.show();
+
+            }
+            if (!vagrant) {
+                vagrant = true;
+                System.out.println("You have unlocked the Vagrant Job");
+            }
+        }if(human.getOverAllWealth()>=10000 && human.getInfluence()>=20000 || schoolAttendanceAmount>=1){
+            if(!intern){
+                intern=true;
+                System.out.println("You have unlocked the Intern Job");
+            }if(!packingboy){
+                packingboy=true;
+                System.out.println("You have unlocked the Packing boy Job");
+            }if(!firefighter){
+                firefighter=true;
+                System.out.println("You have unlocked the Firefighter Job");
+            }
+        }if(human.getOverAllWealth()>=70000 && human.getInfluence()>=100000 || schoolAttendanceAmount>=2&&socialisingWithFriends>=2
+                &&workingOnPhysicalApp>=1){
+            if(!banker){
+                banker=true;
+                System.out.println("You have unlocked the Banker Job");
+            }if(!scientist){
+                scientist=true;
+                System.out.println("You have unlocked the Scientist Job");
+            }if(!independent){
+                independent=true;
+                System.out.println("You have unlocked the Independent Job");
+            }if(!firefighter){
+                firefighter=true;
+                System.out.println("You have unlocked the Firefighter Job");
+            }
+        }if(human.getOverAllWealth()>=1000000 && human.getInfluence()>=100000 && human.getFriends()>10000 || schoolAttendanceAmount>=3&&socialisingWithFriends>=3
+                &&workingOnPhysicalApp>=3){
+            if(!sultan){
+                sultan=true;
+                System.out.println("You have unlocked the Sultan Job");
+
+            }
+        }if(human.getOverAllWealth()>=10000000 && human.getInfluence()>=10000000 && human.getFriends()>100000 && human.getWorshippers()>10000 ||  schoolAttendanceAmount>=4&&socialisingWithFriends>=4
+                &&workingOnPhysicalApp>=4) {
+            if (!god) {
+                god = true;
+                System.out.println("You have unlocked the God Job");
+
+            }
+
+        }
+
+    }
+
+
+    //Code for getting and shriking picture selected my the user
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+
+        switch(requestCode) {
+            case SELECT_PHOTO:
+                if(resultCode == RESULT_OK){
+                    Uri selectedImage = imageReturnedIntent.getData();
+                    InputStream imageStream = null;
+                    try {
+                        imageStream = getContentResolver().openInputStream(selectedImage);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    Bitmap yourSelectedImage = BitmapFactory.decodeStream(imageStream);
+                }
+        }
+    }
+
+    private Bitmap decodeUri(Uri selectedImage) throws FileNotFoundException {
+
+        // Decode image size
+        BitmapFactory.Options o = new BitmapFactory.Options();
+        o.inJustDecodeBounds = true;
+        BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage), null, o);
+
+        // The new size we want to scale to
+        final int REQUIRED_SIZE = 140;
+
+        // Find the correct scale value. It should be the power of 2.
+        int width_tmp = o.outWidth, height_tmp = o.outHeight;
+        int scale = 1;
+        while (true) {
+            if (width_tmp / 2 < REQUIRED_SIZE
+                    || height_tmp / 2 < REQUIRED_SIZE) {
+                break;
+            }
+            width_tmp /= 2;
+            height_tmp /= 2;
+            scale *= 2;
+        }
+
+        // Decode with inSampleSize
+        BitmapFactory.Options o2 = new BitmapFactory.Options();
+        o2.inSampleSize = scale;
+        return BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage), null, o2);
+
+    }
 
     }
 
