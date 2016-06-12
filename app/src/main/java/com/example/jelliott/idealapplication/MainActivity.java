@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
@@ -39,7 +40,7 @@ import java.util.List;
 import java.util.Random;
 
 
-public class MainActivity extends AppCompatActivity implements DialogInterface.OnClickListener {
+public class MainActivity extends AppCompatActivity implements DialogInterface.OnClickListener  {
 
     private static final NumberFormat percentFormat = NumberFormat.getPercentInstance();
     private static final NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
@@ -99,12 +100,13 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private ProgressBar overallWealthProgressBar;
     private ProgressBar influenceProgressBar;
 
-    private Button changeCountryButton,selectAJobButton,schoolButton;
+    private Button changeCountryButton,selectAJobButton,schoolButton,workOnPhysicalAppearanceButton,socializeWithPeopleButton;
 
     private ImageView profileImage;
 
     //Separate Dialogs
-    private Dialog alertDialogProfile, alertDialogJob;
+    private Dialog alertDialogProfile;
+
     //private Dialog alertDialog;
 
     /* array list to save the indexes of the array items*/
@@ -139,6 +141,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private boolean heavenBoolean = false;
     boolean dialogShown;
     private int tempNum = age - 10;
+    //This boolean is tokeep track whether the user is done intializing their IDEAL Life
+    boolean intialization = false;
     //For selecting and image
     private static final int SELECT_PHOTO = 100;
 
@@ -169,22 +173,39 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         priceToMoveTextView = (TextView) findViewById(R.id.priceToMoveTextView);
 
         //Buttons
+        //Change Country Button
         changeCountryButton = (Button) findViewById(R.id.moveToButton);
         changeCountryButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 selectACountry();
             }
         });
+        //Select A Job Button
         selectAJobButton=(Button) findViewById(R.id.jobButton);
         selectAJobButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 selectAJob();
             }
         });
+        //Go To School Button
         schoolButton=(Button) findViewById(R.id.schoolButton);
         schoolButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 goToSchool();
+            }
+        });
+        //Work on Physical Appearance
+        workOnPhysicalAppearanceButton= (Button) findViewById(R.id.physicalButton);
+        workOnPhysicalAppearanceButton.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                workOnPhysical();
+            }
+        });
+        //Socialize with People
+        socializeWithPeopleButton= (Button) findViewById(R.id.socializeButton);
+        socializeWithPeopleButton.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                socializeWithPeople();
             }
         });
 
@@ -229,11 +250,16 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         priceToMoveTextView.setText("Price:" + Double.toString(0.0));
         //informationalTextView.setText("Welcome and Good Luck!");
 
-
         //init();
         //makeYourName();
-        selectAFamilyType();
-        selectACountry();
+        //selectAFamilyType();
+        //selectACountry();
+        //The Actual IDEAL Application
+        new Thread(new IDEALLifeProgram()).start();
+
+        //tutorialWithFamily();
+
+        //chancesOfLife();
         //idealLifeParameters();
         //selectAJob();
 
@@ -367,6 +393,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     }
 
     public void init() {
+        //So that the Application knows that a dialog is up
+        dialogShown=true;
 
         AlertDialog ad = new AlertDialog.Builder(this)
                 .setMessage("Welcome!The purpose of this Java Program is to create your fantasy ideal life.." +
@@ -376,18 +404,23 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                         ("\n") + "Good Luck!")
                         //.setIcon(R.drawable.ic_launcher)
                 .setTitle("IDEAL")
-                .setPositiveButton("Yes", this)
-                .setNegativeButton("No", this)
-                .setNeutralButton("Cancel", this)
+                .setNeutralButton("Confirm", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                       dialogShown=false;
+                    }
+                })
                 .setCancelable(false)
                 .create();
 
         ad.show();
 
 
+
     }
 
     public void makeYourName() {
+        //So that the Application knows that a dialog is up
+        dialogShown=true;
         //Creating a Layout for the EditTextViews
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
@@ -408,23 +441,14 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 .setMessage("Enter in a Name(MAX:11 CHARACTERS)")
                         //.setIcon(R.drawable.ic_launcher)
                 .setTitle("IDEAL")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         firstNamePart = userNameFirst.getText().toString();
                         playerNameTextView.setText(firstNamePart);
                         lastNamePart = userNameFamily.getText().toString();
+                        dialogShown=false;
 
 
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        makeYourName();
-                    }
-                })
-                .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        makeYourName();
                     }
                 })
                 .setCancelable(false)
@@ -435,6 +459,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     }
 
     public void selectACountry() {
+        //So that the Application knows that a dialog is up
+        dialogShown=true;
         //Get the arrayLIst from the String xml
         final List<String> countries = Arrays.asList(getResources().getStringArray(R.array.countries));
 
@@ -506,35 +532,22 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     //Update Tax
                     //You can chain .get commands as long as that .get returns a class/object with its own getters
                     taxTextView.setText("Tax:" + currencyFormat.format(human.getCountry().getTaxes()));
-                    tax=human.getCountry().getTaxes();
+                    tax = human.getCountry().getTaxes();
 
                     //Update the Amount of money it Costs to move from current Country to Next
                     //Tax+BasePrice(100)*CountryMultiplier
-                    priceToMoveTextView.setText("Price"+currencyFormat.format((human.getCountry().getTaxes()+100)*human.getCountry().getMultiplier()));
+                    priceToMoveTextView.setText("Price" + currencyFormat.format((human.getCountry().getTaxes() + 100) * human.getCountry().getMultiplier()));
                 } catch (Exception e) {
                     Toast.makeText(MainActivity.this, "A Country is needed",
                             Toast.LENGTH_LONG).show();
                     selectACountry();
 
                 }
-
+                dialogShown = false;
 
             }
         })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        selectACountry();
 
-                    }
-                })
-                .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        selectACountry();
-                        Toast.makeText(MainActivity.this, "A Country is needed",
-                                Toast.LENGTH_LONG).show();
-
-                    }
-                })
                 .setCancelable(false);
         countrieslistView.setAdapter(adapter);
         alertDialog.show();
@@ -583,66 +596,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     }
 
-
-    public void profilePictureDialog() {
-
-
-        alertDialogProfile = new Dialog(MainActivity.this, android.R.style.Theme_Black);
-        //
-
-        //AlertDialog.Builder alertDialogProfile = new AlertDialog.Builder(MainActivity.this);
-
-        //Call the XML List view and set it with  the countries array
-        LayoutInflater inflater = getLayoutInflater();
-        View convertView = inflater.inflate(R.layout.profileimagedialog, null);
-        //alertDialogProfile.setView(convertView);
-        alertDialogProfile.setContentView(R.layout.profileimagedialog);
-
-        //keepStatsUpToDate(human.getOverAllWealth(), human.getInfluence(), human.getJob(),human.getCountry(),tax);
-        //userNameTextView.setText(firstNamePart);
-        alertDialogProfile.setTitle(firstNamePart + " " + lastNamePart + "'s Profile");
-
-        playerNameTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.playerNameTextViewprofileDialog);
-        playerNameTextViewprofileDialog.setText(firstNamePart + " " + lastNamePart);
-
-        overAllWealthTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.overAllWealthTextViewprofileDialog);
-        overAllWealthTextViewprofileDialog.setText(getString(R.string.overallWelathTextView_text) + ": \n" + currencyFormat.format(human.getOverAllWealth()));
-
-        influenceTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.influenceTextViewprofileDialog);
-        influenceTextViewprofileDialog.setText(getString(R.string.influenceTextView) + ": \n" + human.getInfluence());
-
-        jobTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.jobTextViewprofileDialog);
-        jobTextViewprofileDialog.setText(getString(R.string.getJob_text) + ":" + human.getJob());
-
-        countryTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.countryTextViewprofileDialog);
-        countryTextViewprofileDialog.setText(getString(R.string.getCountry_text) + ":" + human.getCountryString());
-
-        neighbourhoodTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.neighbourhoodTextViewprofileDialog);
-        neighbourhoodTextViewprofileDialog.setText(getString(R.string.neighbourhoodTextView_text) + ":" + human.getNeighborhood());
-
-        taxTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.taxTextViewprofileDialog);
-        taxTextViewprofileDialog.setText(getText(R.string.tax_text) + ":" + currencyFormat.format(tax));
-
-        userfriendsTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.userfriendsTextViewprofileDialog);
-        userfriendsTextViewprofileDialog.setText(getText(R.string.friendsTextView_text) + ":" + human.getFriends());
-
-
-        professionalAssociatesTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.professionalAssociatesTextViewprofileDialog);
-        professionalAssociatesTextViewprofileDialog.setText(getText(R.string.professionalAssociatesTextView_text) + ":" + human.getProfessionalAssociates());
-
-        worshippersTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.worshippersTextViewprofileDialog);
-        worshippersTextViewprofileDialog.setText(getText(R.string.worshippersTextView_text) + ":" + human.getWorshippers());
-
-        looksTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.looksTextViewprofileDialog);
-        looksTextViewprofileDialog.setText(getText(R.string.looksTextView_text) + ":" + human.getLooks());
-
-
-        alertDialogProfile.show();
-
-    }
-
-
     public void selectAFamilyType() {
+        //So that the Application knows that a dialog is up
+        dialogShown=true;
 
         //Get the arrayLIst from the String xml
         final List<String> familyTypes = Arrays.asList(getResources().getStringArray(R.array.familyTypes));
@@ -666,7 +622,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     //Toast.makeText(MainActivity.this, "All Values need to be greater than 0 or you will have to create a new Family",
                     //Toast.LENGTH_LONG).show();
                     familyListView.setEnabled(false);
-                    familyListView.setBackgroundColor(Color.parseColor("#191919"));
+                    familyListView.setBackgroundColor(Color.parseColor("#3f3f3f"));
                     familyListView.setItemChecked(0, false);
                     familyListView.setItemChecked(1, false);
                     familyListView.setItemChecked(2, false);
@@ -772,6 +728,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
                                                 break;
                                         }
+                                        dialogShown=false;
                                         Toast.makeText(MainActivity.this, "You have selected " + checkedItem.toString(),
                                                 Toast.LENGTH_LONG).show();
                                     } catch (Exception e) {
@@ -789,6 +746,64 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 );
         familyListView.setAdapter(adapter);
         alertDialog.show();
+    }
+
+
+    public void profilePictureDialog() {
+
+
+        alertDialogProfile = new Dialog(MainActivity.this, android.R.style.Theme_Black);
+        //
+
+        //AlertDialog.Builder alertDialogProfile = new AlertDialog.Builder(MainActivity.this);
+
+        //Call the XML List view and set it with  the countries array
+        LayoutInflater inflater = getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.profileimagedialog, null);
+        //alertDialogProfile.setView(convertView);
+        alertDialogProfile.setContentView(R.layout.profileimagedialog);
+
+        //keepStatsUpToDate(human.getOverAllWealth(), human.getInfluence(), human.getJob(),human.getCountry(),tax);
+        //userNameTextView.setText(firstNamePart);
+        alertDialogProfile.setTitle(firstNamePart + " " + lastNamePart + "'s Profile");
+
+        playerNameTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.playerNameTextViewprofileDialog);
+        playerNameTextViewprofileDialog.setText(firstNamePart + " " + lastNamePart);
+
+        overAllWealthTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.overAllWealthTextViewprofileDialog);
+        overAllWealthTextViewprofileDialog.setText(getString(R.string.overallWelathTextView_text) + ": \n" + currencyFormat.format(human.getOverAllWealth()));
+
+        influenceTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.influenceTextViewprofileDialog);
+        influenceTextViewprofileDialog.setText(getString(R.string.influenceTextView) + ": \n" + human.getInfluence());
+
+        jobTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.jobTextViewprofileDialog);
+        jobTextViewprofileDialog.setText(getString(R.string.getJob_text) + ":" + human.getJob());
+
+        countryTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.countryTextViewprofileDialog);
+        countryTextViewprofileDialog.setText(getString(R.string.getCountry_text) + ":" + human.getCountryString());
+
+        neighbourhoodTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.neighbourhoodTextViewprofileDialog);
+        neighbourhoodTextViewprofileDialog.setText(getString(R.string.neighbourhoodTextView_text) + ":" + human.getNeighborhood());
+
+        taxTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.taxTextViewprofileDialog);
+        taxTextViewprofileDialog.setText(getText(R.string.tax_text) + ":" + currencyFormat.format(tax));
+
+        userfriendsTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.userfriendsTextViewprofileDialog);
+        userfriendsTextViewprofileDialog.setText(getText(R.string.friendsTextView_text) + ":" + human.getFriends());
+
+
+        professionalAssociatesTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.professionalAssociatesTextViewprofileDialog);
+        professionalAssociatesTextViewprofileDialog.setText(getText(R.string.professionalAssociatesTextView_text) + ":" + human.getProfessionalAssociates());
+
+        worshippersTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.worshippersTextViewprofileDialog);
+        worshippersTextViewprofileDialog.setText(getText(R.string.worshippersTextView_text) + ":" + human.getWorshippers());
+
+        looksTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.looksTextViewprofileDialog);
+        looksTextViewprofileDialog.setText(getText(R.string.looksTextView_text) + ":" + human.getLooks());
+
+
+        alertDialogProfile.show();
+
     }
 
     //This Method is used to display stats of the Family during the Tutorial Stages
@@ -850,11 +865,20 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     }
 
     public void chancesOfLife() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
+        AlertDialog ad = new AlertDialog.Builder(this)
+                .setNeutralButton("Confrim", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                    }
+                })
+
+
+                .setTitle("IDEAL:Chances of Life")
+                .setCancelable(false)
+                .create();
+
+
 
         ///If you want to test any specific chance of life just place in the case number into switch bracket..the program will only run that switch
         switch (randomNum) {
@@ -864,89 +888,75 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 //This affects your wealth with the family in the tutorial
                 //This will affect your overall wealth in th later game
 
-                informationalTextView.setText("You decided to move;so here is the  opportunity to choose a different country!");
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                ad.setMessage("You decided to move;so here is the  opportunity to choose a different country!");
+                 selectACountry();
 
-                selectACountry();
-                //CountryDetails();
 
                 break;
             case 1:
 
-                //informationalTextView.setText("2");
+                //ad.setMessage("2");
                 if (age < 20) {
                     if (family.getFamilyFriends() > 1000) {
-                        informationalTextView.setText("Your family is very famous and this allows you to earn $500");
+                         ad.setMessage("Your family is very famous and this allows you to earn $500");
                         family.setFamilyWealth(human.getOverAllWealth() + 500);
-                        informationalTextView.setText("This character's wealth is $" + family.getFamilyWealth());
+                         ad.setMessage("This character's wealth is $" + family.getFamilyWealth());
 
                         //CharDetails();
                     } else if (family.getFamilyFriends() > 500) {
-                        informationalTextView.setText("Your family is Famous and this allows you to earn $100");
+                         ad.setMessage("Your family is Famous and this allows you to earn $100");
                         family.setFamilyWealth(human.getOverAllWealth() + 100);
-                        informationalTextView.setText("This character's wealth is $" + family.getFamilyWealth());
+                         ad.setMessage("This character's wealth is $" + family.getFamilyWealth());
 
                         //CharDetails();
                     } else {
-                        informationalTextView.setText("Your family is not very popular;it is beneficial to have more friends!!");
+                         ad.setMessage("Your family is not very popular;it is beneficial to have more friends!!");
                     }
 
                 } else {
                     if (human.getFriends() > 1000) {
-                        informationalTextView.setText("You are very famous and this allows you to earn $500");
+                         ad.setMessage("You are very famous and this allows you to earn $500");
                         human.setOverAllwealth(human.getOverAllWealth() + 500);
-                        informationalTextView.setText("This character's wealth is $" + human.getOverAllWealth());
+                         ad.setMessage("This character's wealth is $" + human.getOverAllWealth());
 
                         //CharDetails();
                     } else if (human.getFriends() > 500) {
-                        informationalTextView.setText("You are famous  and this allows you to earn $100");
+                         ad.setMessage("You are famous  and this allows you to earn $100");
                         human.setOverAllwealth(human.getOverAllWealth() + 100);
-                        informationalTextView.setText("This character's wealth is $" + human.getOverAllWealth());
+                         ad.setMessage("This character's wealth is $" + human.getOverAllWealth());
 
                         //CharDetails();
                     } else {
-                        informationalTextView.setText("You are not very popular;it is beneficial to have more friends!!");
+                         ad.setMessage("You are not very popular;it is beneficial to have more friends!!");
                     }
 
                 }
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+
 
                 break;
             case 2:
 
-                //informationalTextView.setText("3");
+                // ad.setMessage("3");
                 if (human.getInfluence() > 100000 || human.getInfluence() + family.getFamilyInfluence() > 100000) {
-                    informationalTextView.setText("Your family has a high influence level and is able to get you to the best schools and mentors" + "\n" + "You have will have access to the intern job "
+                     ad.setMessage("Your family has a high influence level and is able to get you to the best schools and mentors" + "\n" + "You have will have access to the intern job "
                             + "\n" + "You have will have access to the Banker job "
                             + "\n" + "You have will have access to the Business Owner job ");
 
                     intern = true;
                     banker = true;
                     buisnessowner = true;
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+
                 } else {
-                    informationalTextView.setText("Your family's influence is not very high;try increasing it!!");
+                     ad.setMessage("Your family's influence is not very high;try increasing it!!");
                 }
 
 
                 break;
             case 3:
 
-                //informationalTextView.setText("4");
+                // ad.setMessage("4");
                 if (human.getFriends() > 100000 || human.getFriends() + family.getFamilyFriends() > 100000) {
-                    informationalTextView.setText("Having many friends make ways for more friends.You gained 500 friends");
+                     ad.setMessage("Having many friends make ways for more friends.You gained 500 friends");
                     human.setFriends(human.getFriends() + 500);
                     //CharDetails();
                     try {
@@ -955,113 +965,83 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                         e.printStackTrace();
                     }
                 } else if (human.getFriends() > 1000 || human.getFriends() + family.getFamilyFriends() > 1000) {
-                    informationalTextView.setText("You don't have much friends but you still get a bonus.You gained 100 friends");
+                     ad.setMessage("You don't have much friends but you still get a bonus.You gained 100 friends");
                     human.setFriends(human.getFriends() + 100);
                     //CharDetails();
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
 
                 } else {
-                    informationalTextView.setText("You do not have enough friends to access this bonus");
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                     ad.setMessage("You do not have enough friends to access this bonus");
+
                 }
 
                 break;
             case 4:
 
-                //informationalTextView.setText("5");
-                informationalTextView.setText("A storm came over and destroyed your car.You lose some of your money in the process of replacing it");
+                // ad.setMessage("5");
+                 ad.setMessage("A storm came over and destroyed your car.You lose some of your money in the process of replacing it");
 
                 if (age > 20) {
                     human.setOverAllwealth(human.getOverAllWealth() - 10000);
-                    informationalTextView.setText("You got charged:10000");
+                     ad.setMessage("You got charged:10000");
                     //CharDetails();
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+
 
                 } else {
                     wealth = -10000;
                     updatingStateOfFamily(wealth, 0);
                     wealth = 0;
-                    informationalTextView.setText("Your family got charged $10000");
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                     ad.setMessage("Your family got charged $10000");
+
 
                 }
 
                 break;
             case 5:
-                //informationalTextView.setText("6");
+                // ad.setMessage("6");
 
                 if (human.getLooks() > 1 && human.getLooks() < 5) {
-                    informationalTextView.setText("You are not very good looking and people do not resonate with you very well.What a shallow world where people judge based on your looks \n You gain nothing");
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                     ad.setMessage("You are not very good looking and people do not resonate with you very well.What a shallow world where people judge based on your looks \n You gain nothing");
+
 
                 } else if (human.getLooks() == 5) {
-                    informationalTextView.setText("You are average looking so very few people take you on face value.What a shallow world where people judge based on your looks \n You gain $100 \n" +
+                     ad.setMessage("You are average looking so very few people take you on face value.What a shallow world where people judge based on your looks \n You gain $100 \n" +
                             "You gain 100 influence" +
                             "\n You gain 100 friends");
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+
+
                     human.setOverAllwealth(human.getOverAllWealth() + 100);
                     human.setInfluence(human.getInfluence() + 100);
                     human.setFriends(human.getFriends() + 100);
 
 
                 } else if (human.getLooks() < 15) {
-                    informationalTextView.setText("People automatically love you at face value.What a shallow world where people judge based on your looks \n You gain $500 \n" +
+                    ad.setMessage("People automatically love you at face value.What a shallow world where people judge based on your looks \n You gain $500 \n" +
                             "You gain 500 influence" +
                             "\n You gain 500 friends");
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
 
                     human.setOverAllwealth(human.getOverAllWealth() + 500);
                     human.setInfluence(human.getInfluence() + 500);
                     human.setFriends(human.getFriends() + 500);
 
-
                 }
                 //CharDetails();
                 break;
             case 6:
-                //informationalTextView.setText("7");
+                // ad.setMessage("7");
                 if (god && age > 20) {
-                    informationalTextView.setText("You have surpass the earthly domain and is ready to create your own heaven");
+                    ad.setMessage("You have surpass the earthly domain and is ready to create your own heaven");
                     human.setJob(Jobs.GOD);
                     worshippersFollow = true;
                     heavenBoolean = true;
-                    informationalTextView.setText("You have also gained access to heaven");
+                    ad.setMessage("You have also gained access to heaven");
                     //CharDetails();
 
 
                 } else if (age > 20) {
-                    informationalTextView.setText("You inherited Godly talent! You begin to attract worshippers");
+                    ad.setMessage("You inherited Godly talent! You begin to attract worshippers");
                     worshippersFollow = true;
                 } else {
-                    informationalTextView.setText("You need to be outside the family tutorial to access this benefit");
+                    ad.setMessage("You need to be outside the family tutorial to access this benefit");
                 }
 
                 try {
@@ -1074,121 +1054,76 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             case 7:
                 genieDoSomething();
 
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
                 break;
 
             case 8:
-                //informationalTextView.setText("9");
+                // ad.setMessage("9");
                 if (age > 20) {
-                    informationalTextView.setText("You won the lottery so you will gain $500000");
+                    ad.setMessage("You won the lottery so you will gain $500000");
                     human.setOverAllwealth(human.getOverAllWealth() + 500000);
-                    informationalTextView.setText(Double.toString(human.getOverAllWealth()));
+                    ad.setMessage(Double.toString(human.getOverAllWealth()));
 
                 } else {
                     wealth = 500000;
                     updatingStateOfFamily(wealth, 0);
-                    informationalTextView.setText("Your family won the lottery,gained $500000");
+                    ad.setMessage("Your family won the lottery,gained $500000");
                     wealth = 0;
-                }
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
 
                 break;
 
 
             case 9:
-                //informationalTextView.setText("10");
-                informationalTextView.setText("Your recent trip to IDEAL Center of Academics added professional Associates to call onto later in life");
+                // ad.setMessage("10");
+                ad.setMessage("Your recent trip to IDEAL Center of Academics added professional Associates to call onto later in life");
                 human.setProfessionalAssociates(human.getProfessionalAssociates() + 500);
                 //CharDetails();
 
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+
                 break;
 
             case 10:
 
-                //informationalTextView.setText("11");
-                informationalTextView.setText("You get a boost in influence, wealth, and friends!You are very lucky");
+                // ad.setMessage("11");
+                ad.setMessage("You get a boost in influence, wealth, and friends!You are very lucky");
                 human.setOverAllwealth(human.getOverAllWealth() + 500000);
                 human.setFriends(human.getFriends() + 50000);
                 human.setInfluence(human.getInfluence() + 5000);
                 //CharDetails();
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+
                 break;
 
             case 11:
 
-                //informationalTextView.setText("12");
-                informationalTextView.setText("You get a boost in professional associates, looks, and worshippers !You are very lucky");
+                // ad.setMessage("12");
+                ad.setMessage("You get a boost in professional associates, looks, and worshippers !You are very lucky");
                 human.setProfessionalAssociates(human.getProfessionalAssociates() + 5000);
                 human.setLooks(human.getLooks() + 2);
                 human.setWorshippers(human.getWorshippers() + 5000);
-                //CharDetails();
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
 
                 break;
 
             case 12:
 
-                //informationalTextView.setText("13");
-                informationalTextView.setText("You lose in  influence, wealth, and friends!You are very unlucky");
+                // ad.setMessage("13");
+                ad.setMessage("You lose in  influence, wealth, and friends!You are very unlucky");
                 human.setOverAllwealth(human.getOverAllWealth() - 5000);
                 human.setFriends(human.getFriends() - 500);
                 human.setInfluence(human.getInfluence() - 500);
-                //CharDetails();
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                break;
 
             case 13:
 
-                // informationalTextView.setText("14");
-                informationalTextView.setText("You lose in professional associates, looks, and worshippers !You are very unlucky");
+                ad.setMessage("You lose in professional associates, looks, and worshippers !You are very unlucky");
                 human.setProfessionalAssociates(human.getProfessionalAssociates() - 500);
                 human.setLooks(human.getLooks() - 2);
                 human.setWorshippers(human.getWorshippers() + 50);
                 //CharDetails();
-
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                break;
+                 break;
 
 
         }
 
-        informationalTextView.setText("\n" + "/--------------------------------------------------------------------------------------/");
-        try {
-            Thread.sleep(2000);
-            informationalTextView.setText("No chances of life this turn...");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        ad.show();
 
     }
 
@@ -1911,8 +1846,137 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     }
 
+    public void workOnPhysical(){
+        AlertDialog ad = new AlertDialog.Builder(this)
+                .setNeutralButton("Confrim", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
 
-    //Code for getting and shriking picture selected my the user
+                    }
+                })
+
+                .setMessage("Work on your physical Appearance:Raises your looks" + "\n" +
+                        "Raises the amount of worshippers" + "\n" +
+                        "Raises the amount of influence" + "\n" +
+                        "Raises the amount of friends" + "\n" +
+                        "How many times you have worked on your physical appearance:" + workingOnPhysicalApp + "\n" +
+                        "Your looks got increased by 1" + "\n" +
+                        "The amount of worshippers got increased by 100" + "\n" +
+                        "Your influence got increased by 1000" + "\n" +
+                        "The amount of friends increased by 1000" + "\n" +
+                        "You got charged:$" + 100 * human.getCountry().getMultiplier())
+
+                .setTitle("IDEAL:Work on your Physical")
+                .setCancelable(true)
+                .create();
+                ad.show();
+        workingOnPhysicalApp++;
+        workingOnPhysicalAppTextView.setText("Physical Appearance:" + Integer.toString(workingOnPhysicalApp));
+        human.setLooks(human.getLooks() + 1);
+        human.setWorshippers(human.getWorshippers() + 100);
+        human.setInfluence(human.getInfluence() + 1000);
+        human.setFriends(human.getFriends() + 1000);
+        human.setOverAllwealth(human.getOverAllWealth() - 100 * human.getCountry().getMultiplier());
+        //System.out.println("Your looks got increased by 1");
+        //System.out.println("The amount of worshippers got increased by 100");
+        //System.out.println("Your influence got increased by 1000");
+        //System.out.println("The amount of friends increased by 1000");
+        //System.out.println("You got charged:$" + 100 * human.getCountry().getMultiplier());
+
+    }
+
+
+    public void socializeWithPeople(){
+        AlertDialog ad = new AlertDialog.Builder(this)
+                .setNeutralButton("Confrim", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                    }
+                })
+
+                .setMessage("How many times you socialised with people:" + socialisingWithFriends + "\n" +
+                        "Raises the amount of worshippers" + "\n" +
+                        "Raises the amount of influence" + "\n" +
+                        "Raises the amount of friends" + "\n" +
+                        "How many times you have worked on your physical appearance:" + workingOnPhysicalApp + "\n" +
+                        "Your looks got increased by 1" + "\n" +
+                        "The amount of worshippers got increased by 100" + "\n" +
+                        "Your influence got increased by 1000" + "\n" +
+                        "The amount of friends increased by 1000" + "\n" +
+                        "You got charged:$" + 100 * human.getCountry().getMultiplier())
+
+                .setTitle("IDEAL:Work on your Physical")
+                .setCancelable(true)
+                .create();
+        ad.show();
+        System.out.println("(4)Socialise with People:Raises the amount of friends" + "\n" +
+                "Raises the amount of worshippers" + "\n" +
+                "Raises the amount of influence" + "\n" +
+                "Raises the amount of professional associates");
+        socialisingWithFriends++;
+        socialisingWithFriendsTextView.setText("Socialize Amount:" + Integer.toString(socialisingWithFriends));
+        System.out.println("How many times you socialised with people:" + socialisingWithFriends);
+        human.setWorshippers(human.getWorshippers() + 10);
+        human.setInfluence(human.getInfluence() + 100);
+        human.setFriends(human.getFriends() + 10000);
+        human.setProfessionalAssociates(human.getProfessionalAssociates() + 1000);
+        human.setOverAllwealth(human.getOverAllWealth() - 50 * human.getCountry().getMultiplier());
+        System.out.println("The amount of worshippers got increased by 10");
+        System.out.println("Your influence got increased by 1000");
+        System.out.println("The amount of friends increased by 10000");
+        System.out.println("Your professional Associates got increased by 1000");
+        System.out.println("You got charged:$" + 50 * human.getCountry().getMultiplier());
+
+    }
+
+    public void tutorialWithFamily(){
+        AlertDialog ad = new AlertDialog.Builder(this)
+                .setNeutralButton("Confrim", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                    }
+                })
+
+                .setTitle("IDEAL:Tutorial With Family/Initial State")
+
+                .setCancelable(false)
+                .create();
+
+        //To display to the use that the application is in the Tutorial State
+        ad.setMessage("Now that you have a family; it is time to start your new IDEAL life" + "\n"
+                + "Every turn represents an age" + "\n"
+                + "Once age 20 is reached; the player will be removed from the family and has to choose a starting location");
+        ad.show();
+
+        //First alertDialog for the Tutorial
+        ad.setMessage("Family Wealth: " + family.getFamilyWealth() + "|" + "Country: " + human.getCountry().getName() + "Taxes: " + human.getCountry().getTaxes());
+        ad.show();
+
+        //Turn
+        age=1;
+        do {
+            randomNum = rand.nextInt(30);
+            //System.out.println(randomNum);
+            if (randomNum <= 13) {
+                chancesOfLife();
+            }
+
+            ad.setMessage("Turn: " + age + "\n" + "|Family" + "|" + family.getFamilyWealth() + "|" + "|" + human.getCountry().getName() + "|" + "|" + human.getCountry().getTaxes());
+            ad.show();
+            updatingStateOfFamily(wealth,influence);
+            //keepStatsUpToDate(human.getJob(), looks, worshippers, friends, professionalAssociates, influence);
+            //FamilyDetails();
+
+            age++;
+            age_Turn_textView.setText(age);
+
+        }while(age<20);
+        //Once this human reaches 20 years of age then the family's wealth will be given to the human
+        human.setWealth(family.getFamilyWealth());
+        human.setOverAllwealth(family.getFamilyWealth() + human.getOverAllWealth());
+
+    }
+
+    //Code for getting and shrinking picture selected my the user
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
@@ -1961,6 +2025,57 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         return BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage), null, o2);
 
     }
+
+//Calling a Thread for the application
+    public class IDEALLifeProgram implements Runnable{
+        public Handler mHandler;
+        @Override
+        public void run() {
+            try {
+                // preparing a looper on current thread
+                // the current thread is being detected implicitly
+                Looper.prepare();
+
+                // now, the handler will automatically bind to the
+                // Looper that is attached to the current thread
+                // You don't need to specify the Looper explicitly
+                mHandler = new Handler();
+
+                init();
+                makeYourName();
+                selectAFamilyType();
+                selectACountry();
+                System.out.println("hello");
+
+
+                // After the following line the thread will start
+                // running the message loop and will not normally
+                // exit the loop unless a problem happens or you
+                // quit() the looper (see below)
+                Looper.loop();
+            } catch (Throwable t) {
+               System.out.println("halted due to an error" + t);
+            }
+
+
+            //Tutorial
+            //tutorialWithFamily();
+
+        }
+    }
+
+
+        //These methods is for when the application is paused or temporally closed
+    public void onResume() {
+        super.onResume();
+        //mBackgroundSound.execute(null);
+    }
+
+    public void onPause() {
+        super.onPause();
+        //mBackgroundSound.cancel(true);
+    }
+
 
     }
 
