@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
@@ -139,10 +138,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private boolean worshippersActivation = false;
     private boolean influencActivation = false;
     private boolean heavenBoolean = false;
-    boolean dialogShown;
     private int tempNum = age - 10;
     //This boolean is tokeep track whether the user is done intializing their IDEAL Life
-    boolean intialization = false;
+    boolean dialogShown=true;
     //For selecting and image
     private static final int SELECT_PHOTO = 100;
 
@@ -255,13 +253,19 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         //selectAFamilyType();
         //selectACountry();
         //The Actual IDEAL Application
-        new Thread(new IDEALLifeProgram()).start();
+        new Thread(new IDEALLifeProgram()).run();
 
         //tutorialWithFamily();
 
         //chancesOfLife();
         //idealLifeParameters();
         //selectAJob();
+
+        //new IDEALLifeProgram().execute();
+
+
+
+
 
 
     }
@@ -537,6 +541,10 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     //Update the Amount of money it Costs to move from current Country to Next
                     //Tax+BasePrice(100)*CountryMultiplier
                     priceToMoveTextView.setText("Price" + currencyFormat.format((human.getCountry().getTaxes() + 100) * human.getCountry().getMultiplier()));
+
+                    if (age>20){
+                        keepStatsUpToDate(-human.getCountry().getTaxes() + 100 * human.getCountry().getMultiplier(),0,human.getJob(),human.getCountry().getTaxes(),0,0,0,0);
+                    }
                 } catch (Exception e) {
                     Toast.makeText(MainActivity.this, "A Country is needed",
                             Toast.LENGTH_LONG).show();
@@ -1724,7 +1732,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             jobTextView.setText(human.getJob().getName());
-                            keepStatsUpToDate(0.0,0,human.getJob(),human.getCountry().getTaxes(),0,0,friends,professionalAssociates);
+                            age++;
+                            age_Turn_textView.setText("Age: "+age);
+                            keepStatsUpToDate(0.0, 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, friends, professionalAssociates);
 
 
                         }
@@ -1754,6 +1764,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     public void goToSchool(){
         //Increment and Update the amount of times this user went to school
         schoolAttendanceAmount++;
+        age++;
+        age_Turn_textView.setText("Age: "+age);
         schoolAttendanceAmountTextView.setText("School Attendance:" + Integer.toString(schoolAttendanceAmount));
         AlertDialog ad = new AlertDialog.Builder(this)
                 .setNeutralButton("Confrim", new DialogInterface.OnClickListener() {
@@ -1765,8 +1777,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 .setMessage("Go a school:Raises the amount of professional Associates" + "\n" +
                         "Unlocks jobs" + "\n" +
                         "Raises the amount of friends"+"\n"+
-                        "You got charged:$" + 2500 * human.getCountry().getMultiplier()+"\n"+
-                        "School Attendance:"+schoolAttendanceAmount)
+                       "School Attendance:"+schoolAttendanceAmount)
                         //.setIcon(R.drawable.ic_launcher)
                 .setTitle("IDEAL:Going to School")
                 .setCancelable(true)
@@ -1777,6 +1788,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         AlertDialog adNotifier = new AlertDialog.Builder(this)
                 .setNeutralButton("Confrim", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
+
 
                     }
                 })
@@ -1790,7 +1802,10 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
        if (human.getOverAllWealth() >= 1 && human.getInfluence() >= 1 || schoolAttendanceAmount>=0) {
             if (!begger) {
                 begger = true;
-                adNotifier.setMessage("You have unlocked the Begger Job");
+                adNotifier.setMessage(  "You got charged:$" + 2500 * human.getCountry().getMultiplier()+"\n"+"You have unlocked the Begger Job");
+                // public void keepStatsUpToDate(Double overallWealthA, int influenceAmountA, Jobs jobA, /*Countries countryA,*/   Double taxA, int looksA, int worshippersA, int friendsA, int professionalAssociatesA)
+
+                keepStatsUpToDate(-2500.0 * human.getCountry().getMultiplier(),0,human.getJob(),human.getCountry().getTaxes(),0,0,0,0);
                 adNotifier.setCancelable(true);
                 //adNotifier.create();
                 ad.show();
@@ -1799,46 +1814,65 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             }
             if (!vagrant) {
                 vagrant = true;
-                System.out.println("You have unlocked the Vagrant Job");
+                adNotifier.setMessage( "You got charged:$" + 2500 * human.getCountry().getMultiplier()+"\n" + "You have unlocked the Vagrant Job");
+                keepStatsUpToDate(-2500.0 * human.getCountry().getMultiplier(), 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
+                adNotifier.show();
             }
         }if(human.getOverAllWealth()>=10000 && human.getInfluence()>=20000 || schoolAttendanceAmount>=1){
             if(!intern){
                 intern=true;
-                System.out.println("You have unlocked the Intern Job");
+                adNotifier.setMessage( "You got charged:$" + 2500 * human.getCountry().getMultiplier()+"\n"+"You have unlocked the Intern Job");
+                keepStatsUpToDate(-2500.0 * human.getCountry().getMultiplier(), 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
+                adNotifier.show();
             }if(!packingboy){
                 packingboy=true;
-                System.out.println("You have unlocked the Packing boy Job");
+                adNotifier.setMessage( "You got charged:$" + 2500 * human.getCountry().getMultiplier()+"\n"+"You have unlocked the Packing boy Job");
+                keepStatsUpToDate(-2500.0 * human.getCountry().getMultiplier(), 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
+                adNotifier.show();
             }if(!firefighter){
                 firefighter=true;
-                System.out.println("You have unlocked the Firefighter Job");
+                adNotifier.setMessage( "You got charged:$" + 2500 * human.getCountry().getMultiplier()+"\n"+"You have unlocked the Firefighter Job");
+                keepStatsUpToDate(-2500.0 * human.getCountry().getMultiplier(), 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
+                adNotifier.show();
             }
         }if(human.getOverAllWealth()>=70000 && human.getInfluence()>=100000 || schoolAttendanceAmount>=2&&socialisingWithFriends>=2
                 &&workingOnPhysicalApp>=1){
             if(!banker){
                 banker=true;
-                System.out.println("You have unlocked the Banker Job");
+                adNotifier.setMessage( "You got charged:$" + 2500 * human.getCountry().getMultiplier()+"\n"+"You have unlocked the Banker Job");
+                keepStatsUpToDate(-2500.0 * human.getCountry().getMultiplier(), 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
+                adNotifier.show();
             }if(!scientist){
                 scientist=true;
-                System.out.println("You have unlocked the Scientist Job");
+                adNotifier.setMessage( "You got charged:$" + 2500 * human.getCountry().getMultiplier()+"\n"+"You have unlocked the Scientist Job");
+                keepStatsUpToDate(-2500.0 * human.getCountry().getMultiplier(), 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
+                adNotifier.show();
             }if(!independent){
                 independent=true;
-                System.out.println("You have unlocked the Independent Job");
+                adNotifier.setMessage( "You got charged:$" + 2500 * human.getCountry().getMultiplier()+"\n"+"You have unlocked the Independent Job");
+                keepStatsUpToDate(-2500.0 * human.getCountry().getMultiplier(), 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
+                adNotifier.show();
             }if(!firefighter){
                 firefighter=true;
-                System.out.println("You have unlocked the Firefighter Job");
+                adNotifier.setMessage( "You got charged:$" + 2500 * human.getCountry().getMultiplier()+"\n"+"You have unlocked the Firefighter Job");
+                keepStatsUpToDate(-2500.0 * human.getCountry().getMultiplier(), 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
+                adNotifier.show();
             }
         }if(human.getOverAllWealth()>=1000000 && human.getInfluence()>=100000 && human.getFriends()>10000 || schoolAttendanceAmount>=3&&socialisingWithFriends>=3
                 &&workingOnPhysicalApp>=3){
             if(!sultan){
                 sultan=true;
-                System.out.println("You have unlocked the Sultan Job");
+                adNotifier.setMessage( "You got charged:$" + 2500 * human.getCountry().getMultiplier()+"\n"+"You have unlocked the Sultan Job");
+                keepStatsUpToDate(-2500.0 * human.getCountry().getMultiplier(), 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
+                adNotifier.show();
 
             }
         }if(human.getOverAllWealth()>=10000000 && human.getInfluence()>=10000000 && human.getFriends()>100000 && human.getWorshippers()>10000 ||  schoolAttendanceAmount>=4&&socialisingWithFriends>=4
                 &&workingOnPhysicalApp>=4) {
             if (!god) {
                 god = true;
-                System.out.println("You have unlocked the God Job");
+                adNotifier.setMessage( "You got charged:$" + 2500 * human.getCountry().getMultiplier()+"\n"+"You have unlocked the God Job");  adNotifier.show();
+                keepStatsUpToDate(-2500.0 * human.getCountry().getMultiplier(), 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
 
             }
 
@@ -1876,6 +1910,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         human.setInfluence(human.getInfluence() + 1000);
         human.setFriends(human.getFriends() + 1000);
         human.setOverAllwealth(human.getOverAllWealth() - 100 * human.getCountry().getMultiplier());
+        age++;
+        age_Turn_textView.setText("Age: "+age);
+        keepStatsUpToDate(0.0,0,human.getJob(),human.getCountry().getTaxes(),0,0,0,0);
         //System.out.println("Your looks got increased by 1");
         //System.out.println("The amount of worshippers got increased by 100");
         //System.out.println("Your influence got increased by 1000");
@@ -1894,24 +1931,20 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 })
 
                 .setMessage("How many times you socialised with people:" + socialisingWithFriends + "\n" +
-                        "Raises the amount of worshippers" + "\n" +
-                        "Raises the amount of influence" + "\n" +
-                        "Raises the amount of friends" + "\n" +
+
                         "How many times you have worked on your physical appearance:" + workingOnPhysicalApp + "\n" +
                         "Your looks got increased by 1" + "\n" +
                         "The amount of worshippers got increased by 100" + "\n" +
                         "Your influence got increased by 1000" + "\n" +
                         "The amount of friends increased by 1000" + "\n" +
+                        "Your professional Associates got increased by 1000" + "\n" +
                         "You got charged:$" + 100 * human.getCountry().getMultiplier())
 
                 .setTitle("IDEAL:Work on your Physical")
                 .setCancelable(true)
                 .create();
         ad.show();
-        System.out.println("(4)Socialise with People:Raises the amount of friends" + "\n" +
-                "Raises the amount of worshippers" + "\n" +
-                "Raises the amount of influence" + "\n" +
-                "Raises the amount of professional associates");
+
         socialisingWithFriends++;
         socialisingWithFriendsTextView.setText("Socialize Amount:" + Integer.toString(socialisingWithFriends));
         System.out.println("How many times you socialised with people:" + socialisingWithFriends);
@@ -1920,11 +1953,12 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         human.setFriends(human.getFriends() + 10000);
         human.setProfessionalAssociates(human.getProfessionalAssociates() + 1000);
         human.setOverAllwealth(human.getOverAllWealth() - 50 * human.getCountry().getMultiplier());
-        System.out.println("The amount of worshippers got increased by 10");
-        System.out.println("Your influence got increased by 1000");
-        System.out.println("The amount of friends increased by 10000");
-        System.out.println("Your professional Associates got increased by 1000");
-        System.out.println("You got charged:$" + 50 * human.getCountry().getMultiplier());
+        keepStatsUpToDate(0.0,0,human.getJob(),human.getCountry().getTaxes(),0,0,0,0);
+
+
+        age++;
+        age_Turn_textView.setText("Age: "+age);
+
 
     }
 
@@ -1967,7 +2001,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             //FamilyDetails();
 
             age++;
-            age_Turn_textView.setText(age);
+            age_Turn_textView.setText("Age: "+age);
 
         }while(age<20);
         //Once this human reaches 20 years of age then the family's wealth will be given to the human
@@ -2028,41 +2062,46 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 //Calling a Thread for the application
     public class IDEALLifeProgram implements Runnable{
-        public Handler mHandler;
-        @Override
-        public void run() {
-            try {
-                // preparing a looper on current thread
-                // the current thread is being detected implicitly
-                Looper.prepare();
 
-                // now, the handler will automatically bind to the
-                // Looper that is attached to the current thread
-                // You don't need to specify the Looper explicitly
-                mHandler = new Handler();
+    @Override
+    public void run(){
 
-                init();
-                makeYourName();
-                selectAFamilyType();
-                selectACountry();
-                System.out.println("hello");
+               try {
+                   age=0;
+
+                   if(age==0) {
 
 
-                // After the following line the thread will start
-                // running the message loop and will not normally
-                // exit the loop unless a problem happens or you
-                // quit() the looper (see below)
-                Looper.loop();
+                       init();
+                       makeYourName();
+                       selectAFamilyType();
+                          selectACountry();
+                       age++;
+
+                   }else if(age<20 && age>0){
+                       tutorialWithFamily();
+
+                   }
+
+
+
+
+
+
+
+
+
+
             } catch (Throwable t) {
                System.out.println("halted due to an error" + t);
             }
 
 
-            //Tutorial
-            //tutorialWithFamily();
+
 
         }
-    }
+
+}
 
 
         //These methods is for when the application is paused or temporally closed
