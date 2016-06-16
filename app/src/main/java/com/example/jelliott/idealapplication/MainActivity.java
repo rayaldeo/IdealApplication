@@ -64,10 +64,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private TextView socialisingWithFriendsTextView;
     private TextView schoolAttendanceAmountTextView;
     private TextView priceToMoveTextView;
-    /*private TextView friendsAmountTextViewFamily;
-     private TextView influenceAmountTextViewFamily;
-     private TextView wealthAmountTextViewFamily;
-     private TextView looksTextView;*/
     private TextView playerNameTextView;
 
     //TextViews on the Profile Dialog
@@ -89,11 +85,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private static final int PROGRESS = 0x1;
     private Handler mHandler;
     private int mProgressStatusOverAllWealth = 0, mProgressStatusInfluence = 0;
-
-    /*//TextViews on the FamilyType Dialog
-    private EditText friendsAmountEditText;
-    private EditText influenceAmountEditText;
-    private EditText wealthAmountEditText;*/
 
 
     private ProgressBar overallWealthProgressBar;
@@ -307,19 +298,28 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         double influencevalue = ((influenceAmountA * 1.0) / (maxInfluence * 1.0) * 100);
         //Don't need to get the product of (human.getOverAllWealth() / maxOverallWealth) and 100 because the percentFormat already multiplies product
 
-        if (overallWealthA <= 1 || overallwealthvalue <= 1 || overallWealthA <= 0 || overallwealthvalue <= 0) {
+        //This will allow the progress Bars to decrease in value
+       if(overallWealthProgressBar.getProgress()> overallwealthvalue){
+           overallWealthProgressBar.setProgress((int) overallwealthvalue);
+           overallWealthPercentageTextView.setText((int) overallwealthvalue + "%");
+       }
+        if(influenceProgressBar.getProgress()> influencevalue){
+            influenceProgressBar.setProgress((int) influencevalue);
+            influencePercentageTextView.setText((int) influencevalue + "%");
+        }
+        if ( overallwealthvalue <= 1 ) {
             overallWealthProgressBar.setProgress(1);
             overallWealthPercentageTextView.setText("<" + percentFormat.format(0.01));
 
         }
-        if (influenceAmountA <= 1 || influencevalue <= 1 || influenceAmountA <= 0 || influencevalue <= 0) {
+        if ( influencevalue <= 1 ) {
 
             influenceProgressBar.setProgress(1);
             influencePercentageTextView.setText("<" + percentFormat.format(0.01));
         }
 
         // mProgressStatusOverAllWealth = 0,getmProgressStatusInfluence=0
-        //overAllWealthProgress muct be changed to int because Progress Bars does not accept Doubles
+        //overAllWealthProgress must be changed to int because Progress Bars does not accept Doubles
         final int overAllWealthProgress = (int) overallwealthvalue;
         final int influenceProgress = (int) influencevalue;
         // Start lengthy operation in a background thread
@@ -417,8 +417,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 .create();
 
         ad.show();
-
-
 
     }
 
@@ -541,10 +539,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     //Update the Amount of money it Costs to move from current Country to Next
                     //Tax+BasePrice(100)*CountryMultiplier
                     priceToMoveTextView.setText("Price" + currencyFormat.format((human.getCountry().getTaxes() + 100) * human.getCountry().getMultiplier()));
+                    keepStatsUpToDate(-(human.getCountry().getTaxes() + 100 * human.getCountry().getMultiplier()),0,human.getJob(),human.getCountry().getTaxes(),0,0,0,0);
 
-                    if (age>20){
-                        keepStatsUpToDate(-human.getCountry().getTaxes() + 100 * human.getCountry().getMultiplier(),0,human.getJob(),human.getCountry().getTaxes(),0,0,0,0);
-                    }
                 } catch (Exception e) {
                     Toast.makeText(MainActivity.this, "A Country is needed",
                             Toast.LENGTH_LONG).show();
@@ -674,20 +670,16 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                         {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 Object checkedItem;
+
                                 if (customFamilySwitch.isChecked()) {
 
                                     try {
                                         //Constructor being called:public Family( double familyWealthA,double influenceA,int friendsA)
                                         family = new Family(Double.parseDouble(wealthAmountEditText.getText().toString()), Integer.parseInt(influenceAmountEditText.getText().toString()),
                                                 Integer.parseInt(friendsAmountEditText.getText().toString()));
-                                        //family = new Family(10000000.0, 1000000,1000000);
-                                        informationalTextView.setText("FamilyWealth:" + family.getFamilyWealth() + "FamilyInfluence:" + family.getFamilyInfluence());
-                                        //keepStatsUpToDate(Double overallWealthA, int influenceAmountA, Jobs jobA, Countries countryA,
-                                        //Double taxA, int looksA, int worshippersA, int friendsA, int professionalAssociatesA)
                                         keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), human.getJob(),
                                                 tax, human.getLooks(), human.getWorshippers(), family.getFamilyFriends(), human.getProfessionalAssociates());
                                         human.setFriends(Integer.parseInt(friendsAmountEditText.getText().toString()));
-
                                     } catch (Exception e) {
                                         Toast.makeText(MainActivity.this, "A Custom Family with <=0 values",
                                                 Toast.LENGTH_LONG).show();
@@ -695,57 +687,58 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
                                     }
                                 } else {
+                                    checkedItem = familyListView.getAdapter().getItem(familyListView.getCheckedItemPosition());
+                                    //Getting the String from the selected item from the Family List View
+                                    String selectedFamilyType = checkedItem.toString();
                                     //This  try/catch block code catches the (Null Pointer) exception if nothing is selected
-                                    try {
-                                        checkedItem = familyListView.getAdapter().getItem(familyListView.getCheckedItemPosition());
-                                        //Getting the String from the selected item from the Family List View
-                                        String selectedFamilyType = checkedItem.toString();
-                                        Toast.makeText(MainActivity.this, "You have selected " + selectedFamilyType,
-                                                Toast.LENGTH_LONG).show();
-                                        switch (selectedFamilyType) {
+                                    //try {
 
-                                            case "Rich Family":
-                                                father = new FamilyMember(true, familyName, Jobs.BUSINESSOWNER, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
-                                                mother = new FamilyMember(false, familyName, Jobs.BANKTER, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
-                                                sister = new FamilyMember(false, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
-                                                brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
-                                                family = new Family(familyName, brother, sister, father, mother);
-                                                keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), human.getJob(),
-                                                        tax, human.getLooks(), human.getWorshippers(), family.getFamilyFriends(), human.getProfessionalAssociates());
+                                    switch (selectedFamilyType) {
+
+                                        case "Rich Family":
+                                            father = new FamilyMember(true, familyName, Jobs.BUSINESSOWNER, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
+                                            mother = new FamilyMember(false, familyName, Jobs.BANKTER, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
+                                            sister = new FamilyMember(false, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
+                                            brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
+                                            family = new Family(familyName, brother, sister, father, mother);
 
 
-                                                break;
-                                            case "Middle Family":
-                                                father = new FamilyMember(true, familyName, Jobs.FIREFIGHTER, countryOfUser, randomNum * 150, (int) (randomNum * 1.5));
-                                                mother = new FamilyMember(false, familyName, Jobs.FIREFIGHTER, countryOfUser, randomNum * 150, (int) (randomNum * 1.5));
-                                                sister = new FamilyMember(false, familyName, Jobs.NOJOB, countryOfUser, randomNum * 150, (int) (randomNum * 1.5));
-                                                brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 150, (int) (randomNum * 1.5));
-                                                family = new Family(familyName, brother, sister, father, mother);
-                                                keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), human.getJob(),
-                                                        tax, human.getLooks(), human.getWorshippers(), family.getFamilyFriends(), human.getProfessionalAssociates());
+                                            break;
+                                        case "Middle Family":
+                                            father = new FamilyMember(true, familyName, Jobs.FIREFIGHTER, countryOfUser, randomNum * 150, (int) (randomNum * 1.5));
+                                            mother = new FamilyMember(false, familyName, Jobs.FIREFIGHTER, countryOfUser, randomNum * 150, (int) (randomNum * 1.5));
+                                            sister = new FamilyMember(false, familyName, Jobs.NOJOB, countryOfUser, randomNum * 150, (int) (randomNum * 1.5));
+                                            brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 150, (int) (randomNum * 1.5));
+                                            family = new Family(familyName, brother, sister, father, mother);
 
-                                                break;
-                                            default:
-                                                father = new FamilyMember(true, familyName, Jobs.BEGGER, countryOfUser, randomNum * 75, (int) (randomNum * 1.5));
-                                                mother = new FamilyMember(false, familyName, Jobs.PACKINGBOY, countryOfUser, randomNum * 75, (int) (randomNum * 1.5));
-                                                sister = new FamilyMember(false, familyName, Jobs.INTERN, countryOfUser, randomNum * 75, (int) (randomNum * 1.5));
-                                                brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 75, (int) (randomNum * 1.5));
-                                                family = new Family(familyName, brother, sister, father, mother);
-                                                keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), human.getJob(),
-                                                        tax, human.getLooks(), human.getWorshippers(), family.getFamilyFriends(), human.getProfessionalAssociates());
 
-                                                break;
-                                        }
-                                        dialogShown=false;
-                                        Toast.makeText(MainActivity.this, "You have selected " + checkedItem.toString(),
-                                                Toast.LENGTH_LONG).show();
-                                    } catch (Exception e) {
-                                        Toast.makeText(MainActivity.this, "A Family Type is needed",
-                                                Toast.LENGTH_LONG).show();
-                                        selectAFamilyType();
+                                            break;
+                                        default:
+                                            father = new FamilyMember(true, familyName, Jobs.BEGGER, countryOfUser, randomNum * 75, (int) (randomNum * 1.5));
+                                            mother = new FamilyMember(false, familyName, Jobs.PACKINGBOY, countryOfUser, randomNum * 75, (int) (randomNum * 1.5));
+                                            sister = new FamilyMember(false, familyName, Jobs.INTERN, countryOfUser, randomNum * 75, (int) (randomNum * 1.5));
+                                            brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 75, (int) (randomNum * 1.5));
+                                            family = new Family(familyName, brother, sister, father, mother);
 
+                                            break;
                                     }
+                                    keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), human.getJob(),
+                                            tax, human.getLooks(), human.getWorshippers(), family.getFamilyFriends(), human.getProfessionalAssociates());
+
+
+                                    dialogShown = false;
+                                    Toast.makeText(MainActivity.this, "You have selected " + checkedItem.toString(),
+                                            Toast.LENGTH_LONG).show();
+
+                                    //} catch (Exception e) {
+                                    //Toast.makeText(MainActivity.this, "A Family Type is needed",
+                                    // Toast.LENGTH_LONG).show();
+                                    //selectAFamilyType();
+
+                                    //}
                                 }
+
+
                             }
 
 
@@ -754,6 +747,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 );
         familyListView.setAdapter(adapter);
         alertDialog.show();
+
     }
 
 
@@ -1358,17 +1352,17 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
         //This "if" statement is going to see whether our percentage function will give something less than 1...which the progress bars can no handle
-        if (overallWealthTextView.getText().length() <= 5 || overallWealthA < 1000000) {
-            overallWealthA = 1.0;
+        if (overallWealthTextView.getText().length() <= 5 ) {
+            calculateTheProgressBarPercentage(1.0, human.getInfluence());
 
 
         }
         if (influenceTextView.getText().length() <= 4) {
-            influenceAmountA = 1;
+            calculateTheProgressBarPercentage(human.getOverAllWealth(), 1);
 
         }
 
-        calculateTheProgressBarPercentage(overallWealthA, influenceAmountA);
+        calculateTheProgressBarPercentage(human.getOverAllWealth(),human.getInfluence());
 
         //calculateTheProgressBarPercentage(1.0, 1);
         /*neighbourhoodTextView.setText("Neighbourhood:"+human.getNeighborhood());
@@ -1733,7 +1727,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                         public void onClick(DialogInterface dialog, int whichButton) {
                             jobTextView.setText(human.getJob().getName());
                             age++;
-                            age_Turn_textView.setText("Age: "+age);
+                            age_Turn_textView.setText("Age: " + age);
                             keepStatsUpToDate(0.0, 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, friends, professionalAssociates);
 
 
@@ -1767,6 +1761,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         age++;
         age_Turn_textView.setText("Age: "+age);
         schoolAttendanceAmountTextView.setText("School Attendance:" + Integer.toString(schoolAttendanceAmount));
+        //This String Variable is used to hold all of the messages in one string
+        String chainText="";
         AlertDialog ad = new AlertDialog.Builder(this)
                 .setNeutralButton("Confrim", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
@@ -1793,7 +1789,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     }
                 })
 
-
                 .setTitle("IDEAL:Going to School")
                 .setCancelable(true)
                 .create();
@@ -1802,81 +1797,101 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
        if (human.getOverAllWealth() >= 1 && human.getInfluence() >= 1 || schoolAttendanceAmount>=0) {
             if (!begger) {
                 begger = true;
-                adNotifier.setMessage(  "You got charged:$" + 2500 * human.getCountry().getMultiplier()+"\n"+"You have unlocked the Begger Job");
+                chainText+="You got charged:$" + 2500 * human.getCountry().getMultiplier() + "\n" + "You have unlocked the Begger Job";
+                adNotifier.setMessage(chainText);
                 // public void keepStatsUpToDate(Double overallWealthA, int influenceAmountA, Jobs jobA, /*Countries countryA,*/   Double taxA, int looksA, int worshippersA, int friendsA, int professionalAssociatesA)
 
-                keepStatsUpToDate(-2500.0 * human.getCountry().getMultiplier(),0,human.getJob(),human.getCountry().getTaxes(),0,0,0,0);
-                adNotifier.setCancelable(true);
-                //adNotifier.create();
-                ad.show();
-                adNotifier.show();
+                human.setOverAllwealth(human.getOverAllWealth()-2500.0 * human.getCountry().getMultiplier());
 
+                keepStatsUpToDate(0.0, 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
             }
             if (!vagrant) {
                 vagrant = true;
                 adNotifier.setMessage( "You got charged:$" + 2500 * human.getCountry().getMultiplier()+"\n" + "You have unlocked the Vagrant Job");
-                keepStatsUpToDate(-2500.0 * human.getCountry().getMultiplier(), 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
-                adNotifier.show();
+                human.setOverAllwealth(human.getOverAllWealth()-2500.0 * human.getCountry().getMultiplier());
+
+                keepStatsUpToDate(0.0, 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
+
             }
         }if(human.getOverAllWealth()>=10000 && human.getInfluence()>=20000 || schoolAttendanceAmount>=1){
             if(!intern){
                 intern=true;
-                adNotifier.setMessage( "You got charged:$" + 2500 * human.getCountry().getMultiplier()+"\n"+"You have unlocked the Intern Job");
-                keepStatsUpToDate(-2500.0 * human.getCountry().getMultiplier(), 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
-                adNotifier.show();
+                adNotifier.setMessage("You got charged:$" + 2500 * human.getCountry().getMultiplier() + "\n" + "You have unlocked the Intern Job");
+                human.setOverAllwealth(human.getOverAllWealth() - 2500.0 * human.getCountry().getMultiplier());
+
+                keepStatsUpToDate(0.0, 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
+
             }if(!packingboy){
                 packingboy=true;
-                adNotifier.setMessage( "You got charged:$" + 2500 * human.getCountry().getMultiplier()+"\n"+"You have unlocked the Packing boy Job");
-                keepStatsUpToDate(-2500.0 * human.getCountry().getMultiplier(), 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
-                adNotifier.show();
+                adNotifier.setMessage("You got charged:$" + 2500 * human.getCountry().getMultiplier() + "\n" + "You have unlocked the Packing boy Job");
+                human.setOverAllwealth(human.getOverAllWealth() - 2500.0 * human.getCountry().getMultiplier());
+
+                keepStatsUpToDate(0.0, 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
+
             }if(!firefighter){
                 firefighter=true;
-                adNotifier.setMessage( "You got charged:$" + 2500 * human.getCountry().getMultiplier()+"\n"+"You have unlocked the Firefighter Job");
-                keepStatsUpToDate(-2500.0 * human.getCountry().getMultiplier(), 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
-                adNotifier.show();
+                adNotifier.setMessage("You got charged:$" + 2500 * human.getCountry().getMultiplier() + "\n" + "You have unlocked the Firefighter Job");
+                human.setOverAllwealth(human.getOverAllWealth() - 2500.0 * human.getCountry().getMultiplier());
+
+                keepStatsUpToDate(0.0, 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
             }
         }if(human.getOverAllWealth()>=70000 && human.getInfluence()>=100000 || schoolAttendanceAmount>=2&&socialisingWithFriends>=2
                 &&workingOnPhysicalApp>=1){
             if(!banker){
                 banker=true;
-                adNotifier.setMessage( "You got charged:$" + 2500 * human.getCountry().getMultiplier()+"\n"+"You have unlocked the Banker Job");
-                keepStatsUpToDate(-2500.0 * human.getCountry().getMultiplier(), 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
-                adNotifier.show();
+                adNotifier.setMessage("You got charged:$" + 2500 * human.getCountry().getMultiplier() + "\n" + "You have unlocked the Banker Job");
+                human.setOverAllwealth(human.getOverAllWealth() - 2500.0 * human.getCountry().getMultiplier());
+
+                keepStatsUpToDate(0.0, 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
+
             }if(!scientist){
                 scientist=true;
-                adNotifier.setMessage( "You got charged:$" + 2500 * human.getCountry().getMultiplier()+"\n"+"You have unlocked the Scientist Job");
-                keepStatsUpToDate(-2500.0 * human.getCountry().getMultiplier(), 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
-                adNotifier.show();
+                adNotifier.setMessage("You got charged:$" + 2500 * human.getCountry().getMultiplier() + "\n" + "You have unlocked the Scientist Job");
+                human.setOverAllwealth(human.getOverAllWealth() - 2500.0 * human.getCountry().getMultiplier());
+
+                keepStatsUpToDate(0.0, 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
             }if(!independent){
                 independent=true;
-                adNotifier.setMessage( "You got charged:$" + 2500 * human.getCountry().getMultiplier()+"\n"+"You have unlocked the Independent Job");
-                keepStatsUpToDate(-2500.0 * human.getCountry().getMultiplier(), 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
-                adNotifier.show();
+                adNotifier.setMessage("You got charged:$" + 2500 * human.getCountry().getMultiplier() + "\n" + "You have unlocked the Independent Job");
+                human.setOverAllwealth(human.getOverAllWealth() - 2500.0 * human.getCountry().getMultiplier());
+
+                keepStatsUpToDate(0.0, 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
+
             }if(!firefighter){
                 firefighter=true;
-                adNotifier.setMessage( "You got charged:$" + 2500 * human.getCountry().getMultiplier()+"\n"+"You have unlocked the Firefighter Job");
-                keepStatsUpToDate(-2500.0 * human.getCountry().getMultiplier(), 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
-                adNotifier.show();
+                adNotifier.setMessage("You got charged:$" + 2500 * human.getCountry().getMultiplier() + "\n" + "You have unlocked the Firefighter Job");
+                human.setOverAllwealth(human.getOverAllWealth() - 2500.0 * human.getCountry().getMultiplier());
+
+                keepStatsUpToDate(0.0, 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
             }
         }if(human.getOverAllWealth()>=1000000 && human.getInfluence()>=100000 && human.getFriends()>10000 || schoolAttendanceAmount>=3&&socialisingWithFriends>=3
                 &&workingOnPhysicalApp>=3){
             if(!sultan){
                 sultan=true;
-                adNotifier.setMessage( "You got charged:$" + 2500 * human.getCountry().getMultiplier()+"\n"+"You have unlocked the Sultan Job");
-                keepStatsUpToDate(-2500.0 * human.getCountry().getMultiplier(), 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
-                adNotifier.show();
+                adNotifier.setMessage("You got charged:$" + 2500 * human.getCountry().getMultiplier() + "\n" + "You have unlocked the Sultan Job");
+                human.setOverAllwealth(human.getOverAllWealth() - 2500.0 * human.getCountry().getMultiplier());
+
+                keepStatsUpToDate(0.0, 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
+
 
             }
         }if(human.getOverAllWealth()>=10000000 && human.getInfluence()>=10000000 && human.getFriends()>100000 && human.getWorshippers()>10000 ||  schoolAttendanceAmount>=4&&socialisingWithFriends>=4
                 &&workingOnPhysicalApp>=4) {
             if (!god) {
                 god = true;
-                adNotifier.setMessage( "You got charged:$" + 2500 * human.getCountry().getMultiplier()+"\n"+"You have unlocked the God Job");  adNotifier.show();
-                keepStatsUpToDate(-2500.0 * human.getCountry().getMultiplier(), 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
+                adNotifier.setMessage("You got charged:$" + 2500 * human.getCountry().getMultiplier() + "\n" + "You have unlocked the God Job");
+                adNotifier.show();
+                human.setOverAllwealth(human.getOverAllWealth()-2500.0 * human.getCountry().getMultiplier());
+
+                keepStatsUpToDate(0.0, 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
+
 
             }
 
         }
+        adNotifier.setCancelable(true);
+        ad.show();
+        adNotifier.show();
 
     }
 
@@ -1932,8 +1947,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
                 .setMessage("How many times you socialised with people:" + socialisingWithFriends + "\n" +
 
-                        "How many times you have worked on your physical appearance:" + workingOnPhysicalApp + "\n" +
-                        "Your looks got increased by 1" + "\n" +
                         "The amount of worshippers got increased by 100" + "\n" +
                         "Your influence got increased by 1000" + "\n" +
                         "The amount of friends increased by 1000" + "\n" +
@@ -2103,8 +2116,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 }
 
-
-        //These methods is for when the application is paused or temporally closed
+    //These methods is for when the application is paused or temporally closed
     public void onResume() {
         super.onResume();
         //mBackgroundSound.execute(null);

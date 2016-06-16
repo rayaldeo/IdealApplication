@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:weightSum="1"
     android:theme="@style/AppTheme"
     android:background="@color/backgroundColor">
@@ -36,7 +36,7 @@
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
 
-        android:weightSum="1"
+        android:weightSum="10"
         android:id="@+id/linearLayout"
         android:layout_gravity="bottom|center_vertical">
         <!--android:layout_toRightOf="@+id/frameLayout"-->
