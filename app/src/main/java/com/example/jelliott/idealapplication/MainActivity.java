@@ -244,6 +244,17 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         //selectAFamilyType();
         //selectACountry();
         //The Actual IDEAL Application
+        //Disable and Gray out Buttons while the user is with family
+        changeCountryButton.setEnabled(false);
+
+        selectAJobButton.setEnabled(false);
+
+        schoolButton.setEnabled(false);
+
+        workOnPhysicalAppearanceButton.setEnabled(false);
+
+        socializeWithPeopleButton.setEnabled(false);
+
         new Thread(new IDEALLifeProgram()).run();
 
         //tutorialWithFamily();
@@ -410,7 +421,16 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 .setTitle("IDEAL")
                 .setNeutralButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                       dialogShown=false;
+                        dialogShown = false;
+                        try {
+                            tutorialWithFamily();
+
+                        } catch (NullPointerException e) {
+                            Toast.makeText(MainActivity.this, "Ooops,something went wrong.Let's try again!",
+                                    Toast.LENGTH_LONG).show();
+                            tutorialWithFamily();
+                         }
+
                     }
                 })
                 .setCancelable(false)
@@ -474,8 +494,12 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         alertDialog.setTitle("Choose a Country");
 
         final ListView countrieslistView = (ListView) convertView.findViewById(R.id.countriesListXML);
-        //countrieslistView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, countries);
+        //Disable certain Items on the Countries List View
+        //countrieslistView.getChildAt(9).setEnabled(false);
+        //countrieslistView.getChildAt(9).setBackgroundColor(Color.parseColor("#d3d3d3"));
+
         alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 Object checkedItem;
@@ -680,6 +704,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                                         keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), human.getJob(),
                                                 tax, human.getLooks(), human.getWorshippers(), family.getFamilyFriends(), human.getProfessionalAssociates());
                                         human.setFriends(Integer.parseInt(friendsAmountEditText.getText().toString()));
+                                        //Null point
+                                        Toast.makeText(MainActivity.this, "You have selected a Custom Family"+family,
+                                                Toast.LENGTH_LONG).show();
                                     } catch (Exception e) {
                                         Toast.makeText(MainActivity.this, "A Custom Family with <=0 values",
                                                 Toast.LENGTH_LONG).show();
@@ -697,7 +724,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
                                         case "Rich Family":
                                             father = new FamilyMember(true, familyName, Jobs.BUSINESSOWNER, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
-                                            mother = new FamilyMember(false, familyName, Jobs.BANKTER, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
+                                            mother = new FamilyMember(false, familyName, Jobs.BANKER, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
                                             sister = new FamilyMember(false, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
                                             brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
                                             family = new Family(familyName, brother, sister, father, mother);
@@ -727,7 +754,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
                                     dialogShown = false;
-                                    Toast.makeText(MainActivity.this, "You have selected " + checkedItem.toString(),
+                                    Toast.makeText(MainActivity.this, "You have selected " + checkedItem.toString()+family,
                                             Toast.LENGTH_LONG).show();
 
                                     //} catch (Exception e) {
@@ -1126,6 +1153,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         }
 
         ad.show();
+        keepStatsUpToDate(0.0,0,human.getJob(),human.getCountry().getTaxes(),0,0,0,0);
 
     }
 
@@ -1274,7 +1302,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                         firefighter = true;
                         break;
                     case 5:
-                        tempJobA = Jobs.BANKTER;
+                        tempJobA = Jobs.BANKER;
                         banker = true;
                         break;
                     case 6:
@@ -1567,7 +1595,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
                 professionalAssociates = 200;
                 friends = 50;
-                human.setJob(Jobs.BANKTER);
+                human.setJob(Jobs.BANKER);
 
             }
         });
@@ -1659,7 +1687,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
         //If statments to show only certain Buttons
-        if (age < 20) {
+        if (age < 20 || schoolAttendanceAmount<1) {
             layout.addView(jobButtonPackingBoy);//PackingBoy
             layout.addView(jobButtonIntern);//Intern
         } else {
@@ -1718,10 +1746,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             final ScrollView scrollView = new ScrollView(this);
             scrollView.addView(layout);
 
-            AlertDialog ad = new AlertDialog.Builder(this)
+        AlertDialog ad = new AlertDialog.Builder(this)
 
                     .setMessage("Select A Job. \n Current Country:"+human.getCountry())
-                            //.setIcon(R.drawable.ic_launcher)
                     .setTitle("IDEAL")
                     .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
@@ -1976,6 +2003,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     }
 
     public void tutorialWithFamily(){
+
         AlertDialog ad = new AlertDialog.Builder(this)
                 .setNeutralButton("Confrim", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
@@ -2019,6 +2047,17 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         }while(age<20);
         //Once this human reaches 20 years of age then the family's wealth will be given to the human
         human.setWealth(family.getFamilyWealth());
+        //Enable Buttons when the user is done with the Family
+        changeCountryButton.setEnabled(true);
+
+        selectAJobButton.setEnabled(false);
+
+        schoolButton.setEnabled(false);
+
+        workOnPhysicalAppearanceButton.setEnabled(false);
+
+        socializeWithPeopleButton.setEnabled(false);
+
         human.setOverAllwealth(family.getFamilyWealth() + human.getOverAllWealth());
 
     }
