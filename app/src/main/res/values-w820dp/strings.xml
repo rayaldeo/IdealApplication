@@ -48,6 +48,10 @@
     <string name="accept_Country_text">Accept Country</string>
     <string name="playerNameText">playerNameText</string>
     <string name="priceToMove_Text">Price To Move</string>
+    <string name="customFamily_fatherTab_text">Father</string>
+    <string name="customFamily_motherTab_text">Mother</string>
+    <string name="customFamily_sisterTab_text">Sister</string>
+    <string name="customFamily_brotherTab_text">Brother</string>
 
     <string-array name="countries">
         <item>Irada</item>

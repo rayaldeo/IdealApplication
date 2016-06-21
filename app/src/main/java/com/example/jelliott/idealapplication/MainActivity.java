@@ -140,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
         //Before ANYTHING CREATE A HUMAN TO SET THE BASIC VARIABLES OF A HUMAN
         human = new Human();
 
@@ -265,11 +266,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         //new IDEALLifeProgram().execute();
 
-
-
-
-
-
     }
 
     @Override
@@ -304,20 +300,25 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         So that no number less than Zero is placed into the progressBar and potentially crashing the program
          */
         //Calculate the OverAllWealth Percentage
-        double overallwealthvalue = ((overallWealthA / maxOverallWealth) * 100);//Complete the whole percentage equation and then convert number to Int for the Progress Bars
+        final double overallwealthvalue = ((overallWealthA / maxOverallWealth) * 100);//Complete the whole percentage equation and then convert number to Int for the Progress Bars
         //Calculate the influence Percentage
-        double influencevalue = ((influenceAmountA * 1.0) / (maxInfluence * 1.0) * 100);
+        final double influencevalue = ((influenceAmountA * 1.0) / (maxInfluence * 1.0) * 100);
         //Don't need to get the product of (human.getOverAllWealth() / maxOverallWealth) and 100 because the percentFormat already multiplies product
 
-        //This will allow the progress Bars to decrease in value
+        //This will allow the progress Bars to decrease in value //DECREMENT PROGRESSBAR
        if(overallWealthProgressBar.getProgress()> overallwealthvalue){
            overallWealthProgressBar.setProgress((int) overallwealthvalue);
            overallWealthPercentageTextView.setText((int) overallwealthvalue + "%");
+
+
        }
         if(influenceProgressBar.getProgress()> influencevalue){
             influenceProgressBar.setProgress((int) influencevalue);
             influencePercentageTextView.setText((int) influencevalue + "%");
-        }
+
+       }
+
+        //INCREMENT PROGRESSBAR
         if ( overallwealthvalue <= 1 ) {
             overallWealthProgressBar.setProgress(1);
             overallWealthPercentageTextView.setText("<" + percentFormat.format(0.01));
@@ -422,14 +423,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 .setNeutralButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         dialogShown = false;
-                        try {
-                            tutorialWithFamily();
-
-                        } catch (NullPointerException e) {
-                            Toast.makeText(MainActivity.this, "Ooops,something went wrong.Let's try again!",
-                                    Toast.LENGTH_LONG).show();
-                            tutorialWithFamily();
-                         }
 
                     }
                 })
@@ -469,6 +462,15 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                         playerNameTextView.setText(firstNamePart);
                         lastNamePart = userNameFamily.getText().toString();
                         dialogShown=false;
+                        try {
+                            tutorialWithFamily();
+
+                        } catch (NullPointerException e) {
+                            Toast.makeText(MainActivity.this, "Ooops,something went wrong.Let's try again!",
+                                    Toast.LENGTH_LONG).show();
+                            tutorialWithFamily();
+                        }
+
 
 
                     }
@@ -499,6 +501,13 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         //Disable certain Items on the Countries List View
         //countrieslistView.getChildAt(9).setEnabled(false);
         //countrieslistView.getChildAt(9).setBackgroundColor(Color.parseColor("#d3d3d3"));
+
+        if(age>1) {
+            alertDialog.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                }
+            });
+        }
 
         alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
@@ -577,6 +586,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         })
 
                 .setCancelable(false);
+
         countrieslistView.setAdapter(adapter);
         alertDialog.show();
 
@@ -698,9 +708,16 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                                 if (customFamilySwitch.isChecked()) {
 
                                     try {
-                                        //Constructor being called:public Family( double familyWealthA,double influenceA,int friendsA)
+                                        //Constructor being called:public Family( double familyWealthA,double influenceA,int friendsA)NOTE:This constructor was upgraded because of the family update method calling the indiviual family members
+                                        father = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
+                                        mother = new FamilyMember(false, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
+                                        sister = new FamilyMember(false, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
+                                        brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
+                                        //Cusom Family Constructor
+                                        //public Family( double familyWealthA,int influenceA,int friendsA,String familyNameA,FamilyMember brotherA, FamilyMember sisterA, FamilyMember fatherA, FamilyMember motherA){
                                         family = new Family(Double.parseDouble(wealthAmountEditText.getText().toString()), Integer.parseInt(influenceAmountEditText.getText().toString()),
-                                                Integer.parseInt(friendsAmountEditText.getText().toString()));
+                                                Integer.parseInt(friendsAmountEditText.getText().toString()),familyName,brother,sister,father,mother);
+
                                         keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), human.getJob(),
                                                 tax, human.getLooks(), human.getWorshippers(), family.getFamilyFriends(), human.getProfessionalAssociates());
                                         human.setFriends(Integer.parseInt(friendsAmountEditText.getText().toString()));
@@ -1966,13 +1983,12 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     public void socializeWithPeople(){
         AlertDialog ad = new AlertDialog.Builder(this)
-                .setNeutralButton("Confrim", new DialogInterface.OnClickListener() {
+             .setNeutralButton("Confrim", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
 
                     }
                 })
-
-                .setMessage("How many times you socialised with people:" + socialisingWithFriends + "\n" +
+              .setMessage("How many times you socialised with people:" + socialisingWithFriends + "\n" +
 
                         "The amount of worshippers got increased by 100" + "\n" +
                         "Your influence got increased by 1000" + "\n" +
@@ -2050,13 +2066,13 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         //Enable Buttons when the user is done with the Family
         changeCountryButton.setEnabled(true);
 
-        selectAJobButton.setEnabled(false);
+        selectAJobButton.setEnabled(true);
 
-        schoolButton.setEnabled(false);
+        schoolButton.setEnabled(true);
 
-        workOnPhysicalAppearanceButton.setEnabled(false);
+        workOnPhysicalAppearanceButton.setEnabled(true);
 
-        socializeWithPeopleButton.setEnabled(false);
+        socializeWithPeopleButton.setEnabled(true);
 
         human.setOverAllwealth(family.getFamilyWealth() + human.getOverAllWealth());
 

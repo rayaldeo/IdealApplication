@@ -32,7 +32,7 @@
         android:elevation="@dimen/elevation_shadow_amount"
         android:digits="0123456789."
         android:inputType="numberDecimal"
-        android:maxLength="7"
+        android:maxLength="5"
         android:visibility="invisible"
         android:layout_below="@+id/influenceAmountEditText"
         android:layout_alignParentLeft="true"
@@ -51,7 +51,7 @@
         android:elevation="@dimen/elevation_shadow_amount"
         android:digits="0123456789."
         android:inputType="numberDecimal"
-        android:maxLength="7"
+        android:maxLength="5"
         android:visibility="invisible"
         android:layout_below="@+id/wealthAmountEditText"
         android:layout_alignParentLeft="true"
@@ -69,7 +69,7 @@
         android:elevation="@dimen/elevation_shadow_amount"
         android:digits="0123456789."
         android:inputType="numberDecimal"
-        android:maxLength="7"
+        android:maxLength="5"
         android:visibility="invisible"
         android:layout_below="@+id/customFamilySwitch"
         android:layout_alignParentLeft="true"
@@ -86,7 +86,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:textColor="#ffffff"
-        android:textSize="20dp" />
+        android:textSize="20sp" />
 
 
     <!--<SlidingDrawer

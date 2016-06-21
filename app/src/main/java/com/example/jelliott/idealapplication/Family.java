@@ -28,11 +28,25 @@ public class Family {
         this.familyFriends=0;
     }
 
-    public Family( double familyWealthA,int influenceA,int friendsA){
+    public Family( double familyWealthA,int influenceA,int friendsA,String familyNameA,FamilyMember brotherA, FamilyMember sisterA, FamilyMember fatherA, FamilyMember motherA){
+        this.familyName = familyNameA;
+        this.familyFatherName ="Mr."+familyName;
+        this.familyBrotherName = "Brother "+ familyName;
+        this.familyMotherName = "Mrs."+ familyName;
+        this.familySisterName = "Sister "+ familyName;
         this.familyWealth=familyWealthA;
         this.familyInfluence=influenceA;
         this.familyFriends=friendsA;
         this.familyWorshippers=0;
+        this.father =fatherA;
+        this.mother = motherA;
+        this.sister = sisterA;
+        this.brother = brotherA;
+        family.add(fatherA);
+        family.add(motherA);
+        family.add(sisterA);
+        family.add(brotherA);
+        country=fatherA.getCountry();
     }
 
         //FamilyMemeber Constructor
