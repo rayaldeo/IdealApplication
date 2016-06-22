@@ -32,7 +32,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.List;
@@ -130,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private boolean influencActivation = false;
     private boolean heavenBoolean = false;
     private int tempNum = age - 10;
-    //This boolean is tokeep track whether the user is done intializing their IDEAL Life
+    //This boolean is to keep track whether the user is done intializing their IDEAL Life
     boolean dialogShown=true;
     //For selecting and image
     private static final int SELECT_PHOTO = 100;
@@ -214,10 +213,16 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         profileImage.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                /*Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                 photoPickerIntent.setType("image/*");
                 startActivityForResult(photoPickerIntent, SELECT_PHOTO);
-                profileImage.setImageURI(photoPickerIntent.getData());
+                profileImage.setImageURI(photoPickerIntent.getData());*/
+                // TODO Auto-generated method stub
+                Intent intent = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, 0);
+
+
                 return false;
             }
         });
@@ -246,16 +251,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         //selectACountry();
         //The Actual IDEAL Application
         //Disable and Gray out Buttons while the user is with family
-        changeCountryButton.setEnabled(false);
 
-        selectAJobButton.setEnabled(false);
-
-        schoolButton.setEnabled(false);
-
-        workOnPhysicalAppearanceButton.setEnabled(false);
-
-        socializeWithPeopleButton.setEnabled(false);
-
+        buttonActivation(false);
         new Thread(new IDEALLifeProgram()).run();
 
         //tutorialWithFamily();
@@ -285,6 +282,10 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             init();
+            return true;
+
+        }if(id==R.id.familyTutorial){
+            profilePictureDialogFamilyTutorial();
             return true;
 
         }
@@ -572,7 +573,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     //Update the Amount of money it Costs to move from current Country to Next
                     //Tax+BasePrice(100)*CountryMultiplier
                     priceToMoveTextView.setText("Price" + currencyFormat.format((human.getCountry().getTaxes() + 100) * human.getCountry().getMultiplier()));
-                    keepStatsUpToDate(-(human.getCountry().getTaxes() + 100 * human.getCountry().getMultiplier()),0,human.getJob(),human.getCountry().getTaxes(),0,0,0,0);
+                    if(age>1) {
+                        keepStatsUpToDate(-(human.getCountry().getTaxes() + 100 * human.getCountry().getMultiplier()), 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
+                    }
 
                 } catch (Exception e) {
                     Toast.makeText(MainActivity.this, "A Country is needed",
@@ -1984,17 +1987,17 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     public void socializeWithPeople(){
         AlertDialog ad = new AlertDialog.Builder(this)
              .setNeutralButton("Confrim", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
+                 public void onClick(DialogInterface dialog, int whichButton) {
 
-                    }
-                })
+                 }
+             })
               .setMessage("How many times you socialised with people:" + socialisingWithFriends + "\n" +
 
-                        "The amount of worshippers got increased by 100" + "\n" +
-                        "Your influence got increased by 1000" + "\n" +
-                        "The amount of friends increased by 1000" + "\n" +
-                        "Your professional Associates got increased by 1000" + "\n" +
-                        "You got charged:$" + 100 * human.getCountry().getMultiplier())
+                      "The amount of worshippers got increased by 100" + "\n" +
+                      "Your influence got increased by 1000" + "\n" +
+                      "The amount of friends increased by 1000" + "\n" +
+                      "Your professional Associates got increased by 1000" + "\n" +
+                      "You got charged:$" + 100 * human.getCountry().getMultiplier())
 
                 .setTitle("IDEAL:Work on your Physical")
                 .setCancelable(true)
@@ -2009,7 +2012,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         human.setFriends(human.getFriends() + 10000);
         human.setProfessionalAssociates(human.getProfessionalAssociates() + 1000);
         human.setOverAllwealth(human.getOverAllWealth() - 50 * human.getCountry().getMultiplier());
-        keepStatsUpToDate(0.0,0,human.getJob(),human.getCountry().getTaxes(),0,0,0,0);
+        keepStatsUpToDate(0.0, 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
 
 
         age++;
@@ -2075,26 +2078,131 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         socializeWithPeopleButton.setEnabled(true);
 
         human.setOverAllwealth(family.getFamilyWealth() + human.getOverAllWealth());
+        grownUpHuman();
+
+    }
+
+    public void grownUpHuman(){
+        AlertDialog ad = new AlertDialog.Builder(this)
+                .setNeutralButton("Confrim", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                    }
+                })
+
+                .setTitle("IDEAL:Tutorial With Family/Initial State")
+
+                .setCancelable(false)
+                .create();
+
+        //To display to the use that the application is in the Tutorial State
+        ad.setMessage("You are now an adult and will have to work on your own now to secure you IDEAL Life"+"\n"
+                +"If you can reach $10,000,000 in wealth and 2,000,000 in influence;you would have won the game!!"
+                +"\n There are also many other features to unlock in the game"
+                +"\n Create your IDEAL Life");
+        ad.show();
+
+        //First alertDialog for the Tutorial
+        ad.setMessage("Family Wealth: " + family.getFamilyWealth() + "|" + "Country: " + human.getCountry().getName() + "Taxes: " + human.getCountry().getTaxes());
+        ad.show();
+
+
+        System.out.println("Adult||Initial Wealth:"+human.getInitialWealth()+"|"+"|"+human.getCountry().getName()+"|"+"|"+human.getCountry().getTaxes()+"|| Neighborhood: "+human.getNeighborhood());
+        do {
+
+
+            ///This is so that the user will make a decision  happens every four turns and NOT every turn
+            if ((age % 4) == 0) {
+                //-->makeLifeDecisions();
+                //countries.setTaxes(countries.getMultiplier() * countries.getTaxes());
+                buttonActivation(true);
+
+            }
+            randomNum = rand.nextInt(30);
+            //System.out.println(randomNum);
+            if (randomNum <= 13) {
+                chancesOfLife();
+            }
+
+
+            System.out.println("Turn: " + age + "\n" + "|Adult" + "|" + human.getOverAllWealth() + "|" + "|" + human.getCountry().getName() + "|" + "|" + human.getCountry().getTaxes());
+
+
+            //Once the player reaches 100000 worshippers, the player will become a god
+            //it only needs to be activated once and the benefit should automatically apply without the player being notified again
+            //Permanent benefit once it is activated
+            if(worshippersActivation) {//this will play once the upgrade is activated
+                //job = Jobs.GOD;
+                human.setJob(Jobs.GOD);
+                this.worshippersFollow(worshippersActivation);
+                heavenBoolean=true;
+
+            }else if(human.getWorshippers()>=100000&& !worshippersActivation){//This will play first when the upgrade is activated for the
+                //First time
+                human.setJob(Jobs.GOD);
+                //job = Jobs.GOD;
+                this.worshippersFollow(worshippersActivation);
+                heavenBoolean=true;
+                ad.setMessage("You have earned enough worshippers to become a God.Rule over all!!"+"\n"+"You have also gained access to heaven");
+                ad.show();
+            }else{
+                this.worshippersFollow(worshippersFollow);
+            }
+
+
+            //Once the player reaches 100000 in influence, the player will get paid $100000 every turn
+            //it only needs to be activated once and the benefit should automatically apply without the player being notified again
+            //Permanent benefit once it is activated
+            if(influencActivation){
+                ad.setMessage("You have gained 100000 in wealth");
+                ad.show();
+                wealth =100000;
+                keepStatsUpToDate(wealth*1.0,0,human.getJob(),human.getCountry().getTaxes(),0,0,0,0);
+            }else if(human.getInfluence()>=100000 && !influencActivation || human.getProfessionalAssociates()>=10000 && !influencActivation
+                    ||human.getFriends()>=100000 && !influencActivation){
+                System.out.println("You have gained enough power,you will now gain a steady source of money");
+
+                wealth = 100000;
+                keepStatsUpToDate(wealth*1.0,0,human.getJob(),human.getCountry().getTaxes(),0,0,0,0);
+                influencActivation=true;
+            }
+
+
+
+            //-->updatingStateOfHuman(job, looks, worshippers, friends, professionAssocites, influence);
+            wealth=0;
+            //CharDetails();
+
+
+
+            age++;
+        }while(human.getOverAllWealth()< 10000000 && human.getInfluence()<2000000);
+
+        ad.setMessage("You have created your ideal life at age:" +age);
+        ad.show();
+
+
+
 
     }
 
     //Code for getting and shrinking picture selected my the user
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
 
-        switch(requestCode) {
-            case SELECT_PHOTO:
-                if(resultCode == RESULT_OK){
-                    Uri selectedImage = imageReturnedIntent.getData();
-                    InputStream imageStream = null;
-                    try {
-                        imageStream = getContentResolver().openInputStream(selectedImage);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    Bitmap yourSelectedImage = BitmapFactory.decodeStream(imageStream);
-                }
+        if (resultCode == RESULT_OK){
+            Uri targetUri = imageReturnedIntent.getData();
+            //textTargetUri.setText(targetUri.toString());
+            Bitmap bitmap;
+            try {
+                bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
+                profileImage.setImageBitmap(bitmap);
+            } catch (FileNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
     }
 
@@ -2182,6 +2290,17 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         //mBackgroundSound.cancel(true);
     }
 
+    public void buttonActivation(boolean activate){
+        changeCountryButton.setEnabled(activate);
+
+        selectAJobButton.setEnabled(activate);
+
+        schoolButton.setEnabled(activate);
+
+        workOnPhysicalAppearanceButton.setEnabled(activate);
+
+        socializeWithPeopleButton.setEnabled(activate);
+    }
 
     }
 

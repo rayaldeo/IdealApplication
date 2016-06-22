@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">IdealApplication</string>
     <string name="action_settings">Information About Application</string>
+    <string name ="familyTutorial">Family Stats</string>
     <string name="profilePicture_fragment">profilePicture</string>
     <string name="profilePicture">Profile Picture</string>
     <string name="getJob_text">Job</string>
     <string name="getCountry_text">Country</string>
-
     <string name="ExtraInformation_text">New Text</string>
     <string name="job_Button">Select a Job</string>
     <string name="school_Button">Go to School</string>

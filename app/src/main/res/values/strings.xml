@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">IdealApplication</string>
     <string name="action_settings">Information About Application</string>
+    <string name ="familyTutorial">Family Stats</string>
     <string name="profilePicture_fragment">profilePicture</string>
     <string name="profilePicture">Profile Picture</string>
     <string name="getJob_text">Job</string>
