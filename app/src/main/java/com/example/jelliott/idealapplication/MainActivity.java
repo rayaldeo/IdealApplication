@@ -4,12 +4,13 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
@@ -31,7 +32,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.FileNotFoundException;
 import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.List;
@@ -96,13 +96,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     //Separate Dialogs
     private Dialog alertDialogProfile;
 
-    //private Dialog alertDialog;
-
-    /* array list to save the indexes of the array items*/
-    private List<String> selectedItemIndexList;
-    private int turn = 0;
-
-
     private Human human;
     private int age = 0, schoolAttendanceAmount = 0, socialisingWithFriends = 0, workingOnPhysicalApp = 0;
     private int value, looks = 0, worshippers = 0, friends = 0, professionalAssociates = 0;
@@ -133,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     boolean dialogShown=true;
     //For selecting and image
     private static final int SELECT_PHOTO = 100;
+    private String selectedImagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -217,12 +211,12 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 photoPickerIntent.setType("image/*");
                 startActivityForResult(photoPickerIntent, SELECT_PHOTO);
                 profileImage.setImageURI(photoPickerIntent.getData());*/
-                // TODO Auto-generated method stub
-                Intent intent = new Intent(Intent.ACTION_PICK,
+                // in onCreate or any event where your want the user to
+                // select a file
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, 0);
-
-
+                // Start the Intent
+                startActivityForResult(galleryIntent, SELECT_PHOTO);
                 return false;
             }
         });
@@ -463,14 +457,15 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                         playerNameTextView.setText(firstNamePart);
                         lastNamePart = userNameFamily.getText().toString();
                         dialogShown=false;
-                        try {
+                        new Thread(new IDEALLifeProgram()).run();
+                        /*try {
                             tutorialWithFamily();
 
                         } catch (NullPointerException e) {
                             Toast.makeText(MainActivity.this, "Ooops,something went wrong.Let's try again!",
                                     Toast.LENGTH_LONG).show();
                             tutorialWithFamily();
-                        }
+                        }*/
 
 
 
@@ -1806,7 +1801,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         //Increment and Update the amount of times this user went to school
         schoolAttendanceAmount++;
         age++;
-        age_Turn_textView.setText("Age: "+age);
+        age_Turn_textView.setText("Age: " + age);
         schoolAttendanceAmountTextView.setText("School Attendance:" + Integer.toString(schoolAttendanceAmount));
         //This String Variable is used to hold all of the messages in one string
         String chainText="";
@@ -1973,7 +1968,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         human.setFriends(human.getFriends() + 1000);
         human.setOverAllwealth(human.getOverAllWealth() - 100 * human.getCountry().getMultiplier());
         age++;
-        age_Turn_textView.setText("Age: "+age);
+        age_Turn_textView.setText("Age: " + age);
         keepStatsUpToDate(0.0,0,human.getJob(),human.getCountry().getTaxes(),0,0,0,0);
         //System.out.println("Your looks got increased by 1");
         //System.out.println("The amount of worshippers got increased by 100");
@@ -2016,7 +2011,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
         age++;
-        age_Turn_textView.setText("Age: "+age);
+        age_Turn_textView.setText("Age: " + age);
 
 
     }
@@ -2026,6 +2021,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         AlertDialog ad = new AlertDialog.Builder(this)
                 .setNeutralButton("Confrim", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
+                        new Thread(new IDEALLifeProgram()).run();
 
                     }
                 })
@@ -2045,9 +2041,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         ad.setMessage("Family Wealth: " + family.getFamilyWealth() + "|" + "Country: " + human.getCountry().getName() + "Taxes: " + human.getCountry().getTaxes());
         ad.show();
 
-        //Turn
-        age=1;
-        do {
+        if(age<20) {
             randomNum = rand.nextInt(30);
             //System.out.println(randomNum);
             if (randomNum <= 13) {
@@ -2060,10 +2054,11 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             //keepStatsUpToDate(human.getJob(), looks, worshippers, friends, professionalAssociates, influence);
             //FamilyDetails();
 
-            age++;
-            age_Turn_textView.setText("Age: "+age);
 
-        }while(age<20);
+
+        }
+        age++;
+        age_Turn_textView.setText("Age: " + age);
         //Once this human reaches 20 years of age then the family's wealth will be given to the human
         human.setWealth(family.getFamilyWealth());
         //Enable Buttons when the user is done with the Family
@@ -2078,7 +2073,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         socializeWithPeopleButton.setEnabled(true);
 
         human.setOverAllwealth(family.getFamilyWealth() + human.getOverAllWealth());
-        grownUpHuman();
+        //grownUpHuman();
 
     }
 
@@ -2096,10 +2091,10 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 .create();
 
         //To display to the use that the application is in the Tutorial State
-        ad.setMessage("You are now an adult and will have to work on your own now to secure you IDEAL Life"+"\n"
-                +"If you can reach $10,000,000 in wealth and 2,000,000 in influence;you would have won the game!!"
-                +"\n There are also many other features to unlock in the game"
-                +"\n Create your IDEAL Life");
+        ad.setMessage("You are now an adult and will have to work on your own now to secure you IDEAL Life" + "\n"
+                + "If you can reach $10,000,000 in wealth and 2,000,000 in influence;you would have won the game!!"
+                + "\n There are also many other features to unlock in the game"
+                + "\n Create your IDEAL Life");
         ad.show();
 
         //First alertDialog for the Tutorial
@@ -2107,7 +2102,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         ad.show();
 
 
-        System.out.println("Adult||Initial Wealth:"+human.getInitialWealth()+"|"+"|"+human.getCountry().getName()+"|"+"|"+human.getCountry().getTaxes()+"|| Neighborhood: "+human.getNeighborhood());
+        System.out.println("Adult||Initial Wealth:" + human.getInitialWealth() + "|" + "|" + human.getCountry().getName() + "|" + "|" + human.getCountry().getTaxes() + "|| Neighborhood: " + human.getNeighborhood());
         do {
 
 
@@ -2176,9 +2171,10 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
             age++;
+            age_Turn_textView.setText("Age: "+age);
         }while(human.getOverAllWealth()< 10000000 && human.getInfluence()<2000000);
 
-        ad.setMessage("You have created your ideal life at age:" +age);
+        ad.setMessage("You have created your ideal life at age:" + age);
         ad.show();
 
 
@@ -2189,52 +2185,44 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     //Code for getting and shrinking picture selected my the user
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
-        // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+        try {
+            // When an Image is picked
+            if (requestCode == SELECT_PHOTO && resultCode == RESULT_OK
+                    && null != imageReturnedIntent) {
+                // Get the Image from data
 
-        if (resultCode == RESULT_OK){
-            Uri targetUri = imageReturnedIntent.getData();
-            //textTargetUri.setText(targetUri.toString());
-            Bitmap bitmap;
-            try {
-                bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
-                profileImage.setImageBitmap(bitmap);
-            } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                Uri selectedImage = imageReturnedIntent.getData();
+                String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+                // Get the cursor
+                Cursor cursor = getContentResolver().query(selectedImage,
+                        filePathColumn, null, null, null);
+                // Move to first row
+                cursor.moveToFirst();
+
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                selectedImagePath = cursor.getString(columnIndex);
+                cursor.close();
+                //ImageView imgView = (ImageView) findViewById(R.id.profileImageView);
+                // Set the Image in ImageView after decoding the String
+                profileImage.setImageBitmap(BitmapFactory
+                        .decodeFile(selectedImagePath));
+               ImageView profileImageViewProfileDialog=(ImageView) findViewById(R.id.profileImageViewProfileDialog);
+                profileImageViewProfileDialog.setImageBitmap(BitmapFactory
+                        .decodeFile(selectedImagePath));
+
+            } else {
+                Toast.makeText(this, "You haven't picked Image",
+                        Toast.LENGTH_LONG).show();
             }
-        }
-    }
-
-    private Bitmap decodeUri(Uri selectedImage) throws FileNotFoundException {
-
-        // Decode image size
-        BitmapFactory.Options o = new BitmapFactory.Options();
-        o.inJustDecodeBounds = true;
-        BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage), null, o);
-
-        // The new size we want to scale to
-        final int REQUIRED_SIZE = 140;
-
-        // Find the correct scale value. It should be the power of 2.
-        int width_tmp = o.outWidth, height_tmp = o.outHeight;
-        int scale = 1;
-        while (true) {
-            if (width_tmp / 2 < REQUIRED_SIZE
-                    || height_tmp / 2 < REQUIRED_SIZE) {
-                break;
-            }
-            width_tmp /= 2;
-            height_tmp /= 2;
-            scale *= 2;
+        } catch (Exception e) {
+            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
+                    .show();
         }
 
-        // Decode with inSampleSize
-        BitmapFactory.Options o2 = new BitmapFactory.Options();
-        o2.inSampleSize = scale;
-        return BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage), null, o2);
-
     }
+
 
 //Calling a Thread for the application
     public class IDEALLifeProgram implements Runnable{
@@ -2243,28 +2231,20 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     public void run(){
 
                try {
-                   age=0;
-
                    if(age==0) {
-
 
                        init();
                        makeYourName();
                        selectAFamilyType();
-                          selectACountry();
-                       age++;
+                       selectACountry();
+
 
                    }else if(age<20 && age>0){
                        tutorialWithFamily();
 
                    }
-
-
-
-
-
-
-
+                   age++;
+                   age_Turn_textView.setText("Age: " + age);
 
 
 
