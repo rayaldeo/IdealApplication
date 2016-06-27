@@ -5,8 +5,10 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,7 +29,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
-import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -91,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     private Button changeCountryButton,selectAJobButton,schoolButton,workOnPhysicalAppearanceButton,socializeWithPeopleButton;
 
-    private ImageView profileImage;
+    private ImageView profileImage,profileImageViewProfileDialog;
 
     //Separate Dialogs
     private Dialog alertDialogProfile;
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private String familyName, firstNamePart, lastNamePart;
     Random rand = new Random();
     int randomNum = rand.nextInt((50 - 1) + 1);
-    private Boolean banker = false, independent = false, buisnessowner = false, king = false, intern = false;
+    private Boolean banker = false, independent = false, buisnessowner = false, king = false, intern = false,shown=false,shownOne=false;
     private boolean begger = false;
     private boolean vagrant = false;
     private boolean packingboy = false;
@@ -195,6 +196,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
         //Profile Image
+
         profileImage = (ImageView) findViewById(R.id.profileImageView);
         profileImage.setOnClickListener(new OnClickListener() {
             @Override
@@ -259,13 +261,13 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     }
 
+///->TOP RIGHT SIDE MENU FUNCTIONALITY
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -286,194 +288,440 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         return super.onOptionsItemSelected(item);
     }
-
-
-    private void calculateTheProgressBarPercentage(Double overallWealthA, int influenceAmountA) {//The Influence Progress Bar Percentage is not very accurate...May not be a big issue
-
-        /*
-        Calculating the percentage of the wealth/Influence first and then figuring out if they are <=0 before updating the actual progress Bar...
-        So that no number less than Zero is placed into the progressBar and potentially crashing the program
-         */
-        //Calculate the OverAllWealth Percentage
-        final double overallwealthvalue = ((overallWealthA / maxOverallWealth) * 100);//Complete the whole percentage equation and then convert number to Int for the Progress Bars
-        //Calculate the influence Percentage
-        final double influencevalue = ((influenceAmountA * 1.0) / (maxInfluence * 1.0) * 100);
-        //Don't need to get the product of (human.getOverAllWealth() / maxOverallWealth) and 100 because the percentFormat already multiplies product
-
-        //This will allow the progress Bars to decrease in value //DECREMENT PROGRESSBAR
-       if(overallWealthProgressBar.getProgress()> overallwealthvalue){
-           overallWealthProgressBar.setProgress((int) overallwealthvalue);
-           overallWealthPercentageTextView.setText((int) overallwealthvalue + "%");
-
-
-       }
-        if(influenceProgressBar.getProgress()> influencevalue){
-            influenceProgressBar.setProgress((int) influencevalue);
-            influencePercentageTextView.setText((int) influencevalue + "%");
-
-       }
-
-        //INCREMENT PROGRESSBAR
-        if ( overallwealthvalue <= 1 ) {
-            overallWealthProgressBar.setProgress(1);
-            overallWealthPercentageTextView.setText("<" + percentFormat.format(0.01));
-
-        }
-        if ( influencevalue <= 1 ) {
-
-            influenceProgressBar.setProgress(1);
-            influencePercentageTextView.setText("<" + percentFormat.format(0.01));
-        }
-
-        // mProgressStatusOverAllWealth = 0,getmProgressStatusInfluence=0
-        //overAllWealthProgress must be changed to int because Progress Bars does not accept Doubles
-        final int overAllWealthProgress = (int) overallwealthvalue;
-        final int influenceProgress = (int) influencevalue;
-        // Start lengthy operation in a background thread
-        new Thread(new Runnable() {
-            public void run() {
-                while (mProgressStatusOverAllWealth < overAllWealthProgress) {
-                    mProgressStatusOverAllWealth += 1;//Progress Bars can not accept a value less than one..so 0.5 will not work
-
-                    // Update the progress bar
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            //System.out.println("A");
-                            overallWealthProgressBar.setProgress(mProgressStatusOverAllWealth);
-                            overallWealthPercentageTextView.setText(mProgressStatusOverAllWealth + "%");
-                        }
-                    });
-
-                    try {
-                        // Sleep for 200 milliseconds.
-                        //Just to display the progress slowly
-                        Thread.sleep(225);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-
-            }
-
-        }).start();
-
-        // Start lengthy operation in a background thread
-        new Thread(new Runnable() {
-            public void run() {
-                while (mProgressStatusInfluence < influenceProgress) {
-                    mProgressStatusInfluence += 1;//Progress Bars can not accept a value less than one..so 0.5 will not work
-
-                    // Update the progress bar
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            //System.out.println("A");
-                            influenceProgressBar.setProgress(mProgressStatusInfluence);
-                            influencePercentageTextView.setText(mProgressStatusInfluence + "%");
-                        }
-                    });
-                    try {
-                        // Sleep for 200 milliseconds.
-                        //Just to display the progress slowly
-                        Thread.sleep(225);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-
-        }).start();
-
-        //influenceProgressBar.setProgress((int) influencevalue );
-        informationalTextView.setText("Influence Parameter:" + influenceAmountA + "InfluenceProgress" + influencevalue + " WealthProgress " + overAllWealthProgress + " overallwealthvalue: " + overallwealthvalue + " influencevalue " + influencevalue);
-        System.out.println("Influence Parameter:" + influenceAmountA + "InfluenceProgress" + influencevalue + " WealthProgress " + overAllWealthProgress + " overallwealthvalue: " + overallwealthvalue + " influencevalue " + influencevalue);
-        //String valueString;
-        //influencePercentageTextView.setText(valueString = percentFormat.format(influencevalue) );
-        //overallWealthProgressBar.setProgress((int) overallwealthvalue);
-
-        //overallWealthPercentageTextView.setText(valueString = percentFormat.format(overallwealthvalue) );
-
-
-    }
-
     @Override
     public void onClick(DialogInterface dialog, int which) {
     }
+///->
 
-    public void init() {
 
-        AlertDialog ad = new AlertDialog.Builder(this)
-                .setMessage("Welcome!The purpose of this Java Program is to create your fantasy ideal life.." +
-                        ("\n") + "Create a character at the bottom of society." +
-                        ("\n") + "Progress this character through the world and accumulate influence, wealth, and associates." +
-                        ("\n") + "Don't hold back,accumulating everything the world has the offer is the key of winning the game" +
-                        ("\n") + "Good Luck!")
-                        //.setIcon(R.drawable.ic_launcher)
-                .setTitle("IDEAL")
-                .setNeutralButton("Confirm", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        if (dialogShown) {
-                            new Thread(new IDEALLifeProgram()).run();
-                        }
-                        /*try {
-                            tutorialWithFamily();
+///->ALL 5 BUTTON FUNCTIONALITY IN LIST
+    public void selectAJob() {
 
-                        } catch (NullPointerException e) {
-                            Toast.makeText(MainActivity.this, "Ooops,something went wrong.Let's try again!",
-                                    Toast.LENGTH_LONG).show();
-                            tutorialWithFamily();
-                        }*/
-                        dialogShown = false;
-
-                    }
-                })
-                .setCancelable(false)
-                .create();
-
-        ad.show();
-
-    }
-
-    public void makeYourName() {
-         //Creating a Layout for the EditTextViews
+        professionalAssociates = 0;
+        friends = 0;
+        //Creating a Layout for the EditTextViews
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setBackgroundColor(Color.parseColor("#ff8a54"));
+        //creating instance of custom view
 
-        //Set up First Name Text View
-        final EditText userNameFirst = new EditText(this);
-        userNameFirst.setHint("Enter In First Name");
-        layout.addView(userNameFirst);
+        //Beggar//1
+        final Button jobButtonBeggar = new Button(this);
+        jobButtonBeggar.setHint("Beggar");
+        //layout.addView(jobButtonBeggar);
+        jobButtonBeggar.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        //Setup the Last Name Text View
-        final EditText userNameFamily = new EditText(this);
-        userNameFamily.setHint("Enter In Last Name");
-        layout.addView(userNameFamily);
+                professionalAssociates = 0;
+                friends = 10;
+                human.setJob(Jobs.BEGGER);
 
+
+            }
+        });
+
+        //Vagrant//2
+        final Button jobButtonVagrant = new Button(this);
+        jobButtonVagrant.setHint("Vagrant");
+        //layout.addView(jobButtonVagrant);
+        jobButtonVagrant.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                professionalAssociates = 0;
+                friends = 25;
+                human.setJob(Jobs.VAGRANT);
+
+            }
+        });
+
+        //Intern//3
+        final Button jobButtonIntern = new Button(this);
+        jobButtonIntern.setHint("Intern");
+        //layout.addView(jobButtonIntern);
+        jobButtonIntern.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                professionalAssociates = 500;
+                friends = 15;
+                human.setJob(Jobs.INTERN);
+
+            }
+        });
+
+        //PackingBoy//4
+        final Button jobButtonPackingBoy = new Button(this);
+        jobButtonPackingBoy.setHint("Packing Boy");
+        //layout.addView(jobButtonPackingBoy);
+        jobButtonPackingBoy.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                professionalAssociates = 50;
+                friends = 10;
+                human.setJob(Jobs.PACKINGBOY);
+
+            }
+        });
+
+        //Firefighter//5
+        final Button jobButtonFirefighter = new Button(this);
+        jobButtonFirefighter.setHint("Firefighter");
+        //layout.addView(jobButtonFirefighter);
+        jobButtonFirefighter.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                professionalAssociates = 100;
+                friends = 25;
+                human.setJob(Jobs.FIREFIGHTER);
+
+            }
+        });
+
+        //Banker//6
+        final Button jobButtonBanker = new Button(this);
+        jobButtonBanker.setHint("Banker");
+        //layout.addView(jobButtonBanker);
+        jobButtonBanker.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                professionalAssociates = 200;
+                friends = 50;
+                human.setJob(Jobs.BANKER);
+
+            }
+        });
+
+        //Scientist//7
+        final Button jobButtonScientist = new Button(this);
+        jobButtonScientist.setHint("Scientist");
+        //layout.addView(jobButtonScientist);
+        jobButtonScientist.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                professionalAssociates = 200;
+                friends = 75;
+                human.setJob(Jobs.SCIENTIST);
+
+            }
+        });
+
+        //Independent//8
+        final Button jobButtonIndependent = new Button(this);
+        jobButtonIndependent.setHint("Independent");
+        //layout.addView(jobButtonIndependent);
+        jobButtonIndependent.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                professionalAssociates = 300;
+                friends = 100;
+                human.setJob(Jobs.INDEPENDENT);
+
+            }
+        });
+
+        //Buisness Owner//9
+        final Button jobButtonBusinessOwner = new Button(this);
+        jobButtonBusinessOwner.setHint("Business Owner");
+        //layout.addView(jobButtonBusinessOwner);
+        jobButtonBusinessOwner.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                professionalAssociates = 500;
+                friends = 200;
+                human.setJob(Jobs.BUSINESSOWNER);
+
+            }
+        });
+
+        //King//10
+        final Button jobButtonKing = new Button(this);
+        jobButtonKing.setHint("King");
+        //layout.addView(jobButtonKing);
+        jobButtonKing.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                professionalAssociates = 1000;
+                friends = 500;
+                human.setJob(Jobs.KING);
+
+            }
+        });
+
+        //Sultan//11
+        final Button jobButtonSultan = new Button(this);
+        jobButtonSultan.setHint("Sultan");
+        //layout.addView(jobButtonSultan);
+        jobButtonSultan.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                professionalAssociates = 1500;
+                friends = 1000;
+                human.setJob(Jobs.SULTAN);
+
+            }
+        });
+
+        //Omega//12
+        final Button jobButtonOmega = new Button(this);
+        jobButtonOmega.setHint("\u03A9" + "mega");
+        //layout.addView(jobButtonOmega);
+        jobButtonOmega.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                professionalAssociates = 3000;
+                friends = 2000;
+                human.setJob(Jobs.OMEGA);
+
+            }
+        });
+        //Make the AlertDialog Scrollable
+
+
+        //If statments to show only certain Buttons
+        if (age < 20 || schoolAttendanceAmount<1) {
+            layout.addView(jobButtonPackingBoy);//PackingBoy
+            layout.addView(jobButtonIntern);//Intern
+        } else {
+            if (human.getCountry() == Countries.Irada ||
+                    human.getCountry() == Countries.Itican ||
+                    human.getCountry() == Countries.Albaq) {
+
+                if (begger) { layout.addView(jobButtonBeggar); }//Begger
+
+                if (vagrant) { layout.addView(jobButtonVagrant);}//Vagrant
+
+                if (packingboy) {  layout.addView(jobButtonPackingBoy);  }//PackingBoy
+
+            }
+            if (human.getCountry() == Countries.Trinentina ||
+                    human.getCountry() == Countries.Albico ||
+                    human.getCountry() == Countries.Ugeria ||
+                    human.getCountry() == Countries.Portada) {
+
+
+                if (firefighter) { layout.addView(jobButtonFirefighter);  }//FIREFIGHTER;
+
+                if (banker) { layout.addView(jobButtonBanker);  }//BANKER;
+
+                if (scientist) { layout.addView(jobButtonScientist);  }//Scientist;
+
+            }
+            if (human.getCountry() == Countries.Kuwador ||
+                    human.getCountry() == Countries.Ukrark ||
+                    human.getCountry() == Countries.Rany) {
+
+                if (banker) { layout.addView(jobButtonBanker);   }//BANKER;
+
+
+                if (scientist) {  layout.addView(jobButtonScientist);   }//Scientist;
+
+
+                if (independent) {  layout.addView(jobButtonIndependent); }//Independent;
+
+
+                if (buisnessowner) {  layout.addView(jobButtonBusinessOwner);  }//BusinessOwner;
+            }
+            if (human.getCountry() == Countries.Heaven) {
+
+                if (independent) {layout.addView(jobButtonIndependent);  }//Independent;
+
+
+                if (king) {  layout.addView(jobButtonKing);  }//KING;
+
+
+                if (king && sultan) { layout.addView(jobButtonKing);  }//SULTAN
+
+            }
+        }
+
+        final ScrollView scrollView = new ScrollView(this);
+        scrollView.addView(layout);
 
         AlertDialog ad = new AlertDialog.Builder(this)
 
-                .setMessage("Enter in a Name(MAX:11 CHARACTERS)")
-                        //.setIcon(R.drawable.ic_launcher)
+                .setMessage("Select A Job. \n Current Country:"+human.getCountry())
                 .setTitle("IDEAL")
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        firstNamePart = userNameFirst.getText().toString();
-                        playerNameTextView.setText(firstNamePart);
-                        lastNamePart = userNameFamily.getText().toString();
+                        jobTextView.setText(human.getJob().getName());
+                        keepStatsUpToDate(0.0, 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, friends, professionalAssociates);
+                        new Thread(new IDEALLifeProgram()).run();
 
 
                     }
                 })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        selectAJob();
+                    }
+                })
+                .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        selectAJob();
+                    }
+                })
                 .setCancelable(false)
-                .setView(layout)
+                .setView(scrollView)
                 .create();
 
+        //Use this command to control the positioning of your alertDialog
+        //ad.getWindow().getAttributes().verticalMargin = 1.1F;
         ad.show();
-    }
 
+
+    }
+    public void goToSchool(){
+        //Increment and Update the amount of times this user went to school
+        schoolAttendanceAmount++;
+        schoolAttendanceAmountTextView.setText("School Attendance:" + Integer.toString(schoolAttendanceAmount));
+        //This String Variable is used to hold all of the messages in one string
+        String chainText="";
+        AlertDialog ad = new AlertDialog.Builder(this)
+                .setNeutralButton("Cancel",null)
+
+                .setMessage("Go a school:Raises the amount of professional Associates" + "\n" +
+                        "Unlocks jobs" + "\n" +
+                        "Raises the amount of friends"+"\n"+
+                        "School Attendance:"+schoolAttendanceAmount)
+                        //.setIcon(R.drawable.ic_launcher)
+                .setTitle("IDEAL:Going to School")
+                .setCancelable(true)
+                .create();
+
+
+        //This Dialog is used to show which jobs were unlocked
+        AlertDialog adNotifier = new AlertDialog.Builder(this)
+                .setNeutralButton("Confirm", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        keepStatsUpToDate(-2500.0 * human.getCountry().getMultiplier(), 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
+                        new Thread(new IDEALLifeProgram()).run();
+
+                    }
+                })
+
+                .setTitle("IDEAL:Going to School")
+                .setCancelable(true)
+                .create();
+
+
+        if (human.getOverAllWealth() >= 1 && human.getInfluence() >= 1 || schoolAttendanceAmount>=0) {
+            if (!begger) {
+                begger = true;
+                chainText+="You have unlocked the Begger Job"+"\n";
+            }
+            if (!vagrant) {
+                vagrant = true;
+                chainText+="You have unlocked the Vagrant Job"+"\n";
+
+            }
+        }if(human.getOverAllWealth()>=10000 && human.getInfluence()>=20000 || schoolAttendanceAmount>=1){
+            if(!intern){
+                intern=true;
+                chainText+="You have unlocked the Intern Job";
+
+            }if(!packingboy){
+                packingboy=true;
+                chainText+= "\n" + "You have unlocked the Packing boy Job";
+
+            }if(!firefighter){
+                firefighter=true;
+                chainText+="\n" + "You have unlocked the Firefighter Job";
+            }
+        }if(human.getOverAllWealth()>=70000 && human.getInfluence()>=100000 || schoolAttendanceAmount>=2&&socialisingWithFriends>=2
+                &&workingOnPhysicalApp>=1){
+            if(!banker){
+                banker=true;
+                chainText+="\n" + "You have unlocked the Banker Job";
+            }if(!scientist){
+                scientist=true;
+                chainText+="\n"+ "You have unlocked the Scientist Job";
+            }if(!independent){
+                independent=true;
+                chainText+="\n"+ "You have unlocked the Independent Job";
+            }if(!firefighter){
+                firefighter=true;
+                chainText+="\n"+ "You have unlocked the Firefighter Job";
+            }
+        }if(human.getOverAllWealth()>=1000000 && human.getInfluence()>=100000 && human.getFriends()>10000 || schoolAttendanceAmount>=3&&socialisingWithFriends>=3
+                &&workingOnPhysicalApp>=3){
+            if(!sultan){
+                sultan=true;
+                chainText+="\n" + "You have unlocked the Sultan Job";
+            }
+        }if(human.getOverAllWealth()>=10000000 && human.getInfluence()>=10000000 && human.getFriends()>100000 && human.getWorshippers()>10000 ||  schoolAttendanceAmount>=4&&socialisingWithFriends>=4
+                &&workingOnPhysicalApp>=4) {
+            if (!god) {
+                god = true;
+                chainText+="\n" + "You have unlocked the God Job";
+
+
+
+            }
+
+        }
+        adNotifier.setMessage(chainText);
+        adNotifier.setCancelable(true);
+        ad.show();
+        adNotifier.show();
+
+    }
+    public void workOnPhysical(){
+        AlertDialog ad = new AlertDialog.Builder(this)
+                .setNeutralButton("Confirm", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                    }
+                })
+
+                .setMessage("Work on your physical Appearance:Raises your looks" + "\n" +
+                        "Raises the amount of worshippers" + "\n" +
+                        "Raises the amount of influence" + "\n" +
+                        "Raises the amount of friends" + "\n" +
+                        "How many times you have worked on your physical appearance:" + workingOnPhysicalApp + "\n" +
+                        "Your looks got increased by 1" + "\n" +
+                        "The amount of worshippers got increased by 100" + "\n" +
+                        "Your influence got increased by 1000" + "\n" +
+                        "The amount of friends increased by 1000" + "\n" +
+                        "You got charged:$" + 100 * human.getCountry().getMultiplier())
+
+                .setTitle("IDEAL:Work on your Physical")
+                .setCancelable(true)
+                .create();
+        ad.show();
+        workingOnPhysicalApp++;
+        workingOnPhysicalAppTextView.setText("Physical Appearance:" + Integer.toString(workingOnPhysicalApp));
+        keepStatsUpToDate(-100 * human.getCountry().getMultiplier(), 1000, human.getJob(), human.getCountry().getTaxes(), 1, 100, 1000, 0);
+        new Thread(new IDEALLifeProgram()).run();
+
+
+    }
+    public void socializeWithPeople(){
+        AlertDialog ad = new AlertDialog.Builder(this)
+                .setNeutralButton("Confirm", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                    }
+                })
+                .setMessage("How many times you socialised with people:" + socialisingWithFriends + "\n" +
+
+                        "The amount of worshippers got increased by 100" + "\n" +
+                        "Your influence got increased by 1000" + "\n" +
+                        "The amount of friends increased by 1000" + "\n" +
+                        "Your professional Associates got increased by 1000" + "\n" +
+                        "You got charged:$" + 100 * human.getCountry().getMultiplier())
+
+                .setTitle("IDEAL:Work on your Physical")
+                .setCancelable(true)
+                .create();
+        ad.show();
+
+        socialisingWithFriends++;
+        socialisingWithFriendsTextView.setText("Socialize Amount:" + Integer.toString(socialisingWithFriends));
+        keepStatsUpToDate(-50 * human.getCountry().getMultiplier(), 100, human.getJob(), human.getCountry().getTaxes(), 0, 10, 10000, 1000);
+        new Thread(new IDEALLifeProgram()).run();
+
+    }
     public void selectACountry() {
 
         //Get the arrayLIst from the String xml
@@ -565,6 +813,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     priceToMoveTextView.setText("Price" + currencyFormat.format((human.getCountry().getTaxes() + 100) * human.getCountry().getMultiplier()));
                     if(age>1) {
                         keepStatsUpToDate(-(human.getCountry().getTaxes() + 100 * human.getCountry().getMultiplier()), 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
+                        new Thread(new IDEALLifeProgram()).run();
                     }
 
                 } catch (Exception e) {
@@ -585,48 +834,252 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
     }
+///->
 
-    public Countries getThisCountry(String countryName) {
+///->UPDATING STATS
+   private void calculateTheProgressBarPercentage(Double overallWealthA, int influenceAmountA) {//The Influence Progress Bar Percentage is not very accurate...May not be a big issue
 
-        if (countryName.equals(Countries.Irada.getName())) {
-            countryOfUser = Countries.Irada;
+        /*
+        Calculating the percentage of the wealth/Influence first and then figuring out if they are <=0 before updating the actual progress Bar...
+        So that no number less than Zero is placed into the progressBar and potentially crashing the program
+         */
+    //Calculate the OverAllWealth Percentage
+    final double overallwealthvalue = ((overallWealthA / maxOverallWealth) * 100);//Complete the whole percentage equation and then convert number to Int for the Progress Bars
+    //Calculate the influence Percentage
+    final double influencevalue = ((influenceAmountA * 1.0) / (maxInfluence * 1.0) * 100);
+    //Don't need to get the product of (human.getOverAllWealth() / maxOverallWealth) and 100 because the percentFormat already multiplies product
 
-        } else if (countryName.equals(Countries.Itican.getName())) {
-            countryOfUser = Countries.Itican;
+    //This will allow the progress Bars to decrease in value //DECREMENT PROGRESSBAR
+    if(overallWealthProgressBar.getProgress()> overallwealthvalue){
+        overallWealthProgressBar.setProgress((int) overallwealthvalue);
+        overallWealthPercentageTextView.setText((int) overallwealthvalue + "%");
 
-        } else if (countryName.equals(Countries.Albaq.getName())) {
-            countryOfUser = Countries.Albaq;
 
-        } else if (countryName.equals(Countries.Trinentina.getName())) {
-            countryOfUser = Countries.Trinentina;
-
-        } else if (countryName.equals(Countries.Albico.getName())) {
-            countryOfUser = Countries.Albico;
-
-        } else if (countryName.equals(Countries.Ugeria.getName())) {
-            countryOfUser = Countries.Ugeria;
-
-        } else if (countryName.equals(Countries.Portada.getName())) {
-            countryOfUser = Countries.Portada;
-
-        } else if (countryName.equals(Countries.Kuwador.getName())) {
-            countryOfUser = Countries.Kuwador;
-
-        } else if (countryName.equals(Countries.Ukrark.getName())) {
-            countryOfUser = Countries.Ukrark;
-
-        } else if (countryName.equals(Countries.Rany.getName())) {
-            countryOfUser = Countries.Rany;
-
-        } else {
-
-            countryOfUser = Countries.Heaven;
-
-        }
-        return countryOfUser;
+    }
+    if(influenceProgressBar.getProgress()> influencevalue){
+        influenceProgressBar.setProgress((int) influencevalue);
+        influencePercentageTextView.setText((int) influencevalue + "%");
 
     }
 
+    //INCREMENT PROGRESSBAR
+    if ( overallwealthvalue <= 1 ) {
+        overallWealthProgressBar.setProgress(1);
+        overallWealthPercentageTextView.setText("<" + percentFormat.format(0.01));
+
+    }
+    if ( influencevalue <= 1 ) {
+
+        influenceProgressBar.setProgress(1);
+        influencePercentageTextView.setText("<" + percentFormat.format(0.01));
+    }
+
+    // mProgressStatusOverAllWealth = 0,getmProgressStatusInfluence=0
+    //overAllWealthProgress must be changed to int because Progress Bars does not accept Doubles
+    final int overAllWealthProgress = (int) overallwealthvalue;
+    final int influenceProgress = (int) influencevalue;
+    // Start lengthy operation in a background thread
+    new Thread(new Runnable() {
+        public void run() {
+            while (mProgressStatusOverAllWealth < overAllWealthProgress) {
+                mProgressStatusOverAllWealth += 1;//Progress Bars can not accept a value less than one..so 0.5 will not work
+
+                // Update the progress bar
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        //System.out.println("A");
+                        overallWealthProgressBar.setProgress(mProgressStatusOverAllWealth);
+                        overallWealthPercentageTextView.setText(mProgressStatusOverAllWealth + "%");
+                    }
+                });
+
+                try {
+                    // Sleep for 200 milliseconds.
+                    //Just to display the progress slowly
+                    Thread.sleep(225);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+        }
+
+    }).start();
+
+    // Start lengthy operation in a background thread
+    new Thread(new Runnable() {
+        public void run() {
+            while (mProgressStatusInfluence < influenceProgress) {
+                mProgressStatusInfluence += 1;//Progress Bars can not accept a value less than one..so 0.5 will not work
+
+                // Update the progress bar
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        //System.out.println("A");
+                        influenceProgressBar.setProgress(mProgressStatusInfluence);
+                        influencePercentageTextView.setText(mProgressStatusInfluence + "%");
+                    }
+                });
+                try {
+                    // Sleep for 200 milliseconds.
+                    //Just to display the progress slowly
+                    Thread.sleep(225);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+
+    }).start();
+
+    //influenceProgressBar.setProgress((int) influencevalue );
+    informationalTextView.setText("Influence Parameter:" + influenceAmountA + "InfluenceProgress" + influencevalue + " WealthProgress " + overAllWealthProgress + " overallwealthvalue: " + overallwealthvalue + " influencevalue " + influencevalue);
+    System.out.println("Influence Parameter:" + influenceAmountA + "InfluenceProgress" + influencevalue + " WealthProgress " + overAllWealthProgress + " overallwealthvalue: " + overallwealthvalue + " influencevalue " + influencevalue);
+    //String valueString;
+    //influencePercentageTextView.setText(valueString = percentFormat.format(influencevalue) );
+    //overallWealthProgressBar.setProgress((int) overallwealthvalue);
+
+    //overallWealthPercentageTextView.setText(valueString = percentFormat.format(overallwealthvalue) );
+
+
+}
+    //Need to update for the Price to Move to another country
+    public void keepStatsUpToDate(Double overallWealthA, int influenceAmountA, Jobs jobA, /*Countries countryA,*/
+                                  Double taxA, int looksA, int worshippersA, int friendsA, int professionalAssociatesA) {
+        human.setJob(jobA);
+        human.setIncome(jobA.getIncome());
+        human.setOverAllwealth((human.getOverAllWealth() + jobA.getIncome() + overallWealthA+wealth));
+        human.setInfluence((human.getInfluence() + jobA.getInfluence() + influenceAmountA));
+        human.setProfessionalAssociates(human.getProfessionalAssociates() + professionalAssociatesA);
+        human.setFriends(human.getFriends() + friendsA);
+        human.setLooks(human.getLooks() + looksA);
+        human.setWorshippers(human.getWorshippers() + worshippersA);
+        //human.setCountries(countryA);
+        tax = taxA;
+        overallWealthTextView.setText(getString(R.string.overallWelathTextView_text) + "\n" + currencyFormat.format(human.getOverAllWealth()));
+        String influenceAmountString = Double.toString(human.getInfluence());
+        influenceTextView.setText(getString(R.string.influenceAmountTextView_String) + "\n" + influenceAmountString);
+        jobTextView.setText(getString(R.string.getJob_text) + ":" + human.getJob());
+        countryTextView.setText(getString(R.string.getCountry_text) + ":" + human.getCountryString());
+        taxTextView.setText(getString(R.string.tax_text) + ":" + currencyFormat.format(tax));
+
+
+        //This "if" statement is going to see whether our percentage function will give something less than 1...which the progress bars can no handle
+        if (overallWealthTextView.getText().length() <= 5 ) {
+            calculateTheProgressBarPercentage(1.0, human.getInfluence());
+
+
+        }
+        if (influenceTextView.getText().length() <= 4) {
+            calculateTheProgressBarPercentage(human.getOverAllWealth(), 1);
+
+        }
+
+        calculateTheProgressBarPercentage(human.getOverAllWealth(), human.getInfluence());
+
+        //calculateTheProgressBarPercentage(1.0, 1);
+        /*neighbourhoodTextView.setText("Neighbourhood:"+human.getNeighborhood());
+        userFriendsTextView.setText("Friends:"+human.getFriends());
+        professionalAssociatesTextView.setText("Professional Associates:"+human.getProfessionalAssociates());
+        looksTextView.setText("Attractiveness:"+human.getLooks());*/
+
+    }
+    public void updatingStateOfFamily(double wealthA, int influenceA) {
+        family.setFamilyWealth(family.getFamilyWealth() + mother.getIncome() + brother.getIncome() + sister.getIncome() + father.getIncome() + wealthA);
+        family.setFamilyInfluence(family.getFamilyInfluence() + influenceA);
+        if (family.getFamilyFriends() > countryOfUser.getRequiredFriends() || family.getFamilyWealth() > countryOfUser.getRequireedWealth()
+                && family.getFamilyInfluence() > countryOfUser.getRequiredInfluence()) {
+            family.setNeighborhood(countryOfUser.getRichNeighborHood());
+            human.setNeighborhood(countryOfUser.getRichNeighborHood());
+
+
+        } else if (family.getFamilyFriends() == countryOfUser.getRequiredFriends() || family.getFamilyWealth() == countryOfUser.getRequireedWealth()
+                && family.getFamilyInfluence() == countryOfUser.getRequiredInfluence()) {
+            family.setNeighborhood(countryOfUser.getMiddleNeighborHood());
+            human.setNeighborhood(countryOfUser.getMiddleNeighborHood());
+
+        } else {
+            family.setNeighborhood(countryOfUser.getPoorNeighborHood());
+            human.setNeighborhood(countryOfUser.getPoorNeighborHood());
+        }
+    }
+///->
+
+///->IDEAL APPLICATION USER INITIALIZATION CODE
+    public void init() {
+
+        AlertDialog ad = new AlertDialog.Builder(this)
+                .setMessage("Welcome!The purpose of this Java Program is to create your fantasy ideal life.." +
+                        ("\n") + "Create a character at the bottom of society." +
+                        ("\n") + "Progress this character through the world and accumulate influence, wealth, and associates." +
+                        ("\n") + "Don't hold back,accumulating everything the world has the offer is the key of winning the game" +
+                        ("\n") + "Good Luck!")
+                        //.setIcon(R.drawable.ic_launcher)
+                .setTitle("IDEAL")
+                .setNeutralButton("Confirm", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        if (dialogShown) {
+                            new Thread(new IDEALLifeProgram()).run();
+                        }
+                        /*try {
+                            tutorialWithFamily();
+
+                        } catch (NullPointerException e) {
+                            Toast.makeText(MainActivity.this, "Ooops,something went wrong.Let's try again!",
+                                    Toast.LENGTH_LONG).show();
+                            tutorialWithFamily();
+                        }*/
+                        dialogShown = false;
+
+                    }
+                })
+                .setCancelable(false)
+                .create();
+
+        ad.show();
+
+    }
+    public void makeYourName() {
+        //Creating a Layout for the EditTextViews
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        //Set up First Name Text View
+        final EditText userNameFirst = new EditText(this);
+        userNameFirst.setHint("Enter In First Name");
+        layout.addView(userNameFirst);
+
+        //Setup the Last Name Text View
+        final EditText userNameFamily = new EditText(this);
+        userNameFamily.setHint("Enter In Last Name");
+        layout.addView(userNameFamily);
+
+
+        AlertDialog ad = new AlertDialog.Builder(this)
+
+                .setMessage("Enter in a Name(MAX:11 CHARACTERS)")
+                        //.setIcon(R.drawable.ic_launcher)
+                .setTitle("IDEAL")
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        firstNamePart = userNameFirst.getText().toString();
+                        playerNameTextView.setText(firstNamePart);
+                        lastNamePart = userNameFamily.getText().toString();
+
+
+                    }
+                })
+                .setCancelable(false)
+                .setView(layout)
+                .create();
+
+        ad.show();
+    }
+    //SELECT COUNTRY IS BOTH INITIALIZATION AND A BUTTON FUNCTIONALITY
     public void selectAFamilyType() {
 
         //Get the arrayLIst from the String xml
@@ -707,13 +1160,13 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                                         //Cusom Family Constructor
                                         //public Family( double familyWealthA,int influenceA,int friendsA,String familyNameA,FamilyMember brotherA, FamilyMember sisterA, FamilyMember fatherA, FamilyMember motherA){
                                         family = new Family(Double.parseDouble(wealthAmountEditText.getText().toString()), Integer.parseInt(influenceAmountEditText.getText().toString()),
-                                                Integer.parseInt(friendsAmountEditText.getText().toString()),familyName,brother,sister,father,mother);
+                                                Integer.parseInt(friendsAmountEditText.getText().toString()), familyName, brother, sister, father, mother);
 
                                         keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), human.getJob(),
                                                 tax, human.getLooks(), human.getWorshippers(), family.getFamilyFriends(), human.getProfessionalAssociates());
                                         human.setFriends(Integer.parseInt(friendsAmountEditText.getText().toString()));
                                         //Null point
-                                        Toast.makeText(MainActivity.this, "You have selected a Custom Family"+family,
+                                        Toast.makeText(MainActivity.this, "You have selected a Custom Family" + family,
                                                 Toast.LENGTH_LONG).show();
                                     } catch (Exception e) {
                                         Toast.makeText(MainActivity.this, "A Custom Family with <=0 values",
@@ -760,7 +1213,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                                     keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), human.getJob(),
                                             tax, human.getLooks(), human.getWorshippers(), family.getFamilyFriends(), human.getProfessionalAssociates());
 
-                                    Toast.makeText(MainActivity.this, "You have selected " + checkedItem.toString()+family,
+                                    Toast.makeText(MainActivity.this, "You have selected " + checkedItem.toString() + family,
                                             Toast.LENGTH_LONG).show();
 
                                     //} catch (Exception e) {
@@ -782,83 +1235,122 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         alertDialog.show();
 
     }
+///->
 
+///->GETTING AND SETTING THE IMAGE FOR THE APPLICATION
+    //Code for getting and shrinking picture selected my the user
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+        try {
+            // When an Image is picked
+            if (requestCode == SELECT_PHOTO && resultCode == RESULT_OK
+                    && null != imageReturnedIntent) {
+                // Get the Image from data
 
-    public void profilePictureDialog() {
+                Uri selectedImage = imageReturnedIntent.getData();
+                String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
+                // Get the cursor
+                Cursor cursor = getContentResolver().query(selectedImage,
+                        filePathColumn, null, null, null);
+                // Move to first row
+                cursor.moveToFirst();
 
-        alertDialogProfile = new Dialog(MainActivity.this, android.R.style.Theme_Black);
-        //
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                selectedImagePath = cursor.getString(columnIndex);
+                cursor.close();
+                //ImageView imgView = (ImageView) findViewById(R.id.profileImageView);
+                // Set the Image in ImageView after decoding the String
+                profileImage.setImageBitmap(BitmapFactory
+                        .decodeFile(selectedImagePath));
 
-        //AlertDialog.Builder alertDialogProfile = new AlertDialog.Builder(MainActivity.this);
-
-        //Call the XML List view and set it with  the countries array
-        LayoutInflater inflater = getLayoutInflater();
-        View convertView = inflater.inflate(R.layout.profileimagedialog, null);
-        //alertDialogProfile.setView(convertView);
-        alertDialogProfile.setContentView(R.layout.profileimagedialog);
-
-        //keepStatsUpToDate(human.getOverAllWealth(), human.getInfluence(), human.getJob(),human.getCountry(),tax);
-        //userNameTextView.setText(firstNamePart);
-        alertDialogProfile.setTitle(firstNamePart + " " + lastNamePart + "'s Profile");
-
-        playerNameTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.playerNameTextViewprofileDialog);
-        playerNameTextViewprofileDialog.setText(firstNamePart + " " + lastNamePart);
-
-        overAllWealthTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.overAllWealthTextViewprofileDialog);
-        overAllWealthTextViewprofileDialog.setText(getString(R.string.overallWelathTextView_text) + ": \n" + currencyFormat.format(human.getOverAllWealth()));
-
-        influenceTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.influenceTextViewprofileDialog);
-        influenceTextViewprofileDialog.setText(getString(R.string.influenceTextView) + ": \n" + human.getInfluence());
-
-        jobTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.jobTextViewprofileDialog);
-        jobTextViewprofileDialog.setText(getString(R.string.getJob_text) + ":" + human.getJob());
-
-        countryTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.countryTextViewprofileDialog);
-        countryTextViewprofileDialog.setText(getString(R.string.getCountry_text) + ":" + human.getCountryString());
-
-        neighbourhoodTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.neighbourhoodTextViewprofileDialog);
-        neighbourhoodTextViewprofileDialog.setText(getString(R.string.neighbourhoodTextView_text) + ":" + human.getNeighborhood());
-
-        taxTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.taxTextViewprofileDialog);
-        taxTextViewprofileDialog.setText(getText(R.string.tax_text) + ":" + currencyFormat.format(tax));
-
-        userfriendsTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.userfriendsTextViewprofileDialog);
-        userfriendsTextViewprofileDialog.setText(getText(R.string.friendsTextView_text) + ":" + human.getFriends());
-
-
-        professionalAssociatesTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.professionalAssociatesTextViewprofileDialog);
-        professionalAssociatesTextViewprofileDialog.setText(getText(R.string.professionalAssociatesTextView_text) + ":" + human.getProfessionalAssociates());
-
-        worshippersTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.worshippersTextViewprofileDialog);
-        worshippersTextViewprofileDialog.setText(getText(R.string.worshippersTextView_text) + ":" + human.getWorshippers());
-
-        looksTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.looksTextViewprofileDialog);
-        looksTextViewprofileDialog.setText(getText(R.string.looksTextView_text) + ":" + human.getLooks());
-
-
-        alertDialogProfile.show();
+            } else {
+                Toast.makeText(this, "You haven't picked Image",
+                        Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
+                    .show();
+        }
 
     }
+//->
 
+///->Family and Player Profile Dialogs
+   public void profilePictureDialog() {
+
+
+    alertDialogProfile = new Dialog(MainActivity.this, android.R.style.Theme_Black);
+    //
+
+    //AlertDialog.Builder alertDialogProfile = new AlertDialog.Builder(MainActivity.this);
+
+    //Call the XML List view and set it with  the countries array
+    //LayoutInflater inflater = getLayoutInflater();
+    //View convertView = inflater.inflate(R.layout.profileimagedialog, null);
+    //alertDialogProfile.setView(convertView);
+    alertDialogProfile.setContentView(R.layout.profileimagedialog);
+
+    //keepStatsUpToDate(human.getOverAllWealth(), human.getInfluence(), human.getJob(),human.getCountry(),tax);
+    //userNameTextView.setText(firstNamePart);
+    alertDialogProfile.setTitle(firstNamePart + " " + lastNamePart + "'s Profile");
+
+
+    profileImageViewProfileDialog=(ImageView) alertDialogProfile.findViewById(R.id.profileImageViewProfileDialog);
+    Bitmap bitmap = ((BitmapDrawable)profileImage.getDrawable()).getBitmap();
+    profileImageViewProfileDialog.setImageBitmap(bitmap);
+
+    playerNameTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.playerNameTextViewprofileDialog);
+    playerNameTextViewprofileDialog.setText(firstNamePart + " " + lastNamePart);
+
+    overAllWealthTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.overAllWealthTextViewprofileDialog);
+    overAllWealthTextViewprofileDialog.setText(getString(R.string.overallWelathTextView_text) + ": \n" + currencyFormat.format(human.getOverAllWealth()));
+
+    influenceTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.influenceTextViewprofileDialog);
+    influenceTextViewprofileDialog.setText(getString(R.string.influenceTextView) + ": \n" + human.getInfluence());
+
+    jobTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.jobTextViewprofileDialog);
+    jobTextViewprofileDialog.setText(getString(R.string.getJob_text) + ":" + human.getJob());
+
+    countryTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.countryTextViewprofileDialog);
+    countryTextViewprofileDialog.setText(getString(R.string.getCountry_text) + ":" + human.getCountryString());
+
+    neighbourhoodTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.neighbourhoodTextViewprofileDialog);
+    neighbourhoodTextViewprofileDialog.setText(getString(R.string.neighbourhoodTextView_text) + ":" + human.getNeighborhood());
+
+    taxTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.taxTextViewprofileDialog);
+    taxTextViewprofileDialog.setText(getText(R.string.tax_text) + ":" + currencyFormat.format(tax));
+
+    userfriendsTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.userfriendsTextViewprofileDialog);
+    userfriendsTextViewprofileDialog.setText(getText(R.string.friendsTextView_text) + ":" + human.getFriends());
+
+
+    professionalAssociatesTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.professionalAssociatesTextViewprofileDialog);
+    professionalAssociatesTextViewprofileDialog.setText(getText(R.string.professionalAssociatesTextView_text) + ":" + human.getProfessionalAssociates());
+
+    worshippersTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.worshippersTextViewprofileDialog);
+    worshippersTextViewprofileDialog.setText(getText(R.string.worshippersTextView_text) + ":" + human.getWorshippers());
+
+    looksTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.looksTextViewprofileDialog);
+    looksTextViewprofileDialog.setText(getText(R.string.looksTextView_text) + ":" + human.getLooks());
+
+
+    alertDialogProfile.show();
+
+}
     //This Method is used to display stats of the Family during the Tutorial Stages
     public void profilePictureDialogFamilyTutorial() {
 
 
         alertDialogProfile = new Dialog(MainActivity.this, android.R.style.Theme_Black);
-        //
 
-        //AlertDialog.Builder alertDialogProfile = new AlertDialog.Builder(MainActivity.this);
-
-        //Call the XML List view and set it with  the countries array
-        LayoutInflater inflater = getLayoutInflater();
-        View convertView = inflater.inflate(R.layout.profileimagedialog, null);
-        //alertDialogProfile.setView(convertView);
         alertDialogProfile.setContentView(R.layout.profileimagedialog);
-
-        //keepStatsUpToDate(human.getOverAllWealth(), human.getInfluence(), human.getJob(),human.getCountry(),tax);
-        //userNameTextView.setText(firstNamePart);
         alertDialogProfile.setTitle(familyName + "'s Family Profile");
+
+        profileImageViewProfileDialog=(ImageView) alertDialogProfile.findViewById(R.id.profileImageViewProfileDialog);
+        Bitmap bitmap = ((BitmapDrawable)profileImage.getDrawable()).getBitmap();
+        profileImageViewProfileDialog.setImageBitmap(bitmap);
 
         playerNameTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.playerNameTextViewprofileDialog);
         playerNameTextViewprofileDialog.setText(firstNamePart);
@@ -898,11 +1390,53 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         alertDialogProfile.show();
 
     }
+///->
+
+    public Countries getThisCountry(String countryName) {
+
+        if (countryName.equals(Countries.Irada.getName())) {
+            countryOfUser = Countries.Irada;
+
+        } else if (countryName.equals(Countries.Itican.getName())) {
+            countryOfUser = Countries.Itican;
+
+        } else if (countryName.equals(Countries.Albaq.getName())) {
+            countryOfUser = Countries.Albaq;
+
+        } else if (countryName.equals(Countries.Trinentina.getName())) {
+            countryOfUser = Countries.Trinentina;
+
+        } else if (countryName.equals(Countries.Albico.getName())) {
+            countryOfUser = Countries.Albico;
+
+        } else if (countryName.equals(Countries.Ugeria.getName())) {
+            countryOfUser = Countries.Ugeria;
+
+        } else if (countryName.equals(Countries.Portada.getName())) {
+            countryOfUser = Countries.Portada;
+
+        } else if (countryName.equals(Countries.Kuwador.getName())) {
+            countryOfUser = Countries.Kuwador;
+
+        } else if (countryName.equals(Countries.Ukrark.getName())) {
+            countryOfUser = Countries.Ukrark;
+
+        } else if (countryName.equals(Countries.Rany.getName())) {
+            countryOfUser = Countries.Rany;
+
+        } else {
+
+            countryOfUser = Countries.Heaven;
+
+        }
+        return countryOfUser;
+
+    }
 
     public void chancesOfLife() {
 
         AlertDialog ad = new AlertDialog.Builder(this)
-                .setNeutralButton("Confrim", null)
+                .setNeutralButton("Confirm", null)
                 .setTitle("IDEAL:Chances of Life")
                 .setCancelable(false)
                 .create();
@@ -1356,131 +1890,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     }
 
-    //Need to update for the Price to Move to another country
-    public void keepStatsUpToDate(Double overallWealthA, int influenceAmountA, Jobs jobA, /*Countries countryA,*/
-                                  Double taxA, int looksA, int worshippersA, int friendsA, int professionalAssociatesA) {
-        human.setJob(jobA);
-        human.setIncome(jobA.getIncome());
-        human.setOverAllwealth((human.getOverAllWealth() + jobA.getIncome() + overallWealthA+wealth));
-        human.setInfluence((human.getInfluence() + jobA.getInfluence() + influenceAmountA));
-        human.setProfessionalAssociates(human.getProfessionalAssociates() + professionalAssociatesA);
-        human.setFriends(human.getFriends() + friendsA);
-        human.setLooks(human.getLooks() + looksA);
-        human.setWorshippers(human.getWorshippers() + worshippersA);
-        //human.setCountries(countryA);
-        tax = taxA;
-        overallWealthTextView.setText(getString(R.string.overallWelathTextView_text) + "\n" + currencyFormat.format(human.getOverAllWealth()));
-        String influenceAmountString = Double.toString(human.getInfluence());
-        influenceTextView.setText(getString(R.string.influenceAmountTextView_String) + "\n" + influenceAmountString);
-        jobTextView.setText(getString(R.string.getJob_text) + ":" + human.getJob());
-        countryTextView.setText(getString(R.string.getCountry_text) + ":" + human.getCountryString());
-        taxTextView.setText(getString(R.string.tax_text) + ":" + currencyFormat.format(tax));
-
-
-        //This "if" statement is going to see whether our percentage function will give something less than 1...which the progress bars can no handle
-        if (overallWealthTextView.getText().length() <= 5 ) {
-            calculateTheProgressBarPercentage(1.0, human.getInfluence());
-
-
-        }
-        if (influenceTextView.getText().length() <= 4) {
-            calculateTheProgressBarPercentage(human.getOverAllWealth(), 1);
-
-        }
-
-        calculateTheProgressBarPercentage(human.getOverAllWealth(),human.getInfluence());
-
-        //calculateTheProgressBarPercentage(1.0, 1);
-        /*neighbourhoodTextView.setText("Neighbourhood:"+human.getNeighborhood());
-        userFriendsTextView.setText("Friends:"+human.getFriends());
-        professionalAssociatesTextView.setText("Professional Associates:"+human.getProfessionalAssociates());
-        looksTextView.setText("Attractiveness:"+human.getLooks());*/
-
-    }
-
-    public void updatingStateOfFamily(double wealthA, int influenceA) {
-        family.setFamilyWealth(family.getFamilyWealth() + mother.getIncome() + brother.getIncome() + sister.getIncome() + father.getIncome() + wealthA);
-        family.setFamilyInfluence(family.getFamilyInfluence() + influenceA);
-        if (family.getFamilyFriends() > countryOfUser.getRequiredFriends() || family.getFamilyWealth() > countryOfUser.getRequireedWealth()
-                && family.getFamilyInfluence() > countryOfUser.getRequiredInfluence()) {
-            family.setNeighborhood(countryOfUser.getRichNeighborHood());
-            human.setNeighborhood(countryOfUser.getRichNeighborHood());
-
-
-        } else if (family.getFamilyFriends() == countryOfUser.getRequiredFriends() || family.getFamilyWealth() == countryOfUser.getRequireedWealth()
-                && family.getFamilyInfluence() == countryOfUser.getRequiredInfluence()) {
-            family.setNeighborhood(countryOfUser.getMiddleNeighborHood());
-            human.setNeighborhood(countryOfUser.getMiddleNeighborHood());
-
-        } else {
-            family.setNeighborhood(countryOfUser.getPoorNeighborHood());
-            human.setNeighborhood(countryOfUser.getPoorNeighborHood());
-        }
-    }
-
-
-    public void idealLifeParameters() {
-        informationalTextView.setText("Choose a job ");
-        informationalTextView.setText("\"Choose a job \"Very Low Paying Jobs:(0)Begger (1)Vagrant" + ("\n") +
-                "Low Paying Jobs that add greater Influence: (2)Intern" + ("\n") +
-                "Average Paying Jobs with low Influence: (3)Packingboy (4)Firefighter (5) Banker" + ("\n") +
-                "Medium Paying Jobs with High Influence: (6)Scientist (7)Independent" + ("\n") +
-                "Highest Paying Jobs: (8)Business Owner (9)King (10)Sultan" + ("\n") +
-                "Divine Jobs: (11)God" + ("\n"));
-
-        final Spinner selectAFamily_spinnnerOne, selectACountry_spinnnerTwo;
-
-
-        AlertDialog.Builder alertDialogidealLife = new AlertDialog.Builder(MainActivity.this);
-        //Call the XML List view and set it with  the countries array
-        LayoutInflater inflater = getLayoutInflater();
-        View convertView = inflater.inflate(R.layout.ideallife_parameters_layout, null);
-        alertDialogidealLife.setView(convertView);
-
-
-        alertDialogidealLife.setTitle("Set Up the Parameters for your life")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        Object checkedItem;
-
-                    }
-                })
-
-                .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-
-
-                    }
-                })
-                .setCancelable(false);
-
-
-        //Pick A Family
-        selectAFamily_spinnnerOne = (Spinner) convertView.findViewById(R.id.selectAFamily_spinnnerOne);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.familyTypes, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
-        // Apply the adapter to the spinner
-
-
-        selectACountry_spinnnerTwo = (Spinner) convertView.findViewById(R.id.selectACountry_spinnnerTwo);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapterTwo = ArrayAdapter.createFromResource(this,
-                R.array.countries, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapterTwo.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
-
-
-        // Apply the adapter to the spinner
-        //selectAFamily_spinnnerOne.setAdapter(adapter);
-        selectACountry_spinnnerTwo.setAdapter(adapterTwo);
-
-
-        alertDialogidealLife.show();
-
-    }
 
     public void worshippersFollow(boolean worshippersFollow) {
 
@@ -1501,498 +1910,11 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         }
     }
 
-    public void selectAJob() {
-
-        professionalAssociates = 0;
-        friends = 0;
-        //Creating a Layout for the EditTextViews
-        LinearLayout layout = new LinearLayout(this);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setBackgroundColor(Color.parseColor("#ff8a54"));
-        //creating instance of custom view
-
-        //Beggar//1
-        final Button jobButtonBeggar = new Button(this);
-        jobButtonBeggar.setHint("Beggar");
-        //layout.addView(jobButtonBeggar);
-        jobButtonBeggar.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                professionalAssociates = 0;
-                friends = 10;
-               human.setJob(Jobs.BEGGER);
-
-
-            }
-        });
-
-        //Vagrant//2
-        final Button jobButtonVagrant = new Button(this);
-        jobButtonVagrant.setHint("Vagrant");
-        //layout.addView(jobButtonVagrant);
-        jobButtonVagrant.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                professionalAssociates = 0;
-                friends = 25;
-                human.setJob(Jobs.VAGRANT);
-
-            }
-        });
-
-        //Intern//3
-        final Button jobButtonIntern = new Button(this);
-        jobButtonIntern.setHint("Intern");
-        //layout.addView(jobButtonIntern);
-        jobButtonIntern.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                professionalAssociates = 500;
-                friends = 15;
-                human.setJob(Jobs.INTERN);
-
-            }
-        });
-
-        //PackingBoy//4
-        final Button jobButtonPackingBoy = new Button(this);
-        jobButtonPackingBoy.setHint("Packing Boy");
-        //layout.addView(jobButtonPackingBoy);
-        jobButtonPackingBoy.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                professionalAssociates = 50;
-                friends = 10;
-                human.setJob(Jobs.PACKINGBOY);
-
-            }
-        });
-
-        //Firefighter//5
-        final Button jobButtonFirefighter = new Button(this);
-        jobButtonFirefighter.setHint("Firefighter");
-        //layout.addView(jobButtonFirefighter);
-        jobButtonFirefighter.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                professionalAssociates = 100;
-                friends = 25;
-                human.setJob(Jobs.FIREFIGHTER);
-
-            }
-        });
-
-        //Banker//6
-        final Button jobButtonBanker = new Button(this);
-        jobButtonBanker.setHint("Banker");
-        //layout.addView(jobButtonBanker);
-        jobButtonBanker.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                professionalAssociates = 200;
-                friends = 50;
-                human.setJob(Jobs.BANKER);
-
-            }
-        });
-
-        //Scientist//7
-        final Button jobButtonScientist = new Button(this);
-        jobButtonScientist.setHint("Scientist");
-        //layout.addView(jobButtonScientist);
-        jobButtonScientist.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                professionalAssociates = 200;
-                friends = 75;
-                human.setJob(Jobs.SCIENTIST);
-
-            }
-        });
-
-        //Independent//8
-        final Button jobButtonIndependent = new Button(this);
-        jobButtonIndependent.setHint("Independent");
-        //layout.addView(jobButtonIndependent);
-        jobButtonIndependent.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                professionalAssociates = 300;
-                friends = 100;
-                human.setJob(Jobs.INDEPENDENT);
-
-            }
-        });
-
-        //Buisness Owner//9
-        final Button jobButtonBusinessOwner = new Button(this);
-        jobButtonBusinessOwner.setHint("Business Owner");
-        //layout.addView(jobButtonBusinessOwner);
-        jobButtonBusinessOwner.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                professionalAssociates = 500;
-                friends = 200;
-                human.setJob(Jobs.BUSINESSOWNER);
-
-            }
-        });
-
-        //King//10
-        final Button jobButtonKing = new Button(this);
-        jobButtonKing.setHint("King");
-        //layout.addView(jobButtonKing);
-        jobButtonKing.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                professionalAssociates = 1000;
-                friends = 500;
-                human.setJob(Jobs.KING);
-
-            }
-        });
-
-        //Sultan//11
-        final Button jobButtonSultan = new Button(this);
-        jobButtonSultan.setHint("Sultan");
-        //layout.addView(jobButtonSultan);
-        jobButtonSultan.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                professionalAssociates = 1500;
-                friends = 1000;
-                human.setJob(Jobs.SULTAN);
-
-            }
-        });
-
-        //Omega//12
-        final Button jobButtonOmega = new Button(this);
-        jobButtonOmega.setHint("\u03A9" + "mega");
-        //layout.addView(jobButtonOmega);
-        jobButtonOmega.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                professionalAssociates = 3000;
-                friends = 2000;
-                human.setJob(Jobs.OMEGA);
-
-            }
-        });
-        //Make the AlertDialog Scrollable
-
-
-        //If statments to show only certain Buttons
-        if (age < 20 || schoolAttendanceAmount<1) {
-            layout.addView(jobButtonPackingBoy);//PackingBoy
-            layout.addView(jobButtonIntern);//Intern
-        } else {
-            if (human.getCountry() == Countries.Irada ||
-                    human.getCountry() == Countries.Itican ||
-                    human.getCountry() == Countries.Albaq) {
-
-                if (begger) { layout.addView(jobButtonBeggar); }//Begger
-
-                if (vagrant) { layout.addView(jobButtonVagrant);}//Vagrant
-
-                if (packingboy) {  layout.addView(jobButtonPackingBoy);  }//PackingBoy
-
-            }
-            if (human.getCountry() == Countries.Trinentina ||
-                    human.getCountry() == Countries.Albico ||
-                    human.getCountry() == Countries.Ugeria ||
-                    human.getCountry() == Countries.Portada) {
-
-
-                if (firefighter) { layout.addView(jobButtonFirefighter);  }//FIREFIGHTER;
-
-                if (banker) { layout.addView(jobButtonBanker);  }//BANKER;
-
-                if (scientist) { layout.addView(jobButtonScientist);  }//Scientist;
-
-            }
-            if (human.getCountry() == Countries.Kuwador ||
-                    human.getCountry() == Countries.Ukrark ||
-                    human.getCountry() == Countries.Rany) {
-
-                if (banker) { layout.addView(jobButtonBanker);   }//BANKER;
-
-
-                if (scientist) {  layout.addView(jobButtonScientist);   }//Scientist;
-
-
-                if (independent) {  layout.addView(jobButtonIndependent); }//Independent;
-
-
-                if (buisnessowner) {  layout.addView(jobButtonBusinessOwner);  }//BusinessOwner;
-            }
-            if (human.getCountry() == Countries.Heaven) {
-
-                if (independent) {layout.addView(jobButtonIndependent);  }//Independent;
-
-
-                if (king) {  layout.addView(jobButtonKing);  }//KING;
-
-
-                if (king && sultan) { layout.addView(jobButtonKing);  }//SULTAN
-
-            }
-        }
-
-            final ScrollView scrollView = new ScrollView(this);
-            scrollView.addView(layout);
-
-        AlertDialog ad = new AlertDialog.Builder(this)
-
-                    .setMessage("Select A Job. \n Current Country:"+human.getCountry())
-                    .setTitle("IDEAL")
-                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            jobTextView.setText(human.getJob().getName());
-                            age++;
-                            age_Turn_textView.setText("Age: " + age);
-                            keepStatsUpToDate(0.0, 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, friends, professionalAssociates);
-
-
-                        }
-                    })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            selectAJob();
-                        }
-                    })
-                    .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            selectAJob();
-                        }
-                    })
-                    .setCancelable(false)
-                    .setView(scrollView)
-                    .create();
-
-             //Use this command to control the positioning of your alertDialog
-            //ad.getWindow().getAttributes().verticalMargin = 1.1F;
-            ad.show();
-
-
-        }
-
-
-    public void goToSchool(){
-        //Increment and Update the amount of times this user went to school
-        schoolAttendanceAmount++;
-        age++;
-        age_Turn_textView.setText("Age: " + age);
-        schoolAttendanceAmountTextView.setText("School Attendance:" + Integer.toString(schoolAttendanceAmount));
-        //This String Variable is used to hold all of the messages in one string
-        String chainText="";
-        AlertDialog ad = new AlertDialog.Builder(this)
-                .setNeutralButton("Confrim", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-
-                    }
-                })
-
-                .setMessage("Go a school:Raises the amount of professional Associates" + "\n" +
-                        "Unlocks jobs" + "\n" +
-                        "Raises the amount of friends"+"\n"+
-                       "School Attendance:"+schoolAttendanceAmount)
-                        //.setIcon(R.drawable.ic_launcher)
-                .setTitle("IDEAL:Going to School")
-                .setCancelable(true)
-                .create();
-
-
-        //This Dialog is used to show which jobs were unlocked
-        AlertDialog adNotifier = new AlertDialog.Builder(this)
-                .setNeutralButton("Confrim", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        keepStatsUpToDate(-2500.0 * human.getCountry().getMultiplier(), 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
-
-                    }
-                })
-
-                .setTitle("IDEAL:Going to School")
-                .setCancelable(true)
-                .create();
-
-
-       if (human.getOverAllWealth() >= 1 && human.getInfluence() >= 1 || schoolAttendanceAmount>=0) {
-            if (!begger) {
-                begger = true;
-                chainText+="You have unlocked the Begger Job"+"\n";
-                //adNotifier.setMessage(chainText);
-                // public void keepStatsUpToDate(Double overallWealthA, int influenceAmountA, Jobs jobA, /*Countries countryA,*/   Double taxA, int looksA, int worshippersA, int friendsA, int professionalAssociatesA)
-                //human.setOverAllwealth(human.getOverAllWealth()-2500.0 * human.getCountry().getMultiplier());
-                //keepStatsUpToDate(-2500.0 * human.getCountry().getMultiplier(), 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
-            }
-            if (!vagrant) {
-                vagrant = true;
-                chainText+="You have unlocked the Vagrant Job"+"\n";
-                human.setOverAllwealth(human.getOverAllWealth()-2500.0 * human.getCountry().getMultiplier());
-
-                keepStatsUpToDate(0.0, 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
-
-            }
-        }if(human.getOverAllWealth()>=10000 && human.getInfluence()>=20000 || schoolAttendanceAmount>=1){
-            if(!intern){
-                intern=true;
-                chainText+="You have unlocked the Intern Job";
-                //human.setOverAllwealth(human.getOverAllWealth() - 2500.0 * human.getCountry().getMultiplier());
-                //keepStatsUpToDate(0.0, 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
-
-            }if(!packingboy){
-                packingboy=true;
-                chainText+= "\n" + "You have unlocked the Packing boy Job";
-                //human.setOverAllwealth(human.getOverAllWealth() - 2500.0 * human.getCountry().getMultiplier());
-                //keepStatsUpToDate(0.0, 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
-
-            }if(!firefighter){
-                firefighter=true;
-                chainText+="\n" + "You have unlocked the Firefighter Job";
-                //human.setOverAllwealth(human.getOverAllWealth() - 2500.0 * human.getCountry().getMultiplier());
-                //keepStatsUpToDate(0.0, 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
-            }
-        }if(human.getOverAllWealth()>=70000 && human.getInfluence()>=100000 || schoolAttendanceAmount>=2&&socialisingWithFriends>=2
-                &&workingOnPhysicalApp>=1){
-            if(!banker){
-                banker=true;
-                chainText+="\n" + "You have unlocked the Banker Job";
-                //human.setOverAllwealth(human.getOverAllWealth() - 2500.0 * human.getCountry().getMultiplier());
-                //keepStatsUpToDate(0.0, 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
-
-            }if(!scientist){
-                scientist=true;
-                adNotifier.setMessage("You got charged:$" + 2500 * human.getCountry().getMultiplier() + "\n" + "You have unlocked the Scientist Job");
-                //human.setOverAllwealth(human.getOverAllWealth() - 2500.0 * human.getCountry().getMultiplier());
-                //keepStatsUpToDate(0.0, 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
-            }if(!independent){
-                independent=true;
-                adNotifier.setMessage("You got charged:$" + 2500 * human.getCountry().getMultiplier() + "\n" + "You have unlocked the Independent Job");
-                //human.setOverAllwealth(human.getOverAllWealth() - 2500.0 * human.getCountry().getMultiplier());
-                //keepStatsUpToDate(0.0, 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
-
-            }if(!firefighter){
-                firefighter=true;
-                adNotifier.setMessage("You got charged:$" + 2500 * human.getCountry().getMultiplier() + "\n" + "You have unlocked the Firefighter Job");
-                //human.setOverAllwealth(human.getOverAllWealth() - 2500.0 * human.getCountry().getMultiplier());
-                //keepStatsUpToDate(0.0, 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
-            }
-        }if(human.getOverAllWealth()>=1000000 && human.getInfluence()>=100000 && human.getFriends()>10000 || schoolAttendanceAmount>=3&&socialisingWithFriends>=3
-                &&workingOnPhysicalApp>=3){
-            if(!sultan){
-                sultan=true;
-                adNotifier.setMessage("You got charged:$" + 2500 * human.getCountry().getMultiplier() + "\n" + "You have unlocked the Sultan Job");
-                //human.setOverAllwealth(human.getOverAllWealth() - 2500.0 * human.getCountry().getMultiplier());
-                //keepStatsUpToDate(0.0, 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
-
-
-            }
-        }if(human.getOverAllWealth()>=10000000 && human.getInfluence()>=10000000 && human.getFriends()>100000 && human.getWorshippers()>10000 ||  schoolAttendanceAmount>=4&&socialisingWithFriends>=4
-                &&workingOnPhysicalApp>=4) {
-            if (!god) {
-                god = true;
-                adNotifier.setMessage("You got charged:$" + 2500 * human.getCountry().getMultiplier() + "\n" + "You have unlocked the God Job");
-                //adNotifier.show();
-                //human.setOverAllwealth(human.getOverAllWealth()-2500.0 * human.getCountry().getMultiplier());
-                //keepStatsUpToDate(0.0, 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
-
-
-            }
-
-        }
-        adNotifier.setMessage(chainText);
-        adNotifier.setCancelable(true);
-        ad.show();
-        adNotifier.show();
-
-    }
-
-    public void workOnPhysical(){
-        AlertDialog ad = new AlertDialog.Builder(this)
-                .setNeutralButton("Confrim", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-
-                    }
-                })
-
-                .setMessage("Work on your physical Appearance:Raises your looks" + "\n" +
-                        "Raises the amount of worshippers" + "\n" +
-                        "Raises the amount of influence" + "\n" +
-                        "Raises the amount of friends" + "\n" +
-                        "How many times you have worked on your physical appearance:" + workingOnPhysicalApp + "\n" +
-                        "Your looks got increased by 1" + "\n" +
-                        "The amount of worshippers got increased by 100" + "\n" +
-                        "Your influence got increased by 1000" + "\n" +
-                        "The amount of friends increased by 1000" + "\n" +
-                        "You got charged:$" + 100 * human.getCountry().getMultiplier())
-
-                .setTitle("IDEAL:Work on your Physical")
-                .setCancelable(true)
-                .create();
-                ad.show();
-        workingOnPhysicalApp++;
-        workingOnPhysicalAppTextView.setText("Physical Appearance:" + Integer.toString(workingOnPhysicalApp));
-        human.setLooks(human.getLooks() + 1);
-        human.setWorshippers(human.getWorshippers() + 100);
-        human.setInfluence(human.getInfluence() + 1000);
-        human.setFriends(human.getFriends() + 1000);
-        human.setOverAllwealth(human.getOverAllWealth() - 100 * human.getCountry().getMultiplier());
-        age++;
-        age_Turn_textView.setText("Age: " + age);
-        keepStatsUpToDate(0.0,0,human.getJob(),human.getCountry().getTaxes(),0,0,0,0);
-        //System.out.println("Your looks got increased by 1");
-        //System.out.println("The amount of worshippers got increased by 100");
-        //System.out.println("Your influence got increased by 1000");
-        //System.out.println("The amount of friends increased by 1000");
-        //System.out.println("You got charged:$" + 100 * human.getCountry().getMultiplier());
-
-    }
-
-
-    public void socializeWithPeople(){
-        AlertDialog ad = new AlertDialog.Builder(this)
-             .setNeutralButton("Confrim", new DialogInterface.OnClickListener() {
-                 public void onClick(DialogInterface dialog, int whichButton) {
-
-                 }
-             })
-              .setMessage("How many times you socialised with people:" + socialisingWithFriends + "\n" +
-
-                      "The amount of worshippers got increased by 100" + "\n" +
-                      "Your influence got increased by 1000" + "\n" +
-                      "The amount of friends increased by 1000" + "\n" +
-                      "Your professional Associates got increased by 1000" + "\n" +
-                      "You got charged:$" + 100 * human.getCountry().getMultiplier())
-
-                .setTitle("IDEAL:Work on your Physical")
-                .setCancelable(true)
-                .create();
-        ad.show();
-
-        socialisingWithFriends++;
-        socialisingWithFriendsTextView.setText("Socialize Amount:" + Integer.toString(socialisingWithFriends));
-        System.out.println("How many times you socialised with people:" + socialisingWithFriends);
-        human.setWorshippers(human.getWorshippers() + 10);
-        human.setInfluence(human.getInfluence() + 100);
-        human.setFriends(human.getFriends() + 10000);
-        human.setProfessionalAssociates(human.getProfessionalAssociates() + 1000);
-        human.setOverAllwealth(human.getOverAllWealth() - 50 * human.getCountry().getMultiplier());
-        keepStatsUpToDate(0.0, 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
-
-
-        age++;
-        age_Turn_textView.setText("Age: " + age);
-
-
-    }
 
     public void tutorialWithFamily(){
 
         AlertDialog ad = new AlertDialog.Builder(this)
-                .setNeutralButton("Confrim",null)
+                .setNeutralButton("Confirm",null)
                 .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         new Thread(new IDEALLifeProgram()).run();
@@ -2025,8 +1947,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
         }
-        age++;
-        age_Turn_textView.setText("Age: " + age);
+
         //Once this human reaches 20 years of age then the family's wealth will be given to the human
         human.setWealth(family.getFamilyWealth());
         //Enable Buttons when the user is done with the Family
@@ -2047,10 +1968,12 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     public void grownUpHuman(){
         AlertDialog ad = new AlertDialog.Builder(this)
-                .setNeutralButton("Confrim",null)
+                .setNeutralButton("Confirm",null)
                 .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        new Thread(new IDEALLifeProgram()).run();
+                        if(human.getOverAllWealth()< 10000000 && human.getInfluence()<2000000) {
+                            new Thread(new IDEALLifeProgram()).run();
+                        }
 
                     }
                 })
@@ -2123,7 +2046,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 keepStatsUpToDate(wealth*1.0,0,human.getJob(),human.getCountry().getTaxes(),0,0,0,0);
             }else if(human.getInfluence()>=100000 && !influencActivation || human.getProfessionalAssociates()>=10000 && !influencActivation
                     ||human.getFriends()>=100000 && !influencActivation){
-                System.out.println("You have gained enough power,you will now gain a steady source of money");
+                ad.setMessage("You have gained enough power,you will now gain a steady source of money");
+                ad.show();
 
                 wealth = 100000;
                 keepStatsUpToDate(wealth*1.0,0,human.getJob(),human.getCountry().getTaxes(),0,0,0,0);
@@ -2138,11 +2062,12 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
 
-            age++;
-            age_Turn_textView.setText("Age: "+age);
+
         }
 
-        ad.setMessage("You have created your ideal life at age:" + age);
+        ad.setMessage("You have created your ideal life at age:" + age+"  CONGRATULATIONS");
+        buttonActivation(false);
+
         ad.show();
 
 
@@ -2150,46 +2075,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     }
 
-    //Code for getting and shrinking picture selected my the user
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
-        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
-        try {
-            // When an Image is picked
-            if (requestCode == SELECT_PHOTO && resultCode == RESULT_OK
-                    && null != imageReturnedIntent) {
-                // Get the Image from data
-
-                Uri selectedImage = imageReturnedIntent.getData();
-                String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
-                // Get the cursor
-                Cursor cursor = getContentResolver().query(selectedImage,
-                        filePathColumn, null, null, null);
-                // Move to first row
-                cursor.moveToFirst();
-
-                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                selectedImagePath = cursor.getString(columnIndex);
-                cursor.close();
-                //ImageView imgView = (ImageView) findViewById(R.id.profileImageView);
-                // Set the Image in ImageView after decoding the String
-                profileImage.setImageBitmap(BitmapFactory
-                        .decodeFile(selectedImagePath));
-               ImageView profileImageViewProfileDialog=(ImageView) alertDialogProfile.findViewById(R.id.profileImageViewProfileDialog);
-                profileImageViewProfileDialog.setImageBitmap(BitmapFactory
-                        .decodeFile(selectedImagePath));
-
-            } else {
-                Toast.makeText(this, "You haven't picked Image",
-                        Toast.LENGTH_LONG).show();
-            }
-        } catch (Exception e) {
-            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
-                    .show();
-        }
-
-    }
 
 
 //Calling a Thread for the application
@@ -2197,8 +2082,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     @Override
     public void run(){
+
         AlertDialog ad = new AlertDialog.Builder(MainActivity.this)
-                .setNeutralButton("Confrim", null)
+                .setNeutralButton("Confirm", null)
                 .setCancelable(true)
                 .create();
 
@@ -2212,20 +2098,26 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
                    }else if(age<20 && age>0){
-                       //To display to the use that the application is in the Tutorial State
-                       ad.setMessage("Now that you have a family; it is time to start your new IDEAL life" + "\n"
-                               + "Every turn represents an age" + "\n"
-                               + "Once age 20 is reached; the player will be removed from the family and has to choose a starting location");
-                       ad.show();
+                       if(!shown) {
+                           //To display to the use that the application is in the Tutorial State
+                           ad.setMessage("Now that you have a family; it is time to start your new IDEAL life" + "\n"
+                                   + "Every turn represents an age" + "\n"
+                                   + "Once age 20 is reached; the player will be removed from the family and has to choose a starting location");
+                           ad.show();
+                           shown=true;
+                       }
 
                        tutorialWithFamily();
 
                    }else{
-                       ad.setMessage("You are now an adult and will have to work on your own now to secure you IDEAL Life" + "\n"
-                               + "If you can reach $10,000,000 in wealth and 2,000,000 in influence;you would have won the game!!"
-                               + "\n There are also many other features to unlock in the game"
-                               + "\n Create your IDEAL Life");
-                       ad.show();
+                       if(!shownOne) {
+                           ad.setMessage("You are now an adult and will have to work on your own now to secure you IDEAL Life" + "\n"
+                                   + "If you can reach $10,000,000 in wealth and 2,000,000 in influence;you would have won the game!!"
+                                   + "\n There are also many other features to unlock in the game"
+                                   + "\n Create your IDEAL Life");
+                           ad.show();
+                           shownOne=true;
+                       }
                        grownUpHuman();
                    }
                    age++;
@@ -2243,7 +2135,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         }
 
 }
-
     //These methods is for when the application is paused or temporally closed
     public void onResume() {
         super.onResume();
