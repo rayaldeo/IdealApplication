@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private TextView priceToMoveTextView;
     private TextView playerNameTextView;
 
-    //TextViews on the Profile Dialog
+//TextViews on the Profile Dialog
     private TextView playerNameTextViewprofileDialog;
     private TextView age_Turn_textView;
     private TextView userfriendsTextViewprofileDialog;
@@ -80,21 +80,17 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private TextView taxTextViewprofileDialog;
     private TextView worshippersTextViewprofileDialog;
 
-
-    //For the Progress Bars
+//For the Progress Bars
     private static final int PROGRESS = 0x1;
     private Handler mHandler;
     private int mProgressStatusOverAllWealth = 0, mProgressStatusInfluence = 0;
-
-
     private ProgressBar overallWealthProgressBar;
     private ProgressBar influenceProgressBar;
-
+//Buttons
     private Button changeCountryButton,selectAJobButton,schoolButton,workOnPhysicalAppearanceButton,socializeWithPeopleButton;
-
+//ProfileImages
     private ImageView profileImage,profileImageViewProfileDialog;
-
-    //Separate Dialogs
+//Separate Dialogs
     private Dialog alertDialogProfile;
 
     private Human human;
@@ -104,12 +100,12 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     private Family family;
     private Countries countryOfUser;
-    //private Scanner scanner=new Scanner(System.in);
+    private Jobs job;
     private FamilyMember mother, sister, brother, father;
-    private String familyName, firstNamePart, lastNamePart;
+    private String familyName, firstNamePart, lastNamePart,chainString="";
     Random rand = new Random();
     int randomNum = rand.nextInt((50 - 1) + 1);
-    private Boolean banker = false, independent = false, buisnessowner = false, king = false, intern = false,shown=false,shownOne=false;
+    private Boolean banker = false, independent = false, businessowner = false, king = false, intern = false,shown=false,shownOne=false;
     private boolean begger = false;
     private boolean vagrant = false;
     private boolean packingboy = false;
@@ -123,11 +119,11 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private boolean influencActivation = false;
     private boolean heavenBoolean = false;
     private int tempNum = age - 10;
-    //This boolean is to keep track whether the user is done intializing their IDEAL Life
+//This boolean is to keep track whether the user is done intializing their IDEAL Life
     boolean dialogShown=true;
-    //For selecting and image
+//For selecting and image
     private static final int SELECT_PHOTO = 100;
-    private String selectedImagePath;
+    public String selectedImagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -241,23 +237,11 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         priceToMoveTextView.setText("Price:" + Double.toString(0.0));
         //informationalTextView.setText("Welcome and Good Luck!");
 
-        //init();
-        //makeYourName();
-        //selectAFamilyType();
-        //selectACountry();
-        //The Actual IDEAL Application
-        //Disable and Gray out Buttons while the user is with family
+
 
         buttonActivation(false);
         new Thread(new IDEALLifeProgram()).run();
 
-        //tutorialWithFamily();
-
-        //chancesOfLife();
-        //idealLifeParameters();
-        //selectAJob();
-
-        //new IDEALLifeProgram().execute();
 
     }
 
@@ -478,7 +462,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         //Make the AlertDialog Scrollable
 
 
-        //If statments to show only certain Buttons
+        //If statements to show only certain Buttons
         if (age < 20 || schoolAttendanceAmount<1) {
             layout.addView(jobButtonPackingBoy);//PackingBoy
             layout.addView(jobButtonIntern);//Intern
@@ -520,7 +504,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 if (independent) {  layout.addView(jobButtonIndependent); }//Independent;
 
 
-                if (buisnessowner) {  layout.addView(jobButtonBusinessOwner);  }//BusinessOwner;
+                if (businessowner) {  layout.addView(jobButtonBusinessOwner);  }//BusinessOwner;
             }
             if (human.getCountry() == Countries.Heaven) {
 
@@ -952,7 +936,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                                   Double taxA, int looksA, int worshippersA, int friendsA, int professionalAssociatesA) {
         human.setJob(jobA);
         human.setIncome(jobA.getIncome());
-        human.setOverAllwealth((human.getOverAllWealth() + jobA.getIncome() + overallWealthA+wealth));
+        human.setOverAllwealth((human.getOverAllWealth() + jobA.getIncome() + overallWealthA));
         human.setInfluence((human.getInfluence() + jobA.getInfluence() + influenceAmountA));
         human.setProfessionalAssociates(human.getProfessionalAssociates() + professionalAssociatesA);
         human.setFriends(human.getFriends() + friendsA);
@@ -1346,7 +1330,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         alertDialogProfile = new Dialog(MainActivity.this, android.R.style.Theme_Black);
 
         alertDialogProfile.setContentView(R.layout.profileimagedialog);
-        alertDialogProfile.setTitle(familyName + "'s Family Profile");
+        alertDialogProfile.setTitle(lastNamePart + "'s Family Profile");
 
         profileImageViewProfileDialog=(ImageView) alertDialogProfile.findViewById(R.id.profileImageViewProfileDialog);
         Bitmap bitmap = ((BitmapDrawable)profileImage.getDrawable()).getBitmap();
@@ -1434,13 +1418,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     }
 
     public void chancesOfLife() {
-
-        AlertDialog ad = new AlertDialog.Builder(this)
-                .setNeutralButton("Confirm", null)
-                .setTitle("IDEAL:Chances of Life")
-                .setCancelable(false)
-                .create();
-
         ///If you want to test any specific chance of life just place in the case number into switch bracket..the program will only run that switch
         switch (randomNum) {
 
@@ -1449,7 +1426,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 //This affects your wealth with the family in the tutorial
                 //This will affect your overall wealth in th later game
 
-                ad.setMessage("You decided to move;so here is the  opportunity to choose a different country!");
+                chainString+="\n"+"You decided to move;so here is the  opportunity to choose a different country!";
                  selectACountry();
 
 
@@ -1459,36 +1436,36 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 //ad.setMessage("2");
                 if (age < 20) {
                     if (family.getFamilyFriends() > 1000) {
-                         ad.setMessage("Your family is very famous and this allows you to earn $500");
-                        family.setFamilyWealth(human.getOverAllWealth() + 500);
-                         ad.setMessage("This character's wealth is $" + family.getFamilyWealth());
+                        chainString+="Your family is very famous and this allows you to earn $500";
+                        wealth+= 500;
+                        chainString+="\n"+"The Family's wealth is $" + family.getFamilyWealth();
 
                         //CharDetails();
                     } else if (family.getFamilyFriends() > 500) {
-                         ad.setMessage("Your family is Famous and this allows you to earn $100");
-                        family.setFamilyWealth(human.getOverAllWealth() + 100);
-                         ad.setMessage("This character's wealth is $" + family.getFamilyWealth());
+                        chainString+="\n"+"Your family is Famous and this allows you to earn $100";
+                        wealth+= 100;
+                        chainString+="\n"+"Your wealth is $" + family.getFamilyWealth();
 
                         //CharDetails();
                     } else {
-                         ad.setMessage("Your family is not very popular;it is beneficial to have more friends!!");
+                        chainString+="\n"+"Your family is not very popular;it is beneficial to have more friends!!";
                     }
 
                 } else {
                     if (human.getFriends() > 1000) {
-                         ad.setMessage("You are very famous and this allows you to earn $500");
-                        human.setOverAllwealth(human.getOverAllWealth() + 500);
-                         ad.setMessage("This character's wealth is $" + human.getOverAllWealth());
+                        chainString+="\n"+"You are very famous and this allows you to earn $500";
+                        wealth+=500;
+                        chainString+="\n"+"Your wealth is $" + human.getOverAllWealth();
 
                         //CharDetails();
                     } else if (human.getFriends() > 500) {
-                         ad.setMessage("You are famous  and this allows you to earn $100");
-                        human.setOverAllwealth(human.getOverAllWealth() + 100);
-                         ad.setMessage("This character's wealth is $" + human.getOverAllWealth());
+                        chainString+="\n"+"You are famous  and this allows you to earn $100";
+                        wealth+= 100;
+                        chainString+="\n"+"Your wealth is $" + human.getOverAllWealth();
 
                         //CharDetails();
                     } else {
-                         ad.setMessage("You are not very popular;it is beneficial to have more friends!!");
+                        chainString+="\n"+"You are not very popular;it is beneficial to have more friends!!";
                     }
 
                 }
@@ -1499,16 +1476,16 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
                 // ad.setMessage("3");
                 if (human.getInfluence() > 100000 || human.getInfluence() + family.getFamilyInfluence() > 100000) {
-                     ad.setMessage("Your family has a high influence level and is able to get you to the best schools and mentors" + "\n" + "You have will have access to the intern job "
+                    chainString+="\n"+"Your family has a high influence level and is able to get you to the best schools and mentors" + "\n" + "You have will have access to the intern job "
                             + "\n" + "You have will have access to the Banker job "
-                            + "\n" + "You have will have access to the Business Owner job ");
+                            + "\n" + "You have will have access to the Business Owner job ";
 
                     intern = true;
                     banker = true;
-                    buisnessowner = true;
+                    businessowner = true;
 
                 } else {
-                     ad.setMessage("Your family's influence is not very high;try increasing it!!");
+                    chainString+="\n"+"Your family's influence is not very high;try increasing it!!";
                 }
 
 
@@ -1517,21 +1494,16 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
                 // ad.setMessage("4");
                 if (human.getFriends() > 100000 || human.getFriends() + family.getFamilyFriends() > 100000) {
-                     ad.setMessage("Having many friends make ways for more friends.You gained 500 friends");
-                    human.setFriends(human.getFriends() + 500);
-                    //CharDetails();
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                } else if (human.getFriends() > 1000 || human.getFriends() + family.getFamilyFriends() > 1000) {
-                     ad.setMessage("You don't have much friends but you still get a bonus.You gained 100 friends");
-                    human.setFriends(human.getFriends() + 100);
+                    chainString+="\n"+"Having many friends make ways for more friends.You gained 500 friends";
+                   friends+=500;
                     //CharDetails();
 
+                } else if (human.getFriends() > 1000 || human.getFriends() + family.getFamilyFriends() > 1000) {
+                    chainString+="\n"+"You don't have much friends but you still get a bonus.You gained 100 friends";
+                   friends+=100;
+
                 } else {
-                     ad.setMessage("You do not have enough friends to access this bonus");
+                    chainString+="\n"+"You do not have enough friends to access this bonus";
 
                 }
 
@@ -1539,19 +1511,18 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             case 4:
 
                 // ad.setMessage("5");
-                 ad.setMessage("A storm came over and destroyed your car.You lose some of your money in the process of replacing it");
+                chainString+="\n"+"A storm came over and destroyed your car.You lose some of your money in the process of replacing it";
 
                 if (age > 20) {
-                    human.setOverAllwealth(human.getOverAllWealth() - 10000);
-                     ad.setMessage("You got charged:10000");
+                    wealth+= - 10000;
+                    chainString+="\n"+"You got charged:10000";
                     //CharDetails();
 
 
                 } else {
-                    wealth = -10000;
+                    wealth += -10000;
                     updatingStateOfFamily(wealth, 0);
-                    wealth = 0;
-                     ad.setMessage("Your family got charged $10000");
+                    chainString+="\n"+"Your family got charged $10000";
 
 
                 }
@@ -1561,28 +1532,28 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 // ad.setMessage("6");
 
                 if (human.getLooks() > 1 && human.getLooks() < 5) {
-                     ad.setMessage("You are not very good looking and people do not resonate with you very well.What a shallow world where people judge based on your looks \n You gain nothing");
+                    chainString+="\n"+"You are not very good looking and people do not resonate with you very well.What a shallow world where people judge based on your looks \n You gain nothing";
 
 
                 } else if (human.getLooks() == 5) {
-                     ad.setMessage("You are average looking so very few people take you on face value.What a shallow world where people judge based on your looks \n You gain $100 \n" +
+                    chainString+="\n"+"You are average looking so very few people take you on face value.What a shallow world where people judge based on your looks \n You gain $100 \n" +
                             "You gain 100 influence" +
-                            "\n You gain 100 friends");
+                            "\n You gain 100 friends";
 
 
-                    human.setOverAllwealth(human.getOverAllWealth() + 100);
-                    human.setInfluence(human.getInfluence() + 100);
-                    human.setFriends(human.getFriends() + 100);
+                    wealth+= 100;
+                   influence+=100;
+                  friends+=100;
 
 
                 } else if (human.getLooks() < 15) {
-                    ad.setMessage("People automatically love you at face value.What a shallow world where people judge based on your looks \n You gain $500 \n" +
+                    chainString+="\n"+"People automatically love you at face value.What a shallow world where people judge based on your looks \n You gain $500 \n" +
                             "You gain 500 influence" +
-                            "\n You gain 500 friends");
+                            "\n You gain 500 friends";
 
-                    human.setOverAllwealth(human.getOverAllWealth() + 500);
-                    human.setInfluence(human.getInfluence() + 500);
-                    human.setFriends(human.getFriends() + 500);
+                    wealth+=500;
+                   influence+= 500;
+                   friends+= 500;
 
                 }
                 //CharDetails();
@@ -1590,27 +1561,20 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             case 6:
                 // ad.setMessage("7");
                 if (god && age > 20) {
-                    ad.setMessage("You have surpass the earthly domain and is ready to create your own heaven");
-                    human.setJob(Jobs.GOD);
+                    job=Jobs.GOD;
                     worshippersFollow = true;
                     heavenBoolean = true;
-                    ad.setMessage("You have also gained access to heaven");
-                    //CharDetails();
+                    chainString+="\n"+"You have surpass the earthly domain and is ready to create your own heaven"+"\n"+"You have also gained access to heaven";
 
 
                 } else if (age > 20) {
-                    ad.setMessage("You inherited Godly talent! You begin to attract worshippers");
+                    chainString+="\n"+"You inherited Godly talent! You begin to attract worshippers";
                     worshippersFollow = true;
                 } else {
-                    ad.setMessage("You need to be outside the family tutorial to access this benefit");
+                    chainString+="\n"+"You need to be outside the family tutorial to access this benefit";
                 }
 
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                break;
+                 break;
 
             case 7:
                 genieDoSomething();
@@ -1620,14 +1584,13 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             case 8:
                 // ad.setMessage("9");
                 if (age > 20) {
-                    ad.setMessage("You won the lottery so you will gain $500000");
-                    human.setOverAllwealth(human.getOverAllWealth() + 500000);
-                    ad.setMessage(Double.toString(human.getOverAllWealth()));
+                    wealth+= 500000;
+                    chainString+="\n"+"You won the lottery so you will gain $500000";
 
                 } else {
-                    wealth = 500000;
+                    wealth+= 500000;
                     updatingStateOfFamily(wealth, 0);
-                    ad.setMessage("Your family won the lottery,gained $500000");
+                    chainString+="\n"+"Your family won the lottery,gained $500000";
                     wealth = 0;
                 }
 
@@ -1636,8 +1599,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
             case 9:
                 // ad.setMessage("10");
-                ad.setMessage("Your recent trip to IDEAL Center of Academics added professional Associates to call onto later in life");
-                human.setProfessionalAssociates(human.getProfessionalAssociates() + 500);
+                chainString+="\n"+"Your recent trip to IDEAL Center of Academics added professional Associates to call onto later in life";
+                professionalAssociates= 500;
                 //CharDetails();
 
 
@@ -1646,46 +1609,43 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             case 10:
 
                 // ad.setMessage("11");
-                ad.setMessage("You get a boost in influence, wealth, and friends!You are very lucky");
-                human.setOverAllwealth(human.getOverAllWealth() + 500000);
-                human.setFriends(human.getFriends() + 50000);
-                human.setInfluence(human.getInfluence() + 5000);
-                //CharDetails();
+                chainString+="\n"+"You get a boost in influence, wealth, and friends!You are very lucky";
+               wealth= 500000;
+               friends=50000;
+               influence=5000;
+               
 
                 break;
 
             case 11:
 
                 // ad.setMessage("12");
-                ad.setMessage("You get a boost in professional associates, looks, and worshippers !You are very lucky");
-                human.setProfessionalAssociates(human.getProfessionalAssociates() + 5000);
-                human.setLooks(human.getLooks() + 2);
-                human.setWorshippers(human.getWorshippers() + 5000);
+                chainString+="\n"+"You get a boost in professional associates, looks, and worshippers !You are very lucky";
+               professionalAssociates= 5000;
+               looks= 2;
+               worshippers= 5000;
 
                 break;
 
             case 12:
 
                 // ad.setMessage("13");
-                ad.setMessage("You lose in  influence, wealth, and friends!You are very unlucky");
-                human.setOverAllwealth(human.getOverAllWealth() - 5000);
-                human.setFriends(human.getFriends() - 500);
-                human.setInfluence(human.getInfluence() - 500);
+                chainString+="\n"+"You lose in  influence, wealth, and friends!You are very unlucky";
+                wealth=- 5000;
+                friends= - 500;
+                influence= - 500;
+                break;
 
             case 13:
-
-                ad.setMessage("You lose in professional associates, looks, and worshippers !You are very unlucky");
-                human.setProfessionalAssociates(human.getProfessionalAssociates() - 500);
-                human.setLooks(human.getLooks() - 2);
-                human.setWorshippers(human.getWorshippers() + 50);
-                //CharDetails();
-                 break;
+                chainString+="\n"+"You lose in professional associates, looks, and worshippers !You are very unlucky";
+                 professionalAssociates= - 500;
+                looks= - 2;
+                worshippers= 50;
+                    break;
 
 
         }
 
-        ad.show();
-        keepStatsUpToDate(0.0,0,human.getJob(),human.getCountry().getTaxes(),0,0,0,0);
 
     }
 
@@ -1774,8 +1734,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     public void selectingAWish(int numberSelection) {
         //looks=0,worshippers=0,friends=0,professionalAssociates=0,influence=0
-        Jobs tempJobA;
-        Double tempWealthA;
+      
         switch (numberSelection) {
             case 1:
                 //Looks
@@ -1807,59 +1766,59 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             case 6:
                 //Wealth
                 informationalTextView.setText("You got 100000 wealth");
-                tempWealthA = 100000.0;
+                wealth = 100000.0;
                 break;
             case 7:
                 //selectAJob();
 
                 switch (value) {
                     case 0:
-                        tempJobA = Jobs.BEGGER;
+                        job = Jobs.BEGGER;
                         begger = true;
                         break;
                     case 1:
-                        tempJobA = Jobs.VAGRANT;
+                        job = Jobs.VAGRANT;
                         vagrant = true;
                         break;
                     case 2:
-                        tempJobA = Jobs.INTERN;
+                        job = Jobs.INTERN;
                         intern = true;
                         break;
                     case 3:
-                        tempJobA = Jobs.PACKINGBOY;
+                        job = Jobs.PACKINGBOY;
                         packingboy = true;
                         break;
                     case 4:
-                        tempJobA = Jobs.FIREFIGHTER;
+                        job = Jobs.FIREFIGHTER;
                         firefighter = true;
                         break;
                     case 5:
-                        tempJobA = Jobs.BANKER;
+                        job = Jobs.BANKER;
                         banker = true;
                         break;
                     case 6:
-                        tempJobA = Jobs.SCIENTIST;
+                        job = Jobs.SCIENTIST;
                         scientist = true;
                         break;
                     case 7:
-                        tempJobA = Jobs.INDEPENDENT;
+                        job = Jobs.INDEPENDENT;
                         independent = true;
                         break;
                     case 8:
-                        tempJobA = Jobs.BUSINESSOWNER;
-                        buisnessowner = true;
+                        job = Jobs.BUSINESSOWNER;
+                        businessowner = true;
                         break;
                     case 9:
-                        tempJobA = Jobs.KING;
+                        job = Jobs.KING;
                         king = true;
                         break;
                     case 10:
-                        tempJobA = Jobs.SULTAN;
+                        job = Jobs.SULTAN;
                         sultan = true;
                         god = true;
                         break;
                     case 11:
-                        tempJobA = Jobs.GOD;
+                        job = Jobs.GOD;
                         heavenBoolean = true;
                         informationalTextView.setText("You have also gained access to heaven");
                         sultan = true;
@@ -1875,17 +1834,11 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 break;
             case 0:
                 //Become Omega
-
                 omega = true;
-                tempJobA = Jobs.OMEGA;
-                System.out.print("\nYou are now an " + tempJobA.getName() + ("\n"));
+                job = Jobs.OMEGA;
                 heavenBoolean = true;
                 informationalTextView.setText("You have also gained access to heaven");
-                //keepStatsUpToDate(job, 0, 0, 0, 0, 0);
-                //CharDetails();
-                informationalTextView.setText("\n");
-
-
+      
         }
 
     }
@@ -2019,13 +1972,13 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             //Permanent benefit once it is activated
             if(worshippersActivation) {//this will play once the upgrade is activated
                 //job = Jobs.GOD;
-                human.setJob(Jobs.GOD);
+               job= Jobs.GOD;
                 this.worshippersFollow(worshippersActivation);
                 heavenBoolean=true;
 
             }else if(human.getWorshippers()>=100000&& !worshippersActivation){//This will play first when the upgrade is activated for the
                 //First time
-                human.setJob(Jobs.GOD);
+                job= Jobs.GOD;
                 //job = Jobs.GOD;
                 this.worshippersFollow(worshippersActivation);
                 heavenBoolean=true;
@@ -2042,40 +1995,28 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             if(influencActivation){
                 ad.setMessage("You have gained 100000 in wealth");
                 ad.show();
-                wealth =100000;
+                wealth +=100000;
                 keepStatsUpToDate(wealth*1.0,0,human.getJob(),human.getCountry().getTaxes(),0,0,0,0);
             }else if(human.getInfluence()>=100000 && !influencActivation || human.getProfessionalAssociates()>=10000 && !influencActivation
                     ||human.getFriends()>=100000 && !influencActivation){
                 ad.setMessage("You have gained enough power,you will now gain a steady source of money");
                 ad.show();
 
-                wealth = 100000;
+                wealth += 100000;
                 keepStatsUpToDate(wealth*1.0,0,human.getJob(),human.getCountry().getTaxes(),0,0,0,0);
                 influencActivation=true;
             }
-
-
-
-            //-->updatingStateOfHuman(job, looks, worshippers, friends, professionAssocites, influence);
-            wealth=0;
-            //CharDetails();
-
-
-
 
         }
 
         ad.setMessage("You have created your ideal life at age:" + age+"  CONGRATULATIONS");
         buttonActivation(false);
-
         ad.show();
 
 
 
 
     }
-
-
 
 //Calling a Thread for the application
     public class IDEALLifeProgram implements Runnable{
@@ -2105,9 +2046,25 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                                    + "Once age 20 is reached; the player will be removed from the family and has to choose a starting location");
                            ad.show();
                            shown=true;
+
+                       }else{
+                           ad.setMessage(chainString);
+                           //Reset the chain so that previous messages are removed
+                           chainString="";
+                           ad.show();
                        }
 
+                    
                        tutorialWithFamily();
+                       updatingStateOfFamily(wealth*1.0,influence);
+                       //Reset stats so that there are no further stacking up
+                       wealth=0;
+                       influence=0;
+                       job=human.getJob();
+                       looks=0;
+                       worshippers=0;
+                       friends=0;
+                       professionalAssociates=0;
 
                    }else{
                        if(!shownOne) {
@@ -2116,9 +2073,24 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                                    + "\n There are also many other features to unlock in the game"
                                    + "\n Create your IDEAL Life");
                            ad.show();
-                           shownOne=true;
+                           shownOne = true;
+                       }else{
+                           ad.setMessage(chainString);
+                           //Reset the chain so that previous messages are removed
+                           chainString="";
+                           ad.show();
                        }
+
                        grownUpHuman();
+                       keepStatsUpToDate(wealth*1.0,influence,job,human.getCountry().getTaxes(),looks,worshippers,friends,professionalAssociates);
+                       //Reset stats so that there are no further stacking up
+                       wealth=0;
+                       influence=0;
+                       job=human.getJob();
+                       looks=0;
+                       worshippers=0;
+                       friends=0;
+                       professionalAssociates=0;
                    }
                    age++;
                    age_Turn_textView.setText("Age: " + age);
