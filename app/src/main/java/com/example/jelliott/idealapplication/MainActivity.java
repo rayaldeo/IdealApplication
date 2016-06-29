@@ -223,13 +223,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         overallWealthProgressBar = (ProgressBar) findViewById(R.id.overallWealthProgressBar);
         influenceProgressBar = (ProgressBar) findViewById(R.id.influenceProgressBar);
         mHandler = new Handler();
-        //Setting the Progress Bars
-        //calculateTheProgressBarPercentage(overallWealthDefault,5000000);
 
-
-        //Setting Values of all fields
-        //Setting the overallWealth from java to XML
-        //keepStatsUpToDate(overallWealthDefault, influenceAmountDefault, human.getJob(), human.getCountry(), human.getCountry().getTaxes());
         age_Turn_textView.setText("Age:" + Integer.toString(age));
         workingOnPhysicalAppTextView.setText("Physical Appearance:" + Integer.toString(workingOnPhysicalApp));
         socialisingWithFriendsTextView.setText("Socialize Amount:" + Integer.toString(socialisingWithFriends));
@@ -280,9 +274,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 ///->ALL 5 BUTTON FUNCTIONALITY IN LIST
     public void selectAJob() {
-
-        professionalAssociates = 0;
-        friends = 0;
         //Creating a Layout for the EditTextViews
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
@@ -297,9 +288,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             @Override
             public void onClick(View v) {
 
-                professionalAssociates = 0;
-                friends = 10;
-                human.setJob(Jobs.BEGGER);
+                professionalAssociates += 0;
+                friends += 10;
+               job=Jobs.BEGGER;
 
 
             }
@@ -312,9 +303,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         jobButtonVagrant.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                professionalAssociates = 0;
-                friends = 25;
-                human.setJob(Jobs.VAGRANT);
+                professionalAssociates += 0;
+                friends += 25;
+                job=Jobs.VAGRANT;
 
             }
         });
@@ -326,9 +317,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         jobButtonIntern.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                professionalAssociates = 500;
-                friends = 15;
-                human.setJob(Jobs.INTERN);
+                professionalAssociates += 500;
+                friends += 15;
+                job=Jobs.INTERN;
 
             }
         });
@@ -340,9 +331,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         jobButtonPackingBoy.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                professionalAssociates = 50;
-                friends = 10;
-                human.setJob(Jobs.PACKINGBOY);
+                professionalAssociates += 50;
+                friends += 10;
+                job=Jobs.PACKINGBOY;
 
             }
         });
@@ -354,9 +345,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         jobButtonFirefighter.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                professionalAssociates = 100;
-                friends = 25;
-                human.setJob(Jobs.FIREFIGHTER);
+                professionalAssociates += 100;
+                friends += 25;
+                job=Jobs.FIREFIGHTER;
 
             }
         });
@@ -369,9 +360,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             @Override
             public void onClick(View v) {
 
-                professionalAssociates = 200;
-                friends = 50;
-                human.setJob(Jobs.BANKER);
+                professionalAssociates += 200;
+                friends += 50;
+                job=Jobs.BANKER;
 
             }
         });
@@ -383,9 +374,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         jobButtonScientist.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                professionalAssociates = 200;
-                friends = 75;
-                human.setJob(Jobs.SCIENTIST);
+                professionalAssociates += 200;
+                friends += 75;
+                job=Jobs.SCIENTIST;
 
             }
         });
@@ -397,9 +388,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         jobButtonIndependent.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                professionalAssociates = 300;
-                friends = 100;
-                human.setJob(Jobs.INDEPENDENT);
+                professionalAssociates += 300;
+                friends += 100;
+                job=Jobs.INDEPENDENT;
 
             }
         });
@@ -411,8 +402,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         jobButtonBusinessOwner.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                professionalAssociates = 500;
-                friends = 200;
+                professionalAssociates += 500;
+                friends += 200;
                 human.setJob(Jobs.BUSINESSOWNER);
 
             }
@@ -425,9 +416,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         jobButtonKing.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                professionalAssociates = 1000;
-                friends = 500;
-                human.setJob(Jobs.KING);
+                professionalAssociates += 1000;
+                friends += 500;
+                job=Jobs.KING;
 
             }
         });
@@ -439,9 +430,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         jobButtonSultan.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                professionalAssociates = 1500;
-                friends = 1000;
-                human.setJob(Jobs.SULTAN);
+                professionalAssociates += 1500;
+                friends += 1000;
+                job=Jobs.SULTAN;
 
             }
         });
@@ -453,9 +444,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         jobButtonOmega.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                professionalAssociates = 3000;
-                friends = 2000;
-                human.setJob(Jobs.OMEGA);
+                professionalAssociates += 3000;
+                friends += 2000;
+                job=Jobs.OMEGA;
 
             }
         });
@@ -524,27 +515,15 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         AlertDialog ad = new AlertDialog.Builder(this)
 
-                .setMessage("Select A Job. \n Current Country:"+human.getCountry())
+                .setMessage("Select A Job. \n Current Country:" + human.getCountry())
                 .setTitle("IDEAL")
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        jobTextView.setText(human.getJob().getName());
-                        keepStatsUpToDate(0.0, 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, friends, professionalAssociates);
                         new Thread(new IDEALLifeProgram()).run();
 
-
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        selectAJob();
-                    }
-                })
-                .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        selectAJob();
-                    }
-                })
+                .setNeutralButton("Cancel", null)
                 .setCancelable(false)
                 .setView(scrollView)
                 .create();
@@ -578,82 +557,67 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         AlertDialog adNotifier = new AlertDialog.Builder(this)
                 .setNeutralButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        keepStatsUpToDate(-2500.0 * human.getCountry().getMultiplier(), 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
+                        wealth+=-2500.0 * human.getCountry().getMultiplier();
                         new Thread(new IDEALLifeProgram()).run();
-
-                    }
+                   }
                 })
-
                 .setTitle("IDEAL:Going to School")
                 .setCancelable(true)
                 .create();
 
 
-        if (human.getOverAllWealth() >= 1 && human.getInfluence() >= 1 || schoolAttendanceAmount>=0) {
-            if (!begger) {
+        if ( schoolAttendanceAmount>=0) {
                 begger = true;
-                chainText+="You have unlocked the Begger Job"+"\n";
-            }
-            if (!vagrant) {
-                vagrant = true;
-                chainText+="You have unlocked the Vagrant Job"+"\n";
+                chainText+="You have unlocked the Beggar Job";
 
-            }
-        }if(human.getOverAllWealth()>=10000 && human.getInfluence()>=20000 || schoolAttendanceAmount>=1){
-            if(!intern){
+                vagrant = true;
+                chainText+="\n"+"You have unlocked the Vagrant Job";
+        }if( schoolAttendanceAmount>=1){
                 intern=true;
                 chainText+="You have unlocked the Intern Job";
-
-            }if(!packingboy){
                 packingboy=true;
                 chainText+= "\n" + "You have unlocked the Packing boy Job";
-
-            }if(!firefighter){
                 firefighter=true;
                 chainText+="\n" + "You have unlocked the Firefighter Job";
-            }
-        }if(human.getOverAllWealth()>=70000 && human.getInfluence()>=100000 || schoolAttendanceAmount>=2&&socialisingWithFriends>=2
-                &&workingOnPhysicalApp>=1){
-            if(!banker){
+
+        }if( schoolAttendanceAmount>=2&&socialisingWithFriends>=2 && workingOnPhysicalApp>=1){
                 banker=true;
                 chainText+="\n" + "You have unlocked the Banker Job";
-            }if(!scientist){
                 scientist=true;
                 chainText+="\n"+ "You have unlocked the Scientist Job";
-            }if(!independent){
                 independent=true;
                 chainText+="\n"+ "You have unlocked the Independent Job";
-            }if(!firefighter){
                 firefighter=true;
                 chainText+="\n"+ "You have unlocked the Firefighter Job";
-            }
-        }if(human.getOverAllWealth()>=1000000 && human.getInfluence()>=100000 && human.getFriends()>10000 || schoolAttendanceAmount>=3&&socialisingWithFriends>=3
-                &&workingOnPhysicalApp>=3){
-            if(!sultan){
-                sultan=true;
+
+        }if(schoolAttendanceAmount>=3&&socialisingWithFriends>=3 &&workingOnPhysicalApp>=3){
+                 sultan=true;
                 chainText+="\n" + "You have unlocked the Sultan Job";
-            }
-        }if(human.getOverAllWealth()>=10000000 && human.getInfluence()>=10000000 && human.getFriends()>100000 && human.getWorshippers()>10000 ||  schoolAttendanceAmount>=4&&socialisingWithFriends>=4
-                &&workingOnPhysicalApp>=4) {
-            if (!god) {
+
+        }if( schoolAttendanceAmount>=4&&socialisingWithFriends>=4 &&workingOnPhysicalApp>=4) {
                 god = true;
                 chainText+="\n" + "You have unlocked the God Job";
 
-
-
-            }
-
         }
-        adNotifier.setMessage(chainText);
+        //There should be at least 6 words in the chainText and if not then the user has not unlocked any job
+        if(chainText.length()<6) {
+            adNotifier.setMessage("You have not unlocked any jobs on this turn");
+        }else {
+            adNotifier.setMessage(chainText);
+        }
         adNotifier.setCancelable(true);
         ad.show();
         adNotifier.show();
 
     }
     public void workOnPhysical(){
+        workingOnPhysicalApp++;
+        workingOnPhysicalAppTextView.setText("Physical Appearance:" + Integer.toString(workingOnPhysicalApp));
         AlertDialog ad = new AlertDialog.Builder(this)
                 .setNeutralButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
+                        wealth+=-100 * human.getCountry().getMultiplier();
+                        new Thread(new IDEALLifeProgram()).run();
 
                     }
                 })
@@ -673,17 +637,15 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 .setCancelable(true)
                 .create();
         ad.show();
-        workingOnPhysicalApp++;
-        workingOnPhysicalAppTextView.setText("Physical Appearance:" + Integer.toString(workingOnPhysicalApp));
-        keepStatsUpToDate(-100 * human.getCountry().getMultiplier(), 1000, human.getJob(), human.getCountry().getTaxes(), 1, 100, 1000, 0);
-        new Thread(new IDEALLifeProgram()).run();
-
-
-    }
+      }
     public void socializeWithPeople(){
+        socialisingWithFriends++;
+        socialisingWithFriendsTextView.setText("Socialize Amount:" + Integer.toString(socialisingWithFriends));
         AlertDialog ad = new AlertDialog.Builder(this)
                 .setNeutralButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
+                        wealth+=-50 * human.getCountry().getMultiplier();
+                        new Thread(new IDEALLifeProgram()).run();
 
                     }
                 })
@@ -699,12 +661,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 .setCancelable(true)
                 .create();
         ad.show();
-
-        socialisingWithFriends++;
-        socialisingWithFriendsTextView.setText("Socialize Amount:" + Integer.toString(socialisingWithFriends));
-        keepStatsUpToDate(-50 * human.getCountry().getMultiplier(), 100, human.getJob(), human.getCountry().getTaxes(), 0, 10, 10000, 1000);
-        new Thread(new IDEALLifeProgram()).run();
-
     }
     public void selectACountry() {
 
@@ -1419,6 +1375,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     public void chancesOfLife() {
         ///If you want to test any specific chance of life just place in the case number into switch bracket..the program will only run that switch
+        //7randomNum
         switch (randomNum) {
 
             case 0:
@@ -1573,12 +1530,11 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 } else {
                     chainString+="\n"+"You need to be outside the family tutorial to access this benefit";
                 }
-
                  break;
 
             case 7:
-                genieDoSomething();
-
+                //genieDoSomething();
+                informationalTextView.setText("This is the genie");
                 break;
 
             case 8:
@@ -1688,16 +1644,16 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                             //Update Stats accordingly
                             selectingAWish(value);
                             //keepStatsUpToDate(overallWealthDefault, influenceAmountDefault, job, countryOfUser, countryOfUser.getTaxes());
-                            keepStatsUpToDate(overallWealthDefault, influenceAmountDefault, temjobA,
-                                    tax,human.getLooks(),human.getWorshippers(),human.getFriends(),human.getProfessionalAssociates());
+                            //keepStatsUpToDate(overallWealthDefault, influenceAmountDefault, temjobA,
+                                    //tax,human.getLooks(),human.getWorshippers(),human.getFriends(),human.getProfessionalAssociates());
                         } catch (Exception e) {
                             Toast.makeText(MainActivity.this, "You forfeit your wish",
                                     Toast.LENGTH_LONG).show();
                             chancesOfLife();///I may need this..I am not sure right now though
 
 
-                            keepStatsUpToDate(overallWealthDefault, influenceAmountDefault, temjobA,
-                                    tax, human.getLooks(), human.getWorshippers(), human.getFriends(), human.getProfessionalAssociates());
+                            //keepStatsUpToDate(overallWealthDefault, influenceAmountDefault, temjobA,
+                                    //tax, human.getLooks(), human.getWorshippers(), human.getFriends(), human.getProfessionalAssociates());
                             worshippers = 0;
                             tempwealthA = 0.0;
                             friends = 0;
@@ -1726,8 +1682,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         } else {
             //updatingStateOfHuman(Jobs.NOJOB, 1, 10, 10, 10, 100);
-            keepStatsUpToDate(overallWealthDefault, influenceAmountDefault, Jobs.NOJOB,
-                    tax, human.getLooks(), human.getWorshippers(), human.getFriends(), human.getProfessionalAssociates());
+            //keepStatsUpToDate(overallWealthDefault, influenceAmountDefault, Jobs.NOJOB,
+                    //tax, human.getLooks(), human.getWorshippers(), human.getFriends(), human.getProfessionalAssociates());
             informationalTextView.setText("You get a slight boost in wealth, worshippers,friends,looks,professional associates, and influence");
         }
     }
@@ -1996,15 +1952,13 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 ad.setMessage("You have gained 100000 in wealth");
                 ad.show();
                 wealth +=100000;
-                keepStatsUpToDate(wealth*1.0,0,human.getJob(),human.getCountry().getTaxes(),0,0,0,0);
+
             }else if(human.getInfluence()>=100000 && !influencActivation || human.getProfessionalAssociates()>=10000 && !influencActivation
                     ||human.getFriends()>=100000 && !influencActivation){
                 ad.setMessage("You have gained enough power,you will now gain a steady source of money");
                 ad.show();
-
                 wealth += 100000;
-                keepStatsUpToDate(wealth*1.0,0,human.getJob(),human.getCountry().getTaxes(),0,0,0,0);
-                influencActivation=true;
+                 influencActivation=true;
             }
 
         }
