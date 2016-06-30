@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private boolean influencActivation = false;
     private boolean heavenBoolean = false;
     private int tempNum = age - 10;
-//This boolean is to keep track whether the user is done intializing their IDEAL Life
+//This boolean is to keep track whether the user is done initializing their IDEAL Life
     boolean dialogShown=true;
 //For selecting and image
     private static final int SELECT_PHOTO = 100;
@@ -1819,89 +1819,20 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         }
     }
 
-
+///->Two Different Stages of IDEAL
     public void tutorialWithFamily(){
 
-        AlertDialog ad = new AlertDialog.Builder(this)
-                .setNeutralButton("Confirm",null)
-                .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        new Thread(new IDEALLifeProgram()).run();
-
-                    }
-                })
-                .setTitle("IDEAL:Tutorial With Family/Initial State")
-
-                .setCancelable(false)
-                .create();
-
-
-        //First alertDialog for the Tutorial
-        ad.setMessage("Family Wealth: " + family.getFamilyWealth() + "|" + "Country: " + human.getCountry().getName() + "Taxes: " + human.getCountry().getTaxes());
-        ad.show();
-
-        if(age<20) {
-            randomNum = rand.nextInt(30);
+             randomNum = rand.nextInt(30);
             //System.out.println(randomNum);
             if (randomNum <= 13) {
                 chancesOfLife();
             }
 
-            ad.setMessage("Turn: " + age + "\n" + "|Family" + "|" + family.getFamilyWealth() + "|" + "|" + human.getCountry().getName() + "|" + "|" + human.getCountry().getTaxes());
-            ad.show();
-            updatingStateOfFamily(wealth,influence);
-            //keepStatsUpToDate(human.getJob(), looks, worshippers, friends, professionalAssociates, influence);
-            //FamilyDetails();
-
-
-
-        }
-
-        //Once this human reaches 20 years of age then the family's wealth will be given to the human
-        human.setWealth(family.getFamilyWealth());
-        //Enable Buttons when the user is done with the Family
-        changeCountryButton.setEnabled(true);
-
-        selectAJobButton.setEnabled(true);
-
-        schoolButton.setEnabled(true);
-
-        workOnPhysicalAppearanceButton.setEnabled(true);
-
-        socializeWithPeopleButton.setEnabled(true);
-
-        human.setOverAllwealth(family.getFamilyWealth() + human.getOverAllWealth());
-        //grownUpHuman();
 
     }
-
     public void grownUpHuman(){
-        AlertDialog ad = new AlertDialog.Builder(this)
-                .setNeutralButton("Confirm",null)
-                .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        if(human.getOverAllWealth()< 10000000 && human.getInfluence()<2000000) {
-                            new Thread(new IDEALLifeProgram()).run();
-                        }
-
-                    }
-                })
-                .setTitle("IDEAL:Adult Life")
-                .setCancelable(false)
-                .create();
-
-        //To display to the use that the application is in the Tutorial State
-        ad.setMessage("You are now an adult and will have to work on your own now to secure you IDEAL Life" + "\n"
-                + "If you can reach $10,000,000 in wealth and 2,000,000 in influence;you would have won the game!!"
-                + "\n There are also many other features to unlock in the game"
-                + "\n Create your IDEAL Life");
-        ad.show();
-
-        //First alertDialog for the Tutorial
-        ad.setMessage("Adult||Initial Wealth:" + human.getInitialWealth() + "|" + "|" + human.getCountry().getName() + "|" + "|" + human.getCountry().getTaxes() + "|| Neighborhood: " + human.getNeighborhood());
-        ad.show();
-
-        while(human.getOverAllWealth()< 10000000 && human.getInfluence()<2000000) {
+               //First alertDialog for the Tutorial
+              if(human.getOverAllWealth()< 10000000 && human.getInfluence()<2000000) {
 
 
             ///This is so that the user will make a decision  happens every four turns and NOT every turn
@@ -1926,53 +1857,42 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             //Once the player reaches 100000 worshippers, the player will become a god
             //it only needs to be activated once and the benefit should automatically apply without the player being notified again
             //Permanent benefit once it is activated
-            if(worshippersActivation) {//this will play once the upgrade is activated
+            if(human.getWorshippers()>100000) {
+                worshippersActivation=true;
+
                 //job = Jobs.GOD;
                job= Jobs.GOD;
-                this.worshippersFollow(worshippersActivation);
                 heavenBoolean=true;
-
-            }else if(human.getWorshippers()>=100000&& !worshippersActivation){//This will play first when the upgrade is activated for the
-                //First time
-                job= Jobs.GOD;
-                //job = Jobs.GOD;
-                this.worshippersFollow(worshippersActivation);
-                heavenBoolean=true;
-                ad.setMessage("You have earned enough worshippers to become a God.Rule over all!!"+"\n"+"You have also gained access to heaven");
-                ad.show();
-            }else{
-                this.worshippersFollow(worshippersFollow);
+                chainString+="You have earned enough worshippers to become a God.Rule over all!!" + "\n" + "You have also gained access to heaven";
             }
 
 
             //Once the player reaches 100000 in influence, the player will get paid $100000 every turn
             //it only needs to be activated once and the benefit should automatically apply without the player being notified again
             //Permanent benefit once it is activated
-            if(influencActivation){
-                ad.setMessage("You have gained 100000 in wealth");
-                ad.show();
-                wealth +=100000;
-
-            }else if(human.getInfluence()>=100000 && !influencActivation || human.getProfessionalAssociates()>=10000 && !influencActivation
-                    ||human.getFriends()>=100000 && !influencActivation){
-                ad.setMessage("You have gained enough power,you will now gain a steady source of money");
-                ad.show();
+            if(human.getInfluence()>100000|| human.getProfessionalAssociates()>=10000 && !influencActivation
+                    ||human.getFriends()>=100000){
+                influencActivation=true;
+                chainString+="\n" +"You have gained 100000 in wealth";
+                chainString+="\n" + "You have gained enough power,you will now gain a steady source of money";
                 wealth += 100000;
-                 influencActivation=true;
+
             }
 
-        }
+        }else {
+            ///The game is finished at this point
+             chainString+="\n" +"You have created your ideal life at age:" + age + "  CONGRATULATIONS";
+            buttonActivation(false);
 
-        ad.setMessage("You have created your ideal life at age:" + age+"  CONGRATULATIONS");
-        buttonActivation(false);
-        ad.show();
+        }
 
 
 
 
     }
+///->
 
-//Calling a Thread for the application
+///->Calling a Thread for the application
     public class IDEALLifeProgram implements Runnable{
 
     @Override
@@ -1981,11 +1901,18 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         AlertDialog ad = new AlertDialog.Builder(MainActivity.this)
                 .setNeutralButton("Confirm", null)
                 .setCancelable(true)
+                .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        if(human.getOverAllWealth()< 10000000 && human.getInfluence()<2000000) {
+                            new Thread(new IDEALLifeProgram()).run();
+                        }
+
+                    }
+                })
                 .create();
 
                try {
                    if(age==0) {
-
                        init();
                        makeYourName();
                        selectAFamilyType();
@@ -1993,6 +1920,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
                    }else if(age<20 && age>0){
+                       ad.setTitle("IDEAL:Tutorial With Family/Initial State");
+                       //Activate the buttons
+                       buttonActivation(true);
                        if(!shown) {
                            //To display to the use that the application is in the Tutorial State
                            ad.setMessage("Now that you have a family; it is time to start your new IDEAL life" + "\n"
@@ -2002,7 +1932,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                            shown=true;
 
                        }else{
-                           ad.setMessage(chainString);
+                           ad.setMessage("Turn: " + age + "\n" + "|Family" + "|" + family.getFamilyWealth() + "|" + "|" + human.getCountry().getName() + "|" + "|" + human.getCountry().getTaxes()+"\n"+chainString);
                            //Reset the chain so that previous messages are removed
                            chainString="";
                            ad.show();
@@ -2021,6 +1951,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                        professionalAssociates=0;
 
                    }else{
+                       ad.setTitle("IDEAL:Adult Life");
                        if(!shownOne) {
                            ad.setMessage("You are now an adult and will have to work on your own now to secure you IDEAL Life" + "\n"
                                    + "If you can reach $10,000,000 in wealth and 2,000,000 in influence;you would have won the game!!"
@@ -2029,7 +1960,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                            ad.show();
                            shownOne = true;
                        }else{
-                           ad.setMessage(chainString);
+                           ad.setMessage("Adult||Initial Wealth:" + human.getInitialWealth() + "|" + "|" + human.getCountry().getName() + "|" + "|" + human.getCountry().getTaxes() + "|| Neighborhood: " + human.getNeighborhood()+"\n"+chainString);
                            //Reset the chain so that previous messages are removed
                            chainString="";
                            ad.show();
@@ -2046,8 +1977,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                        friends=0;
                        professionalAssociates=0;
                    }
-                   age++;
-                   age_Turn_textView.setText("Age: " + age);
+
 
 
 
@@ -2055,13 +1985,15 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                System.out.println("halted due to an error" + t);
             }
 
-
+        age++;
+        age_Turn_textView.setText("Age: " + age);
 
 
         }
 
 }
     //These methods is for when the application is paused or temporally closed
+///->
     public void onResume() {
         super.onResume();
         //mBackgroundSound.execute(null);

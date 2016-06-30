@@ -138,9 +138,6 @@ public class Human {
 
     public void setInfluence(int influenceA){ influence=influenceA;}
 
-    //Setting the amount of wealth is player has
-    public void setWealth(double wealthA){ initialWealth =wealthA;}
-
     //This is the amount of money that character owns at anytime in the game
     public void setOverAllwealth(double wealthA){ overAllWealth =wealthA;}
 
