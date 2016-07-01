@@ -15,11 +15,14 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -505,7 +508,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 if (king) {  layout.addView(jobButtonKing);  }//KING;
 
 
-                if (king && sultan) { layout.addView(jobButtonKing);  }//SULTAN
+                if (king && sultan) { layout.addView(jobButtonSultan);  }//SULTAN
 
             }
         }
@@ -566,29 +569,33 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 .create();
 
 
-        if ( schoolAttendanceAmount>=0) {
+        if ( schoolAttendanceAmount>=1) {
                 begger = true;
                 chainText+="You have unlocked the Beggar Job";
 
                 vagrant = true;
                 chainText+="\n"+"You have unlocked the Vagrant Job";
-        }if( schoolAttendanceAmount>=1){
+        }if( schoolAttendanceAmount>=2){
                 intern=true;
-                chainText+="You have unlocked the Intern Job";
+                chainText+="\n"+"You have unlocked the Intern Job";
                 packingboy=true;
                 chainText+= "\n" + "You have unlocked the Packing boy Job";
                 firefighter=true;
                 chainText+="\n" + "You have unlocked the Firefighter Job";
 
-        }if( schoolAttendanceAmount>=2&&socialisingWithFriends>=2 && workingOnPhysicalApp>=1){
-                banker=true;
-                chainText+="\n" + "You have unlocked the Banker Job";
-                scientist=true;
-                chainText+="\n"+ "You have unlocked the Scientist Job";
-                independent=true;
-                chainText+="\n"+ "You have unlocked the Independent Job";
-                firefighter=true;
-                chainText+="\n"+ "You have unlocked the Firefighter Job";
+        }if( schoolAttendanceAmount>=2&&socialisingWithFriends>=2 && workingOnPhysicalApp>=1) {
+            banker = true;
+            chainText += "\n" + "You have unlocked the Banker Job";
+            scientist = true;
+            chainText += "\n" + "You have unlocked the Scientist Job";
+            independent = true;
+            chainText += "\n" + "You have unlocked the Independent Job";
+            firefighter = true;
+            chainText += "\n" + "You have unlocked the Firefighter Job";
+
+        }if( schoolAttendanceAmount>=2&&socialisingWithFriends>=3 && workingOnPhysicalApp>=1) {
+            king = true;
+            chainText += "\n" + "You have unlocked the King Job";
 
         }if(schoolAttendanceAmount>=3&&socialisingWithFriends>=3 &&workingOnPhysicalApp>=3){
                  sultan=true;
@@ -600,11 +607,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         }
         //There should be at least 6 words in the chainText and if not then the user has not unlocked any job
-        if(chainText.length()<6) {
-            adNotifier.setMessage("You have not unlocked any jobs on this turn");
-        }else {
-            adNotifier.setMessage(chainText);
-        }
+
+        adNotifier.setMessage(chainText);
         adNotifier.setCancelable(true);
         ad.show();
         adNotifier.show();
@@ -1223,7 +1227,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     alertDialogProfile = new Dialog(MainActivity.this, android.R.style.Theme_Black);
     //
-
+       /*Window window = alertDialogProfile.getWindow();
+       window.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+       window.setGravity(Gravity.CENTER);*/
     //AlertDialog.Builder alertDialogProfile = new AlertDialog.Builder(MainActivity.this);
 
     //Call the XML List view and set it with  the countries array
@@ -1282,10 +1288,14 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     //This Method is used to display stats of the Family during the Tutorial Stages
     public void profilePictureDialogFamilyTutorial() {
 
+        alertDialogProfile = new Dialog(MainActivity.this, android.R.style.Theme_DeviceDefault_Dialog);
 
-        alertDialogProfile = new Dialog(MainActivity.this, android.R.style.Theme_Black);
+        /*Window window = alertDialogProfile.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        window.setGravity(Gravity.CENTER);*/
 
         alertDialogProfile.setContentView(R.layout.profileimagedialog);
+
         alertDialogProfile.setTitle(lastNamePart + "'s Family Profile");
 
         profileImageViewProfileDialog=(ImageView) alertDialogProfile.findViewById(R.id.profileImageViewProfileDialog);
@@ -1293,13 +1303,13 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         profileImageViewProfileDialog.setImageBitmap(bitmap);
 
         playerNameTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.playerNameTextViewprofileDialog);
-        playerNameTextViewprofileDialog.setText(firstNamePart);
+        playerNameTextViewprofileDialog.setText(lastNamePart);
 
         overAllWealthTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.overAllWealthTextViewprofileDialog);
-        overAllWealthTextViewprofileDialog.setText("Wealth:\n" + currencyFormat.format(human.getOverAllWealth()));
+        overAllWealthTextViewprofileDialog.setText("Wealth:\n" + currencyFormat.format(family.getFamilyWealth()));
 
         influenceTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.influenceTextViewprofileDialog);
-        influenceTextViewprofileDialog.setText("Influence:\n" + influenceAmountDefault);
+        influenceTextViewprofileDialog.setText("Influence:\n" + family.getFamilyInfluence());
 
         jobTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.jobTextViewprofileDialog);
         jobTextViewprofileDialog.setEnabled(false);
@@ -1308,26 +1318,26 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         countryTextViewprofileDialog.setText("Country:" + family.getFamilyCountry());
 
         neighbourhoodTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.neighbourhoodTextViewprofileDialog);
-        neighbourhoodTextViewprofileDialog.setText("Neighbourhood:" + human.getNeighborhood());
+        neighbourhoodTextViewprofileDialog.setText("Neighbourhood:" + family.getFamilyNeighborhood());
 
         taxTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.taxTextViewprofileDialog);
-        taxTextViewprofileDialog.setText("Tax:" + currencyFormat.format(tax));
+        taxTextViewprofileDialog.setText("Tax:" + currencyFormat.format(family.getFamilyCountry().getTaxes()));
 
         userfriendsTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.userfriendsTextViewprofileDialog);
-        userfriendsTextViewprofileDialog.setText("Friends:" + human.getFriends());
+        userfriendsTextViewprofileDialog.setText("Friends:" + family.getFamilyFriends());
 
 
         professionalAssociatesTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.professionalAssociatesTextViewprofileDialog);
-        professionalAssociatesTextViewprofileDialog.setText("Professional Associates:" + human.getProfessionalAssociates());
+        professionalAssociatesTextViewprofileDialog.setEnabled(false);
 
         worshippersTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.worshippersTextViewprofileDialog);
-        worshippersTextViewprofileDialog.setText("Worshippers:" + human.getWorshippers());
+        worshippersTextViewprofileDialog.setText("Worshippers:" + family.getFamilyWorshippers());
 
         looksTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.looksTextViewprofileDialog);
         looksTextViewprofileDialog.setEnabled(false);
 
+      alertDialogProfile.show();
 
-        alertDialogProfile.show();
 
     }
 ///->
@@ -1382,9 +1392,13 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 //Move to another country with higher or lower income
                 //This affects your wealth with the family in the tutorial
                 //This will affect your overall wealth in th later game
-
-                chainString+="\n"+"You decided to move;so here is the  opportunity to choose a different country!";
-                 selectACountry();
+                if(age>20) {
+                    chainString += "\n" + "You decided to move;so here is the  opportunity to choose a different country!";
+                    selectACountry();
+                }else{
+                    chainString += "\n" + "Your Family got an influence boost";
+                    influence+=1000;
+                }
 
 
                 break;
@@ -1822,11 +1836,12 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 ///->Two Different Stages of IDEAL
     public void tutorialWithFamily(){
 
-             randomNum = rand.nextInt(30);
+            randomNum = rand.nextInt(30);
             //System.out.println(randomNum);
             if (randomNum <= 13) {
                 chancesOfLife();
             }
+
 
 
     }
@@ -1836,14 +1851,14 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
             ///This is so that the user will make a decision  happens every four turns and NOT every turn
-            if ((age % 4) == 0) {
+            /*if ((age % 4) == 0) {
                 //-->makeLifeDecisions();
                 //countries.setTaxes(countries.getMultiplier() * countries.getTaxes());
                 buttonActivation(true);
 
             }else{
                 buttonActivation(false);
-            }
+            }*/
             randomNum = rand.nextInt(30);
             //System.out.println(randomNum);
             if (randomNum <= 13) {
@@ -1900,16 +1915,18 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         AlertDialog ad = new AlertDialog.Builder(MainActivity.this)
                 .setNeutralButton("Confirm", null)
-                .setCancelable(true)
+                .setCancelable(false)
+                .setNegativeButton("Re-roll", null)
                 .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        if(human.getOverAllWealth()< 10000000 && human.getInfluence()<2000000) {
+                        if (human.getOverAllWealth() < 10000000 && human.getInfluence() < 2000000) {
                             new Thread(new IDEALLifeProgram()).run();
                         }
 
                     }
                 })
                 .create();
+
 
                try {
                    if(age==0) {
@@ -1918,17 +1935,20 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                        selectAFamilyType();
                        selectACountry();
 
-
-                   }else if(age<20 && age>0){
+                   } else if (age < 20 && age > 0) {
                        ad.setTitle("IDEAL:Tutorial With Family/Initial State");
-                       //Activate the buttons
-                       buttonActivation(true);
+                       ad.setMessage("This is the Family View where the first 20 years will be determined for you.");
+                        //Deactivate the buttons
+                       buttonActivation(false);
                        if(!shown) {
                            //To display to the use that the application is in the Tutorial State
-                           ad.setMessage("Now that you have a family; it is time to start your new IDEAL life" + "\n"
+                           ad.setMessage("This is the Family View where the first 20 years will be determined for you.\n Now that you have a family; it is time to start your new IDEAL life" + "\n"
                                    + "Every turn represents an age" + "\n"
                                    + "Once age 20 is reached; the player will be removed from the family and has to choose a starting location");
+                          //Disable the Neutral button so that the user don't end up in a state of nothing going on
                            ad.show();
+                           //Disables a alertDialog Button, though method must be called after dialog is shown
+                           ad.getButton(AlertDialog.BUTTON_NEUTRAL).setEnabled(false);
                            shown=true;
 
                        }else{
@@ -1936,6 +1956,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                            //Reset the chain so that previous messages are removed
                            chainString="";
                            ad.show();
+                           ad.getButton(AlertDialog.BUTTON_NEUTRAL).setEnabled(false);
                        }
 
                     
@@ -1951,8 +1972,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                        professionalAssociates=0;
 
                    }else{
-                       ad.setTitle("IDEAL:Adult Life");
-                       if(!shownOne) {
+                      ad.setTitle("IDEAL:Adult Life");
+                      if(!shownOne) {
                            ad.setMessage("You are now an adult and will have to work on your own now to secure you IDEAL Life" + "\n"
                                    + "If you can reach $10,000,000 in wealth and 2,000,000 in influence;you would have won the game!!"
                                    + "\n There are also many other features to unlock in the game"
@@ -1964,6 +1985,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                            //Reset the chain so that previous messages are removed
                            chainString="";
                            ad.show();
+                           ad.getButton(AlertDialog.BUTTON_NEUTRAL).setEnabled(true);
+                           ad.getButton(AlertDialog.BUTTON_NEGATIVE).setEnabled(false);
                        }
 
                        grownUpHuman();
@@ -2017,6 +2040,4 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     }
 
     }
-
-
 

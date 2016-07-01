@@ -88,7 +88,7 @@ public class Family {
 
         public String getFamilyName(){ return familyName;   }
 
-        public String getFamilyCountry(){return country.getName();}
+        public Countries getFamilyCountry(){return country;}
 
         public int getFamilyFriends(){return familyFriends;}
 
