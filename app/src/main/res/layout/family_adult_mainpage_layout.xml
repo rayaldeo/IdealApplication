@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
+    android:theme="@style/AppTheme">
     <!-- Header aligned to top -->
     <FrameLayout
         android:layout_width="150dp"
@@ -15,7 +17,7 @@
             android:id="@+id/profileImageView"
             android:layout_gravity="left|top"
             android:contentDescription="@string/profilePicture"
-            android:src="@android:mipmap/sym_def_app_icon" />
+            android:src="@mipmap/ic_launcher" />
 
         <TextView
             android:layout_width="fill_parent"
@@ -26,7 +28,8 @@
             android:textAlignment="center"
             android:layout_gravity="center|bottom"
             android:textSize="25sp"
-            android:id="@+id/age_Turn_textView" />
+            android:id="@+id/age_Turn_textView"
+            android:textColor="@color/signatureColorOne" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -38,7 +41,8 @@
             android:inputType="textPersonName"
             android:hint="@string/enterName_hint"
             android:gravity="center"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textColor="@color/signatureColorOne" />
     </FrameLayout>
     <RelativeLayout
         android:id="@+id/header"
@@ -58,7 +62,7 @@
             android:text="@string/overallWelathTextView_text"
             android:id="@+id/overAllWealthTextView"
             android:layout_gravity="top|bottom"
-            android:textColor="#ff8a54"
+            android:textColor="@color/signatureColorOne"
             android:textStyle="bold"
             android:textSize="30sp"
             android:background="#143f1c"
@@ -141,38 +145,50 @@
         android:layout_width="fill_parent"
         android:layout_height="100dp"
         android:gravity="center"
-        android:layout_below="@+id/frameLayout">
+        android:layout_below="@+id/frameLayout"
+        android:weightSum="5"
+        style="@style/Base.Widget.AppCompat.ActionBar">
         <TextView
-            android:layout_width="90dp"
+            android:layout_width="119dp"
             android:layout_height="fill_parent"
             android:textAppearance="?android:attr/textAppearanceLarge"
+            android:background="@drawable/border"
             android:text="@string/getJob_text"
             android:id="@+id/jobTextView"
             android:padding="1dp"
             android:textSize="20sp"
-            android:layout_gravity="bottom" />
+            android:layout_gravity="bottom"
+            style="@style/ThemeOverlay.AppCompat.Dark"
+            android:gravity="center_vertical|center_horizontal" />
 
 
 
         <TextView
-            android:layout_width="217dp"
+            android:layout_width="161dp"
             android:layout_height="fill_parent"
+            android:background="@drawable/border"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/getCountry_text"
             android:id="@+id/countryTextView"
             android:padding="1dp"
             android:textSize="20sp"
-            android:layout_gravity="bottom" />
+            android:layout_gravity="bottom"
+            style="@style/Base.Widget.AppCompat.ActionBar"
+            android:layout_weight="1.60"
+            android:gravity="center_vertical|center_horizontal" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="50dp"
             android:layout_height="fill_parent"
+            android:background="@drawable/border"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/tax_text"
             android:id="@+id/taxTextView"
             android:padding="1dp"
             android:textSize="20sp"
-            android:layout_gravity="bottom" />
+            android:layout_gravity="bottom"
+            android:layout_weight="2.94"
+            android:gravity="center_vertical|center_horizontal" />
 
 
 
@@ -213,7 +229,8 @@
             android:id="@+id/continueButton"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:textColor="@color/abc_secondary_text_material_dark" />
 
         <Button
             android:shadowColor="#A8A8A8"
@@ -228,7 +245,8 @@
             android:id="@+id/button2"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:textColor="@color/abc_secondary_text_material_dark" />
 
     </RelativeLayout>
 

@@ -15,14 +15,11 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -90,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private ProgressBar overallWealthProgressBar;
     private ProgressBar influenceProgressBar;
 //Buttons
-    private Button changeCountryButton,selectAJobButton,schoolButton,workOnPhysicalAppearanceButton,socializeWithPeopleButton;
+    private Button changeCountryButton,selectAJobButton,schoolButton,workOnPhysicalAppearanceButton,socializeWithPeopleButton,continueButton;
 //ProfileImages
     private ImageView profileImage,profileImageViewProfileDialog;
 //Separate Dialogs
@@ -192,10 +189,20 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             }
         });
 
+        continueButton=(Button) findViewById(R.id.continueButton);
+        continueButton.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                if (human.getOverAllWealth() < 10000000 && human.getInfluence() < 2000000) {
+                    new Thread(new IDEALLifeProgram()).run();
+                }
+            }
+        });
+
+
+
 
 
         //Profile Image
-
         profileImage = (ImageView) findViewById(R.id.profileImageView);
         profileImage.setOnClickListener(new OnClickListener() {
             @Override
@@ -1913,21 +1920,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     @Override
     public void run(){
 
-        AlertDialog ad = new AlertDialog.Builder(MainActivity.this)
-                .setNeutralButton("Confirm", null)
-                .setCancelable(false)
-                .setNegativeButton("Re-roll", null)
-                .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        if (human.getOverAllWealth() < 10000000 && human.getInfluence() < 2000000) {
-                            new Thread(new IDEALLifeProgram()).run();
-                        }
-
-                    }
-                })
-                .create();
-
-
                try {
                    if(age==0) {
                        init();
@@ -1936,27 +1928,25 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                        selectACountry();
 
                    } else if (age < 20 && age > 0) {
-                       ad.setTitle("IDEAL:Tutorial With Family/Initial State");
-                       ad.setMessage("This is the Family View where the first 20 years will be determined for you.");
-                        //Deactivate the buttons
+                       informationalTextView.setText("IDEAL:Tutorial With Family/Initial State" + "\n" + "This is the Family View where the first 20 years will be determined for you.");
+                       //Deactivate the buttons
                        //buttonActivation(false);
                        if(!shown) {
                            //To display to the use that the application is in the Tutorial State
-                           ad.setMessage("This is the Family View where the first 20 years will be determined for you.\n Now that you have a family; it is time to start your new IDEAL life" + "\n"
+                           informationalTextView.setText("This is the Family View where the first 20 years will be determined for you.\n Now that you have a family; it is time to start your new IDEAL life" + "\n"
                                    + "Every turn represents an age" + "\n"
                                    + "Once age 20 is reached; the player will be removed from the family and has to choose a starting location");
                           //Disable the Neutral button so that the user don't end up in a state of nothing going on
-                           ad.show();
+
                            //Disables a alertDialog Button, though method must be called after dialog is shown
-                           ad.getButton(AlertDialog.BUTTON_NEUTRAL).setEnabled(false);
+
                            shown=true;
 
                        }else{
-                           ad.setMessage("Turn: " + age + "\n" + "|Family" + "|" + family.getFamilyWealth() + "|" + "|" + human.getCountry().getName() + "|" + "|" + human.getCountry().getTaxes()+"\n"+chainString);
+                           informationalTextView.setText("Turn: " + age + "\n" + "|Family" + "|" + family.getFamilyWealth() + "|" + "|" + human.getCountry().getName() + "|" + "|" + human.getCountry().getTaxes() + "\n" + chainString);
                            //Reset the chain so that previous messages are removed
                            chainString="";
-                           ad.show();
-                           ad.getButton(AlertDialog.BUTTON_NEUTRAL).setEnabled(false);
+
                        }
 
                     
@@ -1972,22 +1962,19 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                        professionalAssociates=0;
 
                    }else{
-                      ad.setTitle("IDEAL:Adult Life");
+
                       if(!shownOne) {
-                           ad.setMessage("You are now an adult and will have to work on your own now to secure you IDEAL Life" + "\n"
-                                   + "If you can reach $10,000,000 in wealth and 2,000,000 in influence;you would have won the game!!"
-                                   + "\n There are also many other features to unlock in the game"
-                                   + "\n Create your IDEAL Life");
-                           ad.show();
+                          informationalTextView.setText("IDEAL:Adult Life" + "\n" + "You are now an adult and will have to work on your own now to secure you IDEAL Life" + "\n"
+                                  + "If you can reach $10,000,000 in wealth and 2,000,000 in influence;you would have won the game!!"
+                                  + "\n There are also many other features to unlock in the game"
+                                  + "\n Create your IDEAL Life");
+
                            shownOne = true;
                        }else{
-                           ad.setMessage("Adult||Initial Wealth:" + human.getInitialWealth() + "|" + "|" + human.getCountry().getName() + "|" + "|" + human.getCountry().getTaxes() + "|| Neighborhood: " + human.getNeighborhood()+"\n"+chainString);
+                          informationalTextView.setText("Adult||Initial Wealth:" + human.getInitialWealth() + "|" + "|" + human.getCountry().getName() + "|" + "|" + human.getCountry().getTaxes() + "|| Neighborhood: " + human.getNeighborhood() + "\n" + chainString);
                            //Reset the chain so that previous messages are removed
                            chainString="";
-                           ad.show();
-                           ad.getButton(AlertDialog.BUTTON_NEUTRAL).setEnabled(true);
-                           ad.getButton(AlertDialog.BUTTON_NEGATIVE).setEnabled(false);
-                       }
+                                    }
 
                        grownUpHuman();
                        keepStatsUpToDate(wealth*1.0,influence,job,human.getCountry().getTaxes(),looks,worshippers,friends,professionalAssociates);
@@ -2000,8 +1987,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                        friends=0;
                        professionalAssociates=0;
                    }
-
-
 
 
             } catch (Throwable t) {

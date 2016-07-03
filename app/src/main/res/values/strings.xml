@@ -52,7 +52,7 @@
     <string name="customFamily_motherTab_text">Mother</string>
     <string name="customFamily_sisterTab_text">Sister</string>
     <string name="customFamily_brotherTab_text">Brother</string>
-    <string name="continueButton_text">New Button</string>
+    <string name="continueButton_text">Continue</string>
 
     <string-array name="countries">
         <item>Irada</item>
