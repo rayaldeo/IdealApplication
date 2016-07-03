@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.family_adult_mainpage_layout);
 
         //Before ANYTHING CREATE A HUMAN TO SET THE BASIC VARIABLES OF A HUMAN
         human = new Human();
@@ -227,11 +227,11 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         influenceProgressBar = (ProgressBar) findViewById(R.id.influenceProgressBar);
         mHandler = new Handler();
 
-        age_Turn_textView.setText("Age:" + Integer.toString(age));
-        workingOnPhysicalAppTextView.setText("Physical Appearance:" + Integer.toString(workingOnPhysicalApp));
-        socialisingWithFriendsTextView.setText("Socialize Amount:" + Integer.toString(socialisingWithFriends));
-        schoolAttendanceAmountTextView.setText("School Attendance:" + Integer.toString(schoolAttendanceAmount));
-        priceToMoveTextView.setText("Price:" + Double.toString(0.0));
+        age_Turn_textView.setText("Age/Turn:" + Integer.toString(age));
+        workingOnPhysicalAppTextView.setText(Integer.toString(workingOnPhysicalApp));
+        socialisingWithFriendsTextView.setText( Integer.toString(socialisingWithFriends));
+        schoolAttendanceAmountTextView.setText( Integer.toString(schoolAttendanceAmount));
+        priceToMoveTextView.setText( Double.toString(0.0));
         //informationalTextView.setText("Welcome and Good Luck!");
 
 
@@ -907,9 +907,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         overallWealthTextView.setText(getString(R.string.overallWelathTextView_text) + "\n" + currencyFormat.format(human.getOverAllWealth()));
         String influenceAmountString = Double.toString(human.getInfluence());
         influenceTextView.setText(getString(R.string.influenceAmountTextView_String) + "\n" + influenceAmountString);
-        jobTextView.setText(getString(R.string.getJob_text) + ":" + human.getJob());
-        countryTextView.setText(getString(R.string.getCountry_text) + ":" + human.getCountryString());
-        taxTextView.setText(getString(R.string.tax_text) + ":" + currencyFormat.format(tax));
+        jobTextView.setText(getString(R.string.getJob_text) + ":" +"\n"+ human.getJob());
+        countryTextView.setText(getString(R.string.getCountry_text) + ":" +"\n"+ human.getCountryString());
+        taxTextView.setText(getString(R.string.tax_text) + ":" +"\n"+ currencyFormat.format(tax));
 
 
         //This "if" statement is going to see whether our percentage function will give something less than 1...which the progress bars can no handle

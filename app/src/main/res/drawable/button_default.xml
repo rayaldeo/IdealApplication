@@ -9,14 +9,7 @@
             />
 
 
-        <gradient
-            android:angle="45"
-            android:centerX="35%"
-            android:centerColor="#1BA890"
-            android:startColor="#DB6BE8"
-            android:endColor="#FFB3B8"
-            android:type="linear"
-            />
+
         <padding
             android:left="3dp"
             android:top="4dp"
