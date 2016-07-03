@@ -236,7 +236,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
 
-        buttonActivation(false);
+        buttonActivation(true);
         new Thread(new IDEALLifeProgram()).run();
 
 
@@ -540,7 +540,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     public void goToSchool(){
         //Increment and Update the amount of times this user went to school
         schoolAttendanceAmount++;
-        schoolAttendanceAmountTextView.setText("School Attendance:" + Integer.toString(schoolAttendanceAmount));
+        schoolAttendanceAmountTextView.setText(Integer.toString(schoolAttendanceAmount));
         //This String Variable is used to hold all of the messages in one string
         String chainText="";
         AlertDialog ad = new AlertDialog.Builder(this)
@@ -616,7 +616,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     }
     public void workOnPhysical(){
         workingOnPhysicalApp++;
-        workingOnPhysicalAppTextView.setText("Physical Appearance:" + Integer.toString(workingOnPhysicalApp));
+        workingOnPhysicalAppTextView.setText(Integer.toString(workingOnPhysicalApp));
         AlertDialog ad = new AlertDialog.Builder(this)
                 .setNeutralButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
@@ -644,7 +644,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
       }
     public void socializeWithPeople(){
         socialisingWithFriends++;
-        socialisingWithFriendsTextView.setText("Socialize Amount:" + Integer.toString(socialisingWithFriends));
+        socialisingWithFriendsTextView.setText(Integer.toString(socialisingWithFriends));
         AlertDialog ad = new AlertDialog.Builder(this)
                 .setNeutralButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
@@ -754,7 +754,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
                     //Update the Amount of money it Costs to move from current Country to Next
                     //Tax+BasePrice(100)*CountryMultiplier
-                    priceToMoveTextView.setText("Price" + currencyFormat.format((human.getCountry().getTaxes() + 100) * human.getCountry().getMultiplier()));
+                    priceToMoveTextView.setText("Price:" + currencyFormat.format((human.getCountry().getTaxes() + 100) * human.getCountry().getMultiplier()));
                     if(age>1) {
                         keepStatsUpToDate(-(human.getCountry().getTaxes() + 100 * human.getCountry().getMultiplier()), 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
                         new Thread(new IDEALLifeProgram()).run();
@@ -1939,7 +1939,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                        ad.setTitle("IDEAL:Tutorial With Family/Initial State");
                        ad.setMessage("This is the Family View where the first 20 years will be determined for you.");
                         //Deactivate the buttons
-                       buttonActivation(false);
+                       //buttonActivation(false);
                        if(!shown) {
                            //To display to the use that the application is in the Tutorial State
                            ad.setMessage("This is the Family View where the first 20 years will be determined for you.\n Now that you have a family; it is time to start your new IDEAL life" + "\n"

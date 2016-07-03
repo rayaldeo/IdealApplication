@@ -180,8 +180,8 @@
 
     <!--Body-->
     <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/content"
         android:gravity="center"
         android:layout_above="@+id/footer"
@@ -238,25 +238,24 @@
         android:id="@+id/footer"
          android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-
-        android:background="#FC0"
-        android:gravity="center"
-        android:weightSum="5"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/header1"
-        android:layout_alignEnd="@+id/header1">
+        android:layout_height="100dp"
+         android:background="#FC0"
+         android:gravity="center"
+         android:layout_alignRight="@+id/header1"
+         android:layout_alignEnd="@id/content"
+         android:layout_alignParentLeft="false"
+         android:layout_alignParentStart="true"
+         android:layout_alignParentEnd="false"
+         android:layout_alignParentBottom="true">
 
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="73dp"
+            android:layout_width="70dp"
             android:layout_height="fill_parent"
             android:weightSum="1"
             android:id="@+id/physical_layout"
-            android:layout_gravity="right"
-            android:paddingLeft="1dp"
-            android:paddingRight="1dp">
+            android:layout_gravity="right">
 
 
 
@@ -267,30 +266,28 @@
                 android:id="@+id/workingOnPhysicalAppTextView"
                 android:textAlignment="center"
                 android:layout_gravity="top|center_vertical"
-                android:gravity="center_vertical" />
+                android:gravity="center" />
             <Button
 
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:text="@string/physical_Button"
                 android:id="@+id/physicalButton"
-                android:layout_gravity="bottom|right"
+                android:layout_gravity="bottom"
 
                 android:elevation="@dimen/button_elevation"
-                android:layout_weight="1"
-                style="@android:style/Animation.Activity" />
+                style="@android:style/Holo.SegmentedButton"
+                android:textSize="10sp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="85dp"
+            android:layout_width="70dp"
             android:layout_height="fill_parent"
             android:weightSum="1"
             android:id="@+id/socialize_layout"
-            android:layout_gravity="right"
-            android:paddingLeft="1dp"
-            android:paddingRight="1dp">
+            android:layout_gravity="right">
 
             <TextView
                 android:layout_width="fill_parent"
@@ -300,33 +297,31 @@
 
                 android:textAlignment="center"
                 android:layout_gravity="top|center_vertical"
-                android:gravity="center_vertical" />
+                android:gravity="center" />
 
 
 
             <Button
 
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:text="@string/socialize_button"
                 android:id="@+id/socializeButton"
-                android:layout_gravity="top|left|center_vertical|bottom"
-               android:elevation="@dimen/button_elevation"
-                android:layout_weight="1"
-                style="@android:style/Animation.Activity" />
+                android:elevation="@dimen/button_elevation"
+                style="@android:style/Holo.SegmentedButton"
+                android:textSize="10sp"
+                android:layout_gravity="bottom" />
 
         </LinearLayout>
 
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="85dp"
+            android:layout_width="70dp"
             android:layout_height="fill_parent"
             android:weightSum="1"
             android:id="@+id/moveto_layout"
-            android:layout_gravity="right"
-            android:paddingLeft="1dp"
-            android:paddingRight="1dp">
+            android:layout_gravity="right">
 
             <TextView
                 android:layout_width="fill_parent"
@@ -336,34 +331,32 @@
 
                 android:textAlignment="center"
                 android:layout_gravity="top|center_vertical"
-                android:gravity="center_vertical" />
+                android:gravity="center" />
 
 
 
             <Button
 
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:text="@string/moveTo_Button"
                 android:id="@+id/moveToButton"
 
                 android:elevation="@dimen/button_elevation"
-                android:layout_weight="1"
-                android:layout_gravity="bottom"
-                style="@android:style/Animation.Activity" />
+                style="@android:style/Holo.SegmentedButton"
+                android:textSize="10sp"
+                android:layout_gravity="bottom" />
 
 
         </LinearLayout>
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="85dp"
+            android:layout_width="70dp"
             android:layout_height="fill_parent"
             android:weightSum="1"
             android:id="@+id/school_layout"
-            android:layout_gravity="right"
-            android:paddingLeft="1dp"
-            android:paddingRight="1dp">
+            android:layout_gravity="right">
 
 
             <TextView
@@ -373,40 +366,39 @@
                 android:id="@+id/schoolAttendanceAmountTextView"
                 android:textAlignment="center"
                 android:layout_gravity="top|center_vertical"
-                android:gravity="center_vertical" />
+                android:gravity="center" />
 
             <Button
 
-                android:layout_width="wrap_content"
-                android:layout_height="79dp"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:text="@string/school_Button"
                 android:id="@+id/schoolButton"
-                android:layout_gravity="center_vertical|bottom"
+                android:layout_gravity="bottom"
                 android:elevation="@dimen/button_elevation"
-                style="@android:style/Animation.Activity" />
+                style="@android:style/Holo.SegmentedButton"
+                android:textSize="10sp" />
 
 
         </LinearLayout>
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="85dp"
+            android:layout_width="70dp"
             android:layout_height="fill_parent"
             android:weightSum="1"
-            android:id="@+id/job_layout"
-            android:paddingLeft="1dp"
-            android:paddingRight="1dp">
+            android:id="@+id/job_layout">
 
             <Button
 
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:text="@string/job_Button"
                 android:id="@+id/jobButton"
                 android:elevation="@dimen/button_elevation"
-                android:layout_weight="1"
-                android:layout_gravity="bottom"
-                style="@android:style/Animation.Activity" />
+                style="@android:style/Holo.SegmentedButton"
+                android:textSize="10sp"
+                android:layout_gravity="bottom" />
 
 
         </LinearLayout>
