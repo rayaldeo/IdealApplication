@@ -8,4 +8,10 @@
 
     </style>
 
+    <style name="AlertDialogTheme">
+
+    <item name="colorPrimary">@color/purplebackground_color</item>
+    <item name="colorAccent">@android:color/holo_orange_light</item>
+    </style>
+
 </resources>

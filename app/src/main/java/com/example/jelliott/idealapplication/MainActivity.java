@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private TextView workingOnPhysicalAppTextView;
     private TextView socialisingWithFriendsTextView;
     private TextView schoolAttendanceAmountTextView;
-    private TextView priceToMoveTextView;
     private TextView playerNameTextView;
 
 //TextViews on the Profile Dialog
@@ -100,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     private Family family;
     private Countries countryOfUser;
-    private Jobs job;
+    private Jobs job=Jobs.NOJOB;
     private FamilyMember mother, sister, brother, father;
     private String familyName, firstNamePart, lastNamePart,chainString="";
     Random rand = new Random();
@@ -150,7 +149,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         workingOnPhysicalAppTextView = (TextView) findViewById(R.id.workingOnPhysicalAppTextView);
         socialisingWithFriendsTextView = (TextView) findViewById(R.id.socialisingWithFriendsTextView);
         schoolAttendanceAmountTextView = (TextView) findViewById(R.id.schoolAttendanceAmountTextView);
-        priceToMoveTextView = (TextView) findViewById(R.id.priceToMoveTextView);
 
         //Buttons
         //Change Country Button
@@ -198,10 +196,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             }
         });
 
-
-
-
-
         //Profile Image
         profileImage = (ImageView) findViewById(R.id.profileImageView);
         profileImage.setOnClickListener(new OnClickListener() {
@@ -238,8 +232,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         workingOnPhysicalAppTextView.setText(Integer.toString(workingOnPhysicalApp));
         socialisingWithFriendsTextView.setText( Integer.toString(socialisingWithFriends));
         schoolAttendanceAmountTextView.setText( Integer.toString(schoolAttendanceAmount));
-        priceToMoveTextView.setText( Double.toString(0.0));
-        //informationalTextView.setText("Welcome and Good Luck!");
+         //informationalTextView.setText("Welcome and Good Luck!");
 
 
 
@@ -672,10 +665,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         ad.show();
     }
     public void selectACountry() {
-        //Keep Price of the old Country before changing it
-        //Tax+BasePrice(100)*CountryMultiplier
-        priceToMoveTextView.setText("Price:" + currencyFormat.format((human.getCountry().getTaxes() + 100) * human.getCountry().getMultiplier()));
-        //Get the arrayLIst from the String xml
+              //Get the arrayLIst from the String xml
         final List<String> countries = Arrays.asList(getResources().getStringArray(R.array.countries));
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
@@ -699,7 +689,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 }
             });
         }
-
         alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 Object checkedItem;
@@ -759,21 +748,15 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     //You can chain .get commands as long as that .get returns a class/object with its own getters
                     taxTextView.setText("Tax:" + currencyFormat.format(human.getCountry().getTaxes()));
                     tax = human.getCountry().getTaxes();
-
-                    //Update the Amount of money it Costs to move from current Country to Next
-
-                    if(age>1) {
-                        keepStatsUpToDate(-(human.getCountry().getTaxes() + 100 * human.getCountry().getMultiplier()), 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
+                   if(age>1) {
+                        keepStatsUpToDate(-(human.getCountry().getTaxes() + 100 * human.getCountry().getMultiplier()), 0, job, human.getCountry().getTaxes(), 0, 0, 0, 0);
                         new Thread(new IDEALLifeProgram()).run();
                     }
 
                 } catch (Exception e) {
-                    Toast.makeText(MainActivity.this, "A Country is needed",
-                            Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "A Country is needed", Toast.LENGTH_LONG).show();
                     selectACountry();
-
                 }
-
 
             }
         })
@@ -887,20 +870,13 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     }).start();
 
-    //influenceProgressBar.setProgress((int) influencevalue );
-    informationalTextView.setText("Influence Parameter:" + influenceAmountA + "InfluenceProgress" + influencevalue + " WealthProgress " + overAllWealthProgress + " overallwealthvalue: " + overallwealthvalue + " influencevalue " + influencevalue);
     System.out.println("Influence Parameter:" + influenceAmountA + "InfluenceProgress" + influencevalue + " WealthProgress " + overAllWealthProgress + " overallwealthvalue: " + overallwealthvalue + " influencevalue " + influencevalue);
-    //String valueString;
-    //influencePercentageTextView.setText(valueString = percentFormat.format(influencevalue) );
-    //overallWealthProgressBar.setProgress((int) overallwealthvalue);
-
-    //overallWealthPercentageTextView.setText(valueString = percentFormat.format(overallwealthvalue) );
-
 
 }
     //Need to update for the Price to Move to another country
     public void keepStatsUpToDate(Double overallWealthA, int influenceAmountA, Jobs jobA, /*Countries countryA,*/
                                   Double taxA, int looksA, int worshippersA, int friendsA, int professionalAssociatesA) {
+
         human.setJob(jobA);
         human.setIncome(jobA.getIncome());
         human.setOverAllwealth((human.getOverAllWealth() + jobA.getIncome() + overallWealthA));
@@ -1928,7 +1904,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                        selectACountry();
 
                    } else if (age < 20 && age > 0) {
-                       informationalTextView.setBackgroundColor(Color.parseColor("#FC9"));
                        informationalTextView.setText("IDEAL:Tutorial With Family/Initial State" + "\n" + "This is the Family View where the first 20 years will be determined for you.");
                        //Deactivate the buttons
                        //buttonActivation(false);
@@ -1944,7 +1919,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                            shown=true;
 
                        }else{
-                           informationalTextView.setText("Turn: " + age + "\n" + "|Family" + "|" + family.getFamilyWealth() + "|" + "|" + human.getCountry().getName() + "|" + "|" + human.getCountry().getTaxes() + "\n" + chainString);
+                           informationalTextView.setText("Turn: " + age + "\n" + "|Family" + "|" + family.getFamilyWealth() + "|" + "|" + human.getCountry().getName() + "|" + "|" + human.getCountry().getTaxes()
+                                   + "\n" + chainString);
                            //Reset the chain so that previous messages are removed
                            chainString="";
 
@@ -1972,7 +1948,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
                            shownOne = true;
                        }else{
-                          informationalTextView.setText("Adult||Initial Wealth:" + human.getInitialWealth() + "|" + "|" + human.getCountry().getName() + "|" + "|" + human.getCountry().getTaxes() + "|| Neighborhood: " + human.getNeighborhood() + "\n" + chainString);
+                          informationalTextView.setText("Adult||Initial Wealth:" + human.getInitialWealth() + "|" + "|" + human.getCountry().getName() + "|" + "|" + human.getCountry().getTaxes() + "|| Neighborhood: " + human.getNeighborhood()
+                                  + "\n" + chainString);
                            //Reset the chain so that previous messages are removed
                            chainString="";
                                     }

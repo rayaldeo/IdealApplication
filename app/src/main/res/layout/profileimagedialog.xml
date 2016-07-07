@@ -85,7 +85,8 @@
             android:textStyle="bold"
             android:textAlignment="center"
             android:gravity="center"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textColor="@color/signatureColorOne" />
 
         <TextView
             android:layout_width="fill_parent"
@@ -97,7 +98,8 @@
             android:textStyle="bold"
             android:textAlignment="center"
             android:gravity="center"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textColor="@color/signatureColorOne" />
 
         <TextView
             android:layout_width="fill_parent"
@@ -106,7 +108,8 @@
             android:id="@+id/neighbourhoodTextViewprofileDialog"
             android:textSize="18sp"
             android:gravity="center"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textColor="@color/signatureColorOne" />
 
         <TextView
             android:layout_width="fill_parent"
@@ -118,7 +121,8 @@
             android:textStyle="bold"
             android:textAlignment="center"
             android:gravity="center"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textColor="@color/signatureColorOne" />
 
         <TextView
             android:layout_width="fill_parent"
@@ -127,7 +131,8 @@
             android:id="@+id/userfriendsTextViewprofileDialog"
             android:textSize="18sp"
             android:gravity="center"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textColor="@color/signatureColorOne" />
 
         <TextView
             android:layout_width="fill_parent"
@@ -136,7 +141,8 @@
             android:id="@+id/professionalAssociatesTextViewprofileDialog"
             android:textSize="18sp"
             android:gravity="center"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textColor="@color/signatureColorOne" />
 
         <TextView
             android:layout_width="fill_parent"
@@ -146,7 +152,8 @@
             android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:textSize="18sp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textColor="@color/signatureColorOne" />
 
         <TextView
             android:layout_width="fill_parent"
@@ -155,7 +162,8 @@
             android:id="@+id/looksTextViewprofileDialog"
             android:textSize="18sp"
             android:gravity="center"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textColor="@color/signatureColorOne" />
 
     </LinearLayout>
 
