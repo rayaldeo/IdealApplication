@@ -201,12 +201,12 @@
 
     <!--Body-->
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
         android:id="@+id/content"
         android:gravity="center"
         android:layout_below="@+id/job_country_tax_layout"
-        android:layout_above="@+id/scrollView">
+        android:layout_alignBottom="@+id/continueButton">
 
 
 
@@ -221,9 +221,9 @@
             android:padding="1dp"
             android:textSize="15sp"
             android:theme="@style/AppTheme"
-            android:layout_above="@+id/continueButton"
             android:gravity="center"
-            android:textColor="@color/signatureColorOne" />
+            android:textColor="@color/signatureColorOne"
+            android:layout_alignParentBottom="true" />
 
     </RelativeLayout>
 

@@ -566,7 +566,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                    }
                 })
                 .setTitle("IDEAL:Going to School")
-                .setCancelable(true)
+                .setCancelable(false)
                 .create();
 
 
@@ -622,6 +622,10 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 .setNeutralButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         wealth+=-100 * human.getCountry().getMultiplier();
+                        influence+=1000;
+                        friends+=1000;
+                        worshippers+=100;
+                        looks+=1;
                         new Thread(new IDEALLifeProgram()).run();
 
                     }
@@ -647,6 +651,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 .setNeutralButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         wealth+=-50 * human.getCountry().getMultiplier();
+                        influence+=1000;
+                        professionalAssociates+=1000;
+                        friends+=1000;
                         new Thread(new IDEALLifeProgram()).run();
 
                     }
@@ -660,7 +667,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
                 .setTitle("IDEAL:Work on your Physical")
                 .setIcon(R.drawable.ic_stat_name)
-                .setCancelable(true)
+                .setCancelable(false)
                 .create();
         ad.show();
     }
