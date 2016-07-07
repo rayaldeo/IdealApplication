@@ -202,11 +202,11 @@
     <!--Body-->
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="100dp"
+        android:layout_height="fill_parent"
         android:id="@+id/content"
         android:gravity="center"
         android:layout_below="@+id/job_country_tax_layout"
-        android:layout_alignBottom="@+id/continueButton">
+        android:layout_above="@+id/continueButton">
 
 
 
@@ -215,8 +215,7 @@
             android:layout_height="fill_parent"
             android:text="@string/ExtraInformation_text"
             android:id="@+id/informationalTextView"
-            android:maxLines = "3"
-
+            android:maxLines = "5"
             android:scrollbars = "vertical"
             android:padding="1dp"
             android:textSize="15sp"
