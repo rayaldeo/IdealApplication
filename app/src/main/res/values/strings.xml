@@ -7,11 +7,11 @@
     <string name="getJob_text">Job</string>
     <string name="getCountry_text">Country</string>
     <string name="ExtraInformation_text">New Text</string>
-    <string name="job_Button">Select a Job</string>
-    <string name="school_Button">Go to School</string>
-    <string name="physical_Button">Work on Physical</string>
-    <string name="socialize_button">Socialize with People</string>
-    <string name="moveTo_Button">Change Country</string>
+    <string name="job_Button">Job</string>
+    <string name="school_Button">School</string>
+    <string name="physical_Button">Work-Out</string>
+    <string name="socialize_button">Socialize</string>
+    <string name="moveTo_Button">Move</string>
     <string name="overallWelathTextView_text">Wealth</string>
     <string name="influenceTextView">Influence</string>
     <string name="overallWealthPercantage">Percentage</string>
@@ -46,7 +46,7 @@
     <string name="priceToMove_Text">$0</string>
     <string name="familyButton_txt">Accept Family</string>
     <string name="accept_Country_text">Accept Country</string>
-    <string name="playerNameText">playerNameText</string>
+    <string name="playerNameText">N/A</string>
 
     <string name="customFamily_fatherTab_text">Father</string>
     <string name="customFamily_motherTab_text">Mother</string>

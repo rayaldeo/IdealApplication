@@ -534,6 +534,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     }
                 })
                 .setNeutralButton("Cancel", null)
+                .setIcon(R.drawable.ic_stat_name)
                 .setCancelable(false)
                 .setView(scrollView)
                 .create();
@@ -551,14 +552,14 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         //This String Variable is used to hold all of the messages in one string
         String chainText="";
         AlertDialog ad = new AlertDialog.Builder(this)
-                .setNeutralButton("Cancel",null)
+                .setNeutralButton("Cancel", null)
 
                 .setMessage("Go a school:Raises the amount of professional Associates" + "\n" +
                         "Unlocks jobs" + "\n" +
-                        "Raises the amount of friends"+"\n"+
-                        "School Attendance:"+schoolAttendanceAmount)
-                        //.setIcon(R.drawable.ic_launcher)
+                        "Raises the amount of friends")
+
                 .setTitle("IDEAL:Going to School")
+                .setIcon(R.drawable.ic_stat_name)
                 .setCancelable(true)
                 .create();
 
@@ -633,18 +634,15 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     }
                 })
 
-                .setMessage("Work on your physical Appearance:Raises your looks" + "\n" +
-                        "Raises the amount of worshippers" + "\n" +
-                        "Raises the amount of influence" + "\n" +
-                        "Raises the amount of friends" + "\n" +
-                        "How many times you have worked on your physical appearance:" + workingOnPhysicalApp + "\n" +
+                .setMessage(
                         "Your looks got increased by 1" + "\n" +
-                        "The amount of worshippers got increased by 100" + "\n" +
-                        "Your influence got increased by 1000" + "\n" +
-                        "The amount of friends increased by 1000" + "\n" +
-                        "You got charged:$" + 100 * human.getCountry().getMultiplier())
+                                "The amount of worshippers got increased by 100" + "\n" +
+                                "Your influence got increased by 1000" + "\n" +
+                                "The amount of friends increased by 1000" + "\n" +
+                                "You got charged:$" + 100 * human.getCountry().getMultiplier())
 
                 .setTitle("IDEAL:Work on your Physical")
+                .setIcon(R.drawable.ic_stat_name)
                 .setCancelable(true)
                 .create();
         ad.show();
@@ -660,21 +658,23 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
                     }
                 })
-                .setMessage("How many times you socialised with people:" + socialisingWithFriends + "\n" +
 
-                        "The amount of worshippers got increased by 100" + "\n" +
+                .setMessage("The amount of worshippers got increased by 100" + "\n" +
                         "Your influence got increased by 1000" + "\n" +
                         "The amount of friends increased by 1000" + "\n" +
                         "Your professional Associates got increased by 1000" + "\n" +
                         "You got charged:$" + 100 * human.getCountry().getMultiplier())
 
                 .setTitle("IDEAL:Work on your Physical")
+                .setIcon(R.drawable.ic_stat_name)
                 .setCancelable(true)
                 .create();
         ad.show();
     }
     public void selectACountry() {
-
+        //Keep Price of the old Country before changing it
+        //Tax+BasePrice(100)*CountryMultiplier
+        priceToMoveTextView.setText("Price:" + currencyFormat.format((human.getCountry().getTaxes() + 100) * human.getCountry().getMultiplier()));
         //Get the arrayLIst from the String xml
         final List<String> countries = Arrays.asList(getResources().getStringArray(R.array.countries));
 
@@ -683,6 +683,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         LayoutInflater inflater = getLayoutInflater();
         View convertView = inflater.inflate(R.layout.countrieslistlayout, null);
         alertDialog.setView(convertView);
+        alertDialog.setIcon(R.drawable.ic_stat_name);
         alertDialog.setTitle("Choose a Country");
 
         final ListView countrieslistView = (ListView) convertView.findViewById(R.id.countriesListXML);
@@ -760,8 +761,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     tax = human.getCountry().getTaxes();
 
                     //Update the Amount of money it Costs to move from current Country to Next
-                    //Tax+BasePrice(100)*CountryMultiplier
-                    priceToMoveTextView.setText("Price:" + currencyFormat.format((human.getCountry().getTaxes() + 100) * human.getCountry().getMultiplier()));
+
                     if(age>1) {
                         keepStatsUpToDate(-(human.getCountry().getTaxes() + 100 * human.getCountry().getMultiplier()), 0, human.getJob(), human.getCountry().getTaxes(), 0, 0, 0, 0);
                         new Thread(new IDEALLifeProgram()).run();
@@ -1928,6 +1928,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                        selectACountry();
 
                    } else if (age < 20 && age > 0) {
+                       informationalTextView.setBackgroundColor(Color.parseColor("#FC9"));
                        informationalTextView.setText("IDEAL:Tutorial With Family/Initial State" + "\n" + "This is the Family View where the first 20 years will be determined for you.");
                        //Deactivate the buttons
                        //buttonActivation(false);

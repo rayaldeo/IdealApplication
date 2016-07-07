@@ -8,8 +8,6 @@
             android:bottomRightRadius="50dp"
             />
 
-
-
         <padding
             android:left="3dp"
             android:top="4dp"

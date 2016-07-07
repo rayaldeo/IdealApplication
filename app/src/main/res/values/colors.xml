@@ -3,5 +3,6 @@
     <color name="signatureColorOne">#FC9</color>
     <color name="backgroundColor">#3f3f3f</color>
     <color name="amount_background">#BBDEFB</color>
+    <color name="purplebackground_color">#3f1930</color>
 
 </resources>
