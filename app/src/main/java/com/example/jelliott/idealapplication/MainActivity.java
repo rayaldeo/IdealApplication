@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private Dialog alertDialogProfile;
 
     private Human human;
-    private int age = 0, schoolAttendanceAmount = 0, socialisingWithFriends = 0, workingOnPhysicalApp = 0;
+    private int age = 0, schoolAttendanceAmount = 0, socialisingWithFriends = 0, workingOnPhysicalApp = 0 , wishes = 0;
     private int value, looks = 0, worshippers = 0, friends = 0, professionalAssociates = 0;
     private double wealth = 0.0, tax = 0.0;
 
@@ -104,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private String familyName, firstNamePart, lastNamePart,chainString="";
     Random rand = new Random();
     int randomNum = rand.nextInt((50 - 1) + 1);
-    private Boolean banker = false, independent = false, businessowner = false, king = false, intern = false,shown=false,shownOne=false;
+    private Boolean banker = false, independent = false, businessowner = false, king = false, intern = false,shown=false,shownOne=false,genie=false/*Genie boolean will only be used in the jobButton command which will allow the user to choose any job*/;
     private boolean begger = false;
     private boolean vagrant = false;
     private boolean packingboy = false;
@@ -459,14 +460,43 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
             }
         });
-        //Make the AlertDialog Scrollable
+
+        final Button jobButtonGod=new Button(this);
+        jobButtonGod.setHint("God");
+        //layout.addView(jobButtonGod);
+        jobButtonGod.setOnClickListener(new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            professionalAssociates += 1500;
+            friends += 1000;
+            job = Jobs.GOD;
+
+        }
+    });
+        //Make the AlertDialog Scrollable->Maybe
 
 
         //If statements to show only certain Buttons
-        if (age < 20 || schoolAttendanceAmount<1) {
+        if(genie) {//If the genie is active..this will show up if the jobButton is selected..Genie can not be activated until the user is >=20
+
+            layout.addView(jobButtonBeggar); //Begger
+            layout.addView(jobButtonVagrant);//Vagrant
+            layout.addView(jobButtonIntern);//Intern
+            layout.addView(jobButtonPackingBoy);//PackingBoy
+            layout.addView(jobButtonFirefighter);//Firefighter
+            layout.addView(jobButtonBanker);//BANKER;
+            layout.addView(jobButtonScientist);  //Scientist;
+            layout.addView(jobButtonBusinessOwner);//BusinessOwner;
+            layout.addView(jobButtonIndependent);  //Independent;
+            layout.addView(jobButtonKing);  //KING;
+            layout.addView(jobButtonSultan); //SULTAN
+            layout.addView(jobButtonGod);//GOD
+            layout.addView(jobButtonOmega);  //OMEGA
+
+        }else if (age < 20 || schoolAttendanceAmount<1) {
             layout.addView(jobButtonPackingBoy);//PackingBoy
             layout.addView(jobButtonIntern);//Intern
-        } else {
+        }else{
             if (human.getCountry() == Countries.Irada ||
                     human.getCountry() == Countries.Itican ||
                     human.getCountry() == Countries.Albaq) {
@@ -516,9 +546,13 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
                 if (king && sultan) { layout.addView(jobButtonSultan);  }//SULTAN
 
-            }
-        }
+                if(god){ layout.addView(jobButtonGod);}//GOD
 
+                if(god&&sultan&&king){layout.addView(jobButtonOmega);}  //OMEGA
+
+            }
+
+        }
         final ScrollView scrollView = new ScrollView(this);
         scrollView.addView(layout);
 
@@ -526,7 +560,22 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
                 .setMessage("Select A Job. \n Current Country:" + human.getCountry())
                 .setTitle("IDEAL")
-                .setPositiveButton("Confirm", null)
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        if (genie) {
+                            wishes++;
+                            //selectAJobButton.setEnabled(false);
+                            System.out.println("wishes:" + wishes);
+                            Toast.makeText(MainActivity.this, "Wishes Left:"+(3-wishes),
+                                    Toast.LENGTH_LONG).show();
+                            selectAJobButton.setEnabled(false);
+                            new Thread(new genieDoSomething()).run();
+
+                    }
+                }
+                })
                 .setIcon(R.drawable.ic_stat_name)
                 .setCancelable(false)
                 .setView(scrollView)
@@ -544,28 +593,29 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         schoolAttendanceAmountTextView.setText(Integer.toString(schoolAttendanceAmount));
         //This String Variable is used to hold all of the messages in one string
         String chainText="";
-        AlertDialog ad = new AlertDialog.Builder(this)
-                .setNeutralButton("Cancel", null)
-
-                .setMessage("Go a school:Raises the amount of professional Associates" + "\n" +
-                        "Unlocks jobs" + "\n" +
-                        "Raises the amount of friends")
-
-                .setTitle("IDEAL:Going to School")
-                .setIcon(R.drawable.ic_stat_name)
-                .setCancelable(true)
-                .create();
-
-
-        //This Dialog is used to show which jobs were unlocked
+            //This Dialog is used to show which jobs were unlocked
         AlertDialog adNotifier = new AlertDialog.Builder(this)
                 .setNeutralButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        wealth+=-2500.0 * human.getCountry().getMultiplier();
+
+                                if (genie) {
+                                    wishes++;
+                                    schoolButton.setEnabled(false);
+                                    Toast.makeText(MainActivity.this, "Wishes Left:"+(3-wishes),
+                                            Toast.LENGTH_LONG).show();
+                                 new Thread(new genieDoSomething()).run();
+                                }else{
+                                    wealth+=-2500.0 * human.getCountry().getMultiplier();
+                                }
+
 
                    }
                 })
+                .setMessage("Go a school:Raises the amount of professional Associates" + "\n" +
+                        "Unlocks jobs" + "\n" +
+                        "Raises the amount of friends")
                 .setTitle("IDEAL:Going to School")
+                .setIcon(R.drawable.ic_stat_name)
                 .setCancelable(false)
                 .create();
 
@@ -606,12 +656,17 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 god = true;
                 chainText+="\n" + "You have unlocked the God Job";
 
+        }if(schoolAttendanceAmount>=10&&socialisingWithFriends>=10 &&workingOnPhysicalApp>=10){
+            omega = true;
+            chainText+="\n" + "You have unlocked the Omega Job";
+            if(!heavenBoolean){
+                heavenBoolean=true;
+                chainText+="\n" + "You have unlocked Heaven";
+            }
         }
         //There should be at least 6 words in the chainText and if not then the user has not unlocked any job
 
         adNotifier.setMessage(chainText);
-        adNotifier.setCancelable(true);
-        ad.show();
         adNotifier.show();
 
     }
@@ -621,11 +676,24 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         AlertDialog ad = new AlertDialog.Builder(this)
                 .setNeutralButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        wealth+=-100 * human.getCountry().getMultiplier();
-                        influence+=1000;
-                        friends+=1000;
-                        worshippers+=100;
-                        looks+=1;
+                        if (genie) {
+                            wishes++;
+                           Toast.makeText(MainActivity.this, "Wishes Left:" + (3 - wishes),
+                                    Toast.LENGTH_LONG).show();
+                            workOnPhysicalAppearanceButton.setEnabled(false);
+                            influence+=1000;
+                            friends+=1000;
+                            worshippers+=100;
+                            looks+=1;
+                            new Thread(new genieDoSomething()).run();
+                        }else{
+                            wealth+=-100 * human.getCountry().getMultiplier();
+                            influence+=1000;
+                            friends+=1000;
+                            worshippers+=100;
+                            looks+=1;
+                        }
+
 
 
                     }
@@ -650,12 +718,22 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         AlertDialog ad = new AlertDialog.Builder(this)
                 .setNeutralButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        wealth+=-50 * human.getCountry().getMultiplier();
-                        influence+=1000;
-                        professionalAssociates+=1000;
-                        friends+=1000;
+                        if (genie) {
+                            wishes++;
+                            Toast.makeText(MainActivity.this, "Wishes Left:" + (3 - wishes),
+                                    Toast.LENGTH_LONG).show();
+                            socializeWithPeopleButton.setEnabled(false);
+                            influence += 1000;
+                            professionalAssociates += 1000;
+                            friends += 1000;
+                            new Thread(new genieDoSomething()).run();
 
-
+                        } else {
+                            wealth += -50 * human.getCountry().getMultiplier();
+                            influence += 1000;
+                            professionalAssociates += 1000;
+                            friends += 1000;
+                        }
                     }
                 })
 
@@ -675,7 +753,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
               //Get the arrayLIst from the String xml
         final List<String> countries = Arrays.asList(getResources().getStringArray(R.array.countries));
 
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
         //Call the XML List view and set it with  the countries array
         LayoutInflater inflater = getLayoutInflater();
         View convertView = inflater.inflate(R.layout.countrieslistlayout, null);
@@ -691,10 +769,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         //countrieslistView.getChildAt(9).setBackgroundColor(Color.parseColor("#d3d3d3"));
 
         if(age>1) {
-            alertDialog.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                }
-            });
+            //The user should be able to cancel country selection unless the country previously selected is one that the user don't have access to
+            alertDialog.setNeutralButton("Cancel",null);
+
         }
         alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
@@ -708,23 +785,16 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     //Getting the selected string Country from Counties Class
                     countryOfUser = getThisCountry(checkedItem.toString());
                     if (checkedItem.toString().equals(Countries.Heaven.getName())) {
-                        if (socialisingWithFriends < 4 || !heavenBoolean) {
-                            Toast.makeText(MainActivity.this, "You have not socialised enough to access this place",
-                                    Toast.LENGTH_LONG).show();
-
-                        }
-                        if (human.getWorshippers() < 10000 || !heavenBoolean) {
-                            Toast.makeText(MainActivity.this, "You do not have enough worshippers to access this place",
-                                    Toast.LENGTH_LONG).show();
-
-                        }
-                        if (human.getInfluence() < 100000 || !heavenBoolean) {
-                            Toast.makeText(MainActivity.this, "You do not have enough power to access this place. Choose a different country",
-                                    Toast.LENGTH_LONG).show();
-                            selectACountry();
-                        } else {
-                            heavenBoolean = true;
+                        if (heavenBoolean||genie) {
                             countryOfUser = Countries.Heaven;
+                           } else {
+                            Toast.makeText(MainActivity.this, "You don't have access to heaven because Genie: "+genie+"or Heaven: "+heavenBoolean,
+                                    Toast.LENGTH_LONG).show();
+                            alertDialog.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    selectACountry();
+                                }
+                            });
 
                         }
                     }
@@ -756,7 +826,17 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     taxTextView.setText("Tax:" + currencyFormat.format(human.getCountry().getTaxes()));
                     tax = human.getCountry().getTaxes();
                    if(age>1) {
-                        keepStatsUpToDate(-(human.getCountry().getTaxes() + 100 * human.getCountry().getMultiplier()), 0, job, human.getCountry().getTaxes(), 0, 0, 0, 0);
+                       if(genie) {
+                           wishes++;
+                           Toast.makeText(MainActivity.this, "Wishes Left:" + (3 - wishes),
+                                   Toast.LENGTH_LONG).show();
+                           changeCountryButton.setEnabled(false);
+                           new Thread(new genieDoSomething()).run();
+
+                       }else{
+
+                           keepStatsUpToDate(-(human.getCountry().getTaxes() + 100 * human.getCountry().getMultiplier()), 0, job, human.getCountry().getTaxes(), 0, 0, 0, 0);
+                       }
 
                     }
 
@@ -898,8 +978,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         String influenceAmountString = Double.toString(human.getInfluence());
         influenceTextView.setText(getString(R.string.influenceAmountTextView_String) + "\n" + influenceAmountString);
         jobTextView.setText(getString(R.string.getJob_text) + ":" +"\n"+ human.getJob());
-        countryTextView.setText(getString(R.string.getCountry_text) + ":" +"\n"+ human.getCountryString());
-        taxTextView.setText(getString(R.string.tax_text) + ":" +"\n"+ currencyFormat.format(tax));
+        countryTextView.setText(getString(R.string.getCountry_text) + ":" + "\n" + human.getCountryString());
+        taxTextView.setText(getString(R.string.tax_text) + ":" + "\n" + currencyFormat.format(tax));
 
 
         //This "if" statement is going to see whether our percentage function will give something less than 1...which the progress bars can no handle
@@ -1384,20 +1464,18 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         ///If you want to test any specific chance of life just place in the case number into switch bracket..the program will only run that switch
         //7randomNum
         switch (randomNum) {
-
             case 0:
-                //Move to another country with higher or lower income
-                //This affects your wealth with the family in the tutorial
-                //This will affect your overall wealth in th later game
-                if(age>20) {
-                    chainString += "\n" + "You decided to move;so here is the  opportunity to choose a different country!";
-                    selectACountry();
-                }else{
-                    chainString += "\n" + "Your Family got an influence boost";
-                    influence+=1000;
-                }
+              if(age<20){
+                  chainString+="Your family got robbed";
+                  wealth+=-50000;
+                  influence+=-5000;
 
+              }else{
+                  chainString+="You got robbed";
+                  wealth+=-50000;
+                  influence+=-5000;
 
+              }
                 break;
             case 1:
 
@@ -1412,7 +1490,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     } else if (family.getFamilyFriends() > 500) {
                         chainString+="\n"+"Your family is Famous and this allows you to earn $100";
                         wealth+= 100;
-                        chainString+="\n"+"Your wealth is $" + family.getFamilyWealth();
+
 
                         //CharDetails();
                     } else {
@@ -1442,17 +1520,28 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 break;
             case 2:
                 // ad.setMessage("3");
-                if (human.getInfluence() > 100000 || human.getInfluence() + family.getFamilyInfluence() > 100000) {
-                    chainString+="\n"+"Your family has a high influence level and is able to get you to the best schools and mentors" + "\n" + "You have will have access to the intern job "
-                            + "\n" + "You have will have access to the Banker job "
-                            + "\n" + "You have will have access to the Business Owner job ";
+                if (age < 20) {
+                    if (family.getFamilyInfluence() > 100000) {
+                        chainString+="\n"+"Your family has a high influence level which gives you access to the Banker and Business Owner jobs";
 
-                    intern = true;
-                    banker = true;
-                    businessowner = true;
 
-                } else {
-                    chainString+="\n"+"Your family's influence is not very high;try increasing it!!";
+                        banker = true;
+                        businessowner = true;
+                    }else {
+                        chainString += "\n" + "Your family's influence is not very high;try increasing it!!";
+                    }
+
+                }else {
+                    if (human.getInfluence() > 100000) {
+                        chainString += "\n" + "Your high influence level gives you access to the Independent and Sultan jobs" ;
+
+                        independent = true;
+                        sultan = true;
+                        businessowner = true;
+
+                    } else {
+                        chainString += "\n" + "Your influence is not very high;try increasing it!!";
+                    }
                 }
 
 
@@ -1543,8 +1632,19 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                  break;
 
             case 7:
-                //genieDoSomething();
-                informationalTextView.setText("This is the genie");
+
+                if(age<20){
+                    chainString+="\n"+"Your parents got a promotion";
+                    wealth+=500;
+                    influence+=50;
+                }else{
+                    chainString+="\n"+"You magically found a genie and he is able to grant you three wishes!";
+                    genie=true;
+                    System.out.println("Genie"+genie);
+                     new Thread(new genieDoSomething()).run();
+                    informationalTextView.setText("This is the genie");
+                }
+
                 break;
 
             case 8:
@@ -1555,9 +1655,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
                 } else {
                     wealth+= 500000;
-                    updatingStateOfFamily(wealth, 0);
-                    chainString+="\n"+"Your family won the lottery,gained $500000";
-                    wealth = 0;
+                   chainString+="\n"+"Your family won the lottery,gained $500000";
+
                 }
 
                 break;
@@ -1566,7 +1665,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             case 9:
                 // ad.setMessage("10");
                 chainString+="\n"+"Your recent trip to IDEAL Center of Academics added professional Associates to call onto later in life";
-                professionalAssociates= 500;
+                professionalAssociates+= 500;
                 //CharDetails();
 
 
@@ -1576,9 +1675,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
                 // ad.setMessage("11");
                 chainString+="\n"+"You get a boost in influence, wealth, and friends!You are very lucky";
-               wealth= 500000;
-               friends=50000;
-               influence=5000;
+               wealth+= 500000;
+               friends+=50000;
+               influence+=5000;
                
 
                 break;
@@ -1587,9 +1686,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
                 // ad.setMessage("12");
                 chainString+="\n"+"You get a boost in professional associates, looks, and worshippers !You are very lucky";
-               professionalAssociates= 5000;
-               looks= 2;
-               worshippers= 5000;
+               professionalAssociates+= 5000;
+               looks+= 2;
+               worshippers+= 5000;
 
                 break;
 
@@ -1597,16 +1696,16 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
                 // ad.setMessage("13");
                 chainString+="\n"+"You lose in  influence, wealth, and friends!You are very unlucky";
-                wealth=- 5000;
-                friends= - 500;
-                influence= - 500;
+                wealth+=- 5000;
+                friends+= - 500;
+                influence+= - 500;
                 break;
 
             case 13:
                 chainString+="\n"+"You lose in professional associates, looks, and worshippers !You are very unlucky";
                  professionalAssociates= - 500;
-                looks= - 2;
-                worshippers= 50;
+                looks+= - 2;
+                worshippers+= 50;
                     break;
 
 
@@ -1615,88 +1714,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     }
 
-    public void genieDoSomething() {
-
-        final Jobs temjobA = human.getJob(); ///I must undo any changes if the user doesn't comply with my instructions
-        if (age > 19) {
-            informationalTextView.setText("You magically found a genie and he is able to grant you three wishes!");
-
-            for (int i = 0; i < 3; i++) {
-
-                //Get the arrayLIst from the String xml
-                final List<String> countries = Arrays.asList(getResources().getStringArray(R.array.genieChoices));
-
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
-                //Call the XML List view and set it with  the countries array
-                LayoutInflater inflater = getLayoutInflater();
-                View convertView = inflater.inflate(R.layout.countrieslistlayout, null);
-                alertDialog.setView(convertView);
-                alertDialog.setTitle("Choose A Wish");
-
-                final ListView countrieslistView = (ListView) convertView.findViewById(R.id.countriesListXML);
-                //countrieslistView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, countries);
-                alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-
-                        Object checkedItem;
-                        Double tempwealthA=0.0;
-
-                        //This "try" statement is used so that if the user presses the "Yes" button without selecting something..the application would not call a Null Pointer/Crash
-                        try {
-                            //This returns the object attached to to selected item in the listView
-                            checkedItem = countrieslistView.getAdapter().getItem(countrieslistView.getCheckedItemPosition());
-
-
-                            Toast.makeText(MainActivity.this, "You have selected " + checkedItem.toString(),
-                                    Toast.LENGTH_LONG).show();
-                            //Once this  country is valid for use by the user, and it exist...then set the other variables
-                            //Update Stats accordingly
-                            selectingAWish(value);
-                            //keepStatsUpToDate(overallWealthDefault, influenceAmountDefault, job, countryOfUser, countryOfUser.getTaxes());
-                            //keepStatsUpToDate(overallWealthDefault, influenceAmountDefault, temjobA,
-                                    //tax,human.getLooks(),human.getWorshippers(),human.getFriends(),human.getProfessionalAssociates());
-                        } catch (Exception e) {
-                            Toast.makeText(MainActivity.this, "You forfeit your wish",
-                                    Toast.LENGTH_LONG).show();
-                            chancesOfLife();///I may need this..I am not sure right now though
-
-
-                            //keepStatsUpToDate(overallWealthDefault, influenceAmountDefault, temjobA,
-                                    //tax, human.getLooks(), human.getWorshippers(), human.getFriends(), human.getProfessionalAssociates());
-                            worshippers = 0;
-                            tempwealthA = 0.0;
-                            friends = 0;
-                            looks = 0;
-                            professionalAssociates = 0;
-                            influence = 0;
-
-
-                        }
-
-
-                    }
-                });
-            }
-
-                /*informationalTextView.setText(" Options are displayed..Choose ONE..or lose your three wishes completely");
-                informationalTextView.setText("(1)Improve your physical Appearance  " + ("\n") +
-                        "(2)Increase the number of Worshippers" + ("\n") +
-                        "(3)Increase the number of Friends" + ("\n") +
-                        "(4)Increase the number of Professional Associates" + ("\n") +
-                        "(5)Increase you Influence" + ("\n") +
-                        "(6)Increase your Wealth" + ("\n") +
-                        "(7)Choose any job you desire" + ("\n") +
-                        "(0)Special" + ("\n"));*/
-
-
-        } else {
-            //updatingStateOfHuman(Jobs.NOJOB, 1, 10, 10, 10, 100);
-            //keepStatsUpToDate(overallWealthDefault, influenceAmountDefault, Jobs.NOJOB,
-                    //tax, human.getLooks(), human.getWorshippers(), human.getFriends(), human.getProfessionalAssociates());
-            informationalTextView.setText("You get a slight boost in wealth, worshippers,friends,looks,professional associates, and influence");
-        }
-    }
 
     public void selectingAWish(int numberSelection) {
         //looks=0,worshippers=0,friends=0,professionalAssociates=0,influence=0
@@ -1809,21 +1826,20 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     }
 
-
     public void worshippersFollow(boolean worshippersFollow) {
 
         if (worshippersFollow && tempNum != age) {
 
-            human.setWorshippers(human.getWorshippers() + 100);
-            System.out.println("You attracted 100 worshippers");
+           worshippers+= 100;
+            chainString+="You attracted 100 worshippers";
             tempNum++;
 
         }
         if (worshippersFollow && god) {
 
 
-            human.setWorshippers(human.getWorshippers() + 1000);
-            System.out.println("You attracted 1000 worshippers");
+            worshippers += 1000;
+            chainString+="You attracted 1000 worshippers";
 
 
         }
@@ -1872,25 +1888,25 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             //Once the player reaches 1000000 worshippers, the player will become a god
             //it only needs to be activated once and the benefit should automatically apply without the player being notified again
             //Permanent benefit once it is activated
-            if(human.getWorshippers()>1000000) {
+            if(human.getWorshippers()>10000000) {
                 worshippersActivation=true;
-
+                worshippersFollow(worshippersActivation);
                 //job = Jobs.GOD;
-               job= Jobs.GOD;
                 heavenBoolean=true;
-                chainString+="You have earned enough worshippers to become a God.Rule over all!!" + "\n" + "You have also gained access to heaven";
+                //schoolButton.setText(Html.fromHtml("<font color='red'>First line</font><br/><font color='blue'>Second line</font>"));
+                chainString+="\n"+Html.fromHtml("<font color='blue'>You have gained access to heaven and will gain worshippers for the next 10 years</font><br/>");
             }
 
 
             //Once the player reaches 100000 in influence, the player will get paid $100000 every turn
             //it only needs to be activated once and the benefit should automatically apply without the player being notified again
             //Permanent benefit once it is activated
-            if(human.getInfluence()>1000000|| human.getProfessionalAssociates()>=100000 && !influencActivation
+            if(human.getInfluence()>7000000&& human.getProfessionalAssociates()>=200000 && !influencActivation
                     ||human.getFriends()>=1000000){
                 influencActivation=true;
-                chainString+="\n" +"You have gained 100000 in wealth";
-                chainString+="\n" + "You have gained enough power,you will now gain a steady source of money";
-                wealth += 100000;
+                chainString+="\n" +Html.fromHtml("<font color='blue'>You have gained 50000 in wealth</font><br/>");
+                chainString+="\n" + Html.fromHtml("<font color='blue'>You have gained enough Influence and Professional Associates that you will now gain a steady source of money</font><br/>");
+                wealth += 50000;
 
             }
 
@@ -1902,6 +1918,33 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 ///->
 
 ///->Calling a Thread for the application
+    //Genie Thread
+    public class genieDoSomething implements Runnable{
+
+        @Override
+        public void run() {
+            //chainString+="You magically found a genie and he is able to grant you three wishes!";//When this String is Displayed the genie would have already been completed
+            LinearLayout linearLayout =(LinearLayout)findViewById(R.id.footer);
+            linearLayout.setBackgroundColor(Color.parseColor("#3f3f3f"));
+            continueButton.setEnabled(false);
+            //continueButton.setBackgroundTintList(ColorStateList.valueOf(getColor(R.color.signatureColorOne)));
+            //If there are no more wishes or all of the buttons are disabled either because the MAX was reached or the button was used..enable the user to go back to IDEALLifeProgram thread
+            if(wishes==3||!changeCountryButton.isEnabled()&&!selectAJobButton.isEnabled()&&!schoolButton.isEnabled()&&!workOnPhysicalAppearanceButton.isEnabled()&&!socializeWithPeopleButton.isEnabled()){
+                genie=false;
+                wishes=0;
+                chainString+="\n"+"Genie Left";
+                //continueButton.setBackgroundTintList(ColorStateList.valueOf(getColor(R.color.purplebackground_color)));
+                continueButton.setEnabled(true);
+                buttonActivation(true);
+                linearLayout.setBackgroundColor(Color.parseColor("#3f1930"));
+
+            }
+
+        }
+
+    }
+
+    //MainThread
     public class IDEALLifeProgram implements Runnable{
 
     @Override
@@ -1963,6 +2006,34 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
                            shownOne = true;
                        }else{
+                          //When the user did these action 10 times;the buttons should be disabled and set the text of button to MAX..The user must reach max numbers in socialisingWithFriends and workingOnPhysicalApp before disabling the school Button
+                          //because if school reaches max first then the user may not be able to access all of the jobs
+                          if(socialisingWithFriends>=10) {
+                              socializeWithPeopleButton.setEnabled(false);
+                              socialisingWithFriendsTextView.setBackgroundColor(Color.parseColor("#FF0000"));
+                              socialisingWithFriendsTextView.setText("MAX");
+                              //HTML may be a limitation in android code
+                              //socializeWithPeopleButton.setText(R.string.socialize_button + "\n" + Html.fromHtml("<font color='red'>MAX</font>"));
+
+                              if (workingOnPhysicalApp >= 10) {
+                                  workOnPhysicalAppearanceButton.setEnabled(false);
+                                  //Set TextView color to Red and TextView to MAX
+                                  workingOnPhysicalAppTextView.setBackgroundColor(Color.parseColor("#FF0000"));
+                                  workingOnPhysicalAppTextView.setText("MAX");
+                                  //workOnPhysicalAppearanceButton.setText(R.string.physical_Button + "\n" + Html.fromHtml("<font color='red'>MAX</font>"));
+
+                                  if (schoolAttendanceAmount >= 10) {
+                                      schoolButton.setEnabled(false);
+                                      schoolAttendanceAmountTextView.setBackgroundColor(Color.parseColor("#FF0000"));
+                                      schoolAttendanceAmountTextView.setText("MAX");
+                                      //Changing text color within a button with Multiple Lines
+                                      //schoolButton.setText(Html.fromHtml("<font color='red'>First line</font><br/><font color='blue'>Second line</font>"));
+                                      //schoolButton.setText(R.string.school_Button + "\n" + Html.fromHtml("<font color='red'>MAX</font>"));
+
+                                  }
+                              }
+                          }
+
                           grownUpHuman();
                           keepStatsUpToDate(wealth*1.0,influence,job,human.getCountry().getTaxes(),looks,worshippers,friends,professionalAssociates);
                           //Reset stats so that there are no further stacking up
@@ -1982,7 +2053,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
             } catch (Throwable t) {
-               System.out.println("halted due to an error" + t);
+                   System.out.println("halted due to an error" + t);
             }
 
         age_Turn_textView.setText("Age: " + age);
