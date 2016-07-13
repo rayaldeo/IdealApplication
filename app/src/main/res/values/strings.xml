@@ -52,6 +52,8 @@
     <string name="customFamily_sisterTab_text">Sister</string>
     <string name="customFamily_brotherTab_text">Brother</string>
     <string name="continueButton_text">Continue</string>
+    <string name="splash_screen_text">SplashImage</string>
+    <string name="idealstudios_text">IDEAL Studios</string>
 
     <string-array name="countries">
         <item>Irada</item>

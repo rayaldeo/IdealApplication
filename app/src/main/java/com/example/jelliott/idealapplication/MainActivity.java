@@ -1638,11 +1638,14 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     wealth+=500;
                     influence+=50;
                 }else{
-                    chainString+="\n"+"You magically found a genie and he is able to grant you three wishes!";
-                    genie=true;
-                    System.out.println("Genie"+genie);
-                     new Thread(new genieDoSomething()).run();
-                    informationalTextView.setText("This is the genie");
+                    if(age%4==0&&age%6==0) {
+                        chainString += "\n" + "You magically found a genie and he is able to grant you three wishes!";
+                        genie = true;
+                        System.out.println("Genie" + genie);
+                        new Thread(new genieDoSomething()).run();
+                        informationalTextView.setText("This is the genie");
+                    }
+                    chainString += "\n" + "You magically found a genie but he got away from you";
                 }
 
                 break;
@@ -1711,118 +1714,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         }
 
-
-    }
-
-
-    public void selectingAWish(int numberSelection) {
-        //looks=0,worshippers=0,friends=0,professionalAssociates=0,influence=0
-      
-        switch (numberSelection) {
-            case 1:
-                //Looks
-                looks = 5;
-                informationalTextView.setText("Your looks was increased by 5");
-                break;
-
-            case 2:
-                //Worshipers
-                informationalTextView.setText("You got 1000 worshippers");
-                worshippers = 1000;
-
-                break;
-            case 3:
-                //Friends
-                informationalTextView.setText("You got 1000 friends");
-                friends = 1000;
-                break;
-            case 4:
-                //ProfessionalAssociates
-                informationalTextView.setText("You got 1000 professional Associates");
-                professionalAssociates = 1000;
-                break;
-            case 5:
-                //Influence
-                informationalTextView.setText("You got 1000 Influence");
-                influence = 1000;
-                break;
-            case 6:
-                //Wealth
-                informationalTextView.setText("You got 100000 wealth");
-                wealth = 100000.0;
-                break;
-            case 7:
-                //selectAJob();
-
-                switch (value) {
-                    case 0:
-                        job = Jobs.BEGGER;
-                        begger = true;
-                        break;
-                    case 1:
-                        job = Jobs.VAGRANT;
-                        vagrant = true;
-                        break;
-                    case 2:
-                        job = Jobs.INTERN;
-                        intern = true;
-                        break;
-                    case 3:
-                        job = Jobs.PACKINGBOY;
-                        packingboy = true;
-                        break;
-                    case 4:
-                        job = Jobs.FIREFIGHTER;
-                        firefighter = true;
-                        break;
-                    case 5:
-                        job = Jobs.BANKER;
-                        banker = true;
-                        break;
-                    case 6:
-                        job = Jobs.SCIENTIST;
-                        scientist = true;
-                        break;
-                    case 7:
-                        job = Jobs.INDEPENDENT;
-                        independent = true;
-                        break;
-                    case 8:
-                        job = Jobs.BUSINESSOWNER;
-                        businessowner = true;
-                        break;
-                    case 9:
-                        job = Jobs.KING;
-                        king = true;
-                        break;
-                    case 10:
-                        job = Jobs.SULTAN;
-                        sultan = true;
-                        god = true;
-                        break;
-                    case 11:
-                        job = Jobs.GOD;
-                        heavenBoolean = true;
-                        informationalTextView.setText("You have also gained access to heaven");
-                        sultan = true;
-                        god = true;
-                        break;
-
-                }
-                //System.out.print("\nYou are now a(n) " + tempJobA.getName() + ("\n"));
-                //keepStatsUpToDate(job, 0, 0, 0, 0, 0);
-                //CharDetails();
-                //informationalTextView.setText("\n");
-
-                break;
-            case 0:
-                //Become Omega
-                omega = true;
-                job = Jobs.OMEGA;
-                heavenBoolean = true;
-                informationalTextView.setText("You have also gained access to heaven");
-      
-        }
 
     }
 
