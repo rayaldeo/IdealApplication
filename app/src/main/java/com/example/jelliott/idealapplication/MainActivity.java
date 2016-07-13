@@ -974,9 +974,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         human.setWorshippers(human.getWorshippers() + worshippersA);
         //human.setCountries(countryA);
         tax = taxA;
-        overallWealthTextView.setText(getString(R.string.overallWelathTextView_text) + "\n" + currencyFormat.format(human.getOverAllWealth()));
+        overallWealthTextView.setText(currencyFormat.format(human.getOverAllWealth()));
         String influenceAmountString = Double.toString(human.getInfluence());
-        influenceTextView.setText(getString(R.string.influenceAmountTextView_String) + "\n" + influenceAmountString);
+        influenceTextView.setText(influenceAmountString);
         jobTextView.setText(getString(R.string.getJob_text) + ":" +"\n"+ human.getJob());
         countryTextView.setText(getString(R.string.getCountry_text) + ":" + "\n" + human.getCountryString());
         taxTextView.setText(getString(R.string.tax_text) + ":" + "\n" + currencyFormat.format(tax));

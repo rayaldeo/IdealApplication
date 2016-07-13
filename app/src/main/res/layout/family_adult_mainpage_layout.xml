@@ -7,7 +7,7 @@
     <!-- Header aligned to top -->
     <FrameLayout
         android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:id="@+id/frameLayout">
 
@@ -38,22 +38,56 @@
             android:id="@+id/playerNameTextView"
             android:layout_gravity="top|center_vertical"
             android:textSize="25sp"
-            android:inputType="textPersonName"
             android:hint="@string/enterName_hint"
             android:gravity="center"
             android:textAlignment="center"
             android:textColor="@color/signatureColorOne" />
     </FrameLayout>
-    <RelativeLayout
-        android:id="@+id/header"
-        android:background="#FC9"
-        android:gravity="center"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:layout_height="50dp"
+        android:id="@+id/health_wealth_influence_linearlayout"
         android:layout_toRightOf="@+id/frameLayout"
         android:layout_toEndOf="@+id/frameLayout"
-        android:layout_above="@+id/header1"
-        android:layout_alignParentTop="true">
+        android:weightSum="3"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/job_country_tax_layout">
+    <!--Healh-->
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:id="@+id/healthlayout"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="1">
+
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/healthProgressBar"/>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:background="#00000000"
+            android:layout_alignLeft="@id/healthProgressBar"
+            android:layout_alignTop="@id/healthProgressBar"
+            android:layout_alignRight="@id/healthProgressBar"
+            android:text="@string/health_text"
+            android:id="@+id/textView2"
+            android:gravity="center" />
+    </RelativeLayout>
+    <!--Wealth-->
+    <RelativeLayout
+        android:id="@+id/header"
+        android:background="#000"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:layout_width="fill_parent"
+        android:layout_height="51dp">
 
         <TextView
             android:layout_width="fill_parent"
@@ -94,20 +128,19 @@
 
 
     </RelativeLayout>
+    <!--Influence-->
     <RelativeLayout
         android:id="@+id/header1"
-        android:background="#FC9"
+        android:background="#000"
         android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/frameLayout"
-        android:layout_toRightOf="@+id/frameLayout"
-        android:layout_toEndOf="@+id/frameLayout">
+        android:layout_weight="1"
+        android:layout_width="fill_parent"
+        android:layout_height="22dp">
 
 
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/influenceTextView"
             android:id="@+id/influenceTextView"
@@ -117,7 +150,8 @@
             android:background="#3f0d13"
             android:padding="1dp"
             android:textIsSelectable="false"
-            android:layout_gravity="bottom" />
+            android:layout_gravity="bottom"
+            android:layout_alignParentTop="false" />
 
         <ProgressBar
             style="?android:attr/progressBarStyleHorizontal"
@@ -139,11 +173,15 @@
             android:gravity="right"
             android:textColor="@color/abc_secondary_text_material_dark" />
     </RelativeLayout>
+    </LinearLayout>
+
+
+
     <LinearLayout
         android:orientation="horizontal"
         android:id="@+id/job_country_tax_layout"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="50dp"
         android:gravity="center"
         android:layout_below="@+id/frameLayout"
         android:weightSum="3"
@@ -212,7 +250,7 @@
 
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
             android:text="@string/ExtraInformation_text"
             android:id="@+id/informationalTextView"
             android:maxLines = "5"
@@ -222,14 +260,16 @@
             android:theme="@style/AppTheme"
             android:gravity="center"
             android:textColor="@color/signatureColorOne"
-            android:layout_alignParentBottom="true" />
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
     </RelativeLayout>
 
     <!--Footer-->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:id="@+id/scrollView"
         android:layout_alignParentBottom="true"
         android:background="#3f1930">
