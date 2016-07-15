@@ -16,4 +16,13 @@
         <item name="colorAccent">@android:color/holo_orange_light</item>
        </style>
 
+
+
+        <style  name = "CustomProgressBarHorizontal"  parent = "android:Widget.ProgressBar.Horizontal" >
+            <item  name = "android:progressDrawable" > @drawable/health_progressbar_drawable </item >
+             <item  name = "android:minHeight" > 10dip </item >
+            <item  name = "android:maxHeight" > 30dip </item >
+        </style >
+
+    <!--<item  name = "android:progressDrawable" > @drawable/custom_progress_bar_horizontal </item >-->
 </resources>

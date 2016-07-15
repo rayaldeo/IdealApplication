@@ -83,9 +83,12 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 //For the Progress Bars
     private static final int PROGRESS = 0x1;
     private Handler mHandler;
-    private int mProgressStatusOverAllWealth = 0, mProgressStatusInfluence = 0;
+    private int mProgressStatusOverAllWealth = 0, mProgressStatusInfluence = 0,mHealthProgress=0;
     private ProgressBar overallWealthProgressBar;
     private ProgressBar influenceProgressBar;
+    //Health
+    private TextView healthTextView;
+    private ProgressBar healthProgressBar;
 //Buttons
     private Button changeCountryButton,selectAJobButton,schoolButton,workOnPhysicalAppearanceButton,socializeWithPeopleButton,continueButton;
 //ProfileImages
@@ -151,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         socialisingWithFriendsTextView = (TextView) findViewById(R.id.socialisingWithFriendsTextView);
         schoolAttendanceAmountTextView = (TextView) findViewById(R.id.schoolAttendanceAmountTextView);
 
+
         //Buttons
         //Change Country Button
         changeCountryButton = (Button) findViewById(R.id.moveToButton);
@@ -192,8 +196,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         continueButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 if (human.getOverAllWealth() < 10000000 && human.getInfluence() < 2000000) {
-                    new Thread(new IDEALLifeProgram()).run();
-                }else {
+                    IDEALLifeProgram();
+                } else {
                     ///The game is finished at this point
                     informationalTextView.setText("You have created your ideal life at age:" + age + "  CONGRATULATIONS");
                     buttonActivation(false);
@@ -233,8 +237,13 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         //Progress Bars
         overallWealthProgressBar = (ProgressBar) findViewById(R.id.overallWealthProgressBar);
         influenceProgressBar = (ProgressBar) findViewById(R.id.influenceProgressBar);
-        mHandler = new Handler();
 
+        //Health ProgressBar
+        healthProgressBar=(ProgressBar) findViewById(R.id.healthProgressBar);
+        healthTextView=(TextView) findViewById(R.id.healthTextView);
+        healthProgressBar.setProgress(100);
+        //Health ProgressBar
+        mHandler = new Handler();
         age_Turn_textView.setText("Age/Turn:" + Integer.toString(age));
         workingOnPhysicalAppTextView.setText(Integer.toString(workingOnPhysicalApp));
         socialisingWithFriendsTextView.setText( Integer.toString(socialisingWithFriends));
@@ -244,7 +253,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
         buttonActivation(false);
-        new Thread(new IDEALLifeProgram()).run();
+        IDEALLifeProgram();
 
 
     }
@@ -858,6 +867,67 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 ///->
 
 ///->UPDATING STATS
+    private void healthUpdater(final int health) {
+        if (health < 0) {
+            new Thread(new Runnable() {
+                public void run() {
+                    //while (healthProgressBar.getProgress() > healthProgressBar.getProgress()-health) {
+                         // Update the progress bar
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                 healthProgressBar.setProgress(healthProgressBar.getProgress()+health);
+                                healthTextView.setText(healthProgressBar.getProgress()+health+ "%");
+                            }
+                        });
+
+                        try {
+                            // Sleep for 200 milliseconds.
+                            //Just to display the progress slowly
+                             Thread.sleep(225);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    //}
+
+
+                }
+
+            }).start();
+
+
+        } else {
+
+            new Thread(new Runnable() {
+                public void run() {
+                   while (mHealthProgress < health) {
+                        mHealthProgress += 1;//Progress Bars can not accept a value less than one..so 0.5 will not work
+
+                        // Update the progress bar
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                healthProgressBar.setProgress(mHealthProgress);
+                                healthTextView.setText(mHealthProgress + "%");
+                            }
+                        });
+
+                        try {
+                            // Sleep for 200 milliseconds.
+                            //Just to display the progress slowly
+                           Thread.sleep(225);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+
+                }
+
+            }).start();
+
+        }
+    }
    private void calculateTheProgressBarPercentage(Double overallWealthA, int influenceAmountA) {//The Influence Progress Bar Percentage is not very accurate...May not be a big issue
 
         /*
@@ -1037,7 +1107,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 .setNeutralButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         if (dialogShown) {
-                            new Thread(new IDEALLifeProgram()).run();
+                            IDEALLifeProgram();
                         }
                         /*try {
                             tutorialWithFamily();
@@ -1836,11 +1906,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     }
 
     //MainThread
-    public class IDEALLifeProgram implements Runnable{
-
-    @Override
-    public void run(){
-
+    public void IDEALLifeProgram(){
+ 
                try {
                    age++;
                    if(age==1) {
@@ -1897,6 +1964,16 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
                            shownOne = true;
                        }else{
+                          if(healthProgressBar.getProgress()>=1) {
+                              //Lose One Health Every Turn
+                              healthUpdater(-1);
+                          }else{
+                              chainString+="\n You have died";
+                              buttonActivation(false);
+                              continueButton.setEnabled(false);
+                          }
+                          //healthProgressBar.setProgress(100-age);
+                          //System.out.println("Progress Bar:"+healthProgressBar.getProgress());
                           //When the user did these action 10 times;the buttons should be disabled and set the text of button to MAX..The user must reach max numbers in socialisingWithFriends and workingOnPhysicalApp before disabling the school Button
                           //because if school reaches max first then the user may not be able to access all of the jobs
                           if(socialisingWithFriends>=10) {
@@ -1950,7 +2027,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         age_Turn_textView.setText("Age: " + age);
 
 
-        }
+        
 
 }
     //These methods is for when the application is paused or temporally closed

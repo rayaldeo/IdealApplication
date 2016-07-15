@@ -14,9 +14,9 @@
         android:listSelector="@drawable/state_selector"
         android:choiceMode="singleChoice"
         android:padding="@dimen/paddingOnFamilyCreationDialog"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/friendsAmountEditText">
     </ListView>
 
 
@@ -82,11 +82,11 @@
         android:id="@+id/customFamilySwitch"
         android:checked="false"
         android:padding="@dimen/paddingOnFamilyCreationDialog"
-        android:layout_below="@+id/familyChoiceList"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:textColor="#ffffff"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 
     <!--<SlidingDrawer

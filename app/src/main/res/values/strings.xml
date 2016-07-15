@@ -54,7 +54,7 @@
     <string name="continueButton_text">Continue</string>
     <string name="splash_screen_text">SplashImage</string>
     <string name="idealstudios_text">IDEAL Studios</string>
-    <string name="health_text">100%</string>
+    <string name="health_text">Health</string>
 
     <string-array name="countries">
         <item>Irada</item>

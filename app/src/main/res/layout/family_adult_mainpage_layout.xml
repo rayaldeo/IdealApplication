@@ -63,10 +63,12 @@
 
 
         <ProgressBar
-            style="?android:attr/progressBarStyleLarge"
+            style="@style/CustomProgressBarHorizontal"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
-            android:id="@+id/healthProgressBar"/>
+            android:progress="100"
+            android:secondaryProgress="80"
+            android:id="@+id/healthProgressBar" />
 
         <TextView
             android:layout_width="fill_parent"
@@ -77,8 +79,10 @@
             android:layout_alignTop="@id/healthProgressBar"
             android:layout_alignRight="@id/healthProgressBar"
             android:text="@string/health_text"
-            android:id="@+id/textView2"
-            android:gravity="center" />
+            android:id="@+id/healthTextView"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:textColor="#60ff15" />
     </RelativeLayout>
     <!--Wealth-->
     <RelativeLayout
@@ -250,13 +254,13 @@
 
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="match_parent"
+            android:layout_height="fill_parent"
             android:text="@string/ExtraInformation_text"
             android:id="@+id/informationalTextView"
             android:maxLines = "5"
             android:scrollbars = "vertical"
             android:padding="1dp"
-            android:textSize="15sp"
+            android:textSize="18sp"
             android:theme="@style/AppTheme"
             android:gravity="center"
             android:textColor="@color/signatureColorOne"
