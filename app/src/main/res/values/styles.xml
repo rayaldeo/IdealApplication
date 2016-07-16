@@ -6,7 +6,6 @@
         <item name="colorPrimary">@color/purplebackground_color</item>
         <item name="colorAccent">@android:color/holo_orange_light</item>
 
-
     </style>
 
 
@@ -24,5 +23,13 @@
             <item  name = "android:maxHeight" > 30dip </item >
         </style >
 
-    <!--<item  name = "android:progressDrawable" > @drawable/custom_progress_bar_horizontal </item >-->
+    <style  name = "AlertDialogCutomTheme"  parent = "android:Holo.ButtonBar.AlertDialog" >
+        <item name="colorPrimary">@color/signatureColorOne</item>
+        <item name ="android:background" >@color/backgroundColor </item >
+        <item name="android:textColor">@android:color/holo_orange_light</item>
+        <item name="android:layout_width">@dimen/match_parent</item>
+        <item name="android:windowFullscreen">false</item>
+       <item name="android:layout_height">@dimen/wrap_content</item>
+    </style >
+
 </resources>

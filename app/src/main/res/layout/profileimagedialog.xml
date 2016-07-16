@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="wrap_content"
     android:weightSum="1"
     android:theme="@style/AppTheme"
     android:layout_centerInParent="true"
-    android:background="@color/backgroundColor">
+    android:background="@color/purplebackground_color">
 
     <FrameLayout
         android:layout_width="fill_parent"
@@ -19,7 +19,7 @@
             android:layout_gravity="top|center"
             android:background="@drawable/button_style"
             android:src="@android:mipmap/sym_def_app_icon"
-            android:contentDescription="Profile Image" />
+            android:contentDescription="@string/profile_image_text" />
 
         <TextView
             android:layout_width="fill_parent"
@@ -28,9 +28,9 @@
             android:id="@+id/playerNameTextViewprofileDialog"
             android:layout_gravity="left|bottom"
             android:textSize="35sp"
-            android:inputType="textPersonName"
             android:hint="@string/enterName_hint"
-            android:gravity="center" />
+            android:gravity="center"
+            android:textColor="@color/signatureColorOne" />
     </FrameLayout>
 
 
@@ -55,11 +55,11 @@
             android:layout_gravity="top"
             android:textColor="#ff8a54"
             android:textStyle="bold"
-            android:textSize="18sp"
+            android:textSize="28sp"
             android:background="#143f1c"
             android:textAlignment="center"
             android:gravity="center"
-            android:layout_weight="1" />
+            android:layout_weight="2" />
 
         <TextView
             android:layout_width="fill_parent"
@@ -69,14 +69,24 @@
             android:id="@+id/influenceTextViewprofileDialog"
             android:textColor="@color/signatureColorOne"
             android:textStyle="bold"
-            android:textSize="18sp"
+            android:textSize="28sp"
             android:background="#3f0d13"
             android:textAlignment="center"
             android:gravity="center"
-            android:layout_weight="1" />
+            android:layout_weight="2" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
 
         <TextView
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/getJob_text"
@@ -85,11 +95,11 @@
             android:textStyle="bold"
             android:textAlignment="center"
             android:gravity="center"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:textColor="@color/signatureColorOne" />
 
         <TextView
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/getCountry_text"
@@ -98,21 +108,21 @@
             android:textStyle="bold"
             android:textAlignment="center"
             android:gravity="center"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:textColor="@color/signatureColorOne" />
 
         <TextView
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/neighbourhoodTextView_text"
             android:id="@+id/neighbourhoodTextViewprofileDialog"
             android:textSize="18sp"
             android:gravity="center"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:textColor="@color/signatureColorOne" />
 
         <TextView
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/tax_text"
@@ -121,51 +131,52 @@
             android:textStyle="bold"
             android:textAlignment="center"
             android:gravity="center"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:textColor="@color/signatureColorOne" />
 
         <TextView
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/friendsTextView_text"
             android:id="@+id/userfriendsTextViewprofileDialog"
             android:textSize="18sp"
             android:gravity="center"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:textColor="@color/signatureColorOne" />
 
         <TextView
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/professionalAssociatesTextView_text"
             android:id="@+id/professionalAssociatesTextViewprofileDialog"
             android:textSize="18sp"
             android:gravity="center"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:textColor="@color/signatureColorOne" />
 
         <TextView
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/worshippersTextView_text"
             android:id="@+id/worshippersTextViewprofileDialog"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:textSize="18sp"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:textColor="@color/signatureColorOne" />
 
         <TextView
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/looksTextView_text"
             android:id="@+id/looksTextViewprofileDialog"
             android:textSize="18sp"
             android:gravity="center"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:textColor="@color/signatureColorOne" />
+        </LinearLayout>
 
-    </LinearLayout>
+    </ScrollView>
 
 
 

@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ContextThemeWrapper;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private TextView socialisingWithFriendsTextView;
     private TextView schoolAttendanceAmountTextView;
     private TextView playerNameTextView;
+    private TextView alertDialog_content_textView;
 
 //TextViews on the Profile Dialog
     private TextView playerNameTextViewprofileDialog;
@@ -122,6 +124,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private boolean influencActivation = false;
     private boolean heavenBoolean = false;
     private int tempNum = age - 10;
+
+
 //This boolean is to keep track whether the user is done initializing their IDEAL Life
     boolean dialogShown=true;
 //For selecting and image
@@ -249,8 +253,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         socialisingWithFriendsTextView.setText( Integer.toString(socialisingWithFriends));
         schoolAttendanceAmountTextView.setText( Integer.toString(schoolAttendanceAmount));
          //informationalTextView.setText("Welcome and Good Luck!");
-
-
 
         buttonActivation(false);
         IDEALLifeProgram();
@@ -564,9 +566,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         }
         final ScrollView scrollView = new ScrollView(this);
         scrollView.addView(layout);
-
-        AlertDialog ad = new AlertDialog.Builder(this)
-
+        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.AlertDialogCutomTheme);
+        AlertDialog.Builder ad = new AlertDialog.Builder(ctw);
+       ad
                 .setMessage("Select A Job. \n Current Country:" + human.getCountry())
                 .setTitle("IDEAL")
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
@@ -585,7 +587,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     }
                 }
                 })
-                .setIcon(R.drawable.ic_stat_name)
+                .setIcon(R.mipmap.ic_launcher)
                 .setCancelable(false)
                 .setView(scrollView)
                 .create();
@@ -597,34 +599,43 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     }
     public void goToSchool(){
+
+        //Call the XML List view and set it with  the countries array
+        //LayoutInflater inflater = getLayoutInflater();
+        //View convertView = inflater.inflate(R.layout.alertdialog_layout, null, false);
         //Increment and Update the amount of times this user went to school
         schoolAttendanceAmount++;
         schoolAttendanceAmountTextView.setText(Integer.toString(schoolAttendanceAmount));
+
         //This String Variable is used to hold all of the messages in one string
         String chainText="";
             //This Dialog is used to show which jobs were unlocked
-        AlertDialog adNotifier = new AlertDialog.Builder(this)
+        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.AlertDialogCutomTheme);
+        final AlertDialog.Builder adNotifier = new AlertDialog.Builder(ctw);
+         //adNotifier.setView(convertView);
+        //alertDialog_content_textView = (TextView) findViewById(R.id.alertDialog_content_textView);
+        adNotifier
                 .setNeutralButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
 
-                                if (genie) {
-                                    wishes++;
-                                    schoolButton.setEnabled(false);
-                                    Toast.makeText(MainActivity.this, "Wishes Left:"+(3-wishes),
-                                            Toast.LENGTH_LONG).show();
-                                 new Thread(new genieDoSomething()).run();
-                                }else{
-                                    wealth+=-2500.0 * human.getCountry().getMultiplier();
-                                }
+                        if (genie) {
+                            wishes++;
+                            schoolButton.setEnabled(false);
+                            Toast.makeText(MainActivity.this, "Wishes Left:" + (3 - wishes),
+                                    Toast.LENGTH_LONG).show();
+                            new Thread(new genieDoSomething()).run();
+                        } else {
+                            wealth += -2500.0 * human.getCountry().getMultiplier();
+                        }
 
 
-                   }
+                    }
                 })
                 .setMessage("Go a school:Raises the amount of professional Associates" + "\n" +
                         "Unlocks jobs" + "\n" +
                         "Raises the amount of friends")
                 .setTitle("IDEAL:Going to School")
-                .setIcon(R.drawable.ic_stat_name)
+                .setIcon(R.mipmap.ic_launcher)
                 .setCancelable(false)
                 .create();
 
@@ -675,14 +686,17 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         }
         //There should be at least 6 words in the chainText and if not then the user has not unlocked any job
 
-        adNotifier.setMessage(chainText);
+        //adNotifier.setMessage(chainText);
+        //alertDialog_content_textView.setText(chainText);
         adNotifier.show();
 
     }
     public void workOnPhysical(){
         workingOnPhysicalApp++;
         workingOnPhysicalAppTextView.setText(Integer.toString(workingOnPhysicalApp));
-        AlertDialog ad = new AlertDialog.Builder(this)
+        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.AlertDialogCutomTheme);
+        final AlertDialog.Builder ad = new AlertDialog.Builder(ctw);
+    ad
                 .setNeutralButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         if (genie) {
@@ -716,7 +730,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                                 "You got charged:$" + 100 * human.getCountry().getMultiplier())
 
                 .setTitle("IDEAL:Work on your Physical")
-                .setIcon(R.drawable.ic_stat_name)
+                .setIcon(R.mipmap.ic_launcher)
                 .setCancelable(true)
                 .create();
         ad.show();
@@ -724,7 +738,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     public void socializeWithPeople(){
         socialisingWithFriends++;
         socialisingWithFriendsTextView.setText(Integer.toString(socialisingWithFriends));
-        AlertDialog ad = new AlertDialog.Builder(this)
+        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.AlertDialogCutomTheme);
+        final AlertDialog.Builder ad = new AlertDialog.Builder(ctw);
+     ad
                 .setNeutralButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         if (genie) {
@@ -753,7 +769,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                         "You got charged:$" + 100 * human.getCountry().getMultiplier())
 
                 .setTitle("IDEAL:Work on your Physical")
-                .setIcon(R.drawable.ic_stat_name)
+                .setIcon(R.mipmap.ic_launcher)
                 .setCancelable(false)
                 .create();
         ad.show();
@@ -761,13 +777,14 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     public void selectACountry() {
               //Get the arrayLIst from the String xml
         final List<String> countries = Arrays.asList(getResources().getStringArray(R.array.countries));
-
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+        //Command used to set the theme of the AlertDialog
+        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.AlertDialogCutomTheme);
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctw);
         //Call the XML List view and set it with  the countries array
         LayoutInflater inflater = getLayoutInflater();
         View convertView = inflater.inflate(R.layout.countrieslistlayout, null);
         alertDialog.setView(convertView);
-        alertDialog.setIcon(R.drawable.ic_stat_name);
+        alertDialog.setIcon(R.mipmap.ic_launcher);
         alertDialog.setTitle("Choose a Country");
 
         final ListView countrieslistView = (ListView) convertView.findViewById(R.id.countriesListXML);
@@ -1095,8 +1112,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 ///->IDEAL APPLICATION USER INITIALIZATION CODE
     public void init() {
-
-        AlertDialog ad = new AlertDialog.Builder(this)
+        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.AlertDialogCutomTheme);
+        AlertDialog.Builder ad = new AlertDialog.Builder(ctw);
+       ad
                 .setMessage("Welcome!The purpose of this Java Program is to create your fantasy ideal life.." +
                         ("\n") + "Create a character at the bottom of society." +
                         ("\n") + "Progress this character through the world and accumulate influence, wealth, and associates." +
@@ -1106,9 +1124,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 .setTitle("IDEAL")
                 .setNeutralButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        if (dialogShown) {
+                        /*if (dialogShown) {
                             IDEALLifeProgram();
-                        }
+                        }*/
                         /*try {
                             tutorialWithFamily();
 
@@ -1117,34 +1135,43 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                                     Toast.LENGTH_LONG).show();
                             tutorialWithFamily();
                         }*/
-                        dialogShown = false;
+                        //dialogShown = false;
 
                     }
                 })
                 .setCancelable(false)
+               .setIcon(R.mipmap.ic_launcher)
                 .create();
 
         ad.show();
 
     }
     public void makeYourName() {
+        //Call the XML List view and set it with  the countries array
+        //LayoutInflater inflater = getLayoutInflater();
+        //View convertView = inflater.inflate(R.layout.alertdialog_layout, null, false);
         //Creating a Layout for the EditTextViews
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
 
         //Set up First Name Text View
         final EditText userNameFirst = new EditText(this);
+        //userNameFirst.setTextColor(Color.parseColor("#FC9"));
         userNameFirst.setHint("Enter In First Name");
+        userNameFirst.setTextColor(Color.parseColor("#FC9"));
         layout.addView(userNameFirst);
 
         //Setup the Last Name Text View
         final EditText userNameFamily = new EditText(this);
+        //userNameFamily.setTextColor(Color.parseColor("#FC9"));
         userNameFamily.setHint("Enter In Last Name");
         layout.addView(userNameFamily);
-
-
-        AlertDialog ad = new AlertDialog.Builder(this)
-
+        //layout.addView(convertView);
+        //Command used to set the theme of the AlertDialog
+        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.AlertDialogCutomTheme);
+        AlertDialog.Builder ad = new AlertDialog.Builder(ctw);
+        //AlertDialog ad = new AlertDialog.Builder(this)
+        ad
                 .setMessage("Enter in a Name(MAX:11 CHARACTERS)")
                         //.setIcon(R.drawable.ic_launcher)
                 .setTitle("IDEAL")
@@ -1158,9 +1185,10 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     }
                 })
                 .setCancelable(false)
+                .setIcon(R.mipmap.ic_launcher)
                 .setView(layout)
                 .create();
-
+        //ad.setView();
         ad.show();
     }
     //SELECT COUNTRY IS BOTH INITIALIZATION AND A BUTTON FUNCTIONALITY
@@ -1168,17 +1196,23 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         //Get the arrayLIst from the String xml
         final List<String> familyTypes = Arrays.asList(getResources().getStringArray(R.array.familyTypes));
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.AlertDialogCutomTheme);
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctw);
+        //final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle("Choose A Family");
 
         //Call the XML List view and set it with  the countries array
         LayoutInflater inflater = getLayoutInflater();
-        View convertView = inflater.inflate(R.layout.familycreationlayout, null, false);
+        final View convertView = inflater.inflate(R.layout.familycreationlayout, null, false);
         alertDialog.setView(convertView);
         final ListView familyListView = (ListView) convertView.findViewById(R.id.familyChoiceList);
         final EditText friendsAmountEditText = (EditText) convertView.findViewById(R.id.friendsAmountEditText);
         final EditText influenceAmountEditText = (EditText) convertView.findViewById(R.id.influenceAmountEditText);
         final EditText wealthAmountEditText = (EditText) convertView.findViewById(R.id.wealthAmountEditText);
+        //I don't want the TextView to show up when..View.GONE takes care of that
+        friendsAmountEditText.setVisibility(View.GONE);
+        influenceAmountEditText.setVisibility((View.GONE));
+        wealthAmountEditText.setVisibility(View.GONE);
         final Switch customFamilySwitch = (Switch) convertView.findViewById(R.id.customFamilySwitch);
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, familyTypes);
         customFamilySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -1193,6 +1227,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     familyListView.setItemChecked(1, false);
                     familyListView.setItemChecked(2, false);
                     familyListView.setItemChecked(3, false);
+                    //Show TextView
                     friendsAmountEditText.setVisibility(View.VISIBLE);
                     influenceAmountEditText.setVisibility(View.VISIBLE);
                     wealthAmountEditText.setVisibility(View.VISIBLE);
@@ -1207,14 +1242,16 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     familyListView.setItemChecked(1, false);
                     familyListView.setItemChecked(2, false);
                     familyListView.setItemChecked(3, false);
-                    friendsAmountEditText.setVisibility(View.INVISIBLE);
-                    influenceAmountEditText.setVisibility(View.INVISIBLE);
-                    wealthAmountEditText.setVisibility(View.INVISIBLE);
+                    //Remove TextViews
+                    friendsAmountEditText.setVisibility(View.GONE);
+                    influenceAmountEditText.setVisibility(View.GONE);
+                    wealthAmountEditText.setVisibility(View.GONE);
 
                 }
             }
         });
         alertDialog
+                .setIcon(R.mipmap.ic_launcher)
                 //Use this Button to unlock the Custom Family Text View-> Don't use this because in an
                 // AlertDialog all the attached buttons close the Dialog
                 /*.setNeutralButton("Custom Family", new DialogInterface.OnClickListener() {
@@ -1395,10 +1432,10 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     playerNameTextViewprofileDialog.setText(firstNamePart + " " + lastNamePart);
 
     overAllWealthTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.overAllWealthTextViewprofileDialog);
-    overAllWealthTextViewprofileDialog.setText(getString(R.string.overallWelathTextView_text) + ": \n" + currencyFormat.format(human.getOverAllWealth()));
+    overAllWealthTextViewprofileDialog.setText(currencyFormat.format(human.getOverAllWealth()));
 
     influenceTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.influenceTextViewprofileDialog);
-    influenceTextViewprofileDialog.setText(getString(R.string.influenceTextView) + ": \n" + human.getInfluence());
+    influenceTextViewprofileDialog.setText(Integer.toString(human.getInfluence()));
 
     jobTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.jobTextViewprofileDialog);
     jobTextViewprofileDialog.setText(getString(R.string.getJob_text) + ":" + human.getJob());
@@ -1450,10 +1487,10 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         playerNameTextViewprofileDialog.setText(lastNamePart);
 
         overAllWealthTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.overAllWealthTextViewprofileDialog);
-        overAllWealthTextViewprofileDialog.setText("Wealth:\n" + currencyFormat.format(family.getFamilyWealth()));
+        overAllWealthTextViewprofileDialog.setText(currencyFormat.format(family.getFamilyWealth()));
 
         influenceTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.influenceTextViewprofileDialog);
-        influenceTextViewprofileDialog.setText("Influence:\n" + family.getFamilyInfluence());
+        influenceTextViewprofileDialog.setText(Integer.toString(family.getFamilyInfluence()));
 
         jobTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.jobTextViewprofileDialog);
         jobTextViewprofileDialog.setText("N/A");
@@ -1694,7 +1731,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
                 } else if (age > 20) {
-                    chainString+="\n"+"You inherited Godly talent! You begin to attract worshippers";
+                    chainString+="\n"+"You gained Godly talent! You begin to attract worshippers";
                     worshippersFollow = true;
                 } else {
                     chainString+="\n"+"You need to be outside the family tutorial to access this benefit";
@@ -1822,9 +1859,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     }
     public void grownUpHuman(){
 
-              if(human.getOverAllWealth()< 10000000 && human.getInfluence()<2000000) {
-
-
             ///This is so that the user will make a decision  happens every four turns and NOT every turn
             /*if ((age % 4) == 0) {
                 //-->makeLifeDecisions();
@@ -1844,7 +1878,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
             System.out.println("Turn: " + age + "\n" + "|Adult" + "|" + human.getOverAllWealth() + "|" + "|" + human.getCountry().getName() + "|" + "|" + human.getCountry().getTaxes());
-
 
             //Once the player reaches 1000000 worshippers, the player will become a god
             //it only needs to be activated once and the benefit should automatically apply without the player being notified again
@@ -1871,7 +1904,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
             }
 
-        }
+
 
 
 
@@ -1968,7 +2001,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                               //Lose One Health Every Turn
                               healthUpdater(-1);
                           }else{
-                              chainString+="\n You have died";
+                              chainString="\n You have died";
                               buttonActivation(false);
                               continueButton.setEnabled(false);
                           }

@@ -4,15 +4,16 @@
          would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively). -->
     <!-- Default screen margins, per the Android Design guidelines. -->
 
-        <dimen name="activity_horizontal_margin">16dp</dimen>
-        <dimen name="activity_vertical_margin">16dp</dimen>
-        <dimen name="button_elevation">5dp</dimen>
-        <dimen name="elevation_shadow_amount">4dp</dimen>
-        <dimen name="textView_padding">12dp</dimen>
-        <dimen name="paddingOnFamilyCreationDialog">2dp</dimen>
-        <dimen name="wiidth_of_alertDialog">330dp</dimen>
-        <dimen name ="length_of_alertDialog">400dp</dimen>
-        <dimen name="padding_for_jobselection">90dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="button_elevation">5dp</dimen>
+    <dimen name="elevation_shadow_amount">4dp</dimen>
+    <dimen name="textView_padding">12dp</dimen>
+    <dimen name="paddingOnFamilyCreationDialog">2dp</dimen>
+    <dimen name="padding_for_jobselection">90dp</dimen>
+
+    <dimen name="match_parent">-1.0px</dimen>
+    <dimen name="wrap_content">-2.0px</dimen>
 
 
 </resources>

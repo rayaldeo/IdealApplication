@@ -55,6 +55,9 @@
     <string name="splash_screen_text">SplashImage</string>
     <string name="idealstudios_text">IDEAL Studios</string>
     <string name="health_text">Health</string>
+    <string name="profile_image_text">Profile Image</string>
+    <string name="alertDialog_content_text">New Text</string>
+    <string name="alertDialog_icon_text">Alert Dialog Icon</string>
 
     <string-array name="countries">
         <item>Irada</item>

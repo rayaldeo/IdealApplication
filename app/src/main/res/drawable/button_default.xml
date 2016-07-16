@@ -19,10 +19,9 @@
             android:height="10dp"
             />
         <stroke
-            android:width="20dp"
-            android:color="#3A8761"
+            android:width="2dp"
+            android:color="@color/signatureColorOne"
             />
-
 
     </shape>
 

@@ -4,5 +4,7 @@
     <color name="backgroundColor">#3f3f3f</color>
     <color name="amount_background">#BBDEFB</color>
     <color name="purplebackground_color">#3f1930</color>
+    <color name="lighter_purplebackground_color">#785e6e</color>
+    <color name="blood_red">#8A0707</color>
 
 </resources>

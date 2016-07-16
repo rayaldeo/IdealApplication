@@ -6,7 +6,8 @@
     <dimen name="elevation_shadow_amount">4dp</dimen>
     <dimen name="textView_padding">12dp</dimen>
     <dimen name="paddingOnFamilyCreationDialog">2dp</dimen>
-    <dimen name="wiidth_of_alertDialog">330dp</dimen>
-    <dimen name ="length_of_alertDialog">400dp</dimen>
     <dimen name="padding_for_jobselection">90dp</dimen>
+
+    <dimen name="match_parent">-1.0px</dimen>
+    <dimen name="wrap_content">-2.0px</dimen>
 </resources>
