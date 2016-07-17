@@ -23,7 +23,7 @@
             <item  name = "android:maxHeight" > 30dip </item >
         </style >
 
-    <style  name = "AlertDialogCutomTheme"  parent = "android:Holo.ButtonBar.AlertDialog" >
+    <style  name = "AlertDialogCutomTheme"  parent = "@android:style/Theme.Holo.Dialog" >
         <item name="colorPrimary">@color/signatureColorOne</item>
         <item name ="android:background" >@color/backgroundColor </item >
         <item name="android:textColor">@android:color/holo_orange_light</item>

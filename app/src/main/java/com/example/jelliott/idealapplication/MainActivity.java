@@ -1156,14 +1156,15 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         //Set up First Name Text View
         final EditText userNameFirst = new EditText(this);
-        //userNameFirst.setTextColor(Color.parseColor("#FC9"));
+        userNameFirst.setHintTextColor(Color.WHITE);
+        userNameFirst.setTextColor(Color.WHITE);
         userNameFirst.setHint("Enter In First Name");
-        userNameFirst.setTextColor(Color.parseColor("#FC9"));
         layout.addView(userNameFirst);
 
         //Setup the Last Name Text View
         final EditText userNameFamily = new EditText(this);
-        //userNameFamily.setTextColor(Color.parseColor("#FC9"));
+        userNameFamily.setHintTextColor(Color.WHITE);
+        userNameFamily.setTextColor(Color.WHITE);
         userNameFamily.setHint("Enter In Last Name");
         layout.addView(userNameFamily);
         //layout.addView(convertView);
@@ -1944,9 +1945,13 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                try {
                    age++;
                    if(age==1) {
+                       System.out.println("A0");
                        init();
+                       System.out.println("A1");
                        makeYourName();
+                       System.out.println("A2");
                        selectAFamilyType();
+                       System.out.println("A3");
                        selectACountry();
 
                    } else if (age < 20 && age > 1) {
@@ -2054,7 +2059,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
             } catch (Throwable t) {
-                   System.out.println("halted due to an error" + t);
+                   System.out.println("Halted due to an error: " + t);
             }
 
         age_Turn_textView.setText("Age: " + age);
