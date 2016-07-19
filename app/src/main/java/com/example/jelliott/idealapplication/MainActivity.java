@@ -2,6 +2,7 @@ package com.example.jelliott.idealapplication;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -35,6 +36,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.FileOutputStream;
 import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.List;
@@ -584,7 +586,11 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                             selectAJobButton.setEnabled(false);
                             new Thread(new genieDoSomething()).run();
 
-                    }
+                    }else{
+                            buttonActivation(false);
+                            continueButton.setEnabled(true);
+                        }
+
                 }
                 })
                 .setIcon(R.mipmap.ic_launcher)
@@ -599,7 +605,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     }
     public void goToSchool(){
-
+        //This number will keep track if a job is unlocked or not...if this number is still equal to 0 at the end of this function then no job was unlocked
+            int unlockjobInt=0;
         //Call the XML List view and set it with  the countries array
         //LayoutInflater inflater = getLayoutInflater();
         //View convertView = inflater.inflate(R.layout.alertdialog_layout, null, false);
@@ -626,6 +633,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                             new Thread(new genieDoSomething()).run();
                         } else {
                             wealth += -2500.0 * human.getCountry().getMultiplier();
+                            buttonActivation(false);
+                            continueButton.setEnabled(true);
+
                         }
 
 
@@ -641,44 +651,70 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
         if ( schoolAttendanceAmount>=1) {
+            if(!begger) {
                 begger = true;
-                chainText+="You have unlocked the Beggar Job";
-
+                chainText += "You have unlocked the Beggar Job";
+                unlockjobInt++;
+            }if(!vagrant) {
                 vagrant = true;
-                chainText+="\n"+"You have unlocked the Vagrant Job";
-        }if( schoolAttendanceAmount>=2){
-                intern=true;
-                chainText+="\n"+"You have unlocked the Intern Job";
-                packingboy=true;
-                chainText+= "\n" + "You have unlocked the Packing boy Job";
-                firefighter=true;
-                chainText+="\n" + "You have unlocked the Firefighter Job";
+                chainText += "\n" + "You have unlocked the Vagrant Job";
+                unlockjobInt++;
+            }
+        }if( schoolAttendanceAmount>=4){
+            if(!intern) {
+                intern = true;
+                chainText += "\n" + "You have unlocked the Intern Job";
+                unlockjobInt++;
+            }if(!packingboy) {
+                packingboy = true;
+                chainText += "\n" + "You have unlocked the Packing boy Job";
+                unlockjobInt++;
+            }if(!firefighter) {
+                firefighter = true;
+                chainText += "\n" + "You have unlocked the Firefighter Job";
+                unlockjobInt++;
+            }
 
-        }if( schoolAttendanceAmount>=2&&socialisingWithFriends>=2 && workingOnPhysicalApp>=1) {
-            banker = true;
-            chainText += "\n" + "You have unlocked the Banker Job";
-            scientist = true;
-            chainText += "\n" + "You have unlocked the Scientist Job";
-            independent = true;
-            chainText += "\n" + "You have unlocked the Independent Job";
-            firefighter = true;
-            chainText += "\n" + "You have unlocked the Firefighter Job";
+        }if( schoolAttendanceAmount>=5&&socialisingWithFriends>=2 && workingOnPhysicalApp>=1) {
+            if(!banker) {
+                banker = true;
+                chainText += "\n" + "You have unlocked the Banker Job";
+                unlockjobInt++;
+            }if(!scientist) {
+                scientist = true;
+                chainText += "\n" + "You have unlocked the Scientist Job";
+                unlockjobInt++;
+            }if(!independent) {
+                independent = true;
+                chainText += "\n" + "You have unlocked the Independent Job";
+                unlockjobInt++;
+            }if(!firefighter) {
+                firefighter = true;
+                chainText += "\n" + "You have unlocked the Firefighter Job";
+                unlockjobInt++;
+            }
 
-        }if( schoolAttendanceAmount>=2&&socialisingWithFriends>=3 && workingOnPhysicalApp>=1) {
-            king = true;
-            chainText += "\n" + "You have unlocked the King Job";
+        }if( schoolAttendanceAmount>=6&&socialisingWithFriends>=3 && workingOnPhysicalApp>=1&&king) {
 
-        }if(schoolAttendanceAmount>=3&&socialisingWithFriends>=3 &&workingOnPhysicalApp>=3){
+                king = true;
+                chainText += "\n" + "You have unlocked the King Job";
+                unlockjobInt++;
+
+
+        }if(schoolAttendanceAmount>=7&&socialisingWithFriends>=3 &&workingOnPhysicalApp>=3&&!sultan){
                  sultan=true;
                 chainText+="\n" + "You have unlocked the Sultan Job";
+                unlockjobInt++;
 
-        }if( schoolAttendanceAmount>=4&&socialisingWithFriends>=4 &&workingOnPhysicalApp>=4) {
+        }if( schoolAttendanceAmount>=8&&socialisingWithFriends>=4 &&workingOnPhysicalApp>=4&&!god) {
                 god = true;
                 chainText+="\n" + "You have unlocked the God Job";
+             unlockjobInt++;
 
-        }if(schoolAttendanceAmount>=10&&socialisingWithFriends>=10 &&workingOnPhysicalApp>=10){
+        }if(schoolAttendanceAmount>=10&&socialisingWithFriends>=10 &&workingOnPhysicalApp>=10&&!omega){
             omega = true;
             chainText+="\n" + "You have unlocked the Omega Job";
+            unlockjobInt++;
             if(!heavenBoolean){
                 heavenBoolean=true;
                 chainText+="\n" + "You have unlocked Heaven";
@@ -686,7 +722,12 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         }
         //There should be at least 6 words in the chainText and if not then the user has not unlocked any job
 
-        //adNotifier.setMessage(chainText);
+        if(unlockjobInt==0){
+            adNotifier.setMessage("No job was unlocked.You need more schooling");
+        }else {
+            adNotifier.setMessage(chainText);
+        }
+
         //alertDialog_content_textView.setText(chainText);
         adNotifier.show();
 
@@ -715,6 +756,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                             friends+=1000;
                             worshippers+=100;
                             looks+=1;
+                            buttonActivation(false);
+                            continueButton.setEnabled(true);
                         }
 
 
@@ -758,6 +801,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                             influence += 1000;
                             professionalAssociates += 1000;
                             friends += 1000;
+                            buttonActivation(false);
+                            continueButton.setEnabled(true);
                         }
                     }
                 })
@@ -810,19 +855,125 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
                     //Getting the selected string Country from Counties Class
                     countryOfUser = getThisCountry(checkedItem.toString());
-                    if (checkedItem.toString().equals(Countries.Heaven.getName())) {
-                        if (heavenBoolean||genie) {
-                            countryOfUser = Countries.Heaven;
-                           } else {
-                            Toast.makeText(MainActivity.this, "You don't have access to heaven because Genie: "+genie+"or Heaven: "+heavenBoolean,
+
+                    switch(checkedItem.toString()) {
+                        case "Trinentina":
+                            if (!firefighter && !banker && !scientist) {
+                                Toast.makeText(MainActivity.this, "You don't have any jobs available in this country: " + checkedItem.toString(),
+                                        Toast.LENGTH_LONG).show();
+                                selectACountry();
+                                alertDialog.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        selectACountry();
+                                    }
+                                });
+                            } else{
+                                countryOfUser=Countries.Trinentina;
+                            }
+
+                            break;
+                        case"Albico":
+                            if (!firefighter && !banker && !scientist) {
+                                Toast.makeText(MainActivity.this, "You don't have any jobs available in this country: " + checkedItem.toString(),
+                                        Toast.LENGTH_LONG).show();
+                                selectACountry();
+                                alertDialog.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        selectACountry();
+                                    }
+                                });
+                            } else{
+                                countryOfUser=Countries.Albico;
+                            }
+
+                            break;
+                        case"Ugeria":
+                            if (!firefighter && !banker && !scientist) {
+                                Toast.makeText(MainActivity.this, "You don't have any jobs available in this country: " + checkedItem.toString(),
+                                        Toast.LENGTH_LONG).show();
+                                selectACountry();
+                                alertDialog.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        selectACountry();
+                                    }
+                                });
+                            } else{
+                                countryOfUser=Countries.Ugeria;
+                            }
+
+                            break;
+                        case"Portada":
+                            if (!firefighter && !banker && !scientist) {
+                                Toast.makeText(MainActivity.this, "You don't have any jobs available in this country: " + checkedItem.toString(),
+                                        Toast.LENGTH_LONG).show();
+                                selectACountry();
+                                alertDialog.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        selectACountry();
+                                    }
+                                });
+                            } else{
+                                countryOfUser=Countries.Portada;
+                            }
+                            break;
+                        case"Kuwador":
+                            if (!independent && !banker && !scientist&&!businessowner) {
+                                Toast.makeText(MainActivity.this, "You don't have any jobs available in this country: " + checkedItem.toString(),
+                                        Toast.LENGTH_LONG).show();
+                                selectACountry();
+                                alertDialog.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        selectACountry();
+                                    }
+                                });
+                            } else{
+                                countryOfUser=Countries.Kuwador;
+                            }
+                            break;
+                        case"Ukrark":
+                             if (!independent && !banker && !scientist&&!businessowner) {
+                                  Toast.makeText(MainActivity.this, "You don't have any jobs available in this country: " + checkedItem.toString(),
                                     Toast.LENGTH_LONG).show();
-                            alertDialog.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                               selectACountry();
+                                 alertDialog.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
                                     selectACountry();
                                 }
                             });
+                            } else{
+                              countryOfUser=Countries.Kuwador;
+                             }
+                        break;
 
-                        }
+                        case"Rany":
+                            if (!independent && !banker && !scientist&&!businessowner) {
+                                Toast.makeText(MainActivity.this, "You don't have any jobs available in this country: " + checkedItem.toString(),
+                                        Toast.LENGTH_LONG).show();
+                                selectACountry();
+                                alertDialog.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        selectACountry();
+                                    }
+                                });
+                            } else{
+                                countryOfUser=Countries.Rany;
+                            }
+                            break;
+                        case"Heaven" :
+                            if (heavenBoolean || genie) {
+                                countryOfUser = Countries.Heaven;
+                            } else {
+                                Toast.makeText(MainActivity.this, "You don't have access to heaven because Genie: " + genie + "or Heaven: " + heavenBoolean,
+                                        Toast.LENGTH_LONG).show();
+                                selectACountry();
+                                alertDialog.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        selectACountry();
+                                    }
+                                });
+
+                            }
+                        break;
                     }
 
                     Toast.makeText(MainActivity.this, "You have selected " + checkedItem.toString(),
@@ -862,6 +1013,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                        }else{
 
                            keepStatsUpToDate(-(human.getCountry().getTaxes() + 100 * human.getCountry().getMultiplier()), 0, job, human.getCountry().getTaxes(), 0, 0, 0, 0);
+                           buttonActivation(false);
+                           continueButton.setEnabled(true);
                        }
 
                     }
@@ -885,16 +1038,27 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 ///->UPDATING STATS
     private void healthUpdater(final int health) {
+         final int intTemp =1;
         if (health < 0) {
             new Thread(new Runnable() {
                 public void run() {
-                    //while (healthProgressBar.getProgress() > healthProgressBar.getProgress()-health) {
+                    for (int  i=0;i>health;i--) {
+
                          // Update the progress bar
                         mHandler.post(new Runnable() {
                             @Override
                             public void run() {
-                                 healthProgressBar.setProgress(healthProgressBar.getProgress()+health);
-                                healthTextView.setText(healthProgressBar.getProgress()+health+ "%");
+                                 healthProgressBar.setProgress(healthProgressBar.getProgress() - intTemp);
+                                healthTextView.setText(healthProgressBar.getProgress()-intTemp+ "%");
+                                try {
+                                    // Sleep for 200 milliseconds.
+                                    //Just to display the progress slowly
+                                    Thread.sleep(225);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                healthProgressBar.setSecondaryProgress(healthProgressBar.getProgress()-intTemp);
+
                             }
                         });
 
@@ -905,7 +1069,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                    //}
+                    }
 
 
                 }
@@ -1998,6 +2162,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                           informationalTextView.setText("IDEAL:Adult Life" + "\n" + "You are now an adult an inherited everything from your family. Now you will have to work on your own to secure your IDEAL Life" + "\n"
                                   + "If you can reach $10,000,000 in wealth or 2,000,000 in influence;you would have won the game!!"
                                   + "\n There are also many other features to unlock in the game"
+                                  + "\n Only one Action can be done per turn so choose wisely"
                                   + "\n Create your IDEAL Life");
 
                            shownOne = true;
@@ -2039,11 +2204,25 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                                   }
                               }
                           }
-
-                          grownUpHuman();
+                          //Let the User make a life Decision//Disable after footer button press
+                            buttonActivation(true);
+                            grownUpHuman();
                           keepStatsUpToDate(wealth*1.0,influence,job,human.getCountry().getTaxes(),looks,worshippers,friends,professionalAssociates);
                           //Reset stats so that there are no further stacking up
-                          informationalTextView.setText(chainString);
+                          //Chances of Life-->Recommendation
+                          informationalTextView.setText(
+                                  chainString+"\n"+
+                                    "What you have earned:\n"+
+                                     "Wealth: " +wealth +"\n"+
+                                     "Influence: " +influence +"\n"+
+                                       "Friends: " +  friends +"\n"+
+                                      "Professional Associates: "+professionalAssociates+"\n"+
+                                      "Looks: " +looks +"\n"+
+                                       "Worshippers: " +worshippers +"\n"+
+
+                                          "\n_____________Recommendation____________\n"+
+                                  recommendation()+
+                                  "\n_________________________________________\n");
                            //Reset the chain so that previous messages are removed
                            chainString="";
                           wealth=0;
@@ -2080,6 +2259,11 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         //mBackgroundSound.cancel(true);
     }
 
+    public void onStop(){
+        super.onStop();
+        //createUserProfile();
+    }
+
     public void buttonActivation(boolean activate){
         changeCountryButton.setEnabled(activate);
 
@@ -2090,6 +2274,59 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         workOnPhysicalAppearanceButton.setEnabled(activate);
 
         socializeWithPeopleButton.setEnabled(activate);
+    }
+
+    public String recommendation(){
+        String recommendation="";
+
+//User should be working on gatting a job by the age of 20
+        if(human.getJob()==Jobs.NOJOB && age>20){
+            recommendation+="\n You need to get a job to earn income on very turn.Note:Only Certain jobs are unlocked for each Country |";
+        }
+
+//If the User does not have a certain amount of wealth then suggest something useful to the User
+        if(human.getOverAllWealth()<2000000&&age>40){
+            recommendation+="\n|Your wealth is very low|";
+        }else{
+            recommendation+="\n|Your wealth is very low;try to limit your actions and skip actions.|";
+        }
+//The User should be working out
+        if(workingOnPhysicalApp==0&&age>25){
+            recommendation += "\n|You need to work Out|";
+        }else if(workingOnPhysicalApp < schoolAttendanceAmount &&workingOnPhysicalApp>=10 &&schoolAttendanceAmount>=10){
+            recommendation += "\n|You need to work-out to unlock certain jobs as well.Physical Health is important|";
+        }
+//The User should Socilaize with People
+        if(socialisingWithFriends>0&&age>25){
+            recommendation+="\n|Socializing with people is a great skill to cultivate|";
+        }else if (socialisingWithFriends<schoolAttendanceAmount&&socialisingWithFriends>=10 &&schoolAttendanceAmount>=10){
+                recommendation+="\n|Academics is great but working on your Social skills is important|";
+        }
+//The User should improve looks to get a better chance of life
+        if(human.getLooks()>3&& age>40){
+            recommendation+="\n|Working out will improve you physical Appearance.|";
+        }
+//Warn user about their health
+        if(healthProgressBar.getProgress()<40){
+            recommendation+= "\n|Your health is getting low.Choose your actions wisely.|";
+        }
+        return recommendation;
+    }
+
+    public void saveUserProfile(){
+        String filename = "idealApplicationProfile";
+        String string = "Hello world!";/*Save everything as a string for now*/
+        FileOutputStream outputStream;
+        //File file = new File(context.getFilesDir,filename);
+        try {
+            outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+            outputStream.write(string.getBytes());
+            outputStream.close();
+            System.out.println("Profile has been Saved");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     }

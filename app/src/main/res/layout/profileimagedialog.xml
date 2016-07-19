@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:weightSum="1"
-    android:theme="@style/AppTheme"
+    android:layout_height="fill_parent"
+    android:weightSum="4"
+    android:theme="@style/SplashTheme"
     android:layout_centerInParent="true"
     android:background="@color/purplebackground_color">
 
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal">
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.25">
 
         <ImageView
             android:layout_width="fill_parent"
-            android:layout_height="241dp"
+            android:layout_height="135dp"
             android:id="@+id/profileImageViewProfileDialog"
             android:layout_gravity="top|center"
             android:background="@drawable/button_style"
@@ -33,152 +34,153 @@
             android:textColor="@color/signatureColorOne" />
     </FrameLayout>
 
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/overallWelathTextView_text"
+        android:id="@+id/overAllWealthTextViewprofileDialog"
+        android:layout_gravity="top"
+        android:textColor="#ff8a54"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:background="#143f1c"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:layout_weight="1" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/influenceTextView"
+        android:id="@+id/influenceTextViewprofileDialog"
+        android:textColor="@color/signatureColorOne"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:background="#3f0d13"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:layout_weight="1" />
+
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
 
         android:weightSum="10"
         android:id="@+id/linearLayout"
         android:padding="1dp"
-        android:layout_gravity="bottom|center_vertical">
+        android:layout_gravity="bottom|center_vertical"
+        android:layout_weight="1.75">
         <!--android:layout_toRightOf="@+id/frameLayout"-->
         <!--android:layout_toEndOf="@+id/frameLayout"-->
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/overallWelathTextView_text"
-            android:id="@+id/overAllWealthTextViewprofileDialog"
-            android:layout_gravity="top"
-            android:textColor="#ff8a54"
-            android:textStyle="bold"
-            android:textSize="28sp"
-            android:background="#143f1c"
-            android:textAlignment="center"
-            android:gravity="center"
-            android:layout_weight="2" />
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/influenceTextView"
-            android:id="@+id/influenceTextViewprofileDialog"
-            android:textColor="@color/signatureColorOne"
-            android:textStyle="bold"
-            android:textSize="28sp"
-            android:background="#3f0d13"
-            android:textAlignment="center"
-            android:gravity="center"
-            android:layout_weight="2" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/getJob_text"
+                android:id="@+id/jobTextViewprofileDialog"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:layout_weight="0.5"
+                android:textColor="@color/signatureColorOne" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/getCountry_text"
+                android:id="@+id/countryTextViewprofileDialog"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:layout_weight="0.5"
+                android:textColor="@color/signatureColorOne" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/neighbourhoodTextView_text"
+                android:id="@+id/neighbourhoodTextViewprofileDialog"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:layout_weight="0.5"
+                android:textColor="@color/signatureColorOne" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/tax_text"
+                android:id="@+id/taxTextViewprofileDialog"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:layout_weight="0.5"
+                android:textColor="@color/signatureColorOne" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/friendsTextView_text"
+                android:id="@+id/userfriendsTextViewprofileDialog"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:layout_weight="0.5"
+                android:textColor="@color/signatureColorOne" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/professionalAssociatesTextView_text"
+                android:id="@+id/professionalAssociatesTextViewprofileDialog"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:layout_weight="0.5"
+                android:textColor="@color/signatureColorOne" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/worshippersTextView_text"
+                android:id="@+id/worshippersTextViewprofileDialog"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:layout_weight="0.5"
+                android:textColor="@color/signatureColorOne" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/looksTextView_text"
+                android:id="@+id/looksTextViewprofileDialog"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:layout_weight="0.5"
+                android:textColor="@color/signatureColorOne" />
+            </LinearLayout>
+
+        </ScrollView>
     </LinearLayout>
-
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/getJob_text"
-            android:id="@+id/jobTextViewprofileDialog"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            android:gravity="center"
-            android:layout_weight="0.5"
-            android:textColor="@color/signatureColorOne" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/getCountry_text"
-            android:id="@+id/countryTextViewprofileDialog"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            android:gravity="center"
-            android:layout_weight="0.5"
-            android:textColor="@color/signatureColorOne" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/neighbourhoodTextView_text"
-            android:id="@+id/neighbourhoodTextViewprofileDialog"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:layout_weight="0.5"
-            android:textColor="@color/signatureColorOne" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/tax_text"
-            android:id="@+id/taxTextViewprofileDialog"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            android:gravity="center"
-            android:layout_weight="0.5"
-            android:textColor="@color/signatureColorOne" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/friendsTextView_text"
-            android:id="@+id/userfriendsTextViewprofileDialog"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:layout_weight="0.5"
-            android:textColor="@color/signatureColorOne" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/professionalAssociatesTextView_text"
-            android:id="@+id/professionalAssociatesTextViewprofileDialog"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:layout_weight="0.5"
-            android:textColor="@color/signatureColorOne" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/worshippersTextView_text"
-            android:id="@+id/worshippersTextViewprofileDialog"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:textSize="18sp"
-            android:layout_weight="0.5"
-            android:textColor="@color/signatureColorOne" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/looksTextView_text"
-            android:id="@+id/looksTextViewprofileDialog"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:layout_weight="0.5"
-            android:textColor="@color/signatureColorOne" />
-        </LinearLayout>
-
-    </ScrollView>
-
-
 
 
 </LinearLayout>
