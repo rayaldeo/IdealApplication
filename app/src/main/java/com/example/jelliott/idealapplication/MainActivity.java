@@ -750,6 +750,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                             worshippers+=100;
                             looks+=1;
                             new Thread(new genieDoSomething()).run();
+
                         }else{
                             wealth+=-100 * human.getCountry().getMultiplier();
                             influence+=1000;
@@ -757,7 +758,11 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                             worshippers+=100;
                             looks+=1;
                             buttonActivation(false);
-                            continueButton.setEnabled(true);
+                            if(randomNum>25) {
+                                healthUpdater(5);
+                            }
+
+
                         }
 
 
@@ -767,6 +772,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
                 .setMessage(
                         "Your looks got increased by 1" + "\n" +
+                                "There is a chance your health will get boosted"+ "\n" +
                                 "The amount of worshippers got increased by 100" + "\n" +
                                 "Your influence got increased by 1000" + "\n" +
                                 "The amount of friends increased by 1000" + "\n" +
@@ -802,7 +808,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                             professionalAssociates += 1000;
                             friends += 1000;
                             buttonActivation(false);
-                            continueButton.setEnabled(true);
+
                         }
                     }
                 })
@@ -1014,7 +1020,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
                            keepStatsUpToDate(-(human.getCountry().getTaxes() + 100 * human.getCountry().getMultiplier()), 0, job, human.getCountry().getTaxes(), 0, 0, 0, 0);
                            buttonActivation(false);
-                           continueButton.setEnabled(true);
+
                        }
 
                     }
@@ -1043,21 +1049,21 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             new Thread(new Runnable() {
                 public void run() {
                     for (int  i=0;i>health;i--) {
-
                          // Update the progress bar
                         mHandler.post(new Runnable() {
                             @Override
                             public void run() {
                                  healthProgressBar.setProgress(healthProgressBar.getProgress() - intTemp);
-                                healthTextView.setText(healthProgressBar.getProgress()-intTemp+ "%");
+                                healthTextView.setText(healthProgressBar.getProgress() - intTemp + "%");
                                 try {
                                     // Sleep for 200 milliseconds.
                                     //Just to display the progress slowly
                                     Thread.sleep(225);
+                                    healthProgressBar.setSecondaryProgress(healthProgressBar.getProgress()-intTemp);
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
-                                healthProgressBar.setSecondaryProgress(healthProgressBar.getProgress()-intTemp);
+
 
                             }
                         });
@@ -1078,18 +1084,16 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
         } else {
-
-            new Thread(new Runnable() {
+            final int additionalHealth = healthProgressBar.getProgress()+health;
+           new Thread(new Runnable() {
                 public void run() {
-                   while (mHealthProgress < health) {
-                        mHealthProgress += 1;//Progress Bars can not accept a value less than one..so 0.5 will not work
-
+                   for (int i=healthProgressBar.getProgress() ;i< additionalHealth;i++) {
                         // Update the progress bar
                         mHandler.post(new Runnable() {
                             @Override
                             public void run() {
-                                healthProgressBar.setProgress(mHealthProgress);
-                                healthTextView.setText(mHealthProgress + "%");
+                                healthProgressBar.setProgress(healthProgressBar.getProgress()+1);
+                                healthTextView.setText((healthProgressBar.getProgress()+1) + "%");
                             }
                         });
 
@@ -1228,7 +1232,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         overallWealthTextView.setText(currencyFormat.format(human.getOverAllWealth()));
         String influenceAmountString = Double.toString(human.getInfluence());
         influenceTextView.setText(influenceAmountString);
-        jobTextView.setText(getString(R.string.getJob_text) + ":" +"\n"+ human.getJob());
+        jobTextView.setText(getString(R.string.getJob_text) + ":" + "\n" + human.getJob());
         countryTextView.setText(getString(R.string.getCountry_text) + ":" + "\n" + human.getCountryString());
         taxTextView.setText(getString(R.string.tax_text) + ":" + "\n" + currencyFormat.format(tax));
 
@@ -1279,7 +1283,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.AlertDialogCutomTheme);
         AlertDialog.Builder ad = new AlertDialog.Builder(ctw);
        ad
-                .setMessage("Welcome!The purpose of this Java Program is to create your fantasy ideal life.." +
+                .setMessage("Welcome!The purpose of this Android Application is to create your fantasy ideal life.." +
                         ("\n") + "Create a character at the bottom of society." +
                         ("\n") + "Progress this character through the world and accumulate influence, wealth, and associates." +
                         ("\n") + "Don't hold back,accumulating everything the world has the offer is the key of winning the game" +
@@ -1597,10 +1601,10 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     playerNameTextViewprofileDialog.setText(firstNamePart + " " + lastNamePart);
 
     overAllWealthTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.overAllWealthTextViewprofileDialog);
-    overAllWealthTextViewprofileDialog.setText(currencyFormat.format(human.getOverAllWealth()));
+    overAllWealthTextViewprofileDialog.setText(getString(R.string.overallWelathTextView_text)+"\n"+currencyFormat.format(human.getOverAllWealth()));
 
     influenceTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.influenceTextViewprofileDialog);
-    influenceTextViewprofileDialog.setText(Integer.toString(human.getInfluence()));
+    influenceTextViewprofileDialog.setText(getString(R.string.influenceAmountTextView_String)+"\n"+Integer.toString(human.getInfluence()));
 
     jobTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.jobTextViewprofileDialog);
     jobTextViewprofileDialog.setText(getString(R.string.getJob_text) + ":" + human.getJob());
@@ -1652,10 +1656,10 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         playerNameTextViewprofileDialog.setText(lastNamePart);
 
         overAllWealthTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.overAllWealthTextViewprofileDialog);
-        overAllWealthTextViewprofileDialog.setText(currencyFormat.format(family.getFamilyWealth()));
+        overAllWealthTextViewprofileDialog.setText(getString(R.string.overallWelathTextView_text)+"\n"+currencyFormat.format(family.getFamilyWealth()));
 
         influenceTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.influenceTextViewprofileDialog);
-        influenceTextViewprofileDialog.setText(Integer.toString(family.getFamilyInfluence()));
+        influenceTextViewprofileDialog.setText(getString(R.string.influenceAmountTextView_String)+"\n"+Integer.toString(family.getFamilyInfluence()));
 
         jobTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.jobTextViewprofileDialog);
         jobTextViewprofileDialog.setText("N/A");
@@ -1773,13 +1777,13 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     if (human.getFriends() > 1000) {
                         chainString+="\n"+"You are very famous and this allows you to earn $500";
                         wealth+=500;
-                        chainString+="\n"+"Your wealth is $" + human.getOverAllWealth();
+
 
                         //CharDetails();
                     } else if (human.getFriends() > 500) {
                         chainString+="\n"+"You are famous  and this allows you to earn $100";
                         wealth+= 100;
-                        chainString+="\n"+"Your wealth is $" + human.getOverAllWealth();
+
 
                         //CharDetails();
                     } else {
@@ -1821,17 +1825,20 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             case 3:
 
                 // ad.setMessage("4");
-                if (human.getFriends() > 100000 || human.getFriends() + family.getFamilyFriends() > 100000) {
+                if(socialisingWithFriends>4) {
+                    chainString+="\n"+"You gained some friends because you have worked on your social skills";
+                    friends+=100;
+                }else if (socialisingWithFriends>7) {
                     chainString+="\n"+"Having many friends make ways for more friends.You gained 500 friends";
                    friends+=500;
                     //CharDetails();
 
-                } else if (human.getFriends() > 1000 || human.getFriends() + family.getFamilyFriends() > 1000) {
-                    chainString+="\n"+"You don't have much friends but you still get a bonus.You gained 100 friends";
-                   friends+=100;
+                } else if ( socialisingWithFriends>9) {
+                    chainString+="\n"+"Your chrisma naturally attracts people towards you.You gain 1000 friends";
+                   friends+=1000;
 
                 } else {
-                    chainString+="\n"+"You do not have enough friends to access this bonus";
+                    chainString+="\n"+"You have not socialize with enough people to access this bonus";
 
                 }
 
@@ -1888,18 +1895,25 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 break;
             case 6:
                 // ad.setMessage("7");
-                if (god && age > 20) {
-                    job=Jobs.GOD;
-                    worshippersFollow = true;
-                    heavenBoolean = true;
-                    chainString+="\n"+"You have surpass the earthly domain and is ready to create your own heaven"+"\n"+"You have also gained access to heaven";
+                if ( age > 20) {
+                    healthUpdater(-10);
+                    chainString+="\n"+"You got a life threatening disease and it takes away from  you life source";
 
 
-                } else if (age > 20) {
-                    chainString+="\n"+"You gained Godly talent! You begin to attract worshippers";
-                    worshippersFollow = true;
+
                 } else {
-                    chainString+="\n"+"You need to be outside the family tutorial to access this benefit";
+                    if (family.getFamilyWealth() < 100000) {
+                        healthUpdater(-1);
+                        chainString += "\n" + "Your family does not have the ability to feed you will and your health suffers for it";
+
+                    }else if (family.getFamilyWealth() < 500000) {
+                        healthUpdater(1);
+                        chainString += "\n" + "Your family is doing well and this gives you a tiny health bonus";
+                    }else{
+                        healthUpdater(10);
+                        chainString += "\n" + "Your family's wealth allows you access the best that life as to offer.You get a big health bonus";
+                    }
+
                 }
                  break;
 
@@ -2024,15 +2038,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     }
     public void grownUpHuman(){
 
-            ///This is so that the user will make a decision  happens every four turns and NOT every turn
-            /*if ((age % 4) == 0) {
-                //-->makeLifeDecisions();
-                //countries.setTaxes(countries.getMultiplier() * countries.getTaxes());
-                buttonActivation(true);
 
-            }else{
-                buttonActivation(false);
-            }*/
             randomNum = rand.nextInt(30);
             //System.out.println(randomNum);
             if (randomNum <= 13) {
@@ -2047,7 +2053,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             //Once the player reaches 1000000 worshippers, the player will become a god
             //it only needs to be activated once and the benefit should automatically apply without the player being notified again
             //Permanent benefit once it is activated
-            if(human.getWorshippers()>10000000) {
+            if(human.getWorshippers()>10000000&&workingOnPhysicalApp>=10&&socialisingWithFriends>=10&&schoolAttendanceAmount>=10) {
                 worshippersActivation=true;
                 worshippersFollow(worshippersActivation);
                 //job = Jobs.GOD;
