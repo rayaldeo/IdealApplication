@@ -599,7 +599,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                             Toast.makeText(MainActivity.this, "Wishes Left:" + (3 - wishes),
                                     Toast.LENGTH_LONG).show();
                             selectAJobButton.setEnabled(false);
-                            new Thread(new genieDoSomething()).run();
+                         genieDoSomething();
 
                         } else if (job == human.getJob()) {
                             //User will not lose a turn if the current job is the same as the selected job
@@ -649,7 +649,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                             schoolButton.setEnabled(false);
                             Toast.makeText(MainActivity.this, "Wishes Left:" + (3 - wishes),
                                     Toast.LENGTH_LONG).show();
-                            new Thread(new genieDoSomething()).run();
+                         genieDoSomething();
                         } else {
                             wealth += -2500.0 * human.getCountry().getMultiplier();
                             buttonActivation(false);
@@ -768,7 +768,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                             friends+=1000;
                             worshippers+=100;
                             looks+=1;
-                            new Thread(new genieDoSomething()).run();
+                         genieDoSomething();
 
                         }else{
                             buttonActivation(false);
@@ -819,7 +819,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                             influence += 1000;
                             professionalAssociates += 1000;
                             friends += 1000;
-                            new Thread(new genieDoSomething()).run();
+                         genieDoSomething();
 
                         } else {
                             wealth += -50 * human.getCountry().getMultiplier();
@@ -1028,7 +1028,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                            Toast.makeText(MainActivity.this, "Wishes Left:" + (3 - wishes),
                                    Toast.LENGTH_LONG).show();
                            changeCountryButton.setEnabled(false);
-                           new Thread(new genieDoSomething()).run();
+                        genieDoSomething();
 
                        }else{
 
@@ -1061,12 +1061,12 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 ///->
 
 ///->UPDATING STATS
-    private void healthUpdater(final int health) {
+    private void healthUpdater(final int healthA) {
          final int intTemp =1;
-        if (health < 0) {
+        if (healthA < 0) {
             new Thread(new Runnable() {
                 public void run() {
-                    for (int  i=0;i>health;i--) {
+                    for (int  i=0;i>healthA;i--) {
                          // Update the progress bar
                         mHandler.post(new Runnable() {
                             @Override
@@ -1102,7 +1102,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
         } else {
-            final int additionalHealth = healthProgressBar.getProgress()+health;
+            final int additionalHealth = healthProgressBar.getProgress()+healthA;
            new Thread(new Runnable() {
                 public void run() {
                    for (int i=healthProgressBar.getProgress() ;i< additionalHealth;i++) {
@@ -1946,7 +1946,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                         chainString += "\n" + "You magically found a genie and he is able to grant you three wishes!";
                         genie = true;
                         System.out.println("Genie" + genie);
-                        new Thread(new genieDoSomething()).run();
+                     genieDoSomething();
                         informationalTextView.setText("This is the genie");
                     }
                     chainString += "\n" + "You magically found a genie but he got away from you";
@@ -2102,10 +2102,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 ///->Calling a Thread for the application
     //Genie Thread
-    public class genieDoSomething implements Runnable{
+    public void genieDoSomething(){
 
-        @Override
-        public void run() {
+      
             //chainString+="You magically found a genie and he is able to grant you three wishes!";//When this String is Displayed the genie would have already been completed
             LinearLayout linearLayout =(LinearLayout)findViewById(R.id.footer);
             linearLayout.setBackgroundColor(Color.parseColor("#3f3f3f"));
@@ -2122,8 +2121,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 linearLayout.setBackgroundColor(Color.parseColor("#3f1930"));
 
             }
-
-        }
+      
 
     }
 
@@ -2352,14 +2350,46 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 ///->Save and Read User Profile
     public void saveUserProfile(){
         String filename = "idealApplicationProfile";
-        String string = "testFile";/*Save everything as a string for now*/
+        String savedata="NothingInFile";
+        try {
+            savedata = "testFile \n" +
+                    //Family
+                    "FamilyCountry:" + family.getFamilyCountry().toString() + " \n" +
+                    "FamilyFriends:" + family.getFamilyFriends() + " \n" +
+                    "FamilyProfessionalAssociate:" + human.getProfessionalAssociates() + " \n" +
+                    "FamilyWorshippers:" + family.getFamilyWorshippers() + " \n" +
+                    "FamilyWealth: " + family.getFamilyWealth() + " \n" +
+                    "FamilyInfluence:" + family.getFamilyInfluence() + " \n" +
+                    //Human
+                    "schoolAttendance:" + schoolAttendanceAmount + " \n" +
+                    "workOut:" + workingOnPhysicalApp + " \n" +
+                    "socialize:" + socialisingWithFriends + " \n" +
+                    "FirstName:" + firstNamePart + " \n" +
+                    "LastName:" + lastNamePart + " \n" +
+                    "Job:" + human.getJob().toString() + " \n" +
+                    "Country:" + human.getCountryString() + " \n" +
+                    "Friends:" + human.getFriends() + " \n" +
+                    "ProfessionalAssociate:" + human.getProfessionalAssociates() + " \n" +
+                    "Worshippers:" + human.getWorshippers() + " \n" +
+                    "Looks:" + human.getLooks() + " \n" +
+                    "Wealth: " + human.getOverAllWealth() + " \n" +
+                    "Influence:" + human.getInfluence(); /*Save everything as a string for now*/
+        }catch (Throwable n){//There will be many exceptions thrown if the user closes this app before and during the splash screen AND before Country dialog is filled
+            System.out.println("The file was unable to be saved: " + n);
+        }
+
+
         FileOutputStream outputStream;
         //File file = new File(context.getFilesDir,filename);
         try {
-            outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
-            outputStream.write(string.getBytes());
-           outputStream.close();
-            System.out.println("Profile has been Saved");
+            if(savedata.equals("NothingInFile")) {
+                System.out.println("Profile has NOT been Saved");
+            }else{
+                outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+                outputStream.write(savedata.getBytes());
+                outputStream.close();
+                System.out.println("Profile has been Saved");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
