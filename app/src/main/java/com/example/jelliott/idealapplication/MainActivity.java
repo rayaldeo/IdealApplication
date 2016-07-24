@@ -23,6 +23,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -36,7 +39,12 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.List;
@@ -138,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.family_adult_mainpage_layout);
+          setContentView(R.layout.family_adult_mainpage_layout);
 
         //Before ANYTHING CREATE A HUMAN TO SET THE BASIC VARIABLES OF A HUMAN
         human = new Human();
@@ -203,10 +211,12 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             public void onClick(View v) {
                 if (human.getOverAllWealth() < 10000000 && human.getInfluence() < 2000000) {
                     IDEALLifeProgram();
+                    continueButton.clearAnimation();
                 } else {
                     ///The game is finished at this point
                     informationalTextView.setText("You have created your ideal life at age:" + age + "  CONGRATULATIONS");
                     buttonActivation(false);
+
 
                 }
 
@@ -285,6 +295,11 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             profilePictureDialogFamilyTutorial();
             return true;
 
+        }if(id==R.id.action_reset){
+            Intent i = getBaseContext().getPackageManager()
+                    .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);
@@ -581,22 +596,26 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                             wishes++;
                             //selectAJobButton.setEnabled(false);
                             System.out.println("wishes:" + wishes);
-                            Toast.makeText(MainActivity.this, "Wishes Left:"+(3-wishes),
+                            Toast.makeText(MainActivity.this, "Wishes Left:" + (3 - wishes),
                                     Toast.LENGTH_LONG).show();
                             selectAJobButton.setEnabled(false);
                             new Thread(new genieDoSomething()).run();
 
-                    }else{
+                        } else if (job == human.getJob()) {
+                            //User will not lose a turn if the current job is the same as the selected job
+                            buttonActivation(true);
+
+                        } else {
                             buttonActivation(false);
-                            continueButton.setEnabled(true);
                         }
 
-                }
+                    }
                 })
-                .setIcon(R.mipmap.ic_launcher)
-                .setCancelable(false)
-                .setView(scrollView)
-                .create();
+               .setNeutralButton("Cancel", null)
+               .setIcon(R.mipmap.ic_launcher)
+               .setCancelable(false)
+               .setView(scrollView)
+               .create();
 
         //Use this command to control the positioning of your alertDialog
         //ad.getWindow().getAttributes().verticalMargin = 1.1F;
@@ -752,12 +771,12 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                             new Thread(new genieDoSomething()).run();
 
                         }else{
+                            buttonActivation(false);
                             wealth+=-100 * human.getCountry().getMultiplier();
                             influence+=1000;
                             friends+=1000;
                             worshippers+=100;
                             looks+=1;
-                            buttonActivation(false);
                             if(randomNum>25) {
                                 healthUpdater(5);
                             }
@@ -780,7 +799,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
                 .setTitle("IDEAL:Work on your Physical")
                 .setIcon(R.mipmap.ic_launcher)
-                .setCancelable(true)
+                .setCancelable(false)
                 .create();
         ad.show();
       }
@@ -839,12 +858,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         alertDialog.setTitle("Choose a Country");
 
         final ListView countrieslistView = (ListView) convertView.findViewById(R.id.countriesListXML);
-
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, countries);
-        //Disable certain Items on the Countries List View
-        //countrieslistView.getChildAt(9).setEnabled(false);
-        //countrieslistView.getChildAt(9).setBackgroundColor(Color.parseColor("#d3d3d3"));
-
         if(age>1) {
             //The user should be able to cancel country selection unless the country previously selected is one that the user don't have access to
             alertDialog.setNeutralButton("Cancel",null);
@@ -1037,6 +1051,10 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         countrieslistView.setAdapter(adapter);
         alertDialog.show();
+
+        //Disable certain Items on the Countries List View
+        //countrieslistView.getChildAt(1).setEnabled(false);
+        //countrieslistView.getChildAt(9).setBackgroundColor(Color.parseColor("#d3d3d3"));
 
 
     }
@@ -2123,6 +2141,15 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                        selectAFamilyType();
                        System.out.println("A3");
                        selectACountry();
+                       //Animation
+                       final Animation animation = new AlphaAnimation(1, 0); // Change alpha from fully visible to invisible
+                       animation.setDuration(500); // duration - half a second
+                       animation.setInterpolator(new LinearInterpolator()); // do not alter animation rate
+                       animation.setRepeatCount(Animation.INFINITE); // Repeat animation infinitely
+                       animation.setRepeatMode(Animation.REVERSE); // Reverse animation at the end so the button will fade back in
+
+
+                       continueButton.startAnimation(animation);
 
                    } else if (age < 20 && age > 1) {
                        informationalTextView.setText("IDEAL:Tutorial With Family/Initial State" + "\n" + "This is the Family View where the first 20 years will be determined for you.");
@@ -2226,9 +2253,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                                       "Looks: " +looks +"\n"+
                                        "Worshippers: " +worshippers +"\n"+
 
-                                          "\n_____________Recommendation____________\n"+
-                                  recommendation()+
-                                  "\n_________________________________________\n");
+                                          "\nRecommendation\n"+
+                                  recommendation()
+                                  );
                            //Reset the chain so that previous messages are removed
                            chainString="";
                           wealth=0;
@@ -2267,7 +2294,10 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     public void onStop(){
         super.onStop();
-        //createUserProfile();
+        //Save File
+        saveUserProfile();
+        //Open the File
+        readFromFile();
     }
 
     public void buttonActivation(boolean activate){
@@ -2319,21 +2349,46 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         return recommendation;
     }
 
+///->Save and Read User Profile
     public void saveUserProfile(){
         String filename = "idealApplicationProfile";
-        String string = "Hello world!";/*Save everything as a string for now*/
+        String string = "testFile";/*Save everything as a string for now*/
         FileOutputStream outputStream;
         //File file = new File(context.getFilesDir,filename);
         try {
             outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
             outputStream.write(string.getBytes());
-            outputStream.close();
+           outputStream.close();
             System.out.println("Profile has been Saved");
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
+
+    private void readFromFile() {
+        try {
+            String fileInfo;
+            FileInputStream fileInputStream =openFileInput("idealApplicationProfile");
+            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            StringBuffer stringBuffer = new StringBuffer();
+            try {
+                while((fileInfo=bufferedReader.readLine())!=null){
+                    stringBuffer.append(fileInfo).append("\n");
+                    System.out.println(stringBuffer.append(fileInfo).append("\n"));
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+//->
+
 
     }
 
