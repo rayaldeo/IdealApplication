@@ -121,19 +121,20 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     Random rand = new Random();
     int randomNum = rand.nextInt((50 - 1) + 1);
     private Boolean banker = false, independent = false, businessowner = false, king = false, intern = false,shown=false,shownOne=false,genie=false/*Genie boolean will only be used in the jobButton command which will allow the user to choose any job*/;
-    private boolean begger = false;
-    private boolean vagrant = false;
-    private boolean packingboy = false;
-    private boolean firefighter = false;
-    private boolean scientist = false;
-    private boolean god = false;
-    private boolean sultan = false;
-    private boolean worshippersFollow = false;
-    private boolean omega = false;
-    private boolean worshippersActivation = false;
-    private boolean influencActivation = false;
-    private boolean heavenBoolean = false;
+    private Boolean begger = false;
+    private Boolean vagrant = false;
+    private Boolean packingboy = false;
+    private Boolean firefighter = false;
+    private Boolean scientist = false;
+    private Boolean god = false;
+    private Boolean sultan = false;
+    private Boolean worshippersFollow = false;
+    private Boolean omega = false;
+    private Boolean worshippersActivation = false;
+    private Boolean influencActivation = false;
+    private Boolean heavenBoolean = false;
     private int tempNum = age - 10;
+    private String savedata="NothingInFile";
 
 
 //This boolean is to keep track whether the user is done initializing their IDEAL Life
@@ -146,128 +147,162 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-          setContentView(R.layout.family_adult_mainpage_layout);
+         setContentView(R.layout.family_adult_mainpage_layout);
 
-        //Before ANYTHING CREATE A HUMAN TO SET THE BASIC VARIABLES OF A HUMAN
-        human = new Human();
+            //Before ANYTHING CREATE A HUMAN TO SET THE BASIC VARIABLES OF A HUMAN
+            human = new Human();
 
-        //setting the Java variables with the XML id:Initialization
-        jobTextView = (TextView) findViewById(R.id.jobTextView);
-        countryTextView = (TextView) findViewById(R.id.countryTextView);
-        taxTextView = (TextView) findViewById(R.id.taxTextView);
-        informationalTextView = (TextView) findViewById(R.id.informationalTextView);
-        informationalTextView.setMovementMethod(new ScrollingMovementMethod());
-        overallWealthTextView = (TextView) findViewById(R.id.overAllWealthTextView);
-        overallWealthPercentageTextView = (TextView) findViewById(R.id.overallWealthPercentage);
-        influenceTextView = (TextView) findViewById(R.id.influenceTextView);
-        influencePercentageTextView = (TextView) findViewById(R.id.influencePercentageTextView);
-        playerNameTextView = (TextView) findViewById(R.id.playerNameTextView);
-        age_Turn_textView = (TextView) findViewById(R.id.age_Turn_textView);
-        //TextViews with the Buttons on fragment_main.xml
-        workingOnPhysicalAppTextView = (TextView) findViewById(R.id.workingOnPhysicalAppTextView);
-        socialisingWithFriendsTextView = (TextView) findViewById(R.id.socialisingWithFriendsTextView);
-        schoolAttendanceAmountTextView = (TextView) findViewById(R.id.schoolAttendanceAmountTextView);
+            //setting the Java variables with the XML id:Initialization
+            jobTextView = (TextView) findViewById(R.id.jobTextView);
+            countryTextView = (TextView) findViewById(R.id.countryTextView);
+            taxTextView = (TextView) findViewById(R.id.taxTextView);
+            informationalTextView = (TextView) findViewById(R.id.informationalTextView);
+            informationalTextView.setMovementMethod(new ScrollingMovementMethod());
+            overallWealthTextView = (TextView) findViewById(R.id.overAllWealthTextView);
+            overallWealthPercentageTextView = (TextView) findViewById(R.id.overallWealthPercentage);
+            influenceTextView = (TextView) findViewById(R.id.influenceTextView);
+            influencePercentageTextView = (TextView) findViewById(R.id.influencePercentageTextView);
+            playerNameTextView = (TextView) findViewById(R.id.playerNameTextView);
+            age_Turn_textView = (TextView) findViewById(R.id.age_Turn_textView);
+            //TextViews with the Buttons on fragment_main.xml
+            workingOnPhysicalAppTextView = (TextView) findViewById(R.id.workingOnPhysicalAppTextView);
+            socialisingWithFriendsTextView = (TextView) findViewById(R.id.socialisingWithFriendsTextView);
+            schoolAttendanceAmountTextView = (TextView) findViewById(R.id.schoolAttendanceAmountTextView);
 
 
-        //Buttons
-        //Change Country Button
-        changeCountryButton = (Button) findViewById(R.id.moveToButton);
-        changeCountryButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                selectACountry();
-            }
-        });
-        //Select A Job Button
-        selectAJobButton=(Button) findViewById(R.id.jobButton);
-        selectAJobButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                selectAJob();
-            }
-        });
-        //Go To School Button
-        schoolButton=(Button) findViewById(R.id.schoolButton);
-        schoolButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                goToSchool();
-            }
-        });
-        //Work on Physical Appearance
-        workOnPhysicalAppearanceButton= (Button) findViewById(R.id.physicalButton);
-        workOnPhysicalAppearanceButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                workOnPhysical();
-            }
-        });
-        //Socialize with People
-        socializeWithPeopleButton= (Button) findViewById(R.id.socializeButton);
-        socializeWithPeopleButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                socializeWithPeople();
-            }
-        });
+            //Buttons
+            //Change Country Button
+            changeCountryButton = (Button) findViewById(R.id.moveToButton);
+            changeCountryButton.setOnClickListener(new OnClickListener() {
+                public void onClick(View v) {
+                    selectACountry();
+                }
+            });
+            //Select A Job Button
+            selectAJobButton = (Button) findViewById(R.id.jobButton);
+            selectAJobButton.setOnClickListener(new OnClickListener() {
+                public void onClick(View v) {
+                    selectAJob();
+                }
+            });
 
-        continueButton=(Button) findViewById(R.id.continueButton);
-        continueButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                if (human.getOverAllWealth() < 10000000 && human.getInfluence() < 2000000) {
-                    IDEALLifeProgram();
-                    continueButton.clearAnimation();
-                } else {
-                    ///The game is finished at this point
-                    informationalTextView.setText("You have created your ideal life at age:" + age + "  CONGRATULATIONS");
-                    buttonActivation(false);
+            selectAJobButton.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                   availableJobs();
+                    return false;
+                }
+            });
+            //Go To School Button
+            schoolButton = (Button) findViewById(R.id.schoolButton);
+            schoolButton.setOnClickListener(new OnClickListener() {
+                public void onClick(View v) {
+                    goToSchool();
+                }
+            });
+            //Work on Physical Appearance
+            workOnPhysicalAppearanceButton = (Button) findViewById(R.id.physicalButton);
+            workOnPhysicalAppearanceButton.setOnClickListener(new OnClickListener() {
+                public void onClick(View v) {
+                    workOnPhysical();
+                }
+            });
+            //Socialize with People
+            socializeWithPeopleButton = (Button) findViewById(R.id.socializeButton);
+            socializeWithPeopleButton.setOnClickListener(new OnClickListener() {
+                public void onClick(View v) {
+                    socializeWithPeople();
+                }
+            });
 
+            continueButton = (Button) findViewById(R.id.continueButton);
+            continueButton.setOnClickListener(new OnClickListener() {
+                public void onClick(View v) {
+                    if (human.getOverAllWealth() < 10000000 && human.getInfluence() < 2000000) {
+                        IDEALLifeProgram();
+                        continueButton.clearAnimation();
+                        if(age==2){
+                            profileImage.clearAnimation();
+                        }else if(age==3){
+                            age_Turn_textView.clearAnimation();
+                        }else if(age==4){
+                            healthProgressBar.clearAnimation();
+                        }else{
+                            changeCountryButton.clearAnimation();
+
+                            selectAJobButton.clearAnimation();
+
+                            schoolButton.clearAnimation();
+
+                            workOnPhysicalAppearanceButton.clearAnimation();
+
+                            socializeWithPeopleButton.clearAnimation();
+                        }
+                    } else {
+                        ///The game is finished at this point
+                        informationalTextView.setText("You have created your ideal life at age:" + age + "  CONGRATULATIONS");
+                        buttonActivation(false);
+
+
+                    }
 
                 }
+            });
 
-            }
-        });
+            //Profile Image
+            profileImage = (ImageView) findViewById(R.id.profileImageView);
+            profileImage.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    profilePictureDialog();
 
-        //Profile Image
-        profileImage = (ImageView) findViewById(R.id.profileImageView);
-        profileImage.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                profilePictureDialog();
+                }
+            });
 
-            }
-        });
-
-        profileImage.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
+            profileImage.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
                 /*Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                 photoPickerIntent.setType("image/*");
                 startActivityForResult(photoPickerIntent, SELECT_PHOTO);
                 profileImage.setImageURI(photoPickerIntent.getData());*/
-                // in onCreate or any event where your want the user to
-                // select a file
-                Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                // Start the Intent
-                startActivityForResult(galleryIntent, SELECT_PHOTO);
-                return false;
-            }
-        });
+                    // in onCreate or any event where your want the user to
+                    // select a file
+                    Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    // Start the Intent
+                    startActivityForResult(galleryIntent, SELECT_PHOTO);
+                    return false;
+                }
+            });
 
-        //Progress Bars
-        overallWealthProgressBar = (ProgressBar) findViewById(R.id.overallWealthProgressBar);
-        influenceProgressBar = (ProgressBar) findViewById(R.id.influenceProgressBar);
+            //Progress Bars
+            overallWealthProgressBar = (ProgressBar) findViewById(R.id.overallWealthProgressBar);
+            influenceProgressBar = (ProgressBar) findViewById(R.id.influenceProgressBar);
 
-        //Health ProgressBar
-        healthProgressBar=(ProgressBar) findViewById(R.id.healthProgressBar);
-        healthTextView=(TextView) findViewById(R.id.healthTextView);
-        healthProgressBar.setProgress(100);
-        //Health ProgressBar
-        mHandler = new Handler();
-        age_Turn_textView.setText("Age/Turn:" + Integer.toString(age));
-        workingOnPhysicalAppTextView.setText(Integer.toString(workingOnPhysicalApp));
-        socialisingWithFriendsTextView.setText( Integer.toString(socialisingWithFriends));
-        schoolAttendanceAmountTextView.setText( Integer.toString(schoolAttendanceAmount));
-         //informationalTextView.setText("Welcome and Good Luck!");
+            //Health ProgressBar
+            healthProgressBar = (ProgressBar) findViewById(R.id.healthProgressBar);
+            healthTextView = (TextView) findViewById(R.id.healthTextView);
+            healthProgressBar.setProgress(100);
+            //Health ProgressBar
+            mHandler = new Handler();
+            age_Turn_textView.setText("Age/Turn:" + Integer.toString(age));
+            workingOnPhysicalAppTextView.setText(Integer.toString(workingOnPhysicalApp));
+            socialisingWithFriendsTextView.setText(Integer.toString(socialisingWithFriends));
+            schoolAttendanceAmountTextView.setText(Integer.toString(schoolAttendanceAmount));
+            //informationalTextView.setText("Welcome and Good Luck!");
 
-        buttonActivation(false);
-        IDEALLifeProgram();
+            buttonActivation(false);
+        if(readFromFile()) {
+
+            //Open the File
+            readFromFile();
+            System.out.println("Filed has been pulled successfully");
+        }else{
+            IDEALLifeProgram();
+            System.out.println("There is no file");
+
+        }
 
 
     }
@@ -320,7 +355,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         //Beggar//1
         final Button jobButtonBeggar = new Button(this);
-        jobButtonBeggar.setHint("Beggar");
+        jobButtonBeggar.setText(Jobs.BEGGER.getName() + '\n' + "Income:$" + Jobs.BEGGER.getIncome() + "\n Influence:" + Jobs.BEGGER.getInfluence());
+        //"@android:style/Holo.SegmentedButton"
+        jobButtonBeggar.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonBeggar);
         jobButtonBeggar.setOnClickListener(new OnClickListener() {
             @Override
@@ -336,7 +373,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         //Vagrant//2
         final Button jobButtonVagrant = new Button(this);
-        jobButtonVagrant.setHint("Vagrant");
+        jobButtonVagrant.setText(Jobs.VAGRANT.getName() +'\n'+"Income:$"+Jobs.VAGRANT.getIncome()+"\n Influence:"+Jobs.VAGRANT.getInfluence());
+        jobButtonVagrant.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonVagrant);
         jobButtonVagrant.setOnClickListener(new OnClickListener() {
             @Override
@@ -350,7 +388,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         //Intern//3
         final Button jobButtonIntern = new Button(this);
-        jobButtonIntern.setHint("Intern");
+        jobButtonIntern.setText(Jobs.INTERN.getName() +'\n'+"Income:$"+Jobs.INTERN.getIncome()+"\n Influence:"+Jobs.INTERN.getInfluence());
+        jobButtonIntern.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonIntern);
         jobButtonIntern.setOnClickListener(new OnClickListener() {
             @Override
@@ -364,7 +403,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         //PackingBoy//4
         final Button jobButtonPackingBoy = new Button(this);
-        jobButtonPackingBoy.setHint("Packing Boy");
+        jobButtonPackingBoy.setText(Jobs.PACKINGBOY.getName() +'\n'+"Income:$"+Jobs.PACKINGBOY.getIncome()+"\n Influence:"+Jobs.PACKINGBOY.getInfluence());
+        jobButtonPackingBoy.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonPackingBoy);
         jobButtonPackingBoy.setOnClickListener(new OnClickListener() {
             @Override
@@ -378,7 +418,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         //Firefighter//5
         final Button jobButtonFirefighter = new Button(this);
-        jobButtonFirefighter.setHint("Firefighter");
+        jobButtonFirefighter.setText(Jobs.FIREFIGHTER.getName() +'\n'+"Income:$"+Jobs.FIREFIGHTER.getIncome()+"\n Influence:"+Jobs.FIREFIGHTER.getInfluence());
+        jobButtonFirefighter.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonFirefighter);
         jobButtonFirefighter.setOnClickListener(new OnClickListener() {
             @Override
@@ -392,7 +433,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         //Banker//6
         final Button jobButtonBanker = new Button(this);
-        jobButtonBanker.setHint("Banker");
+        jobButtonBanker.setText(Jobs.BANKER.getName() +'\n'+"Income:$"+Jobs.BANKER.getIncome()+"\n Influence:"+Jobs.BANKER.getInfluence());
+        jobButtonBanker.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonBanker);
         jobButtonBanker.setOnClickListener(new OnClickListener() {
             @Override
@@ -407,7 +449,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         //Scientist//7
         final Button jobButtonScientist = new Button(this);
-        jobButtonScientist.setHint("Scientist");
+        jobButtonScientist.setText(Jobs.SCIENTIST.getName() +'\n'+"Income:$"+Jobs.SCIENTIST.getIncome()+"\n Influence:"+Jobs.SCIENTIST.getInfluence());
+        jobButtonScientist.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonScientist);
         jobButtonScientist.setOnClickListener(new OnClickListener() {
             @Override
@@ -421,7 +464,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         //Independent//8
         final Button jobButtonIndependent = new Button(this);
-        jobButtonIndependent.setHint("Independent");
+        jobButtonIndependent.setText(Jobs.INDEPENDENT.getName() +'\n'+"Income:$"+Jobs.INDEPENDENT.getIncome()+"\n Influence:"+Jobs.INDEPENDENT.getInfluence());
+        jobButtonIndependent.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonIndependent);
         jobButtonIndependent.setOnClickListener(new OnClickListener() {
             @Override
@@ -435,7 +479,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         //Buisness Owner//9
         final Button jobButtonBusinessOwner = new Button(this);
-        jobButtonBusinessOwner.setHint("Business Owner");
+        jobButtonBusinessOwner.setText(Jobs.BUSINESSOWNER.getName() +'\n'+"Income:$"+Jobs.BUSINESSOWNER.getIncome()+"\n Influence:"+Jobs.BUSINESSOWNER.getInfluence());
+        jobButtonBusinessOwner.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonBusinessOwner);
         jobButtonBusinessOwner.setOnClickListener(new OnClickListener() {
             @Override
@@ -449,7 +494,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         //King//10
         final Button jobButtonKing = new Button(this);
-        jobButtonKing.setHint("King");
+        jobButtonKing.setText(Jobs.KING.getName() +'\n'+"Income:$"+Jobs.KING.getIncome()+"\n Influence:"+Jobs.KING.getInfluence());
+        jobButtonKing.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonKing);
         jobButtonKing.setOnClickListener(new OnClickListener() {
             @Override
@@ -463,7 +509,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         //Sultan//11
         final Button jobButtonSultan = new Button(this);
-        jobButtonSultan.setHint("Sultan");
+        jobButtonSultan.setText(Jobs.SULTAN.getName() +'\n'+"Income:$"+Jobs.SULTAN.getIncome()+"\n Influence:"+Jobs.SULTAN.getInfluence());
+        jobButtonSultan.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonSultan);
         jobButtonSultan.setOnClickListener(new OnClickListener() {
             @Override
@@ -477,7 +524,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         //Omega//12
         final Button jobButtonOmega = new Button(this);
-        jobButtonOmega.setHint("\u03A9" + "mega");
+        jobButtonOmega.setText("\u03A9" + "mega" +'\n'+"Income:$"+Jobs.OMEGA.getIncome()+"\n Influence:"+Jobs.OMEGA.getInfluence());
+        jobButtonOmega.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonOmega);
         jobButtonOmega.setOnClickListener(new OnClickListener() {
             @Override
@@ -490,7 +538,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         });
 
         final Button jobButtonGod=new Button(this);
-        jobButtonGod.setHint("God");
+        jobButtonGod.setText(Jobs.GOD.getName() +'\n'+"Income:$"+Jobs.GOD.getIncome()+"\n Influence:"+Jobs.GOD.getInfluence());
+        jobButtonGod.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonGod);
         jobButtonGod.setOnClickListener(new OnClickListener() {
         @Override
@@ -581,6 +630,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             }
 
         }
+
         final ScrollView scrollView = new ScrollView(this);
         scrollView.addView(layout);
         ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.AlertDialogCutomTheme);
@@ -622,6 +672,35 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         ad.show();
 
 
+    }
+    public void availableJobs(){
+        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.AlertDialogCutomTheme);
+        AlertDialog.Builder ad = new AlertDialog.Builder(ctw);
+        ad
+                .setMessage("Available Jobs. \n Current Country:" + human.getCountry() + "\n" +
+
+                                "Beggar:" + begger.toString() + "\n" +
+                                "Vagrant:" + vagrant.toString() + "\n" +
+                                "PackingBoy:" + packingboy.toString() + "\n" +
+                                "Intern:" + intern.toString() + "\n" +
+                                "Firefighter:" + firefighter.toString() + "\n" +
+                                "Banker:" + banker.toString() + "\n" +
+                                "Independent:" + independent.toString() + "\n" +
+                                "Scientist:" + scientist.toString() + "\n" +
+                                "Business Owner:" + businessowner.toString() + "\n" +
+                                "King" + king.toString() + "\n" +
+                                "God:" + god.toString() + "\n" +
+                                "Sultan:" + sultan.toString() + "\n" +
+                                "Omega:" + omega.toString()
+                )
+                .setTitle("IDEAL")
+                .setNeutralButton("Cancel", null)
+                .setIcon(R.mipmap.ic_launcher)
+                .setCancelable(false)
+                .create();
+
+
+        ad.show();
     }
     public void goToSchool(){
         //This number will keep track if a job is unlocked or not...if this number is still equal to 0 at the end of this function then no job was unlocked
@@ -1058,6 +1137,31 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
     }
+
+    /*public void selectACountry() {
+        //ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.AlertDialogCutomTheme);
+        final Dialog alertDialog = new Dialog(MainActivity.this);
+        //Call the XML List view and set it with  the countries array
+        LayoutInflater inflater = getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.countries_job_layout, null);
+        alertDialog.setContentView(convertView);
+
+        TextView countryZeroName =(TextView) alertDialog.findViewById(R.id.countryZero_name);
+        countryZeroName.setText(Countries.Irada.getName());
+
+        TextView countryZeroTax =(TextView) alertDialog.findViewById(R.id.countryZero_tax);
+        countryZeroTax.setText(Double.toString(Countries.Irada.getTaxes()));
+
+        //alertDialog.setIcon(R.mipmap.ic_launcher);
+        alertDialog.setTitle("Choose a Country");
+       // alertDialog.setPositiveButton("Confirm", null);
+        //alertDialog.setNeutralButton("Confirm", null);
+        //alertDialog.setNegativeButton("Confirm", null);
+        alertDialog.show();
+
+
+
+    }*/
 ///->
 
 ///->UPDATING STATS
@@ -2127,9 +2231,16 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     //MainThread
     public void IDEALLifeProgram(){
- 
-               try {
+        //Animation
+        final Animation animation = new AlphaAnimation(1, 0); // Change alpha from fully visible to invisible
+        animation.setDuration(500); // duration - half a second
+        animation.setInterpolator(new LinearInterpolator()); // do not alter animation rate
+        animation.setRepeatCount(Animation.INFINITE); // Repeat animation infinitely
+        animation.setRepeatMode(Animation.REVERSE); // Reverse animation at the end so the button will fade back in
+
+        try {
                    age++;
+                   //Tutorial for the first 5 years;
                    if(age==1) {
                        System.out.println("A0");
                        init();
@@ -2139,18 +2250,35 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                        selectAFamilyType();
                        System.out.println("A3");
                        selectACountry();
-                       //Animation
-                       final Animation animation = new AlphaAnimation(1, 0); // Change alpha from fully visible to invisible
-                       animation.setDuration(500); // duration - half a second
-                       animation.setInterpolator(new LinearInterpolator()); // do not alter animation rate
-                       animation.setRepeatCount(Animation.INFINITE); // Repeat animation infinitely
-                       animation.setRepeatMode(Animation.REVERSE); // Reverse animation at the end so the button will fade back in
 
 
                        continueButton.startAnimation(animation);
+                       informationalTextView.setText("Press the 'Continue Button' to begin the game");
+                   } else if (age == 2) {
+                       profileImage.startAnimation(animation);
+                       informationalTextView.setText("Holding down the Image View will give you access to change your profile picture.Tapping it will send you to your Profile Information Dialog ");
+                   }else if(age==3){
+                       age_Turn_textView.startAnimation(animation);
+                       informationalTextView.setText("Your turn or age. ");
+                   }else if(age==4){
+                       healthProgressBar.startAnimation(animation);
+                       informationalTextView.setText("After age 20;your health will gradually decrese. Once your health reaches 0 before you have created  your ideal life, you lose the game ");
+                   }else if(age==5){
+                       informationalTextView.setText("These are 'ACTION BUTTONS'.In the family mode 'ACTION BUTTONS'  are disabled" +
+                                       ",but once age 20 is reached then you will have access to one 'ACTION'" +
+                                       "per turn.Note:The 'Job Button' can be held down to see the available jobs ");
+                       changeCountryButton.startAnimation(animation);
 
-                   } else if (age < 20 && age > 1) {
-                       informationalTextView.setText("IDEAL:Tutorial With Family/Initial State" + "\n" + "This is the Family View where the first 20 years will be determined for you.");
+                       selectAJobButton.startAnimation(animation);
+
+                       schoolButton.startAnimation(animation);
+
+                       workOnPhysicalAppearanceButton.startAnimation(animation);
+
+                       socializeWithPeopleButton.startAnimation(animation);
+
+                   } else if (age < 20 && age > 6) {
+                       informationalTextView.setText("IDEAL:Tutorial With Family/Initial State" + "\n" + "This is the Family View where until 20,random chances will occur .");
                        //Deactivate the buttons
                        //buttonActivation(false);
                        if(!shown) {
@@ -2294,8 +2422,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         super.onStop();
         //Save File
         saveUserProfile();
-        //Open the File
-        readFromFile();
+
     }
 
     public void buttonActivation(boolean activate){
@@ -2349,10 +2476,10 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 ///->Save and Read User Profile
     public void saveUserProfile(){
-        String filename = "idealApplicationProfile";
-        String savedata="NothingInFile";
+
         try {
             savedata = "testFile \n" +
+                    "Age:" + age+ " \n" +
                     //Family
                     "FamilyCountry:" + family.getFamilyCountry().toString() + " \n" +
                     "FamilyFriends:" + family.getFamilyFriends() + " \n" +
@@ -2385,6 +2512,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             if(savedata.equals("NothingInFile")) {
                 System.out.println("Profile has NOT been Saved");
             }else{
+                String filename = "idealApplicationProfile";
                 outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
                 outputStream.write(savedata.getBytes());
                 outputStream.close();
@@ -2395,8 +2523,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         }
 
     }
-
-    private void readFromFile() {
+    private boolean readFromFile() {
+        boolean bolen = false;
         try {
             String fileInfo;
             FileInputStream fileInputStream =openFileInput("idealApplicationProfile");
@@ -2405,8 +2533,13 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             StringBuffer stringBuffer = new StringBuffer();
             try {
                 while((fileInfo=bufferedReader.readLine())!=null){
-                    stringBuffer.append(fileInfo).append("\n");
-                    System.out.println(stringBuffer.append(fileInfo).append("\n"));
+                   stringBuffer.append(fileInfo);//.append("\n");
+                    //System.out.println(fileInfo);
+                    if (fileInfo.equals("FamilyCountry:")){
+                            family.setCountry(getThisCountry(bufferedReader.readLine()));
+                            System.out.println("Country was successfully pulled from file" + family.getFamilyCountry().getName());
+                        bolen=true;
+                    }
                 }
 
             } catch (IOException e) {
@@ -2416,6 +2549,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        return bolen;
     }
 //->
 
