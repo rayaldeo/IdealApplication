@@ -25,7 +25,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -221,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     if (human.getOverAllWealth() < 10000000 && human.getInfluence() < 2000000) {
                         IDEALLifeProgram();
                         continueButton.clearAnimation();
-                        if(age==2){
+                        /*if(age==2){
                             profileImage.clearAnimation();
                         }else if(age==3){
                             age_Turn_textView.clearAnimation();
@@ -237,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                             workOnPhysicalAppearanceButton.clearAnimation();
 
                             socializeWithPeopleButton.clearAnimation();
-                        }
+                        }*/
                     } else {
                         ///The game is finished at this point
                         informationalTextView.setText("You have created your ideal life at age:" + age + "  CONGRATULATIONS");
@@ -571,8 +573,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             layout.addView(jobButtonOmega);  //OMEGA
 
         }else if (age < 20 || schoolAttendanceAmount<1) {
-            layout.addView(jobButtonPackingBoy);//PackingBoy
-            layout.addView(jobButtonIntern);//Intern
+            if (packingboy){layout.addView(jobButtonPackingBoy);}//PackingBoy
+            if (intern){layout.addView(jobButtonIntern);}//Intern
         }else{
             if (human.getCountry() == Countries.Irada ||
                     human.getCountry() == Countries.Itican ||
@@ -1171,20 +1173,18 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             new Thread(new Runnable() {
                 public void run() {
                     for (int  i=0;i>healthA;i--) {
+                        int delayhealthProgress=healthProgressBar.getProgress();//This will make a delay effect on the secondary progresss
                          // Update the progress bar
                         mHandler.post(new Runnable() {
+
                             @Override
                             public void run() {
                                  healthProgressBar.setProgress(healthProgressBar.getProgress() - intTemp);
+
                                 healthTextView.setText(healthProgressBar.getProgress() - intTemp + "%");
-                                try {
-                                    // Sleep for 200 milliseconds.
-                                    //Just to display the progress slowly
-                                    Thread.sleep(225);
-                                    healthProgressBar.setSecondaryProgress(healthProgressBar.getProgress()-intTemp);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
+
+
+
 
 
                             }
@@ -1194,9 +1194,11 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                             // Sleep for 200 milliseconds.
                             //Just to display the progress slowly
                              Thread.sleep(225);
+
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+                        healthProgressBar.setSecondaryProgress(delayhealthProgress-intTemp);
                     }
 
 
@@ -2232,11 +2234,23 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     //MainThread
     public void IDEALLifeProgram(){
         //Animation
-        final Animation animation = new AlphaAnimation(1, 0); // Change alpha from fully visible to invisible
-        animation.setDuration(500); // duration - half a second
-        animation.setInterpolator(new LinearInterpolator()); // do not alter animation rate
-        animation.setRepeatCount(Animation.INFINITE); // Repeat animation infinitely
-        animation.setRepeatMode(Animation.REVERSE); // Reverse animation at the end so the button will fade back in
+        final Animation animationFade = new AlphaAnimation(1, 0); // Change alpha from fully visible to invisible
+        animationFade.setDuration(500); // duration - half a second
+        animationFade.setInterpolator(new LinearInterpolator()); // do not alter animation rate
+        animationFade.setRepeatCount(Animation.INFINITE); // Repeat animation infinitely
+        animationFade.setRepeatMode(Animation.REVERSE); // Reverse animation at the end so the button will fade back in
+
+        // finally i use this code to execute the animation
+        Animation animationShake = AnimationUtils.loadAnimation(this,R.anim.shake);
+        animationShake.setDuration(250); // duration
+        animationShake.setRepeatCount(Animation.INFINITE);//Repeat animation infinitely
+        animationShake.setInterpolator(new LinearInterpolator()); // do not alter animation rate
+
+        RotateAnimation animRotate = new RotateAnimation(0f, 350f, 15f, 15f);
+        animRotate.setInterpolator(new LinearInterpolator());
+        animRotate.setRepeatCount(Animation.INFINITE);
+        animRotate.setDuration(700);
+
 
         try {
                    age++;
@@ -2252,32 +2266,42 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                        selectACountry();
 
 
-                       continueButton.startAnimation(animation);
+                       continueButton.startAnimation(animationFade);
                        informationalTextView.setText("Press the 'Continue Button' to begin the game");
                    } else if (age == 2) {
-                       profileImage.startAnimation(animation);
+                       //profileImage.startAnimation(AnimationUtils.loadAnimation(getBaseContext(), android.R.anim.fade_in));
+                       profileImage.startAnimation(animationFade);
                        informationalTextView.setText("Holding down the Image View will give you access to change your profile picture.Tapping it will send you to your Profile Information Dialog ");
                    }else if(age==3){
-                       age_Turn_textView.startAnimation(animation);
+                       profileImage.clearAnimation();//Clear Previous Animation..Then Start the next
+                       age_Turn_textView.startAnimation(animationShake);
                        informationalTextView.setText("Your turn or age. ");
                    }else if(age==4){
-                       healthProgressBar.startAnimation(animation);
+                       age_Turn_textView.clearAnimation();//Clear Previous Animation..Then Start the next
+                       healthProgressBar.startAnimation(animationFade);
                        informationalTextView.setText("After age 20;your health will gradually decrese. Once your health reaches 0 before you have created  your ideal life, you lose the game ");
                    }else if(age==5){
+                       healthProgressBar.clearAnimation();//Clear Previous Animation..Then Start the next
                        informationalTextView.setText("These are 'ACTION BUTTONS'.In the family mode 'ACTION BUTTONS'  are disabled" +
                                        ",but once age 20 is reached then you will have access to one 'ACTION'" +
                                        "per turn.Note:The 'Job Button' can be held down to see the available jobs ");
-                       changeCountryButton.startAnimation(animation);
+                       changeCountryButton.startAnimation(animationShake);
 
-                       selectAJobButton.startAnimation(animation);
+                       selectAJobButton.startAnimation(animationShake);
 
-                       schoolButton.startAnimation(animation);
+                       schoolButton.startAnimation(animationShake);
 
-                       workOnPhysicalAppearanceButton.startAnimation(animation);
+                       workOnPhysicalAppearanceButton.startAnimation(animationShake);
 
-                       socializeWithPeopleButton.startAnimation(animation);
+                       socializeWithPeopleButton.startAnimation(animationShake);
 
-                   } else if (age < 20 && age > 6) {
+                   } else if (age < 20 && age > 5) {
+
+                       changeCountryButton.clearAnimation();
+                       selectAJobButton.clearAnimation();
+                       schoolButton.clearAnimation();
+                       workOnPhysicalAppearanceButton.clearAnimation();
+                       socializeWithPeopleButton.clearAnimation();//Clear Previous Animation
                        informationalTextView.setText("IDEAL:Tutorial With Family/Initial State" + "\n" + "This is the Family View where until 20,random chances will occur .");
                        //Deactivate the buttons
                        //buttonActivation(false);
