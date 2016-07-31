@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,8 +15,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ContextThemeWrapper;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
@@ -52,6 +56,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+//Drawer
+
+
 
 public class MainActivity extends AppCompatActivity implements DialogInterface.OnClickListener  {
 
@@ -59,12 +66,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private static final NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     private static final double maxOverallWealth = 10000000.0;
     private static final int maxInfluence = 2000000;
-
-
     private int influenceAmountDefault = 500000;
     private double overallWealthDefault = 5000000.0;
     private int influence;
-
     private TextView jobTextView;
     private TextView countryTextView;
     private TextView taxTextView;
@@ -73,7 +77,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private TextView overallWealthPercentageTextView;
     private TextView influenceTextView;
     private TextView influencePercentageTextView;
-
     private TextView workingOnPhysicalAppTextView;
     private TextView socialisingWithFriendsTextView;
     private TextView schoolAttendanceAmountTextView;
@@ -109,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private ImageView profileImage,profileImageViewProfileDialog;
 //Separate Dialogs
     private Dialog alertDialogProfile;
-
     private Human human;
     private int age = 0, schoolAttendanceAmount = 0, socialisingWithFriends = 0, workingOnPhysicalApp = 0 , wishes = 0;
     private int value, looks = 0, worshippers = 0, friends = 0, professionalAssociates = 0;
@@ -138,20 +140,27 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private int tempNum = age - 10;
     private String savedata="NothingInFile";
 
+    //Drawer
+    private DrawerLayout androidDrawerLayout;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
+    private Toolbar toolbar;
 
-//This boolean is to keep track whether the user is done initializing their IDEAL Life
+
+
+
+
+    //This boolean is to keep track whether the user is done initializing their IDEAL Life
     boolean dialogShown=true;
 //For selecting and image
     private static final int SELECT_PHOTO = 100;
-    public String selectedImagePath;
+    private String selectedImagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-         setContentView(R.layout.family_adult_mainpage_layout);
-
-            //Before ANYTHING CREATE A HUMAN TO SET THE BASIC VARIABLES OF A HUMAN
+        setContentView(R.layout.family_adult_mainpage_layout);
+        //setContentView(R.layout.activity_main);
+        //Before ANYTHING CREATE A HUMAN TO SET THE BASIC VARIABLES OF A HUMAN
             human = new Human();
 
             //setting the Java variables with the XML id:Initialization
@@ -191,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             selectAJobButton.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                   availableJobs();
+                    availableJobs();
                     return false;
                 }
             });
@@ -223,44 +232,21 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     if (human.getOverAllWealth() < 10000000 && human.getInfluence() < 2000000) {
                         IDEALLifeProgram();
                         continueButton.clearAnimation();
-                        /*if(age==2){
-                            profileImage.clearAnimation();
-                        }else if(age==3){
-                            age_Turn_textView.clearAnimation();
-                        }else if(age==4){
-                            healthProgressBar.clearAnimation();
-                        }else{
-                            changeCountryButton.clearAnimation();
-
-                            selectAJobButton.clearAnimation();
-
-                            schoolButton.clearAnimation();
-
-                            workOnPhysicalAppearanceButton.clearAnimation();
-
-                            socializeWithPeopleButton.clearAnimation();
-                        }*/
                     } else {
                         ///The game is finished at this point
                         informationalTextView.setText("You have created your ideal life at age:" + age + "  CONGRATULATIONS");
                         buttonActivation(false);
-
-
                     }
-
                 }
             });
-
             //Profile Image
             profileImage = (ImageView) findViewById(R.id.profileImageView);
             profileImage.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     profilePictureDialog();
-
                 }
             });
-
             profileImage.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -277,7 +263,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     return false;
                 }
             });
-
             //Progress Bars
             overallWealthProgressBar = (ProgressBar) findViewById(R.id.overallWealthProgressBar);
             influenceProgressBar = (ProgressBar) findViewById(R.id.influenceProgressBar);
@@ -292,7 +277,11 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             workingOnPhysicalAppTextView.setText(Integer.toString(workingOnPhysicalApp));
             socialisingWithFriendsTextView.setText(Integer.toString(socialisingWithFriends));
             schoolAttendanceAmountTextView.setText(Integer.toString(schoolAttendanceAmount));
-            //informationalTextView.setText("Welcome and Good Luck!");
+
+////------------------------------------------------------------------------------------------->
+        initInstancesDrawer();
+////------------------------------------------------------------------------------------------------------->
+
 
             buttonActivation(false);
         if(readFromFile()) {
@@ -310,6 +299,41 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     }
 
 ///->TOP RIGHT SIDE MENU FUNCTIONALITY
+///----------------------------------->Drawer
+private void initInstancesDrawer() {
+
+    toolbar = (Toolbar) findViewById(R.id.toolbar);
+    setSupportActionBar(toolbar);
+
+    androidDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_design_support_layout);
+    actionBarDrawerToggle = new ActionBarDrawerToggle(MainActivity.this, androidDrawerLayout, R.string.app_name, R.string.app_name);
+    androidDrawerLayout.addDrawerListener(actionBarDrawerToggle);
+
+    assert getSupportActionBar() != null;//Make sure the supportBar return not null
+    getSupportActionBar().setHomeButtonEnabled(true);
+    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+}
+
+    /**
+     * When using the ActionBarDrawerToggle, you must call it during
+     * onPostCreate() and onConfigurationChanged()...
+     */
+    @Override
+    public void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        actionBarDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        actionBarDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+
+
+///------------------------------------->
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -348,7 +372,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
 ///->ALL 5 BUTTON FUNCTIONALITY IN LIST
-    public void selectAJob() {
+    private void selectAJob() {
         //Creating a Layout for the EditTextViews
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
@@ -675,7 +699,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
     }
-    public void availableJobs(){
+    private void availableJobs(){
         ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.AlertDialogCutomTheme);
         AlertDialog.Builder ad = new AlertDialog.Builder(ctw);
         ad
@@ -704,7 +728,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         ad.show();
     }
-    public void goToSchool(){
+    private void goToSchool(){
         //This number will keep track if a job is unlocked or not...if this number is still equal to 0 at the end of this function then no job was unlocked
             int unlockjobInt=0;
         //Call the XML List view and set it with  the countries array
@@ -832,7 +856,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         adNotifier.show();
 
     }
-    public void workOnPhysical(){
+    private void workOnPhysical(){
         workingOnPhysicalApp++;
         workingOnPhysicalAppTextView.setText(Integer.toString(workingOnPhysicalApp));
         ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.AlertDialogCutomTheme);
@@ -884,7 +908,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 .create();
         ad.show();
       }
-    public void socializeWithPeople(){
+    private void socializeWithPeople(){
         socialisingWithFriends++;
         socialisingWithFriendsTextView.setText(Integer.toString(socialisingWithFriends));
         ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.AlertDialogCutomTheme);
@@ -925,7 +949,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 .create();
         ad.show();
     }
-    public void selectACountry() {
+    private void selectACountry() {
               //Get the arrayLIst from the String xml
         final List<String> countries = Arrays.asList(getResources().getStringArray(R.array.countries));
         //Command used to set the theme of the AlertDialog
@@ -1340,7 +1364,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 }
     //Need to update for the Price to Move to another country
-    public void keepStatsUpToDate(Double overallWealthA, int influenceAmountA, Jobs jobA, /*Countries countryA,*/
+    private void keepStatsUpToDate(Double overallWealthA, int influenceAmountA, Jobs jobA, /*Countries countryA,*/
                                   Double taxA, int looksA, int worshippersA, int friendsA, int professionalAssociatesA) {
 
         human.setJob(jobA);
@@ -1381,7 +1405,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         looksTextView.setText("Attractiveness:"+human.getLooks());*/
 
     }
-    public void updatingStateOfFamily(double wealthA, int influenceA) {
+    private void updatingStateOfFamily(double wealthA, int influenceA) {
         family.setFamilyWealth(family.getFamilyWealth() + mother.getIncome() + brother.getIncome() + sister.getIncome() + father.getIncome() + wealthA);
         family.setFamilyInfluence(family.getFamilyInfluence() + influenceA);
         if (family.getFamilyFriends() > countryOfUser.getRequiredFriends() || family.getFamilyWealth() > countryOfUser.getRequireedWealth()
@@ -1403,7 +1427,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 ///->
 
 ///->IDEAL APPLICATION USER INITIALIZATION CODE
-    public void init() {
+    private void init() {
         ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.AlertDialogCutomTheme);
         AlertDialog.Builder ad = new AlertDialog.Builder(ctw);
        ad
@@ -1438,7 +1462,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         ad.show();
 
     }
-    public void makeYourName() {
+    private void makeYourName() {
         //Call the XML List view and set it with  the countries array
         //LayoutInflater inflater = getLayoutInflater();
         //View convertView = inflater.inflate(R.layout.alertdialog_layout, null, false);
@@ -1485,7 +1509,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         ad.show();
     }
     //SELECT COUNTRY IS BOTH INITIALIZATION AND A BUTTON FUNCTIONALITY
-    public void selectAFamilyType() {
+    private void selectAFamilyType() {
 
         //Get the arrayLIst from the String xml
         final List<String> familyTypes = Arrays.asList(getResources().getStringArray(R.array.familyTypes));
@@ -1696,7 +1720,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 //->
 
 ///->Family and Player Profile Dialogs
-   public void profilePictureDialog() {
+   private void profilePictureDialog() {
 
 
     alertDialogProfile = new Dialog(MainActivity.this, android.R.style.Theme_Black);
@@ -1760,7 +1784,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 }
     //This Method is used to display stats of the Family during the Tutorial Stages
-    public void profilePictureDialogFamilyTutorial() {
+    private void profilePictureDialogFamilyTutorial() {
 
         alertDialogProfile = new Dialog(MainActivity.this, android.R.style.Theme_DeviceDefault_Dialog);
 
@@ -1819,7 +1843,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     }
 ///->
 
-    public Countries getThisCountry(String countryName) {
+    private Countries getThisCountry(String countryName) {
 
         if (countryName.equals(Countries.Irada.getName())) {
             countryOfUser = Countries.Irada;
@@ -1860,7 +1884,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     }
 
-    public void chancesOfLife() {
+    private void chancesOfLife() {
         ///If you want to test any specific chance of life just place in the case number into switch bracket..the program will only run that switch
         //7randomNum
         switch (randomNum) {
@@ -2091,7 +2115,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                wealth+= 500000;
                friends+=50000;
                influence+=5000;
-               
+
 
                 break;
 
@@ -2127,7 +2151,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     }
 
-    public void worshippersFollow(boolean worshippersFollow) {
+    private void worshippersFollow(boolean worshippersFollow) {
 
         if (worshippersFollow && tempNum != age) {
 
@@ -2147,7 +2171,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     }
 
 ///->Two Different Stages of IDEAL
-    public void tutorialWithFamily(){
+    private void tutorialWithFamily(){
 
             randomNum = rand.nextInt(30);
             //System.out.println(randomNum);
@@ -2160,7 +2184,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
     }
-    public void grownUpHuman(){
+    private void grownUpHuman(){
 
 
             randomNum = rand.nextInt(30);
@@ -2208,9 +2232,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 ///->Calling a Thread for the application
     //Genie Thread
-    public void genieDoSomething(){
+    private void genieDoSomething(){
 
-      
+
             //chainString+="You magically found a genie and he is able to grant you three wishes!";//When this String is Displayed the genie would have already been completed
             LinearLayout linearLayout =(LinearLayout)findViewById(R.id.footer);
             linearLayout.setBackgroundColor(Color.parseColor("#3f3f3f"));
@@ -2227,12 +2251,12 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 linearLayout.setBackgroundColor(Color.parseColor("#3f1930"));
 
             }
-      
+
 
     }
 
     //MainThread
-    public void IDEALLifeProgram(){
+    private void IDEALLifeProgram(){
         //Animation
         final Animation animationFade = new AlphaAnimation(1, 0); // Change alpha from fully visible to invisible
         animationFade.setDuration(500); // duration - half a second
@@ -2324,7 +2348,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
                        }
 
-                    
+
                        tutorialWithFamily();
                        updatingStateOfFamily(wealth*1.0,influence);
                        //Reset stats so that there are no further stacking up
@@ -2427,7 +2451,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         age_Turn_textView.setText("Age: " + age);
 
 
-        
+
 
 }
     //These methods is for when the application is paused or temporally closed
@@ -2449,7 +2473,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     }
 
-    public void buttonActivation(boolean activate){
+    private void buttonActivation(boolean activate){
         changeCountryButton.setEnabled(activate);
 
         selectAJobButton.setEnabled(activate);
@@ -2461,7 +2485,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         socializeWithPeopleButton.setEnabled(activate);
     }
 
-    public String recommendation(){
+    private String recommendation(){
         String recommendation="";
 
 //User should be working on gatting a job by the age of 20
@@ -2499,7 +2523,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     }
 
 ///->Save and Read User Profile
-    public void saveUserProfile(){
+    private void saveUserProfile(){
 
         try {
             savedata = "testFile \n" +

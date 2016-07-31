@@ -81,18 +81,6 @@
     </string-array>
 
 
-    <string-array name="genieChoices">
-        <item>(1)Improve your physical Appearance</item>
-        <item>(2)Increase the number of Worshippers</item>
-        <item>(3)Increase the number of Friends</item>
-        <item>(4)Increase the number of Professional Associates</item>
-        <item>(5)Increase you Influence</item>
-        <item>(6)Increase your Wealth</item>
-        <item>(7)Choose any job you desire</item>
-        <item>(0)Special</item>
-
-    </string-array>
-
     <string-array name="jobChoices">
         <item>(1)Beggar</item>
         <item>(2)Vagrant</item>
@@ -110,15 +98,12 @@
     </string-array>
 
 
-    <string-array name="planets_array">
-        <item>Mercury</item>
-        <item>Venus</item>
-        <item>Earth</item>
-        <item>Mars</item>
-        <item>Jupiter</item>
-        <item>Saturn</item>
-        <item>Uranus</item>
-        <item>Neptune</item>
-    </string-array>
+    <!--<string name="app_name">Slider Menu</string>-->
+    <!--<string name="action_settings">Settings</string>-->
+    <string name="hello_world">Hello world!</string>
+    <string name="drawer_open">Slider Menu Opened</string>
+    <string name="drawer_close">Slider Menu Closed</string>
+
+
 
 </resources>
