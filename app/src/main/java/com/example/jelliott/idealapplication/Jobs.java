@@ -8,7 +8,7 @@ package com.example.jelliott.idealapplication;
  * Created by jelliott on 9/16/2015.
  */
 
-public enum Jobs {
+enum Jobs {
 
     /*Very Low Paying Jobs */
     NOJOB("null",0,0),/*This is the default state for a job*/
@@ -16,29 +16,29 @@ public enum Jobs {
     VAGRANT("Vagrant",10,10),
 
     /*Low Paying Jobs that add  greater Influence*/
-    INTERN("Intern",100,40),
+    INTERN("Intern",20000,400),
 
 
     /*Average Paying Jobs with low Influence*/
-    PACKINGBOY("Packingboy",150,40),
-    FIREFIGHTER("Firefighter",350,10),
-    BANKER("Banker",100,50),
+    PACKINGBOY("Packingboy",15000,400),
+    FIREFIGHTER("Firefighter",35000,100),
+    BANKER("Banker",60000,50),
 
     /*Medium Paying Jobs with High Influence*/
-    SCIENTIST("Scienctist",300,400),
-    INDEPENDENT("Independent",600,900),
+    SCIENTIST("Scienctist",70000,4000),
+    INDEPENDENT("Independent",80000,9000),
 
     /*Highest Paying Jobs*/
-    BUSINESSOWNER("BusinessOwner",1000,1000),
-    KING("King",5000,5000),
-    SULTAN("Sultan",9000,9000),
+    BUSINESSOWNER("BusinessOwner",100000,10000),
+    KING("King",200000,50000),
+    SULTAN("Sultan",90000,90000),
 
 
     /*Non Paying Jobs that give incredible amount of Influence*/
-    GOD("GOD",0,100000),
+    GOD("GOD",0,10000000),
 
     /*Incredible amounts of money and Influence*/
-    OMEGA("OMEGA",100000,100000);
+    OMEGA("OMEGA",1000000,10000000);
 
 
     private  double income;

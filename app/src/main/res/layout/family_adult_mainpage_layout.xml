@@ -36,7 +36,7 @@
             android:layout_height="match_parent"
             android:background="@color/backgroundColor"
             android:theme="@style/AppTheme"
-            android:weightSum="12.5"
+            android:weightSum="13.82"
            >
 
             <LinearLayout
@@ -44,7 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:id="@+id/framelayouandprogressbars"
-               android:layout_weight="5.75">
+               android:layout_weight="4.07">
                 <!-- Header aligned to top -->
                 <FrameLayout
                     android:layout_width="135dp"
@@ -87,7 +87,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:orientation="vertical"
-                    android:layout_height="match_parent"
+                    android:layout_height="fill_parent"
                     android:id="@+id/health_wealth_influence_linearlayout"
                    android:weightSum="3">
 
@@ -97,7 +97,7 @@
                         android:id="@+id/healthlayout"
                         android:layout_height="0dp"
                         android:orientation="horizontal"
-                        android:layout_weight="1">
+                        android:layout_weight="0.75">
 
 
                         <ProgressBar
@@ -125,9 +125,9 @@
                         android:id="@+id/header"
                         android:background="#000"
                         android:gravity="center"
-                        android:layout_weight="1"
+                        android:layout_weight="1.25"
                         android:layout_width="fill_parent"
-                        android:layout_height="51dp">
+                        android:layout_height="0dp">
 
                         <TextView
                             android:layout_width="fill_parent"
@@ -138,11 +138,11 @@
                             android:layout_gravity="top|bottom"
                             android:textColor="@color/signatureColorOne"
                             android:textStyle="bold"
-                            android:textSize="30sp"
+                            android:textSize="22sp"
                             android:background="#143f1c"
                             android:padding="1dp"
                             android:textIsSelectable="false"
-                            />
+                            android:gravity="bottom|center" />
 
                         <ProgressBar
                             style="?android:attr/progressBarStyleHorizontal"
@@ -174,7 +174,7 @@
                         android:gravity="center"
                         android:layout_weight="1"
                         android:layout_width="fill_parent"
-                        android:layout_height="22dp">
+                        android:layout_height="0dp">
 
 
                         <TextView
@@ -185,12 +185,13 @@
                             android:id="@+id/influenceTextView"
                             android:textColor="@color/signatureColorOne"
                             android:textStyle="bold"
-                            android:textSize="30sp"
+                            android:textSize="20sp"
                             android:background="#3f0d13"
                             android:padding="1dp"
                             android:textIsSelectable="false"
                             android:layout_gravity="bottom"
-                            android:layout_alignParentTop="false" />
+                            android:layout_alignParentTop="false"
+                            android:gravity="bottom|center" />
 
                         <ProgressBar
                             style="?android:attr/progressBarStyleHorizontal"
@@ -220,12 +221,12 @@
                 android:orientation="horizontal"
                 android:id="@+id/job_country_tax_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:gravity="center"
                 android:weightSum="3"
                 style="@style/Base.Widget.AppCompat.ActionBar"
                 android:background="#3f1930"
-                android:layout_weight="1">
+                android:layout_weight="2">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
@@ -233,13 +234,12 @@
                     android:background="@drawable/border"
                     android:text="@string/getJob_text"
                     android:id="@+id/jobTextView"
-                    android:padding="1dp"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:layout_weight="1.00"
                     android:layout_gravity="bottom"
                     style="@style/ThemeOverlay.AppCompat.Dark"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:textColor="@color/signatureColorOne" />
+                    android:textColor="@color/signatureColorOne"
+                    android:gravity="center" />
 
 
 
@@ -250,13 +250,12 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="@string/getCountry_text"
                     android:id="@+id/countryTextView"
-                    android:padding="1dp"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:layout_gravity="bottom"
                     style="@style/Base.Widget.AppCompat.ActionBar"
                     android:layout_weight="1.60"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:textColor="@color/signatureColorOne" />
+                    android:textColor="@color/signatureColorOne"
+                    android:gravity="center" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -265,12 +264,11 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="@string/tax_text"
                     android:id="@+id/taxTextView"
-                    android:padding="1dp"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:layout_weight="0.40"
                     android:layout_gravity="bottom"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:textColor="@color/signatureColorOne" />
+                    android:textColor="@color/signatureColorOne"
+                    android:gravity="center" />
 
 
 
@@ -280,10 +278,10 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
-                android:layout_height="20dp"
+                android:layout_height="0dp"
                 android:id="@+id/content"
                 android:gravity="center"
-                android:layout_weight="5.75"
+                android:layout_weight="7"
                 >
 
                 <TextView
@@ -321,7 +319,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/scrollView"
-                android:layout_weight="0.25"
+                android:layout_weight="1.00"
                 android:background="?attr/colorPrimary">
 
                 <LinearLayout

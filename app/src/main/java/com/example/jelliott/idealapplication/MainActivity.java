@@ -27,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -54,6 +55,7 @@ import java.io.InputStreamReader;
 import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 //Drawer
@@ -66,8 +68,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private static final NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
     private static final double maxOverallWealth = 10000000.0;
     private static final int maxInfluence = 2000000;
-    private int influenceAmountDefault = 500000;
-    private double overallWealthDefault = 5000000.0;
+    //private int influenceAmountDefault = 500000; //May use at a later date
+    //private double overallWealthDefault = 5000000.0;
     private int influence;
     private TextView jobTextView;
     private TextView countryTextView;
@@ -81,9 +83,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private TextView socialisingWithFriendsTextView;
     private TextView schoolAttendanceAmountTextView;
     private TextView playerNameTextView;
-    private TextView alertDialog_content_textView;
-
-//TextViews on the Profile Dialog
+   //TextViews on the Profile Dialog
     private TextView playerNameTextViewprofileDialog;
     private TextView age_Turn_textView;
     private TextView userfriendsTextViewprofileDialog;
@@ -98,9 +98,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private TextView worshippersTextViewprofileDialog;
 
 //For the Progress Bars
-    private static final int PROGRESS = 0x1;
+    //private static final int PROGRESS = 0x1;//May use
     private Handler mHandler;
-    private int mProgressStatusOverAllWealth = 0, mProgressStatusInfluence = 0,mHealthProgress=0;
+    private int mProgressStatusOverAllWealth = 0, mProgressStatusInfluence = 0;
     private ProgressBar overallWealthProgressBar;
     private ProgressBar influenceProgressBar;
     //Health
@@ -114,16 +114,16 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private Dialog alertDialogProfile;
     private Human human;
     private int age = 0, schoolAttendanceAmount = 0, socialisingWithFriends = 0, workingOnPhysicalApp = 0 , wishes = 0;
-    private int value, looks = 0, worshippers = 0, friends = 0, professionalAssociates = 0;
+    private int looks = 0, worshippers = 0, friends = 0, professionalAssociates = 0;
     private double wealth = 0.0, tax = 0.0;
 
     private Family family;
     private Countries countryOfUser;
     private Jobs job=Jobs.NOJOB;
     private FamilyMember mother, sister, brother, father;
-    private String familyName, firstNamePart, lastNamePart,chainString="";
-    Random rand = new Random();
-    int randomNum = rand.nextInt((50 - 1) + 1);
+    private String familyName="", firstNamePart, lastNamePart,chainString="";
+    private Random rand = new Random();
+    private int randomNum = rand.nextInt((50 - 1) + 1);
     private Boolean banker = false, independent = false, businessowner = false, king = false, intern = false,shown=false,shownOne=false,genie=false/*Genie boolean will only be used in the jobButton command which will allow the user to choose any job*/;
     private Boolean begger = false;
     private Boolean vagrant = false;
@@ -134,26 +134,14 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private Boolean sultan = false;
     private Boolean worshippersFollow = false;
     private Boolean omega = false;
-    private Boolean worshippersActivation = false;
     private Boolean influencActivation = false;
     private Boolean heavenBoolean = false;
     private int tempNum = age - 10;
     private String savedata="NothingInFile";
-
-    //Drawer
-    private DrawerLayout androidDrawerLayout;
+    private final ViewGroup nullParent =null;//This is to remove warning on the convertView
     private ActionBarDrawerToggle actionBarDrawerToggle;
-    private Toolbar toolbar;
-
-
-
-
-
-    //This boolean is to keep track whether the user is done initializing their IDEAL Life
-    boolean dialogShown=true;
-//For selecting and image
+   //For selecting and image
     private static final int SELECT_PHOTO = 100;
-    private String selectedImagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -302,10 +290,10 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 ///----------------------------------->Drawer
 private void initInstancesDrawer() {
 
-    toolbar = (Toolbar) findViewById(R.id.toolbar);
+    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
-    androidDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_design_support_layout);
+    DrawerLayout androidDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_design_support_layout);
     actionBarDrawerToggle = new ActionBarDrawerToggle(MainActivity.this, androidDrawerLayout, R.string.app_name, R.string.app_name);
     androidDrawerLayout.addDrawerListener(actionBarDrawerToggle);
 
@@ -329,8 +317,6 @@ private void initInstancesDrawer() {
         super.onConfigurationChanged(newConfig);
         actionBarDrawerToggle.onConfigurationChanged(newConfig);
     }
-
-
 
 ///------------------------------------->
 
@@ -370,15 +356,13 @@ private void initInstancesDrawer() {
     }
 ///->
 
-
 ///->ALL 5 BUTTON FUNCTIONALITY IN LIST
     private void selectAJob() {
         //Creating a Layout for the EditTextViews
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setBackgroundColor(Color.parseColor("#ff8a54"));
+        layout.setBackgroundColor(Color.parseColor("#3f3f3f"));
         //creating instance of custom view
-
         //Beggar//1
         final Button jobButtonBeggar = new Button(this);
         jobButtonBeggar.setText(Jobs.BEGGER.getName() + '\n' + "Income:$" + Jobs.BEGGER.getIncome() + "\n Influence:" + Jobs.BEGGER.getInfluence());
@@ -736,7 +720,8 @@ private void initInstancesDrawer() {
         //View convertView = inflater.inflate(R.layout.alertdialog_layout, null, false);
         //Increment and Update the amount of times this user went to school
         schoolAttendanceAmount++;
-        schoolAttendanceAmountTextView.setText(Integer.toString(schoolAttendanceAmount));
+        schoolAttendanceAmountTextView.setText(String.format(Locale.US,"%02d",schoolAttendanceAmount));
+        //schoolAttendanceAmountTextView.setText(Integer.toString(schoolAttendanceAmount));
 
         //This String Variable is used to hold all of the messages in one string
         String chainText="";
@@ -858,7 +843,8 @@ private void initInstancesDrawer() {
     }
     private void workOnPhysical(){
         workingOnPhysicalApp++;
-        workingOnPhysicalAppTextView.setText(Integer.toString(workingOnPhysicalApp));
+        //workingOnPhysicalAppTextView.setText(Integer.toString(workingOnPhysicalApp));
+        workingOnPhysicalAppTextView.setText(String.format(Locale.US,"%02d",workingOnPhysicalApp));
         ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.AlertDialogCutomTheme);
         final AlertDialog.Builder ad = new AlertDialog.Builder(ctw);
     ad
@@ -910,7 +896,8 @@ private void initInstancesDrawer() {
       }
     private void socializeWithPeople(){
         socialisingWithFriends++;
-        socialisingWithFriendsTextView.setText(Integer.toString(socialisingWithFriends));
+        socialisingWithFriendsTextView.setText(String.format(Locale.US,"%02d",socialisingWithFriends));
+        //socialisingWithFriendsTextView.setText(Integer.toString(socialisingWithFriends));
         ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.AlertDialogCutomTheme);
         final AlertDialog.Builder ad = new AlertDialog.Builder(ctw);
      ad
@@ -957,7 +944,7 @@ private void initInstancesDrawer() {
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctw);
         //Call the XML List view and set it with  the countries array
         LayoutInflater inflater = getLayoutInflater();
-        View convertView = inflater.inflate(R.layout.countrieslistlayout, null);
+        View convertView = inflater.inflate(R.layout.countrieslistlayout, nullParent);
         alertDialog.setView(convertView);
         alertDialog.setIcon(R.mipmap.ic_launcher);
         alertDialog.setTitle("Choose a Country");
@@ -1268,31 +1255,31 @@ private void initInstancesDrawer() {
         So that no number less than Zero is placed into the progressBar and potentially crashing the program
          */
     //Calculate the OverAllWealth Percentage
-    final double overallwealthvalue = ((overallWealthA / maxOverallWealth) * 100);//Complete the whole percentage equation and then convert number to Int for the Progress Bars
+    final double overallwealthvalue = ((overallWealthA / maxOverallWealth)*100);//Complete the whole percentage equation and then convert number to Int for the Progress Bars
     //Calculate the influence Percentage
-    final double influencevalue = ((influenceAmountA * 1.0) / (maxInfluence * 1.0) * 100);
+    final double influencevalue = ((influenceAmountA * 1.0) / (maxInfluence * 1.0)*100);
     //Don't need to get the product of (human.getOverAllWealth() / maxOverallWealth) and 100 because the percentFormat already multiplies product
 
     //This will allow the progress Bars to decrease in value //DECREMENT PROGRESSBAR
     if(overallWealthProgressBar.getProgress()> overallwealthvalue){
         overallWealthProgressBar.setProgress((int) overallwealthvalue);
-        overallWealthPercentageTextView.setText((int) overallwealthvalue + "%");
+        overallWealthPercentageTextView.setText((int) overallwealthvalue+"%");
 
 
     }
     if(influenceProgressBar.getProgress()> influencevalue){
         influenceProgressBar.setProgress((int) influencevalue);
-        influencePercentageTextView.setText((int) influencevalue + "%");
+        influencePercentageTextView.setText((int) influencevalue +"%");
 
     }
 
     //INCREMENT PROGRESSBAR
-    if ( overallwealthvalue <= 1 ) {
+    if ( overallwealthvalue*100 <= 1 ) {
         overallWealthProgressBar.setProgress(1);
         overallWealthPercentageTextView.setText("<" + percentFormat.format(0.01));
 
     }
-    if ( influencevalue <= 1 ) {
+    if ( influencevalue*100 <= 1 ) {
 
         influenceProgressBar.setProgress(1);
         influencePercentageTextView.setText("<" + percentFormat.format(0.01));
@@ -1314,7 +1301,7 @@ private void initInstancesDrawer() {
                     public void run() {
                         //System.out.println("A");
                         overallWealthProgressBar.setProgress(mProgressStatusOverAllWealth);
-                        overallWealthPercentageTextView.setText(mProgressStatusOverAllWealth + "%");
+                        overallWealthPercentageTextView.setText(mProgressStatusOverAllWealth+"%");
                     }
                 });
 
@@ -1344,7 +1331,7 @@ private void initInstancesDrawer() {
                     public void run() {
                         //System.out.println("A");
                         influenceProgressBar.setProgress(mProgressStatusInfluence);
-                        influencePercentageTextView.setText(mProgressStatusInfluence + "%");
+                        influencePercentageTextView.setText(mProgressStatusInfluence+"%");
                     }
                 });
                 try {
@@ -1380,9 +1367,9 @@ private void initInstancesDrawer() {
         overallWealthTextView.setText(currencyFormat.format(human.getOverAllWealth()));
         String influenceAmountString = Double.toString(human.getInfluence());
         influenceTextView.setText(influenceAmountString);
-        jobTextView.setText(getString(R.string.getJob_text) + ":" + "\n" + human.getJob());
-        countryTextView.setText(getString(R.string.getCountry_text) + ":" + "\n" + human.getCountryString());
-        taxTextView.setText(getString(R.string.tax_text) + ":" + "\n" + currencyFormat.format(tax));
+        jobTextView.setText(getString(R.string.getJob_text) + ":\n"  + human.getJob());
+        countryTextView.setText(getString(R.string.getCountry_text) + ":\n" +  human.getCountryString());
+        taxTextView.setText(getString(R.string.tax_text) + ":\n" + currencyFormat.format(tax));
 
 
         //This "if" statement is going to see whether our percentage function will give something less than 1...which the progress bars can no handle
@@ -1520,7 +1507,7 @@ private void initInstancesDrawer() {
 
         //Call the XML List view and set it with  the countries array
         LayoutInflater inflater = getLayoutInflater();
-        final View convertView = inflater.inflate(R.layout.familycreationlayout, null, false);
+        final View convertView = inflater.inflate(R.layout.familycreationlayout, nullParent, false);
         alertDialog.setView(convertView);
         final ListView familyListView = (ListView) convertView.findViewById(R.id.familyChoiceList);
         final EditText friendsAmountEditText = (EditText) convertView.findViewById(R.id.friendsAmountEditText);
@@ -1554,7 +1541,7 @@ private void initInstancesDrawer() {
                     //isChecked=false;
                     //selectAFamilyType();
                     familyListView.setEnabled(true);
-                    familyListView.setBackgroundColor(Color.parseColor("#ff8a54"));
+                    familyListView.setBackgroundColor(Color.parseColor("#3f3f3f"));
                     familyListView.setItemChecked(0, false);
                     familyListView.setItemChecked(1, false);
                     familyListView.setItemChecked(2, false);
@@ -1697,10 +1684,11 @@ private void initInstancesDrawer() {
                 Cursor cursor = getContentResolver().query(selectedImage,
                         filePathColumn, null, null, null);
                 // Move to first row
+                assert cursor != null;
                 cursor.moveToFirst();
 
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                selectedImagePath = cursor.getString(columnIndex);
+                String selectedImagePath = cursor.getString(columnIndex);
                 cursor.close();
                 //ImageView imgView = (ImageView) findViewById(R.id.profileImageView);
                 // Set the Image in ImageView after decoding the String
@@ -1823,7 +1811,7 @@ private void initInstancesDrawer() {
         taxTextViewprofileDialog.setText("Tax:" + currencyFormat.format(family.getFamilyCountry().getTaxes()));
 
         userfriendsTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.userfriendsTextViewprofileDialog);
-        userfriendsTextViewprofileDialog.setText("Friends:" + family.getFamilyFriends());
+        userfriendsTextViewprofileDialog.setText(getResources().getString(R.string.friendsTextView_text)+":" + family.getFamilyFriends());
 
 
         professionalAssociatesTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.professionalAssociatesTextViewprofileDialog);
@@ -1831,7 +1819,7 @@ private void initInstancesDrawer() {
         professionalAssociatesTextViewprofileDialog.setTextColor(888);
 
         worshippersTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.worshippersTextViewprofileDialog);
-        worshippersTextViewprofileDialog.setText("Worshippers:" + family.getFamilyWorshippers());
+        worshippersTextViewprofileDialog.setText(getResources().getString(R.string.worshippersTextView_text)+":" + family.getFamilyWorshippers());
 
         looksTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.looksTextViewprofileDialog);
         looksTextViewprofileDialog.setText("N/A");
@@ -2202,7 +2190,7 @@ private void initInstancesDrawer() {
             //it only needs to be activated once and the benefit should automatically apply without the player being notified again
             //Permanent benefit once it is activated
             if(human.getWorshippers()>10000000&&workingOnPhysicalApp>=10&&socialisingWithFriends>=10&&schoolAttendanceAmount>=10) {
-                worshippersActivation=true;
+                Boolean worshippersActivation = true;
                 worshippersFollow(worshippersActivation);
                 //job = Jobs.GOD;
                 heavenBoolean=true;
@@ -2420,14 +2408,13 @@ private void initInstancesDrawer() {
                           informationalTextView.setText(
                                   chainString+"\n"+
                                     "What you have earned:\n"+
-                                     "Wealth: " +wealth +"\n"+
-                                     "Influence: " +influence +"\n"+
-                                       "Friends: " +  friends +"\n"+
+                                     "Wealth: " +wealth +"Income: "+human.getJob().getIncome()+"\n"+
+                                     "Influence: " +influence+"Influence from Job: "+human.getJob().getInfluence() +"\n"+
+                                      "Friends: " +  friends +"\n"+
                                       "Professional Associates: "+professionalAssociates+"\n"+
                                       "Looks: " +looks +"\n"+
-                                       "Worshippers: " +worshippers +"\n"+
-
-                                          "\nRecommendation\n"+
+                                      "Worshippers: " +worshippers +"\n"+
+                                       "\nRecommendation\n"+
                                   recommendation()
                                   );
                            //Reset the chain so that previous messages are removed
