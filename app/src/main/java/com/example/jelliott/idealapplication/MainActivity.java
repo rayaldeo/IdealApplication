@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -59,10 +60,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
-//Drawer
-
-
-
 public class MainActivity extends AppCompatActivity implements DialogInterface.OnClickListener  {
 
     private static final NumberFormat percentFormat = NumberFormat.getPercentInstance();
@@ -98,7 +95,11 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private TextView taxTextViewprofileDialog;
     private TextView worshippersTextViewprofileDialog;
 
-//For the Progress Bars
+//Saved Preferences
+    private String familyCountryPref,familyWealthPref,humanFNamePref,humanLNamePref,humanJobPref,huamnCountryPref;
+    private String familyFriendsPref ,familyProfessionalAssocPref,familyWorshippersPref,familyInfluencePref,humanFriendPref,agePref;
+    private String humanworkOnPhyPref,humanschoolAttenPref,humanSocializePref,humanProffessionalAssocPref,humanWorshippersPref,humanLooksPref,humanWealthPref,humanInfluecnePref;
+    //For the Progress Bars
     //private static final int PROGRESS = 0x1;//May use
     private Handler mHandler;
     private int mProgressStatusOverAllWealth = 0, mProgressStatusInfluence = 0;
@@ -244,7 +245,10 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     } else {
                         ///The game is finished at this point
                         informationalTextView.setText("You have created your ideal life at age:" + age + "  CONGRATULATIONS");
+                        //Disable everything
                         buttonActivation(false);
+                        countryButtonActivation(false,false,false,false,false,false,false,false,false,false,false);
+                        jobButtonActivation(false,false,false,false,false,false,false,false,false,false,false,false,false);
                     }
                 }
             });
@@ -290,17 +294,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         initInstancesDrawer();
 ////------------------------------------------------------------------------------------------------------->
             buttonActivation(false);
-        if(readFromFile()) {
-
-            //Open the File
             readFromFile();
-            System.out.println("Filed has been pulled successfully");
-        }else{
             IDEALLifeProgram();
-            System.out.println("There is no file");
-
-        }
-
 
     }
 
@@ -1830,8 +1825,8 @@ private void initInstancesDrawer() {
 
 
         professionalAssociatesTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.professionalAssociatesTextViewprofileDialog);
-        professionalAssociatesTextViewprofileDialog.setText("N/A");
-        professionalAssociatesTextViewprofileDialog.setTextColor(888);
+        professionalAssociatesTextViewprofileDialog.setText(getResources().getString(R.string.professionalAssociatesTextView_text)+ ":" +family.getFamilyProfessionalAssociates());
+
 
         worshippersTextViewprofileDialog = (TextView) alertDialogProfile.findViewById(R.id.worshippersTextViewprofileDialog);
         worshippersTextViewprofileDialog.setText(getResources().getString(R.string.worshippersTextView_text)+":" + family.getFamilyWorshippers());
@@ -2472,6 +2467,7 @@ private void initInstancesDrawer() {
         super.onStop();
         //Save File
         saveUserProfile();
+        Toast.makeText(getApplicationContext(), "Profile Saved", Toast.LENGTH_LONG).show();
 
     }
 
@@ -2558,80 +2554,38 @@ private void initInstancesDrawer() {
 
 ///->Save and Read User Profile
     private void saveUserProfile(){
-
         try {
-            savedata = "testFile \n" +
-                    "Age:" + age+ " \n" +
-                    //Family
-                    "FamilyCountry:" + family.getFamilyCountry().toString() + " \n" +
-                    "FamilyFriends:" + family.getFamilyFriends() + " \n" +
-                    "FamilyProfessionalAssociate:" + human.getProfessionalAssociates() + " \n" +
-                    "FamilyWorshippers:" + family.getFamilyWorshippers() + " \n" +
-                    "FamilyWealth: " + family.getFamilyWealth() + " \n" +
-                    "FamilyInfluence:" + family.getFamilyInfluence() + " \n" +
-                    //Human
-                    "schoolAttendance:" + schoolAttendanceAmount + " \n" +
-                    "workOut:" + workingOnPhysicalApp + " \n" +
-                    "socialize:" + socialisingWithFriends + " \n" +
-                    "FirstName:" + firstNamePart + " \n" +
-                    "LastName:" + lastNamePart + " \n" +
-                    "Job:" + human.getJob().toString() + " \n" +
-                    "Country:" + human.getCountryString() + " \n" +
-                    "Friends:" + human.getFriends() + " \n" +
-                    "ProfessionalAssociate:" + human.getProfessionalAssociates() + " \n" +
-                    "Worshippers:" + human.getWorshippers() + " \n" +
-                    "Looks:" + human.getLooks() + " \n" +
-                    "Wealth: " + human.getOverAllWealth() + " \n" +
-                    "Influence:" + human.getInfluence(); /*Save everything as a string for now*/
-        }catch (Throwable n){//There will be many exceptions thrown if the user closes this app before and during the splash screen AND before Country dialog is filled
-            System.out.println("The file was unable to be saved: " + n);
+            SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString(familyCountryPref, family.getFamilyCountry().toString());//Family Country
+            editor.putInt(familyFriendsPref, family.getFamilyFriends());//Family Friends
+            editor.putInt(familyProfessionalAssocPref, family.getFamilyProfessionalAssociates());//Family Professional Associates
+            editor.putInt(familyWorshippersPref, family.getFamilyWorshippers());//Family Worshippers
+            editor.putString(familyWealthPref, String.valueOf(family.getFamilyWealth()));//Family Wealth
+            editor.putInt(familyInfluencePref, family.getFamilyInfluence());//Family Influence
+            editor.putInt(humanschoolAttenPref, schoolAttendanceAmount);//Human School Attendance
+            editor.putInt(humanworkOnPhyPref, workingOnPhysicalApp);//Human Work on Physical
+            editor.putInt(humanSocializePref, socialisingWithFriends);//Human Socialize
+            editor.putString(humanFNamePref, firstNamePart);//Human First Name
+            editor.putString(humanLNamePref, lastNamePart);//Human Last Name
+            editor.putString(humanJobPref, human.getJob().toString());//Human Job
+            editor.putString(huamnCountryPref, human.getCountryString());//Human Job
+            editor.putInt(humanFriendPref, human.getFriends());//Human Friends
+            editor.putInt(humanProffessionalAssocPref, human.getProfessionalAssociates());//Human Professional Associates
+            editor.putInt(humanWorshippersPref, human.getWorshippers());//Human Worshippers
+            editor.putInt(humanLooksPref, human.getLooks());//Human Looks
+            editor.putString(humanWealthPref, String.valueOf(human.getOverAllWealth()));//Human Wealth
+            editor.putInt(humanInfluecnePref, human.getInfluence());//Human Influence
+            editor.putInt(agePref, age);//Human Influence
+            editor.apply();
+        }catch(Throwable t){
+            Toast.makeText(getApplicationContext(), "No Saved Profile", Toast.LENGTH_LONG).show();
         }
-
-
-        FileOutputStream outputStream;
-        //File file = new File(context.getFilesDir,filename);
-        try {
-            if(savedata.equals("NothingInFile")) {
-                System.out.println("Profile has NOT been Saved");
-            }else{
-                String filename = "idealApplicationProfile";
-                outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
-                outputStream.write(savedata.getBytes());
-                outputStream.close();
-                System.out.println("Profile has been Saved");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
-    private boolean readFromFile() {
-        boolean bolen = false;
-        try {
-            String fileInfo;
-            FileInputStream fileInputStream =openFileInput("idealApplicationProfile");
-            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            StringBuffer stringBuffer = new StringBuffer();
-            try {
-                while((fileInfo=bufferedReader.readLine())!=null){
-                   stringBuffer.append(fileInfo);//.append("\n");
-                    //System.out.println(fileInfo);
-                    if (fileInfo.equals("FamilyCountry:")){
-                            family.setCountry(getThisCountry(bufferedReader.readLine()));
-                            System.out.println("Country was successfully pulled from file" + family.getFamilyCountry().getName());
-                        bolen=true;
-                    }
-                }
+    private void readFromFile() {
+        //SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        //String defaultValue =sharedPref.getString(appName,"");
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return bolen;
     }
 //->
 

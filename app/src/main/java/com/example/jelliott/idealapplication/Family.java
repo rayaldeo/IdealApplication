@@ -14,7 +14,7 @@ public class Family {
 
 
         private ArrayList<FamilyMember> family = new ArrayList<>();
-        private int familyFriends,familyWorshippers,familyInfluence;
+        private int familyFriends,familyWorshippers,familyInfluence,familyProfessionalAssociates;
         private double familyWealth;
         private  String familyName,familyFatherName,familyMotherName,familyBrotherName,familySisterName,neighborhood;
         private FamilyMember father,brother, sister,mother;
@@ -26,6 +26,7 @@ public class Family {
         this.familyInfluence=0;
         this.familyWorshippers=0;
         this.familyFriends=0;
+        this.familyProfessionalAssociates=0;
     }
 
     public Family( double familyWealthA,int influenceA,int friendsA,String familyNameA,FamilyMember brotherA, FamilyMember sisterA, FamilyMember fatherA, FamilyMember motherA){
@@ -71,13 +72,13 @@ public class Family {
             this.familyInfluence=(brotherA.getInfluence() + sisterA.getInfluence() + motherA.getInfluence() + fatherA.getInfluence());
             this.familyWorshippers =(brotherA.getWorshippers()+motherA.getWorshippers()+fatherA.getWorshippers()+sisterA.getWorshippers());
             this.familyFriends =(brotherA.getFriends()+motherA.getFriends()+fatherA.getFriends()+sisterA.getFriends());
+            this.familyProfessionalAssociates =(brotherA.getProfessionalAssociates()+motherA.getProfessionalAssociates()+fatherA.getProfessionalAssociates()+sisterA.getProfessionalAssociates());
             country=fatherA.getCountry();
         }
 
         public Family(int fatherA, int motherA, int sisterA, int brotherA) {}
 
         ///Getters
-        //Getters
         public double getFamilyWealth() {
             return familyWealth;
         }
@@ -96,6 +97,10 @@ public class Family {
 
         public String getFamilyNeighborhood(){return neighborhood;}
 
+         public int getFamilyProfessionalAssociates(){return familyProfessionalAssociates;};
+
+
+    //Setters
         public void setFamilyWealth(double familyWealthA) {
             this.familyWealth = familyWealthA;
         }
@@ -111,6 +116,8 @@ public class Family {
         public void setNeighborhood(String neighborhoodA){neighborhood=neighborhoodA;}
 
         public void setCountry(Countries countryA){country=countryA;}
+
+        public void setFamilyProfessionalAssociates(int professionalAssociatesA){this.familyProfessionalAssociates=professionalAssociatesA;}
 
 
 }
