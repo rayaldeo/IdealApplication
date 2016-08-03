@@ -33,7 +33,9 @@
         <item name="android:textColor">@android:color/holo_orange_light</item>
         <item name="android:layout_width">@dimen/match_parent</item>
         <item name="android:windowFullscreen">false</item>
-       <item name="android:layout_height">@dimen/wrap_content</item>
+        <item name="android:layout_height">@dimen/wrap_content</item>
+        <item name="windowMinWidthMajor">0dp</item>
+        <item name="windowMinWidthMinor">0dp</item>
     </style >
 
 </resources>

@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -116,7 +117,30 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private int age = 0, schoolAttendanceAmount = 0, socialisingWithFriends = 0, workingOnPhysicalApp = 0 , wishes = 0;
     private int looks = 0, worshippers = 0, friends = 0, professionalAssociates = 0;
     private double wealth = 0.0, tax = 0.0;
-
+    private Button countryButtonIrada;//Irada
+    private Button countryButtonItican;//Itican
+    private Button countryButtonAlbaq;//Albaq
+    private Button countryButtonTrinentina;//Trinentina
+    private Button countryButtonAlbico;//Albico
+    private Button countryButtonUgeria;//Ugeria;
+    private Button countryButtonPortada;  //Portada;
+    private Button countryButtonKuwador;//Kuwador;
+    private Button countryButtonUkrark;  //Ukrark;
+    private Button countryButtonRany;  //Rany;
+    private Button countryButtonHeaven; //Heaven
+    private Button jobButtonBeggar; //Begger
+    private Button jobButtonVagrant;//Vagrant
+    private Button jobButtonIntern;//Intern
+    private Button jobButtonPackingBoy;//PackingBoy
+    private Button jobButtonFirefighter;//Firefighter
+    private Button jobButtonBanker;//BANKER;
+    private Button jobButtonScientist;  //Scientist;
+    private Button jobButtonBusinessOwner;//BusinessOwner;
+    private Button jobButtonIndependent;  //Independent;
+    private Button jobButtonKing;  //KING;
+    private Button jobButtonSultan; //SULTAN
+    private Button jobButtonGod;//GOD
+    private Button jobButtonOmega;  //OMEGA
     private Family family;
     private Countries countryOfUser;
     private Jobs job=Jobs.NOJOB;
@@ -150,7 +174,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         //setContentView(R.layout.activity_main);
         //Before ANYTHING CREATE A HUMAN TO SET THE BASIC VARIABLES OF A HUMAN
             human = new Human();
-
             //setting the Java variables with the XML id:Initialization
             jobTextView = (TextView) findViewById(R.id.jobTextView);
             countryTextView = (TextView) findViewById(R.id.countryTextView);
@@ -167,8 +190,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             workingOnPhysicalAppTextView = (TextView) findViewById(R.id.workingOnPhysicalAppTextView);
             socialisingWithFriendsTextView = (TextView) findViewById(R.id.socialisingWithFriendsTextView);
             schoolAttendanceAmountTextView = (TextView) findViewById(R.id.schoolAttendanceAmountTextView);
-
-
             //Buttons
             //Change Country Button
             changeCountryButton = (Button) findViewById(R.id.moveToButton);
@@ -265,12 +286,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             workingOnPhysicalAppTextView.setText(Integer.toString(workingOnPhysicalApp));
             socialisingWithFriendsTextView.setText(Integer.toString(socialisingWithFriends));
             schoolAttendanceAmountTextView.setText(Integer.toString(schoolAttendanceAmount));
-
-////------------------------------------------------------------------------------------------->
+////------------------------------------------------------------------------------------------->//Drawer
         initInstancesDrawer();
 ////------------------------------------------------------------------------------------------------------->
-
-
             buttonActivation(false);
         if(readFromFile()) {
 
@@ -361,29 +379,31 @@ private void initInstancesDrawer() {
         //Creating a Layout for the EditTextViews
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
+
         layout.setBackgroundColor(Color.parseColor("#3f3f3f"));
         //creating instance of custom view
         //Beggar//1
-        final Button jobButtonBeggar = new Button(this);
+      jobButtonBeggar = new Button(this);
         jobButtonBeggar.setText(Jobs.BEGGER.getName() + '\n' + "Income:$" + Jobs.BEGGER.getIncome() + "\n Influence:" + Jobs.BEGGER.getInfluence());
+        jobButtonBeggar.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
         //"@android:style/Holo.SegmentedButton"
         jobButtonBeggar.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonBeggar);
         jobButtonBeggar.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 professionalAssociates += 0;
                 friends += 10;
                job=Jobs.BEGGER;
-
-
-            }
+            /*private void jobButtonActivation(boolean beggerA,boolean vagrantA,boolean internA,boolean packingboyA,boolean firefighterA,boolean bankerA,boolean scientistA
+                    ,boolean businessowerA,boolean independentA, boolean kingA, boolean sultanA,boolean godA,boolean omeageA){*/
+                jobButtonActivation(false,true,true,true,true,true,true,true,true,true,true,true,true);
+                        }
         });
-
         //Vagrant//2
-        final Button jobButtonVagrant = new Button(this);
+        jobButtonVagrant = new Button(this);
         jobButtonVagrant.setText(Jobs.VAGRANT.getName() +'\n'+"Income:$"+Jobs.VAGRANT.getIncome()+"\n Influence:"+Jobs.VAGRANT.getInfluence());
+        jobButtonVagrant.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
         jobButtonVagrant.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonVagrant);
         jobButtonVagrant.setOnClickListener(new OnClickListener() {
@@ -392,13 +412,13 @@ private void initInstancesDrawer() {
                 professionalAssociates += 0;
                 friends += 25;
                 job=Jobs.VAGRANT;
-
+                jobButtonActivation(true,false,true,true,true,true,true,true,true,true,true,true,true);
             }
         });
-
         //Intern//3
-        final Button jobButtonIntern = new Button(this);
+       jobButtonIntern = new Button(this);
         jobButtonIntern.setText(Jobs.INTERN.getName() +'\n'+"Income:$"+Jobs.INTERN.getIncome()+"\n Influence:"+Jobs.INTERN.getInfluence());
+        jobButtonIntern.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
         jobButtonIntern.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonIntern);
         jobButtonIntern.setOnClickListener(new OnClickListener() {
@@ -407,13 +427,13 @@ private void initInstancesDrawer() {
                 professionalAssociates += 500;
                 friends += 15;
                 job=Jobs.INTERN;
-
+                jobButtonActivation(true,true,false,true,true,true,true,true,true,true,true,true,true);
             }
         });
-
         //PackingBoy//4
-        final Button jobButtonPackingBoy = new Button(this);
+        jobButtonPackingBoy = new Button(this);
         jobButtonPackingBoy.setText(Jobs.PACKINGBOY.getName() +'\n'+"Income:$"+Jobs.PACKINGBOY.getIncome()+"\n Influence:"+Jobs.PACKINGBOY.getInfluence());
+        jobButtonPackingBoy.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
         jobButtonPackingBoy.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonPackingBoy);
         jobButtonPackingBoy.setOnClickListener(new OnClickListener() {
@@ -422,13 +442,13 @@ private void initInstancesDrawer() {
                 professionalAssociates += 50;
                 friends += 10;
                 job=Jobs.PACKINGBOY;
-
+                jobButtonActivation(true,true,true,false,true,true,true,true,true,true,true,true,true);
             }
         });
-
         //Firefighter//5
-        final Button jobButtonFirefighter = new Button(this);
+        jobButtonFirefighter = new Button(this);
         jobButtonFirefighter.setText(Jobs.FIREFIGHTER.getName() +'\n'+"Income:$"+Jobs.FIREFIGHTER.getIncome()+"\n Influence:"+Jobs.FIREFIGHTER.getInfluence());
+        jobButtonFirefighter.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
         jobButtonFirefighter.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonFirefighter);
         jobButtonFirefighter.setOnClickListener(new OnClickListener() {
@@ -437,29 +457,29 @@ private void initInstancesDrawer() {
                 professionalAssociates += 100;
                 friends += 25;
                 job=Jobs.FIREFIGHTER;
+                jobButtonActivation(true,true,true,true,false,true,true,true,true,true,true,true,true);
 
             }
         });
-
         //Banker//6
-        final Button jobButtonBanker = new Button(this);
+        jobButtonBanker = new Button(this);
         jobButtonBanker.setText(Jobs.BANKER.getName() +'\n'+"Income:$"+Jobs.BANKER.getIncome()+"\n Influence:"+Jobs.BANKER.getInfluence());
+        jobButtonBanker.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
         jobButtonBanker.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonBanker);
         jobButtonBanker.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 professionalAssociates += 200;
                 friends += 50;
                 job=Jobs.BANKER;
-
+                jobButtonActivation(true,true,true,true,true,false,true,true,true,true,true,true,true);
             }
         });
-
         //Scientist//7
-        final Button jobButtonScientist = new Button(this);
+        jobButtonScientist = new Button(this);
         jobButtonScientist.setText(Jobs.SCIENTIST.getName() +'\n'+"Income:$"+Jobs.SCIENTIST.getIncome()+"\n Influence:"+Jobs.SCIENTIST.getInfluence());
+        jobButtonScientist.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
         jobButtonScientist.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonScientist);
         jobButtonScientist.setOnClickListener(new OnClickListener() {
@@ -468,13 +488,13 @@ private void initInstancesDrawer() {
                 professionalAssociates += 200;
                 friends += 75;
                 job=Jobs.SCIENTIST;
-
+                jobButtonActivation(true,true,true,true,true,true,false,true,true,true,true,true,true);
             }
         });
-
         //Independent//8
-        final Button jobButtonIndependent = new Button(this);
+        jobButtonIndependent = new Button(this);
         jobButtonIndependent.setText(Jobs.INDEPENDENT.getName() +'\n'+"Income:$"+Jobs.INDEPENDENT.getIncome()+"\n Influence:"+Jobs.INDEPENDENT.getInfluence());
+        jobButtonIndependent.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
         jobButtonIndependent.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonIndependent);
         jobButtonIndependent.setOnClickListener(new OnClickListener() {
@@ -483,13 +503,13 @@ private void initInstancesDrawer() {
                 professionalAssociates += 300;
                 friends += 100;
                 job=Jobs.INDEPENDENT;
-
+                jobButtonActivation(true,true,true,true,true,true,true,false,true,true,true,true,true);
             }
         });
-
         //Buisness Owner//9
-        final Button jobButtonBusinessOwner = new Button(this);
+         jobButtonBusinessOwner = new Button(this);
         jobButtonBusinessOwner.setText(Jobs.BUSINESSOWNER.getName() +'\n'+"Income:$"+Jobs.BUSINESSOWNER.getIncome()+"\n Influence:"+Jobs.BUSINESSOWNER.getInfluence());
+        jobButtonBusinessOwner.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
         jobButtonBusinessOwner.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonBusinessOwner);
         jobButtonBusinessOwner.setOnClickListener(new OnClickListener() {
@@ -498,13 +518,13 @@ private void initInstancesDrawer() {
                 professionalAssociates += 500;
                 friends += 200;
                 human.setJob(Jobs.BUSINESSOWNER);
-
+                jobButtonActivation(true,true,true,true,true,true,true,true,false,true,true,true,true);
             }
         });
-
         //King//10
-        final Button jobButtonKing = new Button(this);
+         jobButtonKing = new Button(this);
         jobButtonKing.setText(Jobs.KING.getName() +'\n'+"Income:$"+Jobs.KING.getIncome()+"\n Influence:"+Jobs.KING.getInfluence());
+        jobButtonKing.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
         jobButtonKing.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonKing);
         jobButtonKing.setOnClickListener(new OnClickListener() {
@@ -513,13 +533,13 @@ private void initInstancesDrawer() {
                 professionalAssociates += 1000;
                 friends += 500;
                 job=Jobs.KING;
-
+                jobButtonActivation(true,true,true,true,true,true,true,true,true,false,true,true,true);
             }
         });
-
         //Sultan//11
-        final Button jobButtonSultan = new Button(this);
+        jobButtonSultan = new Button(this);
         jobButtonSultan.setText(Jobs.SULTAN.getName() +'\n'+"Income:$"+Jobs.SULTAN.getIncome()+"\n Influence:"+Jobs.SULTAN.getInfluence());
+        jobButtonSultan.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
         jobButtonSultan.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonSultan);
         jobButtonSultan.setOnClickListener(new OnClickListener() {
@@ -528,13 +548,13 @@ private void initInstancesDrawer() {
                 professionalAssociates += 1500;
                 friends += 1000;
                 job=Jobs.SULTAN;
-
+                jobButtonActivation(true,true,true,true,true,true,true,true,true,true,false,true,true);
             }
         });
-
         //Omega//12
-        final Button jobButtonOmega = new Button(this);
+        jobButtonOmega = new Button(this);
         jobButtonOmega.setText("\u03A9" + "mega" +'\n'+"Income:$"+Jobs.OMEGA.getIncome()+"\n Influence:"+Jobs.OMEGA.getInfluence());
+        jobButtonOmega.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
         jobButtonOmega.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonOmega);
         jobButtonOmega.setOnClickListener(new OnClickListener() {
@@ -543,12 +563,12 @@ private void initInstancesDrawer() {
                 professionalAssociates += 3000;
                 friends += 2000;
                 job=Jobs.OMEGA;
-
+                jobButtonActivation(true,true,true,true,true,true,true,true,true,true,true,false,true);
             }
         });
-
-        final Button jobButtonGod=new Button(this);
+        jobButtonGod=new Button(this);
         jobButtonGod.setText(Jobs.GOD.getName() +'\n'+"Income:$"+Jobs.GOD.getIncome()+"\n Influence:"+Jobs.GOD.getInfluence());
+        jobButtonGod.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
         jobButtonGod.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonGod);
         jobButtonGod.setOnClickListener(new OnClickListener() {
@@ -557,15 +577,12 @@ private void initInstancesDrawer() {
             professionalAssociates += 1500;
             friends += 1000;
             job = Jobs.GOD;
-
+            jobButtonActivation(true,true,true,true,true,true,true,true,true,true,true,true,false);
         }
     });
         //Make the AlertDialog Scrollable->Maybe
-
-
         //If statements to show only certain Buttons
         if(genie) {//If the genie is active..this will show up if the jobButton is selected..Genie can not be activated until the user is >=20
-
             layout.addView(jobButtonBeggar); //Begger
             layout.addView(jobButtonVagrant);//Vagrant
             layout.addView(jobButtonIntern);//Intern
@@ -579,7 +596,6 @@ private void initInstancesDrawer() {
             layout.addView(jobButtonSultan); //SULTAN
             layout.addView(jobButtonGod);//GOD
             layout.addView(jobButtonOmega);  //OMEGA
-
         }else if (age < 20 || schoolAttendanceAmount<1) {
             if (packingboy){layout.addView(jobButtonPackingBoy);}//PackingBoy
             if (intern){layout.addView(jobButtonIntern);}//Intern
@@ -587,60 +603,35 @@ private void initInstancesDrawer() {
             if (human.getCountry() == Countries.Irada ||
                     human.getCountry() == Countries.Itican ||
                     human.getCountry() == Countries.Albaq) {
-
                 if (begger) { layout.addView(jobButtonBeggar); }//Begger
-
                 if (vagrant) { layout.addView(jobButtonVagrant);}//Vagrant
-
                 if (packingboy) {  layout.addView(jobButtonPackingBoy);  }//PackingBoy
-
             }
             if (human.getCountry() == Countries.Trinentina ||
                     human.getCountry() == Countries.Albico ||
                     human.getCountry() == Countries.Ugeria ||
                     human.getCountry() == Countries.Portada) {
-
-
                 if (firefighter) { layout.addView(jobButtonFirefighter);  }//FIREFIGHTER;
-
                 if (banker) { layout.addView(jobButtonBanker);  }//BANKER;
-
                 if (scientist) { layout.addView(jobButtonScientist);  }//Scientist;
-
             }
             if (human.getCountry() == Countries.Kuwador ||
                     human.getCountry() == Countries.Ukrark ||
                     human.getCountry() == Countries.Rany) {
-
                 if (banker) { layout.addView(jobButtonBanker);   }//BANKER;
-
-
                 if (scientist) {  layout.addView(jobButtonScientist);   }//Scientist;
-
-
                 if (independent) {  layout.addView(jobButtonIndependent); }//Independent;
-
-
                 if (businessowner) {  layout.addView(jobButtonBusinessOwner);  }//BusinessOwner;
+                if(sultan){layout.addView(jobButtonSultan);}//Sultan
             }
             if (human.getCountry() == Countries.Heaven) {
-
                 if (independent) {layout.addView(jobButtonIndependent);  }//Independent;
-
-
                 if (king) {  layout.addView(jobButtonKing);  }//KING;
-
-
                 if (king && sultan) { layout.addView(jobButtonSultan);  }//SULTAN
-
                 if(god){ layout.addView(jobButtonGod);}//GOD
-
                 if(god&&sultan&&king){layout.addView(jobButtonOmega);}  //OMEGA
-
             }
-
         }
-
         final ScrollView scrollView = new ScrollView(this);
         scrollView.addView(layout);
         ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.AlertDialogCutomTheme);
@@ -680,8 +671,6 @@ private void initInstancesDrawer() {
         //Use this command to control the positioning of your alertDialog
         //ad.getWindow().getAttributes().verticalMargin = 1.1F;
         ad.show();
-
-
     }
     private void availableJobs(){
         ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.AlertDialogCutomTheme);
@@ -803,7 +792,7 @@ private void initInstancesDrawer() {
                 unlockjobInt++;
             }
 
-        }if( schoolAttendanceAmount>=6&&socialisingWithFriends>=3 && workingOnPhysicalApp>=1&&king) {
+        }if( schoolAttendanceAmount>=6&&socialisingWithFriends>=3 && workingOnPhysicalApp>=1&&!king) {
 
                 king = true;
                 chainText += "\n" + "You have unlocked the King Job";
@@ -936,245 +925,271 @@ private void initInstancesDrawer() {
                 .create();
         ad.show();
     }
-    private void selectACountry() {
-              //Get the arrayLIst from the String xml
-        final List<String> countries = Arrays.asList(getResources().getStringArray(R.array.countries));
-        //Command used to set the theme of the AlertDialog
-        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.AlertDialogCutomTheme);
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctw);
-        //Call the XML List view and set it with  the countries array
-        LayoutInflater inflater = getLayoutInflater();
-        View convertView = inflater.inflate(R.layout.countrieslistlayout, nullParent);
-        alertDialog.setView(convertView);
-        alertDialog.setIcon(R.mipmap.ic_launcher);
-        alertDialog.setTitle("Choose a Country");
-
-        final ListView countrieslistView = (ListView) convertView.findViewById(R.id.countriesListXML);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, countries);
-        if(age>1) {
-            //The user should be able to cancel country selection unless the country previously selected is one that the user don't have access to
-            alertDialog.setNeutralButton("Cancel",null);
-
-        }
-        alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                Object checkedItem;
-
-                //This "try" statement is used so that if the user presses the "Yes" button without selecting something..the application would not call a Null Pointer/Crash
-                try {
-                    //This returns the object attached to to selected item in the listView
-                    checkedItem = countrieslistView.getAdapter().getItem(countrieslistView.getCheckedItemPosition());
-
-                    //Getting the selected string Country from Counties Class
-                    countryOfUser = getThisCountry(checkedItem.toString());
-
-                    switch(checkedItem.toString()) {
-                        case "Trinentina":
-                            if (!firefighter && !banker && !scientist) {
-                                Toast.makeText(MainActivity.this, "You don't have any jobs available in this country: " + checkedItem.toString(),
-                                        Toast.LENGTH_LONG).show();
-                                selectACountry();
-                                alertDialog.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int whichButton) {
-                                        selectACountry();
-                                    }
-                                });
-                            } else{
-                                countryOfUser=Countries.Trinentina;
-                            }
-
-                            break;
-                        case"Albico":
-                            if (!firefighter && !banker && !scientist) {
-                                Toast.makeText(MainActivity.this, "You don't have any jobs available in this country: " + checkedItem.toString(),
-                                        Toast.LENGTH_LONG).show();
-                                selectACountry();
-                                alertDialog.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int whichButton) {
-                                        selectACountry();
-                                    }
-                                });
-                            } else{
-                                countryOfUser=Countries.Albico;
-                            }
-
-                            break;
-                        case"Ugeria":
-                            if (!firefighter && !banker && !scientist) {
-                                Toast.makeText(MainActivity.this, "You don't have any jobs available in this country: " + checkedItem.toString(),
-                                        Toast.LENGTH_LONG).show();
-                                selectACountry();
-                                alertDialog.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int whichButton) {
-                                        selectACountry();
-                                    }
-                                });
-                            } else{
-                                countryOfUser=Countries.Ugeria;
-                            }
-
-                            break;
-                        case"Portada":
-                            if (!firefighter && !banker && !scientist) {
-                                Toast.makeText(MainActivity.this, "You don't have any jobs available in this country: " + checkedItem.toString(),
-                                        Toast.LENGTH_LONG).show();
-                                selectACountry();
-                                alertDialog.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int whichButton) {
-                                        selectACountry();
-                                    }
-                                });
-                            } else{
-                                countryOfUser=Countries.Portada;
-                            }
-                            break;
-                        case"Kuwador":
-                            if (!independent && !banker && !scientist&&!businessowner) {
-                                Toast.makeText(MainActivity.this, "You don't have any jobs available in this country: " + checkedItem.toString(),
-                                        Toast.LENGTH_LONG).show();
-                                selectACountry();
-                                alertDialog.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int whichButton) {
-                                        selectACountry();
-                                    }
-                                });
-                            } else{
-                                countryOfUser=Countries.Kuwador;
-                            }
-                            break;
-                        case"Ukrark":
-                             if (!independent && !banker && !scientist&&!businessowner) {
-                                  Toast.makeText(MainActivity.this, "You don't have any jobs available in this country: " + checkedItem.toString(),
-                                    Toast.LENGTH_LONG).show();
-                               selectACountry();
-                                 alertDialog.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int whichButton) {
-                                    selectACountry();
-                                }
-                            });
-                            } else{
-                              countryOfUser=Countries.Kuwador;
-                             }
-                        break;
-
-                        case"Rany":
-                            if (!independent && !banker && !scientist&&!businessowner) {
-                                Toast.makeText(MainActivity.this, "You don't have any jobs available in this country: " + checkedItem.toString(),
-                                        Toast.LENGTH_LONG).show();
-                                selectACountry();
-                                alertDialog.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int whichButton) {
-                                        selectACountry();
-                                    }
-                                });
-                            } else{
-                                countryOfUser=Countries.Rany;
-                            }
-                            break;
-                        case"Heaven" :
-                            if (heavenBoolean || genie) {
-                                countryOfUser = Countries.Heaven;
-                            } else {
-                                Toast.makeText(MainActivity.this, "You don't have access to heaven because Genie: " + genie + "or Heaven: " + heavenBoolean,
-                                        Toast.LENGTH_LONG).show();
-                                selectACountry();
-                                alertDialog.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int whichButton) {
-                                        selectACountry();
-                                    }
-                                });
-
-                            }
-                        break;
-                    }
-
-                    Toast.makeText(MainActivity.this, "You have selected " + checkedItem.toString(),
-                            Toast.LENGTH_LONG).show();
-                    //Once this  country is valid for use by the user, and it exist...then set the other variables
-
-                    //Update Stats accordingly
-                    //Get the Proper Neighborhood
-                    if (human.getFriends() > human.getCountry().getRequiredFriends() || human.getOverAllWealth() > human.getCountry().getRequireedWealth()
-                            && human.getInfluence() > human.getCountry().getRequiredInfluence()) {
-                        human.setNeighborhood(human.getCountry().getRichNeighborHood());
-
-
-                    } else if (human.getFriends() == human.getCountry().getRequiredFriends() || human.getOverAllWealth() == human.getCountry().getRequireedWealth()
-                            && human.getInfluence() == human.getCountry().getRequiredInfluence()) {
-                        human.setNeighborhood(human.getCountry().getMiddleNeighborHood());
-
-                    } else {
-                        human.setNeighborhood(human.getCountry().getPoorNeighborHood());
-                    }
-                    //Update Country
-                    countryOfUser = getThisCountry(checkedItem.toString());
-                    human.setCountries(countryOfUser);
-                    countryTextView.setText("Country:" + human.getCountry());
-                    //Update Tax
-                    //You can chain .get commands as long as that .get returns a class/object with its own getters
-                    taxTextView.setText("Tax:" + currencyFormat.format(human.getCountry().getTaxes()));
-                    tax = human.getCountry().getTaxes();
-                   if(age>1) {
-                       if(genie) {
-                           wishes++;
-                           Toast.makeText(MainActivity.this, "Wishes Left:" + (3 - wishes),
-                                   Toast.LENGTH_LONG).show();
-                           changeCountryButton.setEnabled(false);
-                        genieDoSomething();
-
-                       }else{
-
-                           keepStatsUpToDate(-(human.getCountry().getTaxes() + 100 * human.getCountry().getMultiplier()), 0, job, human.getCountry().getTaxes(), 0, 0, 0, 0);
-                           buttonActivation(false);
-
-                       }
-
-                    }
-
-                } catch (Exception e) {
-                    Toast.makeText(MainActivity.this, "A Country is needed", Toast.LENGTH_LONG).show();
-                    selectACountry();
-                }
+    private void selectACountry(){
+        //Creating a Layout for the EditTextViews
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setBackgroundColor(Color.parseColor("#3f3f3f"));
+        //creating instance of custom view
+        //Irada
+          countryButtonIrada = new Button(this);
+        countryButtonIrada.setText(Countries.Irada.getName() + '\n' + "Taxes:$" + Countries.Irada.getTaxes() + "\n Required Influence: " + Countries.Irada.getRequiredInfluence()
+        +"\n Required Wealth: "+Countries.Irada.getRequireedWealth()+"\nRequired Friends: "+Countries.Irada.getRequiredInfluence());
+        countryButtonIrada.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
+        //"@android:style/Holo.SegmentedButton"
+        countryButtonIrada.setBackgroundResource(R.drawable.button_style);
+        layout.addView(countryButtonIrada);
+        countryButtonIrada.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               countryOfUser=(Countries.Irada);
+            //countryButtonActivation(boolean irada,boolean itican,boolean albaq,boolean trinentina, boolean alibico, boolean ugeria, boolean portada,
+                                                //boolean kuwador,boolean ukrark,boolean rany, boolean heaven){
+                countryButtonActivation(false,true,true,true,true,true,true,true,true,true,true);
+            }
+        });
+        //Itican
+      countryButtonItican = new Button(this);
+        countryButtonItican.setText(Countries.Itican.getName() + '\n' + "Taxes:$" + Countries.Itican.getTaxes() + "\n Required Influence: " + Countries.Itican.getRequiredInfluence()
+                +"\n Required Wealth: "+Countries.Itican.getRequireedWealth()+"\nRequired Friends: "+Countries.Itican.getRequiredInfluence());
+        countryButtonItican.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
+        countryButtonItican.setBackgroundResource(R.drawable.button_style);
+        layout.addView(countryButtonItican);
+        countryButtonItican.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                countryOfUser=(Countries.Itican);
+                countryButtonActivation(true,false,true,true,true,true,true,true,true,true,true);
+            }
+        });
+        //Albaq
+        countryButtonAlbaq = new Button(this);
+        countryButtonAlbaq.setText(Countries.Albaq.getName() + '\n' + "Taxes:$" + Countries.Albaq.getTaxes() + "\n Required Influence: " + Countries.Albaq.getRequiredInfluence()
+                +"\n Required Wealth: "+Countries.Albaq.getRequireedWealth()+"\nRequired Friends: "+Countries.Albaq.getRequiredInfluence());
+        countryButtonAlbaq.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
+        countryButtonAlbaq.setBackgroundResource(R.drawable.button_style);
+        //layout.addView(jobButtonIntern);
+        countryButtonAlbaq.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                countryOfUser=(Countries.Albaq);
+                countryButtonActivation(true,true,false,true,true,true,true,true,true,true,true);
+            }
+        });
+        //Trinentina
+       countryButtonTrinentina = new Button(this);
+        countryButtonTrinentina.setText(Countries.Trinentina.getName() + '\n' + "Taxes:$" + Countries.Trinentina.getTaxes() + "\n Required Influence: " + Countries.Trinentina.getRequiredInfluence()
+                +"\n Required Wealth: "+Countries.Trinentina.getRequireedWealth()+"\nRequired Friends: "+Countries.Trinentina.getRequiredInfluence());
+        countryButtonTrinentina.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
+        countryButtonTrinentina.setBackgroundResource(R.drawable.button_style);
+        //layout.addView(jobButtonPackingBoy);
+        countryButtonTrinentina.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                countryOfUser=Countries.Trinentina;
+                countryButtonActivation(true,true,true,false,true,true,true,true,true,true,true);
+            }
+        });
+        //Albico
+        countryButtonAlbico = new Button(this);
+        countryButtonAlbico.setText(Countries.Albico.getName() + '\n' + "Taxes:$" + Countries.Albico.getTaxes() + "\n Required Influence: " + Countries.Albico.getRequiredInfluence()
+                +"\n Required Wealth: "+Countries.Albico.getRequireedWealth()+"\nRequired Friends: "+Countries.Albico.getRequiredInfluence());
+        countryButtonAlbico.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
+        countryButtonAlbico.setBackgroundResource(R.drawable.button_style);
+        //layout.addView(jobButtonFirefighter);
+        countryButtonAlbico.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                countryOfUser=(Countries.Albico);
+               countryButtonActivation(true,true,true,true,false,true,true,true,true,true,true);
+            }
+        });
+        //Ugeria
+         countryButtonUgeria = new Button(this);
+        countryButtonUgeria.setText(Countries.Ugeria.getName() + '\n' + "Taxes:$" + Countries.Ugeria.getTaxes() + "\n Required Influence: " + Countries.Ugeria.getRequiredInfluence()
+                +"\n Required Wealth: "+Countries.Ugeria.getRequireedWealth()+"\nRequired Friends: "+Countries.Ugeria.getRequiredInfluence());
+        countryButtonUgeria.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
+        countryButtonUgeria.setBackgroundResource(R.drawable.button_style);
+        //layout.addView(jobButtonBanker);
+        countryButtonUgeria.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                countryOfUser=(Countries.Ugeria);
+                countryButtonActivation(true,true,true,true,true,false,true,true,true,true,true);
+            }
+        });
+        //Portada
+        countryButtonPortada = new Button(this);
+        countryButtonPortada.setText(Countries.Portada.getName() + '\n' + "Taxes:$" + Countries.Portada.getTaxes() + "\n Required Influence: " + Countries.Portada.getRequiredInfluence()
+                +"\n Required Wealth: "+Countries.Portada.getRequireedWealth()+"\nRequired Friends: "+Countries.Portada.getRequiredInfluence());
+        countryButtonPortada.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
+        countryButtonPortada.setBackgroundResource(R.drawable.button_style);
+        //layout.addView(jobButtonScientist);
+        countryButtonPortada.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                countryOfUser=(Countries.Portada);
+                countryButtonActivation(true,true,true,true,true,true,false,true,true,true,true);
 
             }
-        })
+        });
+        //Kuwador
+        countryButtonKuwador = new Button(this);
+        countryButtonKuwador.setText(Countries.Kuwador.getName() + '\n' + "Taxes:$" + Countries.Kuwador.getTaxes() + "\n Required Influence: " + Countries.Kuwador.getRequiredInfluence()
+                +"\n Required Wealth: "+Countries.Kuwador.getRequireedWealth()+"\nRequired Friends: "+Countries.Kuwador.getRequiredInfluence());
+        countryButtonKuwador.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
+        countryButtonKuwador.setBackgroundResource(R.drawable.button_style);
+        //layout.addView(jobButtonIndependent);
+        countryButtonKuwador.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                countryOfUser=(Countries.Kuwador);
+                countryButtonActivation(true,true,true,true,true,true,true,false,true,true,true);
+            }
+        });
+        //Ukrark
+       countryButtonUkrark = new Button(this);
+        countryButtonUkrark.setText(Countries.Ukrark.getName() + '\n' + "Taxes:$" + Countries.Ukrark.getTaxes() + "\n Required Influence: " + Countries.Ukrark.getRequiredInfluence()
+                +"\n Required Wealth: "+Countries.Ukrark.getRequireedWealth()+"\nRequired Friends: "+Countries.Ukrark.getRequiredInfluence());
+        countryButtonUkrark.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
+        countryButtonUkrark.setBackgroundResource(R.drawable.button_style);
+        //layout.addView(jobButtonBusinessOwner);
+        countryButtonUkrark.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                countryOfUser=(Countries.Ukrark);
+               countryButtonActivation(true,true,true,true,true,true,true,true,false,true,true);
+            }
+        });
+        //Rany
+       countryButtonRany = new Button(this);
+        countryButtonRany.setText(Countries.Rany.getName() + '\n' + "Taxes:$" + Countries.Rany.getTaxes() + "\n Required Influence: " + Countries.Rany.getRequiredInfluence()
+                +"\n Required Wealth: "+Countries.Rany.getRequireedWealth()+"\nRequired Friends: "+Countries.Rany.getRequiredInfluence());
+        countryButtonRany.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
+        countryButtonRany.setBackgroundResource(R.drawable.button_style);
+        //layout.addView(jobButtonKing);
+        countryButtonRany.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                countryOfUser=(Countries.Rany);
+               countryButtonActivation(true,true,true,true,true,true,true,true,true,false,true);
+            }
+        });
+        //Heaven
+       countryButtonHeaven = new Button(this);
+        countryButtonHeaven.setText(Countries.Heaven.getName() + '\n' + "Taxes:$" + Countries.Heaven.getTaxes() + "\n Required Influence: " + Countries.Heaven.getRequiredInfluence()
+                +"\n Required Wealth: "+Countries.Heaven.getRequireedWealth()+"\nRequired Friends: "+Countries.Heaven.getRequiredInfluence());
+        countryButtonHeaven.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
+        countryButtonHeaven.setBackgroundResource(R.drawable.button_style);
+        //layout.addView(jobButtonSultan);
+        countryButtonHeaven.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                countryOfUser=Countries.Heaven;
+                countryButtonActivation(true,true,true,true,true,true,true,true,true,true,false);
+            }
+        });
+        //If statements to show only certain Buttons
+        if(genie) {//If the genie is active..this will show up if the jobButton is selected..Genie can not be activated until the user is >=20
+            layout.addView(countryButtonIrada); //Irada
+            layout.addView(countryButtonItican);//Itican
+            layout.addView(countryButtonAlbaq);//Albaq
+            layout.addView(countryButtonTrinentina);//Trinentina
+            layout.addView(countryButtonAlbico);//Albico
+            layout.addView(countryButtonUgeria);//Ugeria;
+            layout.addView(countryButtonPortada);  //Portada;
+            layout.addView(countryButtonKuwador);//Kuwador;
+            layout.addView(countryButtonUkrark);  //Ukrark;
+            layout.addView(countryButtonRany);  //Rany;
+            layout.addView(countryButtonHeaven); //Heaven
+        }else {
+            /*if (human.getOverAllWealth() >= Countries.Irada.getRequiredFriends() && human.getFriends() >= Countries.Irada.getRequiredFriends() &&
+                    human.getInfluence() >= Countries.Irada.getRequiredInfluence()) {
+                layout.addView(countryButtonIrada);
+            }
+            if (human.getOverAllWealth() >= Countries.Itican.getRequiredFriends() && human.getFriends() >= Countries.Itican.getRequiredFriends() &&
+                    human.getInfluence() >= Countries.Itican.getRequiredInfluence()) {
+                layout.addView(countryButtonItican);
+            }*/
+            if (human.getOverAllWealth() >= Countries.Albaq.getRequiredFriends() && human.getFriends() >= Countries.Albaq.getRequiredFriends() &&
+                    human.getInfluence() >= Countries.Albaq.getRequiredInfluence()) {
+                layout.addView(countryButtonAlbaq);//Albaq
+            }
+            if (human.getOverAllWealth() >= Countries.Trinentina.getRequiredFriends() && human.getFriends() >= Countries.Trinentina.getRequiredFriends() &&
+                    human.getInfluence() >= Countries.Trinentina.getRequiredInfluence()) {
+                layout.addView(countryButtonTrinentina);//Trinentina
+            }
+            if (human.getOverAllWealth() >= Countries.Albico.getRequiredFriends() && human.getFriends() >= Countries.Albico.getRequiredFriends() &&
+                    human.getInfluence() >= Countries.Albico.getRequiredInfluence()) {
+                layout.addView(countryButtonAlbico);//Albico
+            }
+            if (human.getOverAllWealth() >= Countries.Ugeria.getRequiredFriends() && human.getFriends() >= Countries.Ugeria.getRequiredFriends() &&
+                    human.getInfluence() >= Countries.Ugeria.getRequiredInfluence()) {
+                layout.addView(countryButtonUgeria);//Ugeria;
+            }
+            if (human.getOverAllWealth() >= Countries.Portada.getRequiredFriends() && human.getFriends() >= Countries.Portada.getRequiredFriends() &&
+                    human.getInfluence() >= Countries.Portada.getRequiredInfluence()) {
+                layout.addView(countryButtonPortada);  //Portada;
+            }
+            if (human.getOverAllWealth() >= Countries.Kuwador.getRequiredFriends() && human.getFriends() >= Countries.Kuwador.getRequiredFriends() &&
+                    human.getInfluence() >= Countries.Kuwador.getRequiredInfluence()) {
+                layout.addView(countryButtonKuwador);//Kuwador;
+            }
+            if (human.getOverAllWealth() >= Countries.Ukrark.getRequiredFriends() && human.getFriends() >= Countries.Ukrark.getRequiredFriends() &&
+                    human.getInfluence() >= Countries.Ukrark.getRequiredInfluence()) {
+                layout.addView(countryButtonUkrark);  //Ukrark;
+            }
+            if (human.getOverAllWealth() >= Countries.Rany.getRequiredFriends() && human.getFriends() >= Countries.Rany.getRequiredFriends() &&
+                    human.getInfluence() >= Countries.Rany.getRequiredInfluence()) {
+                layout.addView(countryButtonRany);  //Rany;
+            }
+            if (human.getOverAllWealth() >= Countries.Heaven.getRequiredFriends() && human.getFriends() >= Countries.Heaven.getRequiredFriends() &&
+                    human.getInfluence() >= Countries.Heaven.getRequiredInfluence()) {
+                layout.addView(countryButtonHeaven); //Heaven
+            }
+        }
+        final ScrollView scrollView = new ScrollView(this);
+        scrollView.addView(layout);
+        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.AlertDialogCutomTheme);
+        AlertDialog.Builder ad = new AlertDialog.Builder(ctw);
+        ad
+                .setMessage("Select A Job. \n Current Country:" + human.getCountry())
+                .setTitle("IDEAL")
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
 
-                .setCancelable(false);
+                    @Override
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                         if(genie) {
+                                wishes++;
+                                Toast.makeText(MainActivity.this, "Wishes Left:" + (3 - wishes),
+                                        Toast.LENGTH_LONG).show();
+                                changeCountryButton.setEnabled(false);
+                                genieDoSomething();
+                            }else{
+                                human.setCountries(countryOfUser);
+                                countryTextView.setText("Country:" + human.getCountry());
+                                //Update Tax
+                                //You can chain .get commands as long as that .get returns a class/object with its own getters
+                                taxTextView.setText("Tax:" + currencyFormat.format(human.getCountry().getTaxes()));
+                                tax = human.getCountry().getTaxes();
+                                keepStatsUpToDate(-(human.getCountry().getTaxes() + 100 * human.getCountry().getMultiplier()), 0, job, human.getCountry().getTaxes(), 0, 0, 0, 0);
+                                buttonActivation(false);
+                            }
 
-        countrieslistView.setAdapter(adapter);
-        alertDialog.show();
+                    }
+                })
+                .setNeutralButton("Cancel", null)
+                .setIcon(R.mipmap.ic_launcher)
+                .setCancelable(false)
+                .setView(scrollView)
+                .create();
 
-        //Disable certain Items on the Countries List View
-        //countrieslistView.getChildAt(1).setEnabled(false);
-        //countrieslistView.getChildAt(9).setBackgroundColor(Color.parseColor("#d3d3d3"));
-
-
+        //Use this command to control the positioning of your alertDialog
+        //ad.getWindow().getAttributes().verticalMargin = 1.1F;
+        //ad.getWindow().setLayout(DrawerLayout.LayoutParams.FILL_PARENT, DrawerLayout.LayoutParams.FILL_PARENT);
+        ad.show();
     }
 
-    /*public void selectACountry() {
-        //ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.AlertDialogCutomTheme);
-        final Dialog alertDialog = new Dialog(MainActivity.this);
-        //Call the XML List view and set it with  the countries array
-        LayoutInflater inflater = getLayoutInflater();
-        View convertView = inflater.inflate(R.layout.countries_job_layout, null);
-        alertDialog.setContentView(convertView);
-
-        TextView countryZeroName =(TextView) alertDialog.findViewById(R.id.countryZero_name);
-        countryZeroName.setText(Countries.Irada.getName());
-
-        TextView countryZeroTax =(TextView) alertDialog.findViewById(R.id.countryZero_tax);
-        countryZeroTax.setText(Double.toString(Countries.Irada.getTaxes()));
-
-        //alertDialog.setIcon(R.mipmap.ic_launcher);
-        alertDialog.setTitle("Choose a Country");
-       // alertDialog.setPositiveButton("Confirm", null);
-        //alertDialog.setNeutralButton("Confirm", null);
-        //alertDialog.setNegativeButton("Confirm", null);
-        alertDialog.show();
-
-
-
-    }*/
 ///->
 
 ///->UPDATING STATS
@@ -1367,9 +1382,9 @@ private void initInstancesDrawer() {
         overallWealthTextView.setText(currencyFormat.format(human.getOverAllWealth()));
         String influenceAmountString = Double.toString(human.getInfluence());
         influenceTextView.setText(influenceAmountString);
-        jobTextView.setText(getString(R.string.getJob_text) + ":\n"  + human.getJob());
-        countryTextView.setText(getString(R.string.getCountry_text) + ":\n" +  human.getCountryString());
-        taxTextView.setText(getString(R.string.tax_text) + ":\n" + currencyFormat.format(tax));
+        jobTextView.setText(getString(R.string.getJob_text) + ":"  + human.getJob());
+        countryTextView.setText(getString(R.string.getCountry_text) + ":" +  human.getCountryString());
+        taxTextView.setText(getString(R.string.tax_text) + ":" + currencyFormat.format(tax));
 
 
         //This "if" statement is going to see whether our percentage function will give something less than 1...which the progress bars can no handle
@@ -2460,6 +2475,7 @@ private void initInstancesDrawer() {
 
     }
 
+///-> Enabling and disabling buttons
     private void buttonActivation(boolean activate){
         changeCountryButton.setEnabled(activate);
 
@@ -2471,7 +2487,38 @@ private void initInstancesDrawer() {
 
         socializeWithPeopleButton.setEnabled(activate);
     }
+    private void countryButtonActivation(boolean irada,boolean itican,boolean albaq,boolean trinentina, boolean alibico, boolean ugeria, boolean portada,
+    boolean kuwador,boolean ukrark,boolean rany, boolean heaven){
+       countryButtonIrada.setEnabled(irada); //Irada
+       countryButtonItican.setEnabled(itican);//Itican
+       countryButtonAlbaq.setEnabled(albaq);//Albaq
+       countryButtonTrinentina.setEnabled(trinentina);//Trinentina
+       countryButtonAlbico.setEnabled(alibico);//Albico
+       countryButtonUgeria.setEnabled(ugeria);//Ugeria;
+       countryButtonPortada.setEnabled(portada);  //Portada;
+       countryButtonKuwador.setEnabled(kuwador);//Kuwador;
+       countryButtonUkrark.setEnabled(ukrark);  //Ukrark;
+       countryButtonRany.setEnabled(rany); //Rany;
+       countryButtonHeaven.setEnabled(heaven); //Heaven
 
+    }//Deactivate Pressd button to show a selection was made
+    private void jobButtonActivation(boolean beggerA,boolean vagrantA,boolean internA,boolean packingboyA,boolean firefighterA,boolean bankerA,boolean scientistA
+    ,boolean businessowerA,boolean independentA, boolean kingA, boolean sultanA,boolean godA,boolean omeageA){
+       jobButtonBeggar.setEnabled(beggerA); //Begger
+       jobButtonVagrant.setEnabled(vagrantA);//Vagrant
+       jobButtonIntern.setEnabled(internA);//Intern
+       jobButtonPackingBoy.setEnabled(packingboyA);//PackingBoy
+       jobButtonFirefighter.setEnabled(firefighterA);//Firefighter
+       jobButtonBanker.setEnabled(bankerA);//BANKER;
+       jobButtonScientist.setEnabled(scientistA);  //Scientist;
+       jobButtonBusinessOwner.setEnabled(businessowerA);//BusinessOwner;
+       jobButtonIndependent.setEnabled(independentA);  //Independent;
+       jobButtonKing.setEnabled(kingA);  //KING;
+       jobButtonSultan.setEnabled(sultanA); //SULTAN
+       jobButtonGod.setEnabled(godA);//GOD
+       jobButtonOmega.setEnabled(omeageA);  //OMEGA
+    }
+///->
     private String recommendation(){
         String recommendation="";
 
