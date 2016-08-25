@@ -10,7 +10,7 @@ package com.example.jelliott.idealapplication;
 
 public class Human {
 
-    private int looks,influence;
+    private Integer looks,influence;
     private String color,neighborhood="nothing",name,countryName;
     //private  NameGenerator generatedName = new NameGenerator();
     private Integer friends,professionAssociates,worshippers;

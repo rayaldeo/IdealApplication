@@ -11,7 +11,7 @@ package com.example.jelliott.idealapplication;
 enum Jobs {
 
     /*Very Low Paying Jobs */
-    NOJOB("null",0,0),/*This is the default state for a job*/
+    NOJOB("NOJob",0,0),/*This is the default state for a job*/
     BEGGER("Begger",5,5),
     VAGRANT("Vagrant",10,10),
 
@@ -25,7 +25,7 @@ enum Jobs {
     BANKER("Banker",60000,50),
 
     /*Medium Paying Jobs with High Influence*/
-    SCIENTIST("Scienctist",70000,4000),
+    SCIENTIST("Scientist",70000,4000),
     INDEPENDENT("Independent",80000,9000),
 
     /*Highest Paying Jobs*/
@@ -61,6 +61,8 @@ enum Jobs {
     }
 
     public String getName(){return name;}
+
+
 
 
 }

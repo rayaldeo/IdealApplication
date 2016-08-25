@@ -27,6 +27,7 @@ public class Family {
         this.familyWorshippers=0;
         this.familyFriends=0;
         this.familyProfessionalAssociates=0;
+        this.country=Countries.NoCountry;
     }
 
     public Family( double familyWealthA,int influenceA,int friendsA,String familyNameA,FamilyMember brotherA, FamilyMember sisterA, FamilyMember fatherA, FamilyMember motherA){
@@ -118,6 +119,10 @@ public class Family {
         public void setCountry(Countries countryA){country=countryA;}
 
         public void setFamilyProfessionalAssociates(int professionalAssociatesA){this.familyProfessionalAssociates=professionalAssociatesA;}
+
+        public void setFamilyFriends(int familyFriendsA){this.familyFriends=familyFriendsA;}
+
+        public void setFamilyWorshippers(int familyWorshippersA){this.familyWorshippers= familyWorshippersA;}
 
 
 }
