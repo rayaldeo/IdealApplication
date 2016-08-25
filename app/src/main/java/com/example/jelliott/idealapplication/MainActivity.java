@@ -2625,7 +2625,7 @@ private void initInstancesDrawer() {
             socialisingWithFriends=Integer.parseInt(lines.get(9));        //Socialize
             firstNamePart=lines.get(10);                                   //First Name
             lastNamePart=lines.get(11);                                   //Last Name
-            human.setJob(getJobFromString(lines.get(12)));                //Job
+            job=(getJobFromString(lines.get(12)));                         //Job
             human.setCountries(getThisCountry(lines.get(13)));            //Human Country
             human.setFriends(Integer.parseInt(lines.get(14)));              //Human Friends
             human.setProfessionalAssociates(Integer.parseInt(lines.get(15)));   //Human Professional Associates
@@ -2661,11 +2661,7 @@ private void initInstancesDrawer() {
     }
     private Jobs getJobFromString(String jobA){
         Jobs tempJob=Jobs.NOJOB;
-        System.out.println("Looking FOr Job");
-        switch(jobA){
-            case "NOJob":
-                tempJob=Jobs.NOJOB;
-                break;
+            switch(jobA){
             case "Begger":
                 tempJob=Jobs.BEGGER;
                 break;
@@ -2707,11 +2703,8 @@ private void initInstancesDrawer() {
                 break;
 
         }
-
-        if(tempJob==Jobs.NOJOB){
-            System.out.println("Job was not found");
-        }
-        return tempJob;
+        System.out.println("TempJob: "+tempJob);
+       return tempJob;
     }
 //->
 
