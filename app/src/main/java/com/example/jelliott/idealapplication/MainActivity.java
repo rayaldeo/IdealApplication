@@ -10,7 +10,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -47,7 +49,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -170,6 +171,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     //Saving Data
     private static final String SETTINGS_PREFERENCE = "SETTINGS_PREFERENCE";
     private String file_name = "dataOne";
+    private  BackgroundSound mBackgroundSound = new BackgroundSound();//Background Music
+    boolean reset =false;
+
 
 
     @Override
@@ -274,7 +278,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                 profileImage.setImageURI(photoPickerIntent.getData());*/
                     // in onCreate or any event where your want the user to
                     // select a file
-                    Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                      Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     // Start the Intent
                     startActivityForResult(galleryIntent, SELECT_PHOTO);
@@ -295,6 +299,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             workingOnPhysicalAppTextView.setText(Integer.toString(workingOnPhysicalApp));
             socialisingWithFriendsTextView.setText(Integer.toString(socialisingWithFriends));
             schoolAttendanceAmountTextView.setText(Integer.toString(schoolAttendanceAmount));
+
+
 ////------------------------------------------------------------------------------------------->//Drawer
         initInstancesDrawer();
 ////------------------------------------------------------------------------------------------------------->
@@ -363,14 +369,15 @@ private void initInstancesDrawer() {
             return true;
 
         }if(id==R.id.action_reset){
-
-            File dir = getFilesDir();
+            reset=true;
+            readFromFile();
+           /* File dir = getFilesDir();//This Reset works but causing two instances of the AsynTask to play...Not Good
             File file = new File(dir, file_name);
             boolean deleted = file.delete();
             Intent i = getBaseContext().getPackageManager()
                     .getLaunchIntentForPackage( getBaseContext().getPackageName() );
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(i);
+            startActivity(i);*/
 
         }
 
@@ -1196,7 +1203,6 @@ private void initInstancesDrawer() {
         //ad.getWindow().setLayout(DrawerLayout.LayoutParams.FILL_PARENT, DrawerLayout.LayoutParams.FILL_PARENT);
         ad.show();
     }
-
 ///->
 
 ///->UPDATING STATS
@@ -1213,33 +1219,22 @@ private void initInstancesDrawer() {
                             @Override
                             public void run() {
                                  healthProgressBar.setProgress(healthProgressBar.getProgress() - intTemp);
-
                                 healthTextView.setText(healthProgressBar.getProgress() - intTemp + "%");
-
-
-
-
-
                             }
                         });
-
                         try {
                             // Sleep for 200 milliseconds.
                             //Just to display the progress slowly
                              Thread.sleep(225);
-
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                         healthProgressBar.setSecondaryProgress(delayhealthProgress-intTemp);
                     }
 
-
                 }
 
             }).start();
-
-
         } else {
             final int additionalHealth = healthProgressBar.getProgress()+healthA;
            new Thread(new Runnable() {
@@ -1253,24 +1248,20 @@ private void initInstancesDrawer() {
                                 healthTextView.setText((healthProgressBar.getProgress()+1) + "%");
                             }
                         });
-
                         try {
                             // Sleep for 200 milliseconds.
                             //Just to display the progress slowly
-                           Thread.sleep(225);
+                           Thread.sleep(100);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
-
-
                 }
 
             }).start();
-
         }
     }
-   private void calculateTheProgressBarPercentage(Double overallWealthA, int influenceAmountA) {//The Influence Progress Bar Percentage is not very accurate...May not be a big issue
+    private void calculateTheProgressBarPercentage(Double overallWealthA, int influenceAmountA) {//The Influence Progress Bar Percentage is not very accurate...May not be a big issue
 
         /*
         Calculating the percentage of the wealth/Influence first and then figuring out if they are <=0 before updating the actual progress Bar...
@@ -2441,18 +2432,21 @@ private void initInstancesDrawer() {
 }
     //These methods is for when the application is paused or temporally closed
 ///->
-    public void onResume() {
-        super.onResume();
-        //mBackgroundSound.execute(null);
-    }
+    @Override
+    protected void onResume() {
+      mBackgroundSound.doInBackground();
+      super.onResume();
 
-    public void onPause() {
+    }
+    @Override
+    protected void onPause() {
+       mBackgroundSound.cancel(true);
         super.onPause();
-        //mBackgroundSound.cancel(true);
         //saveUserProfile();
     }
-
-    public void onStop(){
+    @Override
+    protected void onStop(){
+        mBackgroundSound.cancel(true);
         super.onStop();
         //Save File
         saveUserProfile();
@@ -2486,7 +2480,7 @@ private void initInstancesDrawer() {
        countryButtonRany.setEnabled(rany); //Rany;
        countryButtonHeaven.setEnabled(heaven); //Heaven
 
-    }//Deactivate Pressd button to show a selection was made
+    }//Deactivate Pressed button to show a selection was made
     private void jobButtonActivation(boolean beggerA,boolean vagrantA,boolean internA,boolean packingboyA,boolean firefighterA,boolean bankerA,boolean scientistA
     ,boolean businessowerA,boolean independentA, boolean kingA, boolean sultanA,boolean godA,boolean omeageA){
        jobButtonBeggar.setEnabled(beggerA); //Begger
@@ -2575,7 +2569,7 @@ private void initInstancesDrawer() {
             FileOutputStream fileOutputStream = openFileOutput(file_name,MODE_PRIVATE);
             fileOutputStream.write(data.getBytes());
             fileOutputStream.close();
-            Toast.makeText(this,"Message Saved", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,"Message Saved", Toast.LENGTH_SHORT).show();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -2585,78 +2579,106 @@ private void initInstancesDrawer() {
     }
 
     private void readFromFile() {
-        try {
-            String Message;
-            ArrayList<String> lines = new ArrayList<>();
-            FileInputStream fileInputStream = openFileInput(file_name);
-            InputStreamReader inputStreamReader = new InputStreamReader((fileInputStream));
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            StringBuilder stringBuffer = new StringBuilder();
-            while((Message=bufferedReader.readLine())!=null){
+        if(reset){
+            age = 0;//The Main Program is based off of age so if the age is 0 then it will start from the beginning overwriting data
+            //healthProgressBar.setProgress(100);//Health Bar Progress
+            //family.setCountry(getThisCountry(lines.get(1)));               //Family Country
+            family.setFamilyFriends(0);       //Family Friends
+            family.setFamilyProfessionalAssociates(0); //Family Professional Associates
+            family.setFamilyWorshippers(0);      //FamilyWorshippers
+            family.setFamilyWealth(0);           //Family Wealth
+            family.setFamilyInfluence(0);          //Family Influence
+            schoolAttendanceAmount = 0;              //School Attendance
+            workingOnPhysicalApp = 0;           //Physical Appearance
+            socialisingWithFriends = 0;        //Socialize
+            firstNamePart = "";                                   //First Name
+            lastNamePart = "";                                   //Last Name
+            job = (Jobs.NOJOB);                         //Job
+            //human.setCountries(getThisCountry(lines.get(13)));            //Human Country
+            human.setFriends(0);              //Human Friends
+            human.setProfessionalAssociates(0);   //Human Professional Associates
+            human.setWorshippers(0);     //Human Worshippers
+            human.setLooks(0);           //Human Looks
+            human.setOverAllwealth(0);   //Human Wealth
+            human.setInfluence(0);       //Human Influence
+           continueButton.setEnabled(true);//If the User last game ended with death the Continue Button must be enabled for the Reset Game
+            healthUpdater(100);//To make sure health Progress Bar text match the Progress of the Progress Bar
+            socialisingWithFriendsTextView.setText(String.valueOf(socialisingWithFriends));//These values must be set this way because they will retain the old values until the update from the method.
+            schoolAttendanceAmountTextView.setText(String.valueOf(schoolAttendanceAmount));
+            workingOnPhysicalAppTextView.setText(String.valueOf(workingOnPhysicalApp));
+             IDEALLifeProgram();
+        }else {
+            try {
+                String Message;
+                ArrayList<String> lines = new ArrayList<>();
+                FileInputStream fileInputStream = openFileInput(file_name);
+                InputStreamReader inputStreamReader = new InputStreamReader((fileInputStream));
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                StringBuilder stringBuffer = new StringBuilder();
+                while ((Message = bufferedReader.readLine()) != null) {
                     lines.add(Message);
 
-                //age = Integer.parseInt(lines.get(18));
-                //System.out.println(age);
-                  //stringBuffer.append(Message).append("\n");
+                    //age = Integer.parseInt(lines.get(18));
+                    //System.out.println(age);
+                    //stringBuffer.append(Message).append("\n");
 
-                //age= Integer.parseInt(lines[0]);
-                //System.out.println("Age:"+ age);
-                //String[] lines=stringBuffer.append(Message).append("\n");
+                    //age= Integer.parseInt(lines[0]);
+                    //System.out.println("Age:"+ age);
+                    //String[] lines=stringBuffer.append(Message).append("\n");
                 /*for(String s: lines){
                     System.out.println("Content = " + s);
                     //System.out.println("Content = " + Message);
                     //System.out.println("Length = " + s.length());
                 }*/
-            }
-            System.out.println(lines.get(1));
-            for(int i=0;i<20;i++){
-                //lines.add(bufferedReader.readLine());
-                System.out.println("$$$$$$$$$$$$$$$$$$$$$$$ \n"+lines.get(i)+"\n $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-            }
-            healthProgressBar.setProgress(Integer.parseInt(lines.get(0)));//Health Bar Progress
-            family.setCountry(getThisCountry(lines.get(1)));               //Family Country
-            family.setFamilyFriends(Integer.parseInt(lines.get(2)));       //Family Friends
-            family.setFamilyProfessionalAssociates(Integer.parseInt(lines.get(3))); //Family Professional Associates
-            family.setFamilyWorshippers(Integer.parseInt(lines.get(4)));      //FamilyWorshippers
-            family.setFamilyWealth(Double.parseDouble(lines.get(5)));           //Family Wealth
-            family.setFamilyInfluence(Integer.parseInt(lines.get(6)));          //Family Influence
-            schoolAttendanceAmount=Integer.parseInt(lines.get(7));              //School Attendance
-            workingOnPhysicalApp=Integer.parseInt(lines.get(8));           //Physical Appearance
-            socialisingWithFriends=Integer.parseInt(lines.get(9));        //Socialize
-            firstNamePart=lines.get(10);                                   //First Name
-            lastNamePart=lines.get(11);                                   //Last Name
-            job=(getJobFromString(lines.get(12)));                         //Job
-            human.setCountries(getThisCountry(lines.get(13)));            //Human Country
-            human.setFriends(Integer.parseInt(lines.get(14)));              //Human Friends
-            human.setProfessionalAssociates(Integer.parseInt(lines.get(15)));   //Human Professional Associates
-            human.setWorshippers(Integer.parseInt(lines.get(16)));     //Human Worshippers
-            human.setLooks(Integer.parseInt(lines.get(17)));           //Human Looks
-            human.setOverAllwealth(Double.parseDouble(lines.get(18)));   //Human Wealth
-            human.setInfluence(Integer.parseInt(lines.get(19)));       //Human Influence
-            age=Integer.parseInt(lines.get(20));                       //Age
-            //Setting View on Screen
-            playerNameTextView.setText(firstNamePart);
-            jobTextView.setText(human.getJob().getName());
-            //Make sure these values are at least greater than zero before setting them
-            if(socialisingWithFriends>0){
-                socialisingWithFriendsTextView.setText(String.valueOf(socialisingWithFriends));
-            }
-            if(schoolAttendanceAmount>0){
-                schoolAttendanceAmountTextView.setText(String.valueOf(schoolAttendanceAmount));
-            }
-            if(workingOnPhysicalApp>0){
-                workingOnPhysicalAppTextView.setText(String.valueOf(workingOnPhysicalApp));
-            }
+                }
+                System.out.println(lines.get(1));
+                for (int i = 0; i < 20; i++) {
+                    //lines.add(bufferedReader.readLine());
+                    System.out.println("$$$$$$$$$$$$$$$$$$$$$$$ \n" + lines.get(i) + "\n $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+                }
+                healthProgressBar.setProgress(Integer.parseInt(lines.get(0)));//Health Bar Progress
+                family.setCountry(getThisCountry(lines.get(1)));               //Family Country
+                family.setFamilyFriends(Integer.parseInt(lines.get(2)));       //Family Friends
+                family.setFamilyProfessionalAssociates(Integer.parseInt(lines.get(3))); //Family Professional Associates
+                family.setFamilyWorshippers(Integer.parseInt(lines.get(4)));      //FamilyWorshippers
+                family.setFamilyWealth(Double.parseDouble(lines.get(5)));           //Family Wealth
+                family.setFamilyInfluence(Integer.parseInt(lines.get(6)));          //Family Influence
+                schoolAttendanceAmount = Integer.parseInt(lines.get(7));              //School Attendance
+                workingOnPhysicalApp = Integer.parseInt(lines.get(8));           //Physical Appearance
+                socialisingWithFriends = Integer.parseInt(lines.get(9));        //Socialize
+                firstNamePart = lines.get(10);                                   //First Name
+                lastNamePart = lines.get(11);                                   //Last Name
+                job = (getJobFromString(lines.get(12)));                         //Job
+                human.setCountries(getThisCountry(lines.get(13)));            //Human Country
+                human.setFriends(Integer.parseInt(lines.get(14)));              //Human Friends
+                human.setProfessionalAssociates(Integer.parseInt(lines.get(15)));   //Human Professional Associates
+                human.setWorshippers(Integer.parseInt(lines.get(16)));     //Human Worshippers
+                human.setLooks(Integer.parseInt(lines.get(17)));           //Human Looks
+                human.setOverAllwealth(Double.parseDouble(lines.get(18)));   //Human Wealth
+                human.setInfluence(Integer.parseInt(lines.get(19)));       //Human Influence
+                age = Integer.parseInt(lines.get(20));                       //Age
+                //Setting View on Screen
+                playerNameTextView.setText(firstNamePart);
+                jobTextView.setText(human.getJob().getName());
+                //Make sure these values are at least greater than zero before setting them
+                if (socialisingWithFriends > 0) {
+                    socialisingWithFriendsTextView.setText(String.valueOf(socialisingWithFriends));
+                }
+                if (schoolAttendanceAmount > 0) {
+                    schoolAttendanceAmountTextView.setText(String.valueOf(schoolAttendanceAmount));
+                }
+                if (workingOnPhysicalApp > 0) {
+                    workingOnPhysicalAppTextView.setText(String.valueOf(workingOnPhysicalApp));
+                }
 
 
-            //informationalTextView.setText(stringBuffer.toString());
-                  } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+                //informationalTextView.setText(stringBuffer.toString());
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-
-
 
     }
     private Jobs getJobFromString(String jobA){
@@ -2705,6 +2727,25 @@ private void initInstancesDrawer() {
         }
         System.out.println("TempJob: "+tempJob);
        return tempJob;
+    }
+
+    private class BackgroundSound extends AsyncTask<Void, Void, Void> {
+        private  MediaPlayer mediaPlayer;
+        private volatile boolean running = true;
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            if (!isCancelled()) {
+                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.quantum_music);
+                mediaPlayer.setLooping(true); // Set looping
+                mediaPlayer.setVolume(100, 100);
+                mediaPlayer.start();
+            }
+
+            return null;
+        }
+
+
     }
 //->
 
