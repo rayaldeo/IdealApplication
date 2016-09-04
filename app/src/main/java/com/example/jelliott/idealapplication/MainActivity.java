@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private String file_name = "dataOne";
     private  BackgroundSound mBackgroundSound = new BackgroundSound();//Background Music
     boolean reset =false;
-
+    boolean actionItemTaken= false;//If an Action item was taken right before the User closes the game then it needs to be saved to determine
 
 
     @Override
@@ -205,6 +205,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             changeCountryButton = (Button) findViewById(R.id.moveToButton);
             changeCountryButton.setOnClickListener(new OnClickListener() {
                 public void onClick(View v) {
+                    actionItemTaken=true;
+                    saveUserProfile();
                     selectACountry();
                 }
             });
@@ -219,6 +221,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             selectAJobButton.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
+                    actionItemTaken=true;
+                    saveUserProfile();
                     availableJobs();
                     return false;
                 }
@@ -227,6 +231,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             schoolButton = (Button) findViewById(R.id.schoolButton);
             schoolButton.setOnClickListener(new OnClickListener() {
                 public void onClick(View v) {
+                    actionItemTaken=true;
+                    saveUserProfile();
                     goToSchool();
                 }
             });
@@ -234,6 +240,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             workOnPhysicalAppearanceButton = (Button) findViewById(R.id.physicalButton);
             workOnPhysicalAppearanceButton.setOnClickListener(new OnClickListener() {
                 public void onClick(View v) {
+                    actionItemTaken=true;
                     workOnPhysical();
                 }
             });
@@ -241,6 +248,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             socializeWithPeopleButton = (Button) findViewById(R.id.socializeButton);
             socializeWithPeopleButton.setOnClickListener(new OnClickListener() {
                 public void onClick(View v) {
+                    actionItemTaken=true;
+                    saveUserProfile();
                     socializeWithPeople();
                 }
             });
@@ -249,9 +258,11 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             continueButton.setOnClickListener(new OnClickListener() {
                 public void onClick(View v) {
                     if (human.getOverAllWealth() < maxOverallWealth && human.getInfluence() < maxInfluence) {
-                        IDEALLifeProgram();
-                        continueButton.clearAnimation();
+                          continueButton.clearAnimation();
+                           IDEALLifeProgram();
+                           actionItemTaken = false;
                     } else {
+                        actionItemTaken=true;
                         ///The game is finished at this point
                         informationalTextView.setText("You have created your ideal life at age:" + age + "  CONGRATULATIONS");
                         //Disable everything
@@ -307,8 +318,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
          buttonActivation(false);
 
          readFromFile();
-
          IDEALLifeProgram();
+
 
     }
 
@@ -371,6 +382,7 @@ private void initInstancesDrawer() {
         }if(id==R.id.action_reset){
             reset=true;
             readFromFile();
+            IDEALLifeProgram();
            /* File dir = getFilesDir();//This Reset works but causing two instances of the AsynTask to play...Not Good
             File file = new File(dir, file_name);
             boolean deleted = file.delete();
@@ -2280,9 +2292,9 @@ private void initInstancesDrawer() {
         animRotate.setDuration(700);
 
         try {
+         age++;
             saveUserProfile();//Try to Save Profile
-                   age++;
-                   //Tutorial for the first 5 years;
+                 //Tutorial for the first 5 years;
                    if(age==1) {
                        System.out.println("A0");
                        init();
@@ -2351,9 +2363,9 @@ private void initInstancesDrawer() {
                        professionalAssociates=0;
                    }else{
                       if(!shownOne) {
-                          buttonActivation(true);
-                          keepStatsUpToDate(family.getFamilyWealth(),family.getFamilyInfluence(), job,family.getFamilyCountry().getTaxes()
-                          ,0,family.getFamilyWorshippers(),family.getFamilyFriends(), 0);
+                          //buttonActivation(true);
+                           keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), job, family.getFamilyCountry().getTaxes()
+                                      , 0, family.getFamilyWorshippers(), family.getFamilyFriends(), 0);
                           informationalTextView.setText("IDEAL:Adult Life" + "\n" + "You are now an adult an inherited everything from your family. Now you will have to work on your own to secure your IDEAL Life" + "\n"
                                   + "If you can reach $10,000,000 in wealth or 2,000,000 in influence;you would have won the game!!"
                                   + "\n There are also many other features to unlock in the game"
@@ -2373,30 +2385,7 @@ private void initInstancesDrawer() {
                           //System.out.println("Progress Bar:"+healthProgressBar.getProgress());
                           //When the user did these action 10 times;the buttons should be disabled and set the text of button to MAX..The user must reach max numbers in socialisingWithFriends and workingOnPhysicalApp before disabling the school Button
                           //because if school reaches max first then the user may not be able to access all of the jobs
-                          if(socialisingWithFriends>=10) {
-                              socializeWithPeopleButton.setEnabled(false);
-                              socialisingWithFriendsTextView.setBackgroundColor(Color.parseColor("#FF0000"));
-                              socialisingWithFriendsTextView.setText("MAX");
-                              //HTML may be a limitation in android code
-                              //socializeWithPeopleButton.setText(R.string.socialize_button + "\n" + Html.fromHtml("<font color='red'>MAX</font>"));
-                              if (workingOnPhysicalApp >= 10) {
-                                  workOnPhysicalAppearanceButton.setEnabled(false);
-                                  //Set TextView color to Red and TextView to MAX
-                                  workingOnPhysicalAppTextView.setBackgroundColor(Color.parseColor("#FF0000"));
-                                  workingOnPhysicalAppTextView.setText("MAX");
-                                  //workOnPhysicalAppearanceButton.setText(R.string.physical_Button + "\n" + Html.fromHtml("<font color='red'>MAX</font>"));
-                                  if (schoolAttendanceAmount >= 10) {
-                                      schoolButton.setEnabled(false);
-                                      schoolAttendanceAmountTextView.setBackgroundColor(Color.parseColor("#FF0000"));
-                                      schoolAttendanceAmountTextView.setText("MAX");
-                                      //Changing text color within a button with Multiple Lines
-                                      //schoolButton.setText(Html.fromHtml("<font color='red'>First line</font><br/><font color='blue'>Second line</font>"));
-                                      //schoolButton.setText(R.string.school_Button + "\n" + Html.fromHtml("<font color='red'>MAX</font>"));
-
-                                  }
-                              }
-                          }
-                          //Let the User make a life Decision//Disable after footer button press
+                           //Let the User make a life Decision//Disable after footer button press
                             buttonActivation(true);
                             grownUpHuman();
                           keepStatsUpToDate(wealth*1.0,influence,job,human.getCountry().getTaxes(),looks,worshippers,friends,professionalAssociates);
@@ -2456,15 +2445,36 @@ private void initInstancesDrawer() {
 
 ///-> Enabling and disabling buttons
     private void buttonActivation(boolean activate){
+        if(socialisingWithFriends>=10) {
+            socializeWithPeopleButton.setEnabled(false);
+            //socialisingWithFriendsTextView.setBackgroundColor(Color.parseColor("#FF0000"));
+            socialisingWithFriendsTextView.setText("MAX");
+        }else {
+            socializeWithPeopleButton.setEnabled(activate);
+        }
+            //HTML may be a limitation in android code
+            //socializeWithPeopleButton.setText(R.string.socialize_button + "\n" + Html.fromHtml("<font color='red'>MAX</font>"));
+            if (workingOnPhysicalApp >= 10) {
+                workOnPhysicalAppearanceButton.setEnabled(false);
+                //Set TextView color to Red and TextView to MAX
+                //workingOnPhysicalAppTextView.setBackgroundColor(Color.parseColor("#FF0000"));
+                workingOnPhysicalAppTextView.setText("MAX");
+            }else {
+                workOnPhysicalAppearanceButton.setEnabled(activate);
+            }
+                //workOnPhysicalAppearanceButton.setText(R.string.physical_Button + "\n" + Html.fromHtml("<font color='red'>MAX</font>"));
+                if (schoolAttendanceAmount >= 10) {
+                    schoolButton.setEnabled(false);
+                    //schoolAttendanceAmountTextView.setBackgroundColor(Color.parseColor("#FF0000"));
+                    schoolAttendanceAmountTextView.setText("MAX");
+                }else {
+                    schoolButton.setEnabled(activate);
+                }
+
         changeCountryButton.setEnabled(activate);
 
         selectAJobButton.setEnabled(activate);
 
-        schoolButton.setEnabled(activate);
-
-        workOnPhysicalAppearanceButton.setEnabled(activate);
-
-        socializeWithPeopleButton.setEnabled(activate);
     }
     private void countryButtonActivation(boolean irada,boolean itican,boolean albaq,boolean trinentina, boolean alibico, boolean ugeria, boolean portada,
     boolean kuwador,boolean ukrark,boolean rany, boolean heaven){
@@ -2538,30 +2548,59 @@ private void initInstancesDrawer() {
 ///->Save and Read User Profile
 
     private void saveUserProfile(){
-            String data = Integer.toString(healthProgressBar.getProgress()) +'\n'+//Health Bar Progress
-                    family.getFamilyCountry().getName()+'\n'+                 //Family Country
-                    Integer.toString(family.getFamilyFriends()) +'\n'+        //Family Friends
-                    Integer.toString(family.getFamilyProfessionalAssociates())+'\n'+//Family Professional Associates
-                   Integer.toString(family.getFamilyWorshippers())+'\n'+       //FamilyWorshippers
-                   Double.toString(family.getFamilyWealth())+'\n'+             //Family Wealth
-                   Integer.toString(family.getFamilyInfluence())+'\n'+         //Family Influence
-                   Integer.toString(schoolAttendanceAmount)+'\n'+              //School Attendance
-                   Integer.toString(workingOnPhysicalApp)+'\n'+                //Physical Appearance
-                    Integer.toString(socialisingWithFriends)+'\n'+             //Socialize
-                    firstNamePart+'\n'+                                        //First Name
-                    lastNamePart+'\n'+                                         //Last Name
-                  human.getJob().getName()+'\n'+                               //Job
-                 human.getCountryString()+'\n'+                                //Human Country
-                Integer.toString(human.getFriends())+'\n'+                     //Human Friends
-                Integer.toString(human.getProfessionalAssociates())+'\n'+      //Human Professional Associates
-                Integer.toString(human.getWorshippers())+'\n'+                 //Human Worshippers
-                Integer.toString(human.getLooks())+'\n'+                       //Human Looks
-                Double.toString(human.getOverAllWealth())+'\n'+                //Human Wealth
-                Integer.toString(human.getInfluence())+'\n'+                   //Human Influence
-                Integer.toString(age)       // +'\n'+                                   //Age
-                //"DONE"
-                ;
-
+        String data;
+        if(reset){
+            data= Integer.toString(100) + '\n' +//Health Bar Progress
+                    family.getFamilyCountry().getName() + '\n' +                 //Family Country
+                    Integer.toString(0) + '\n' +        //Family Friends
+                    Integer.toString(0) + '\n' +//Family Professional Associates
+                    Integer.toString(0) + '\n' +       //FamilyWorshippers
+                    Double.toString(0) + '\n' +             //Family Wealth
+                    Integer.toString(0) + '\n' +         //Family Influence
+                    Integer.toString(0) + '\n' +              //School Attendance
+                    Integer.toString(0) + '\n' +                //Physical Appearance
+                    Integer.toString(0) + '\n' +             //Socialize
+                    firstNamePart + '\n' +                                        //First Name
+                    lastNamePart + '\n' +                                         //Last Name
+                    Jobs.NOJOB.getName() + '\n' +                               //Job
+                    human.getCountryString() + '\n' +                                //Human Country
+                    Integer.toString(0) + '\n' +                     //Human Friends
+                    Integer.toString(0) + '\n' +      //Human Professional Associates
+                    Integer.toString(0) + '\n' +                 //Human Worshippers
+                    Integer.toString(0) + '\n' +                       //Human Looks
+                    Double.toString(0) + '\n' +                //Human Wealth
+                    Integer.toString(0) + '\n' +                   //Human Influence
+                    Integer.toString(0)       // +'\n'+                                   //Age
+            //"DONE"
+            ;
+            reset=false;
+        }else {
+            data= Integer.toString(healthProgressBar.getProgress()) + '\n' +//Health Bar Progress
+                    family.getFamilyCountry().getName() + '\n' +                 //Family Country
+                    Integer.toString(family.getFamilyFriends()) + '\n' +        //Family Friends
+                    Integer.toString(family.getFamilyProfessionalAssociates()) + '\n' +//Family Professional Associates
+                    Integer.toString(family.getFamilyWorshippers()) + '\n' +       //FamilyWorshippers
+                    Double.toString(family.getFamilyWealth()) + '\n' +             //Family Wealth
+                    Integer.toString(family.getFamilyInfluence()) + '\n' +         //Family Influence
+                    Integer.toString(schoolAttendanceAmount) + '\n' +              //School Attendance
+                    Integer.toString(workingOnPhysicalApp) + '\n' +                //Physical Appearance
+                    Integer.toString(socialisingWithFriends) + '\n' +             //Socialize
+                    firstNamePart + '\n' +                                        //First Name
+                    lastNamePart + '\n' +                                         //Last Name
+                    human.getJob().getName() + '\n' +                               //Job
+                    human.getCountryString() + '\n' +                                //Human Country
+                    Integer.toString(human.getFriends()-family.getFamilyFriends()) + '\n' +                     //Human Friends
+                    Integer.toString(human.getProfessionalAssociates()-family.getFamilyProfessionalAssociates()) + '\n' +      //Human Professional Associates
+                    Integer.toString(human.getWorshippers()-family.getFamilyWorshippers()) + '\n' +                 //Human Worshippers
+                    Integer.toString(human.getLooks()) + '\n' +                       //Human Looks
+                    Double.toString(human.getOverAllWealth()-family.getFamilyWealth()) + '\n' +                //Human Wealth
+                    Integer.toString(human.getInfluence()-family.getFamilyInfluence()) + '\n' +                   //Human Influence
+                    Integer.toString(age)  + '\n' +      // +'\n'+                                   //Age
+                    Boolean.toString(actionItemTaken)                ///Keep Track on whether an Action Button was taken or not
+                    //"DONE"
+                    ;
+        }
+        System.out.println("-------------------------------------");
         System.out.println(data);
         System.out.println("-------------------------------------");
 
@@ -2580,6 +2619,7 @@ private void initInstancesDrawer() {
 
     private void readFromFile() {
         if(reset){
+            System.out.println("Reset");
             age = 0;//The Main Program is based off of age so if the age is 0 then it will start from the beginning overwriting data
             //healthProgressBar.setProgress(100);//Health Bar Progress
             //family.setCountry(getThisCountry(lines.get(1)));               //Family Country
@@ -2606,11 +2646,21 @@ private void initInstancesDrawer() {
             socialisingWithFriendsTextView.setText(String.valueOf(socialisingWithFriends));//These values must be set this way because they will retain the old values until the update from the method.
             schoolAttendanceAmountTextView.setText(String.valueOf(schoolAttendanceAmount));
             workingOnPhysicalAppTextView.setText(String.valueOf(workingOnPhysicalApp));
-             IDEALLifeProgram();
-        }else {
+            age_Turn_textView.setText("Age: " + age);
+            playerNameTextView.setText(firstNamePart);
+            jobTextView.setText(human.getJob().getName());
+            tax = human.getCountry().getTaxes();
+            overallWealthTextView.setText(currencyFormat.format(human.getOverAllWealth()));
+            String influenceAmountString = Double.toString(human.getInfluence());
+            influenceTextView.setText(influenceAmountString);
+            jobTextView.setText(getString(R.string.getJob_text) + ":"  + human.getJob());
+            countryTextView.setText(getString(R.string.getCountry_text) + ":" +  human.getCountryString());
+            taxTextView.setText(getString(R.string.tax_text) + ":" + currencyFormat.format(tax));
+             //IDEALLifeProgram();
+         }else {
             try {
                 String Message;
-                ArrayList<String> lines = new ArrayList<>();
+                ArrayList<String> lines = new ArrayList<>(22);
                 FileInputStream fileInputStream = openFileInput(file_name);
                 InputStreamReader inputStreamReader = new InputStreamReader((fileInputStream));
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
@@ -2632,7 +2682,7 @@ private void initInstancesDrawer() {
                 }*/
                 }
                 System.out.println(lines.get(1));
-                for (int i = 0; i < 20; i++) {
+                for (int i = 0; i < 21; i++) {
                     //lines.add(bufferedReader.readLine());
                     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$ \n" + lines.get(i) + "\n $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
                 }
@@ -2654,12 +2704,26 @@ private void initInstancesDrawer() {
                 human.setProfessionalAssociates(Integer.parseInt(lines.get(15)));   //Human Professional Associates
                 human.setWorshippers(Integer.parseInt(lines.get(16)));     //Human Worshippers
                 human.setLooks(Integer.parseInt(lines.get(17)));           //Human Looks
-                human.setOverAllwealth(Double.parseDouble(lines.get(18)));   //Human Wealth
-                human.setInfluence(Integer.parseInt(lines.get(19)));       //Human Influence
+                human.setOverAllwealth((Double.parseDouble(lines.get(18))));   //Human Wealth
+                human.setInfluence(influence=(Integer.parseInt(lines.get(19))));       //Human Influence
                 age = Integer.parseInt(lines.get(20));                       //Age
-                //Setting View on Screen
+                actionItemTaken= Boolean.parseBoolean(lines.get(21));
+                if(actionItemTaken&&age>=19){//If user Made an Action Item before the closing the App..then lock the buttons when the user comes back..if not....buttons activate
+                    buttonActivation(false);
+                }else{
+                    buttonActivation(true);
+                }
+                //Setting Views on Screen
+                age_Turn_textView.setText("Age: " + age);
                 playerNameTextView.setText(firstNamePart);
                 jobTextView.setText(human.getJob().getName());
+                tax = human.getCountry().getTaxes();
+                overallWealthTextView.setText(currencyFormat.format(human.getOverAllWealth()));
+                String influenceAmountString = Double.toString(human.getInfluence());
+                influenceTextView.setText(influenceAmountString);
+                jobTextView.setText(getString(R.string.getJob_text) + ":"  + human.getJob());
+                countryTextView.setText(getString(R.string.getCountry_text) + ":" +  human.getCountryString());
+                taxTextView.setText(getString(R.string.tax_text) + ":" + currencyFormat.format(tax));
                 //Make sure these values are at least greater than zero before setting them
                 if (socialisingWithFriends > 0) {
                     socialisingWithFriendsTextView.setText(String.valueOf(socialisingWithFriends));
@@ -2670,15 +2734,17 @@ private void initInstancesDrawer() {
                 if (workingOnPhysicalApp > 0) {
                     workingOnPhysicalAppTextView.setText(String.valueOf(workingOnPhysicalApp));
                 }
-
-
-                //informationalTextView.setText(stringBuffer.toString());
+          //informationalTextView.setText(stringBuffer.toString());
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+        //Reset all the additional values for a  returning and a new reset Game
+        System.out.println("Reseting the Values......................................");
+        wealth=0;influence=0;tax=0;looks=0;worshippers=0;friends=0;professionalAssociates=0;
+        System.out.println(".............................................................");
 
     }
     private Jobs getJobFromString(String jobA){
