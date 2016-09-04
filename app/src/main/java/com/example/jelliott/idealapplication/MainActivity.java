@@ -96,10 +96,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private TextView taxTextViewprofileDialog;
     private TextView worshippersTextViewprofileDialog;
 
-//Saved Preferences
-    private String familyCountryPref,familyWealthPref,humanFNamePref,humanLNamePref,humanJobPref,huamnCountryPref,humanHealthPref;
-    private String familyFriendsPref ,familyProfessionalAssocPref,familyWorshippersPref,familyInfluencePref,humanFriendPref,agePref;
-    private String humanworkOnPhyPref,humanschoolAttenPref,humanSocializePref,humanProffessionalAssocPref,humanWorshippersPref,humanLooksPref,humanWealthPref,humanInfluecnePref;
     //For the Progress Bars
     //private static final int PROGRESS = 0x1;//May use
     private Handler mHandler;
@@ -116,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 //Separate Dialogs
     private Dialog alertDialogProfile;
     private Human human;
-    private int age = 0, schoolAttendanceAmount = 0, socialisingWithFriends = 0, workingOnPhysicalApp = 0 , wishes = 0;
+    private int age = 1, schoolAttendanceAmount = 0, socialisingWithFriends = 0, workingOnPhysicalApp = 0 , wishes = 0;
     private int looks = 0, worshippers = 0, friends = 0, professionalAssociates = 0;
     private double wealth = 0.0, tax = 0.0;
     private Button countryButtonIrada;//Irada
@@ -257,10 +253,11 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             continueButton = (Button) findViewById(R.id.continueButton);
             continueButton.setOnClickListener(new OnClickListener() {
                 public void onClick(View v) {
+                    age++;
                     if (human.getOverAllWealth() < maxOverallWealth && human.getInfluence() < maxInfluence) {
-                          continueButton.clearAnimation();
-                           IDEALLifeProgram();
-                           actionItemTaken = false;
+                        age_Turn_textView.setText("Age: " + age);
+                          IDEALLifeProgram();
+                        if(age>=20) {actionItemTaken = false; }//This should only be active at and after age 20
                     } else {
                         actionItemTaken=true;
                         ///The game is finished at this point
@@ -316,7 +313,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         initInstancesDrawer();
 ////------------------------------------------------------------------------------------------------------->
          buttonActivation(false);
-
          readFromFile();
          IDEALLifeProgram();
 
@@ -382,7 +378,10 @@ private void initInstancesDrawer() {
         }if(id==R.id.action_reset){
             reset=true;
             readFromFile();
+            shown = false;//Display text for Family Mode and Adult Mode in Game
+            shownOne=false;
             IDEALLifeProgram();
+            informationalTextView.setText("Press the Continue Button to Start a New Game");
            /* File dir = getFilesDir();//This Reset works but causing two instances of the AsynTask to play...Not Good
             File file = new File(dir, file_name);
             boolean deleted = file.delete();
@@ -1435,6 +1434,26 @@ private void initInstancesDrawer() {
             family.setNeighborhood(countryOfUser.getPoorNeighborHood());
             human.setNeighborhood(countryOfUser.getPoorNeighborHood());
         }
+        //update View on the screen
+
+        tax = family.getFamilyCountry().getTaxes();
+        overallWealthTextView.setText(currencyFormat.format(family.getFamilyWealth()));
+        String influenceAmountString = Double.toString(human.getInfluence());
+        influenceTextView.setText(influenceAmountString);
+        countryTextView.setText(getString(R.string.getCountry_text) + ":" +  family.getFamilyCountry().getName());
+        taxTextView.setText(getString(R.string.tax_text) + ":" + currencyFormat.format(tax));
+        //This "if" statement is going to see whether our percentage function will give something less than 1...which the progress bars can no handle
+        if (overallWealthTextView.getText().length() <= 5 ) {
+            calculateTheProgressBarPercentage(1.0, family.getFamilyInfluence());
+
+
+        }
+        if (influenceTextView.getText().length() <= 4) {
+            calculateTheProgressBarPercentage(family.getFamilyWealth(), 1);
+
+        }
+
+        calculateTheProgressBarPercentage(family.getFamilyWealth(), family.getFamilyInfluence());
     }
 ///->
 
@@ -2292,7 +2311,6 @@ private void initInstancesDrawer() {
         animRotate.setDuration(700);
 
         try {
-         age++;
             saveUserProfile();//Try to Save Profile
                  //Tutorial for the first 5 years;
                    if(age==1) {
@@ -2307,6 +2325,7 @@ private void initInstancesDrawer() {
                        continueButton.startAnimation(animationFade);
                        informationalTextView.setText("Press the 'Continue Button' to begin the game");
                    } else if (age == 2) {
+                       continueButton.clearAnimation();
                        //profileImage.startAnimation(AnimationUtils.loadAnimation(getBaseContext(), android.R.anim.fade_in));
                        profileImage.startAnimation(animationFade);
                        informationalTextView.setText("Holding down the Image View will give you access to change your profile picture.Tapping it will send you to your Profile Information Dialog ");
@@ -2345,8 +2364,12 @@ private void initInstancesDrawer() {
                           //Disable the Neutral button so that the user don't end up in a state of nothing going on
                            //Disables a alertDialog Button, though method must be called after dialog is shown
                            shown=true;
+                           tax = family.getFamilyCountry().getTaxes();
+                           overallWealthTextView.setText(currencyFormat.format(family.getFamilyWealth()));
+                           String influenceAmountString = Double.toString(family.getFamilyInfluence());
+                           influenceTextView.setText(influenceAmountString);
                        }else{
-                           informationalTextView.setText("Turn: " + age + "\n" + "|Family" + "|Wealth:" + family.getFamilyWealth() + "|Influence:" +family.getFamilyInfluence()+ "|Friends:" + family.getFamilyFriends() + "|" + "|Worshippers: " + family.getFamilyWorshippers()
+                          informationalTextView.setText("Turn: " + age + "\n" + "|Family" + "|Wealth:" + family.getFamilyWealth() + "|Influence:" +family.getFamilyInfluence()+ "|Friends:" + family.getFamilyFriends() + "|" + "|Worshippers: " + family.getFamilyWorshippers()
                                    + "\n" + chainString);
                            //Reset the chain so that previous messages are removed
                            chainString="";
@@ -2363,6 +2386,7 @@ private void initInstancesDrawer() {
                        professionalAssociates=0;
                    }else{
                       if(!shownOne) {
+                          System.out.println("Shown is false");
                           //buttonActivation(true);
                            keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), job, family.getFamilyCountry().getTaxes()
                                       , 0, family.getFamilyWorshippers(), family.getFamilyFriends(), 0);
@@ -2373,6 +2397,7 @@ private void initInstancesDrawer() {
                                   + "\n Create your IDEAL Life");
                            shownOne = true;
                        }else{
+                          System.out.println("Shown is true");
                           if(healthProgressBar.getProgress()>=1) {
                               //Lose One Health Every Turn
                               healthUpdater(-1);
@@ -2417,7 +2442,7 @@ private void initInstancesDrawer() {
             } catch (Throwable t) {
                    System.out.println("Halted due to an error: " + t);
             }
-        age_Turn_textView.setText("Age: " + age);
+
 }
     //These methods is for when the application is paused or temporally closed
 ///->
@@ -2550,6 +2575,8 @@ private void initInstancesDrawer() {
     private void saveUserProfile(){
         String data;
         if(reset){
+            firstNamePart="NOName";                                     //First Name
+            lastNamePart="NOName";
             data= Integer.toString(100) + '\n' +//Health Bar Progress
                     family.getFamilyCountry().getName() + '\n' +                 //Family Country
                     Integer.toString(0) + '\n' +        //Family Friends
@@ -2570,7 +2597,8 @@ private void initInstancesDrawer() {
                     Integer.toString(0) + '\n' +                       //Human Looks
                     Double.toString(0) + '\n' +                //Human Wealth
                     Integer.toString(0) + '\n' +                   //Human Influence
-                    Integer.toString(0)       // +'\n'+                                   //Age
+                    Integer.toString(0)     + '\n' +      // +'\n'+                                   //Age
+                    Boolean.toString(actionItemTaken)                ///Keep Track on whether an Action Button was taken or not
             //"DONE"
             ;
             reset=false;
@@ -2616,11 +2644,10 @@ private void initInstancesDrawer() {
             e.printStackTrace();
         }
     }
-
     private void readFromFile() {
         if(reset){
             System.out.println("Reset");
-            age = 0;//The Main Program is based off of age so if the age is 0 then it will start from the beginning overwriting data
+            age = 1;//The Main Program is based off of age so if the age is 0 then it will start from the beginning overwriting data
             //healthProgressBar.setProgress(100);//Health Bar Progress
             //family.setCountry(getThisCountry(lines.get(1)));               //Family Country
             family.setFamilyFriends(0);       //Family Friends
@@ -2660,13 +2687,16 @@ private void initInstancesDrawer() {
          }else {
             try {
                 String Message;
-                ArrayList<String> lines = new ArrayList<>(22);
+                ArrayList<String> lines = new ArrayList<>();
                 FileInputStream fileInputStream = openFileInput(file_name);
                 InputStreamReader inputStreamReader = new InputStreamReader((fileInputStream));
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
                 StringBuilder stringBuffer = new StringBuilder();
+                int a=0;
                 while ((Message = bufferedReader.readLine()) != null) {
                     lines.add(Message);
+                    a++;
+                    System.out.println("Count:"+ a);
 
                     //age = Integer.parseInt(lines.get(18));
                     //System.out.println(age);
@@ -2686,6 +2716,7 @@ private void initInstancesDrawer() {
                     //lines.add(bufferedReader.readLine());
                     System.out.println("$$$$$$$$$$$$$$$$$$$$$$$ \n" + lines.get(i) + "\n $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
                 }
+                System.out.println("Array Length"+lines.size());
                 healthProgressBar.setProgress(Integer.parseInt(lines.get(0)));//Health Bar Progress
                 family.setCountry(getThisCountry(lines.get(1)));               //Family Country
                 family.setFamilyFriends(Integer.parseInt(lines.get(2)));       //Family Friends
@@ -2708,7 +2739,7 @@ private void initInstancesDrawer() {
                 human.setInfluence(influence=(Integer.parseInt(lines.get(19))));       //Human Influence
                 age = Integer.parseInt(lines.get(20));                       //Age
                 actionItemTaken= Boolean.parseBoolean(lines.get(21));
-                if(actionItemTaken&&age>=19){//If user Made an Action Item before the closing the App..then lock the buttons when the user comes back..if not....buttons activate
+                if(actionItemTaken&&age>=20){//If user Made an Action Item before the closing the App..then lock the buttons when the user comes back..if not....buttons activate
                     buttonActivation(false);
                 }else{
                     buttonActivation(true);
@@ -2717,10 +2748,18 @@ private void initInstancesDrawer() {
                 age_Turn_textView.setText("Age: " + age);
                 playerNameTextView.setText(firstNamePart);
                 jobTextView.setText(human.getJob().getName());
-                tax = human.getCountry().getTaxes();
-                overallWealthTextView.setText(currencyFormat.format(human.getOverAllWealth()));
-                String influenceAmountString = Double.toString(human.getInfluence());
-                influenceTextView.setText(influenceAmountString);
+                if(age>20) {
+                    tax = human.getCountry().getTaxes();
+                    overallWealthTextView.setText(currencyFormat.format(human.getOverAllWealth()));
+                    String influenceAmountString = Double.toString(human.getInfluence());
+                    influenceTextView.setText(influenceAmountString);
+                }else{
+                    tax = family.getFamilyCountry().getTaxes();
+                    overallWealthTextView.setText(currencyFormat.format(family.getFamilyWealth()));
+                    String influenceAmountString = Double.toString(family.getFamilyInfluence());
+                    influenceTextView.setText(influenceAmountString);
+                }
+
                 jobTextView.setText(getString(R.string.getJob_text) + ":"  + human.getJob());
                 countryTextView.setText(getString(R.string.getCountry_text) + ":" +  human.getCountryString());
                 taxTextView.setText(getString(R.string.tax_text) + ":" + currencyFormat.format(tax));
@@ -2747,6 +2786,7 @@ private void initInstancesDrawer() {
         System.out.println(".............................................................");
 
     }
+///->
     private Jobs getJobFromString(String jobA){
         Jobs tempJob=Jobs.NOJOB;
             switch(jobA){
