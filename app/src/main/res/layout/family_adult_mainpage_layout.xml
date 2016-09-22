@@ -24,8 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/purplebackground_color"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
         </android.support.design.widget.AppBarLayout>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
