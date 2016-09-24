@@ -665,7 +665,7 @@ private void initInstancesDrawer() {
         }
         final ScrollView scrollView = new ScrollView(this);
         scrollView.addView(layout);
-        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.AlertDialogCutomTheme);
+        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.SplashTheme);
         AlertDialog.Builder ad = new AlertDialog.Builder(ctw);
        ad
                 .setMessage("Select A Job. \n Current Country:" + human.getCountry())
@@ -704,7 +704,7 @@ private void initInstancesDrawer() {
         ad.show();
     }
     private void availableJobs(){
-        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.AlertDialogCutomTheme);
+        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.SplashTheme);
         AlertDialog.Builder ad = new AlertDialog.Builder(ctw);
         ad
                 .setMessage("Available Jobs."  + "\n" +
@@ -746,7 +746,7 @@ private void initInstancesDrawer() {
         //This String Variable is used to hold all of the messages in one string
         String chainText="";
             //This Dialog is used to show which jobs were unlocked
-        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.AlertDialogCutomTheme);
+        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.SplashTheme);
         final AlertDialog.Builder adNotifier = new AlertDialog.Builder(ctw);
          //adNotifier.setView(convertView);
         //alertDialog_content_textView = (TextView) findViewById(R.id.alertDialog_content_textView);
@@ -865,7 +865,7 @@ private void initInstancesDrawer() {
         workingOnPhysicalApp++;
         //workingOnPhysicalAppTextView.setText(Integer.toString(workingOnPhysicalApp));
         workingOnPhysicalAppTextView.setText(String.format(Locale.US,"%02d",workingOnPhysicalApp));
-        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.AlertDialogCutomTheme);
+        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.SplashTheme);
         final AlertDialog.Builder ad = new AlertDialog.Builder(ctw);
     ad
                 .setNeutralButton("Confirm", new DialogInterface.OnClickListener() {
@@ -918,7 +918,7 @@ private void initInstancesDrawer() {
         socialisingWithFriends++;
         socialisingWithFriendsTextView.setText(String.format(Locale.US,"%02d",socialisingWithFriends));
         //socialisingWithFriendsTextView.setText(Integer.toString(socialisingWithFriends));
-        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.AlertDialogCutomTheme);
+        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.SplashTheme);
         final AlertDialog.Builder ad = new AlertDialog.Builder(ctw);
      ad
                 .setNeutralButton("Confirm", new DialogInterface.OnClickListener() {
@@ -957,15 +957,32 @@ private void initInstancesDrawer() {
         ad.show();
     }
     private void selectACountry(){
-        final Dialog dialog = new Dialog(MainActivity.this);
+        final Dialog dialog = new Dialog(MainActivity.this, android.R.style.Theme_DeviceDefault_Dialog);
         dialog.setContentView(R.layout.countrieslayout);
-        dialog.setTitle("Select a Country"+"\n Current Country: "+human.getCountryString() );
-        final TextView countryDetailTextView = (TextView) dialog.findViewById(R.id.countryDetailTextVIew);//Define the Text Box
-        countryDetailTextView.setText("Select A country");
+        dialog.setTitle("Select a Country");
+        //Initializing Buttons
+        final Button selectCountryButton = (Button) dialog.findViewById(R.id.buttonSelect);
+        final Button cancelCountrySelectionButton = (Button) dialog.findViewById(R.id.buttonCancel);
+        //Initializing Text Views
+        final TextView countryDetailTitle = (TextView) dialog.findViewById(R.id.countryDetailTitle);//Define the Text Box
+        //countryDetailTitle.setText("Select a Country"+"\n Current Country: "+human.getCountryString());
+
+        final TextView countryDetailTax = (TextView) dialog.findViewById(R.id.countryDetailTax);//Define the Text Box
+        //countryDetailTax.setText(getString(R.string.tax_text) + ":" + currencyFormat.format(tax));
+
+        final TextView countryDetailRequireWealth = (TextView) dialog.findViewById(R.id.countryDetailRequireWealth);//Define the Text Box
+        //countryDetailRequireWealth.setText(getString(R.string.overallWelathTextView_text) + ":" + currencyFormat.format(human.getCountry().getRequireedWealth()));
+
+        final TextView countryDetailRequiredInfluence = (TextView) dialog.findViewById(R.id.countryDetailRequiredInfluence);//Define the Text Box
+        //countryDetailRequiredInfluence.setText(getString(R.string.influenceAmountTextView_String) + ":" + human.getCountry().getRequiredInfluence());
+
+        final TextView countryDetailRequireFriends = (TextView) dialog.findViewById(R.id.countryDetailRequireFriends);//Define the Text Box
+        //countryDetailRequireFriends.setText(getString(R.string.friendsAmountTextView_String) + ":" + human.getCountry().getRequiredFriends());
+
 
         countryButtonIrada = (Button) dialog.findViewById(R.id.buttonOne);
         countryButtonIrada.setText(Countries.Irada.getName());
-        countryButtonIrada.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
+        //countryButtonIrada.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
         countryButtonIrada.setVisibility(View.VISIBLE);
         countryButtonIrada.setBackgroundResource(R.drawable.button_style);
         countryButtonIrada.setOnClickListener(new OnClickListener() {
@@ -975,8 +992,17 @@ private void initInstancesDrawer() {
             //countryButtonActivation(boolean irada,boolean itican,boolean albaq,boolean trinentina, boolean alibico, boolean ugeria, boolean portada,
                                                 //boolean kuwador,boolean ukrark,boolean rany, boolean heaven){
                 countryButtonActivation(false,true,true,true,true,true,true,true,true,true,true);
-                countryDetailTextView.setText(Countries.Irada.getName() + '\n' + "Taxes:$" + Countries.Irada.getTaxes() + "\n Required Influence: " + Countries.Irada.getRequiredInfluence()
-                        +"\n Required Wealth: "+Countries.Irada.getRequireedWealth()+"\nRequired Friends: "+Countries.Irada.getRequiredInfluence());
+                if(human.getCountryString().equals(Countries.Irada.getName())) {//TO show the User that they are in this Country
+                    countryDetailTitle.setText(getString(R.string.currentCountry_String)+Countries.Irada.getName());
+                    selectCountryButton.setVisibility(View.INVISIBLE);
+                }else{
+                    countryDetailTitle.setText(Countries.Irada.getName());
+                    selectCountryButton.setVisibility(View.VISIBLE);
+                }
+                countryDetailTax.setText(getString(R.string.tax_text) + ":" + currencyFormat.format(Countries.Irada.getTaxes()));
+                countryDetailRequireWealth.setText(getString(R.string.overallWelathTextView_text) + ":" + currencyFormat.format(Countries.Irada.getRequireedWealth()));
+                countryDetailRequiredInfluence.setText(getString(R.string.influenceAmountTextView_String) + ":" + Countries.Irada.getRequiredInfluence());
+                countryDetailRequireFriends.setText(getString(R.string.friendsAmountTextView_String) + ":" + Countries.Irada.getRequiredFriends());
 
             }
         });
@@ -984,14 +1010,22 @@ private void initInstancesDrawer() {
         countryButtonItican = (Button) dialog.findViewById(R.id.buttonTwo);
         countryButtonItican.setText(Countries.Itican.getName());
         countryButtonItican.setVisibility(View.VISIBLE);
-        countryButtonItican.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
         countryButtonItican.setBackgroundResource(R.drawable.button_style);
         countryButtonItican.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 countryOfUser=(Countries.Itican);
-                countryDetailTextView.setText(Countries.Itican.getName() + '\n' + "Taxes:$" + Countries.Itican.getTaxes() + "\n Required Influence: " + Countries.Itican.getRequiredInfluence()
-                        +"\n Required Wealth: "+Countries.Itican.getRequireedWealth()+"\nRequired Friends: "+Countries.Itican.getRequiredInfluence());
+                if(human.getCountryString().equals(Countries.Itican.getName())) {//TO show the User that they are in this Country
+                    countryDetailTitle.setText(getString(R.string.currentCountry_String)+Countries.Itican.getName());
+                    selectCountryButton.setVisibility(View.INVISIBLE);
+                }else{
+                    countryDetailTitle.setText(Countries.Itican.getName());
+                    selectCountryButton.setVisibility(View.VISIBLE);
+                }
+                countryDetailTax.setText(getString(R.string.tax_text) + ":" + currencyFormat.format(Countries.Itican.getTaxes()));
+                countryDetailRequireWealth.setText(getString(R.string.overallWelathTextView_text) + ":" + currencyFormat.format(Countries.Itican.getRequireedWealth()));
+                countryDetailRequiredInfluence.setText(getString(R.string.influenceAmountTextView_String) + ":" + Countries.Itican.getRequiredInfluence());
+                countryDetailRequireFriends.setText(getString(R.string.friendsAmountTextView_String) + ":" + Countries.Itican.getRequiredFriends());
                 countryButtonActivation(true,false,true,true,true,true,true,true,true,true,true);
 
             }
@@ -1000,31 +1034,47 @@ private void initInstancesDrawer() {
         countryButtonAlbaq = (Button) dialog.findViewById(R.id.buttonThree);
         countryButtonAlbaq.setText(Countries.Albaq.getName());
         countryButtonAlbaq.setVisibility(View.INVISIBLE);
-        countryButtonAlbaq.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
         countryButtonAlbaq.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonIntern);
         countryButtonAlbaq.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 countryOfUser=(Countries.Albaq);
-                countryDetailTextView.setText(Countries.Albaq.getName() + '\n' + "Taxes:$" + Countries.Albaq.getTaxes() + "\n Required Influence: " + Countries.Albaq.getRequiredInfluence()
-                        +"\n Required Wealth: "+Countries.Albaq.getRequireedWealth()+"\nRequired Friends: "+Countries.Albaq.getRequiredInfluence());
+                if(human.getCountryString().equals(Countries.Albaq.getName())) {//TO show the User that they are in this Country
+                    countryDetailTitle.setText(getString(R.string.currentCountry_String)+Countries.Albaq.getName());
+                    selectCountryButton.setVisibility(View.INVISIBLE);
+                }else{
+                    countryDetailTitle.setText(Countries.Albaq.getName());
+                    selectCountryButton.setVisibility(View.VISIBLE);
+                }
+                countryDetailTax.setText(getString(R.string.tax_text) + ":" + currencyFormat.format(Countries.Albaq.getTaxes()));
+                countryDetailRequireWealth.setText(getString(R.string.overallWelathTextView_text) + ":" + currencyFormat.format(Countries.Albaq.getRequireedWealth()));
+                countryDetailRequiredInfluence.setText(getString(R.string.influenceAmountTextView_String) + ":" + Countries.Albaq.getRequiredInfluence());
+                countryDetailRequireFriends.setText(getString(R.string.friendsAmountTextView_String) + ":" + Countries.Albaq.getRequiredFriends());
                 countryButtonActivation(true,true,false,true,true,true,true,true,true,true,true);
             }
         });
         //Trinentina
-       countryButtonTrinentina = (Button) dialog.findViewById(R.id.buttonFour);
+        countryButtonTrinentina = (Button) dialog.findViewById(R.id.buttonFour);
         countryButtonTrinentina.setText(Countries.Trinentina.getName() );
         countryButtonTrinentina.setVisibility(View.INVISIBLE);
-        countryButtonTrinentina.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
-        countryButtonTrinentina.setBackgroundResource(R.drawable.button_style);
+         countryButtonTrinentina.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonPackingBoy);
         countryButtonTrinentina.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 countryOfUser=Countries.Trinentina;
-                countryDetailTextView.setText(Countries.Trinentina.getName() + '\n' + "Taxes:$" + Countries.Trinentina.getTaxes() + "\n Required Influence: " + Countries.Trinentina.getRequiredInfluence()
-                        +"\n Required Wealth: "+Countries.Trinentina.getRequireedWealth()+"\nRequired Friends: "+Countries.Trinentina.getRequiredInfluence());
+                if(human.getCountryString().equals(Countries.Trinentina.getName())) {//TO show the User that they are in this Country
+                    countryDetailTitle.setText(getString(R.string.currentCountry_String)+Countries.Trinentina.getName());
+                    selectCountryButton.setVisibility(View.INVISIBLE);
+                }else{
+                    countryDetailTitle.setText(Countries.Trinentina.getName());
+                    selectCountryButton.setVisibility(View.VISIBLE);
+                }
+                countryDetailTax.setText(getString(R.string.tax_text) + ":" + currencyFormat.format(Countries.Trinentina.getTaxes()));
+                countryDetailRequireWealth.setText(getString(R.string.overallWelathTextView_text) + ":" + currencyFormat.format(Countries.Trinentina.getRequireedWealth()));
+                countryDetailRequiredInfluence.setText(getString(R.string.influenceAmountTextView_String) + ":" + Countries.Trinentina.getRequiredInfluence());
+                countryDetailRequireFriends.setText(getString(R.string.friendsAmountTextView_String) + ":" + Countries.Trinentina.getRequiredFriends());
                 countryButtonActivation(true,true,true,false,true,true,true,true,true,true,true);
             }
         });
@@ -1032,15 +1082,23 @@ private void initInstancesDrawer() {
         countryButtonAlbico = (Button) dialog.findViewById(R.id.buttonFive);
         countryButtonAlbico.setText(Countries.Albico.getName());
         countryButtonAlbico.setVisibility(View.INVISIBLE);
-        countryButtonAlbico.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
         countryButtonAlbico.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonFirefighter);
         countryButtonAlbico.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 countryOfUser=(Countries.Albico);
-                countryDetailTextView.setText(Countries.Albico.getName() + '\n' + "Taxes:$" + Countries.Albico.getTaxes() + "\n Required Influence: " + Countries.Albico.getRequiredInfluence()
-                        +"\n Required Wealth: "+Countries.Albico.getRequireedWealth()+"\nRequired Friends: "+Countries.Albico.getRequiredInfluence());
+                if(human.getCountryString().equals(Countries.Albico.getName())) {//TO show the User that they are in this Country
+                    countryDetailTitle.setText(getString(R.string.currentCountry_String)+Countries.Albico.getName());
+                    selectCountryButton.setVisibility(View.INVISIBLE);
+                }else{
+                    countryDetailTitle.setText(Countries.Trinentina.getName());
+                    selectCountryButton.setVisibility(View.VISIBLE);
+                }
+                countryDetailTax.setText(getString(R.string.tax_text) + ":" + currencyFormat.format(Countries.Albico.getTaxes()));
+                countryDetailRequireWealth.setText(getString(R.string.overallWelathTextView_text) + ":" + currencyFormat.format(Countries.Albico.getRequireedWealth()));
+                countryDetailRequiredInfluence.setText(getString(R.string.influenceAmountTextView_String) + ":" + Countries.Albico.getRequiredInfluence());
+                countryDetailRequireFriends.setText(getString(R.string.friendsAmountTextView_String) + ":" + Countries.Albico.getRequiredFriends());
                countryButtonActivation(true,true,true,true,false,true,true,true,true,true,true);
             }
         });
@@ -1048,15 +1106,23 @@ private void initInstancesDrawer() {
          countryButtonUgeria = (Button) dialog.findViewById(R.id.buttonSix);
         countryButtonUgeria.setText(Countries.Ugeria.getName());
         countryButtonUgeria.setVisibility(View.INVISIBLE);
-        countryButtonUgeria.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
         countryButtonUgeria.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonBanker);
         countryButtonUgeria.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 countryOfUser=(Countries.Ugeria);
-                countryDetailTextView.setText(Countries.Ugeria.getName() + '\n' + "Taxes:$" + Countries.Ugeria.getTaxes() + "\n Required Influence: " + Countries.Ugeria.getRequiredInfluence()
-                        +"\n Required Wealth: "+Countries.Ugeria.getRequireedWealth()+"\nRequired Friends: "+Countries.Ugeria.getRequiredInfluence());
+                if(human.getCountryString().equals(Countries.Ugeria.getName())) {//TO show the User that they are in this Country
+                    countryDetailTitle.setText(getString(R.string.currentCountry_String)+Countries.Ugeria.getName());
+                    selectCountryButton.setVisibility(View.INVISIBLE);
+                }else{
+                    countryDetailTitle.setText(Countries.Ugeria.getName());
+                    selectCountryButton.setVisibility(View.VISIBLE);
+                }
+                countryDetailTax.setText(getString(R.string.tax_text) + ":" + currencyFormat.format(Countries.Ugeria.getTaxes()));
+                countryDetailRequireWealth.setText(getString(R.string.overallWelathTextView_text) + ":" + currencyFormat.format(Countries.Ugeria.getRequireedWealth()));
+                countryDetailRequiredInfluence.setText(getString(R.string.influenceAmountTextView_String) + ":" + Countries.Ugeria.getRequiredInfluence());
+                countryDetailRequireFriends.setText(getString(R.string.friendsAmountTextView_String) + ":" + Countries.Ugeria.getRequiredFriends());
                 countryButtonActivation(true,true,true,true,true,false,true,true,true,true,true);
             }
         });
@@ -1064,15 +1130,23 @@ private void initInstancesDrawer() {
         countryButtonPortada = (Button) dialog.findViewById(R.id.buttonSeven);
         countryButtonPortada.setText(Countries.Portada.getName());
         countryButtonPortada.setVisibility(View.INVISIBLE);
-        countryButtonPortada.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
         countryButtonPortada.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonScientist);
         countryButtonPortada.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 countryOfUser=(Countries.Portada);
-                countryDetailTextView.setText(Countries.Portada.getName() + '\n' + "Taxes:$" + Countries.Portada.getTaxes() + "\n Required Influence: " + Countries.Portada.getRequiredInfluence()
-                        +"\n Required Wealth: "+Countries.Portada.getRequireedWealth()+"\nRequired Friends: "+Countries.Portada.getRequiredInfluence());
+                if(human.getCountryString().equals(Countries.Portada.getName())) {//TO show the User that they are in this Country
+                    countryDetailTitle.setText(getString(R.string.currentCountry_String)+Countries.Portada.getName());
+                    selectCountryButton.setVisibility(View.INVISIBLE);
+                }else{
+                    countryDetailTitle.setText(Countries.Portada.getName());
+                    selectCountryButton.setVisibility(View.VISIBLE);
+                }
+                countryDetailTax.setText(getString(R.string.tax_text) + ":" + currencyFormat.format(Countries.Portada.getTaxes()));
+                countryDetailRequireWealth.setText(getString(R.string.overallWelathTextView_text) + ":" + currencyFormat.format(Countries.Portada.getRequireedWealth()));
+                countryDetailRequiredInfluence.setText(getString(R.string.influenceAmountTextView_String) + ":" + Countries.Portada.getRequiredInfluence());
+                countryDetailRequireFriends.setText(getString(R.string.friendsAmountTextView_String) + ":" + Countries.Portada.getRequiredFriends());
                 countryButtonActivation(true,true,true,true,true,true,false,true,true,true,true);
 
             }
@@ -1081,31 +1155,47 @@ private void initInstancesDrawer() {
         countryButtonKuwador = (Button) dialog.findViewById(R.id.buttonEight);
         countryButtonKuwador.setText(Countries.Kuwador.getName());
         countryButtonKuwador.setVisibility(View.INVISIBLE);
-        countryButtonKuwador.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
         countryButtonKuwador.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonIndependent);
         countryButtonKuwador.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 countryOfUser=(Countries.Kuwador);
-                countryDetailTextView.setText(Countries.Kuwador.getName() + '\n' + "Taxes:$" + Countries.Kuwador.getTaxes() + "\n Required Influence: " + Countries.Kuwador.getRequiredInfluence()
-                        +"\n Required Wealth: "+Countries.Kuwador.getRequireedWealth()+"\nRequired Friends: "+Countries.Kuwador.getRequiredInfluence());
+                if(human.getCountryString().equals(Countries.Kuwador.getName())) {//TO show the User that they are in this Country
+                    countryDetailTitle.setText(getString(R.string.currentCountry_String)+Countries.Kuwador.getName());
+                    selectCountryButton.setVisibility(View.INVISIBLE);
+                }else{
+                    countryDetailTitle.setText(Countries.Kuwador.getName());
+                    selectCountryButton.setVisibility(View.VISIBLE);
+                }
+                countryDetailTax.setText(getString(R.string.tax_text) + ":" + currencyFormat.format(Countries.Kuwador.getTaxes()));
+                countryDetailRequireWealth.setText(getString(R.string.overallWelathTextView_text) + ":" + currencyFormat.format(Countries.Kuwador.getRequireedWealth()));
+                countryDetailRequiredInfluence.setText(getString(R.string.influenceAmountTextView_String) + ":" + Countries.Kuwador.getRequiredInfluence());
+                countryDetailRequireFriends.setText(getString(R.string.friendsAmountTextView_String) + ":" + Countries.Kuwador.getRequiredFriends());
                 countryButtonActivation(true,true,true,true,true,true,true,false,true,true,true);
             }
         });
         //Ukrark
-       countryButtonUkrark = (Button) dialog.findViewById(R.id.buttonNine);
+        countryButtonUkrark = (Button) dialog.findViewById(R.id.buttonNine);
         countryButtonUkrark.setText(Countries.Ukrark.getName());
         countryButtonUkrark.setVisibility(View.INVISIBLE);
-        countryButtonUkrark.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
         countryButtonUkrark.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonBusinessOwner);
         countryButtonUkrark.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 countryOfUser=(Countries.Ukrark);
-                countryDetailTextView.setText(Countries.Ukrark.getName() + '\n' + "Taxes:$" + Countries.Ukrark.getTaxes() + "\n Required Influence: " + Countries.Ukrark.getRequiredInfluence()
-                        +"\n Required Wealth: "+Countries.Ukrark.getRequireedWealth()+"\nRequired Friends: "+Countries.Ukrark.getRequiredInfluence());
+                if(human.getCountryString().equals(Countries.Ukrark.getName())) {//TO show the User that they are in this Country
+                    countryDetailTitle.setText(getString(R.string.currentCountry_String)+Countries.Ukrark.getName());
+                    selectCountryButton.setVisibility(View.INVISIBLE);
+                }else{
+                    countryDetailTitle.setText(Countries.Ukrark.getName());
+                    selectCountryButton.setVisibility(View.VISIBLE);
+                }
+                countryDetailTax.setText(getString(R.string.tax_text) + ":" + currencyFormat.format(Countries.Ukrark.getTaxes()));
+                countryDetailRequireWealth.setText(getString(R.string.overallWelathTextView_text) + ":" + currencyFormat.format(Countries.Ukrark.getRequireedWealth()));
+                countryDetailRequiredInfluence.setText(getString(R.string.influenceAmountTextView_String) + ":" + Countries.Ukrark.getRequiredInfluence());
+                countryDetailRequireFriends.setText(getString(R.string.friendsAmountTextView_String) + ":" + Countries.Ukrark.getRequiredFriends());
                countryButtonActivation(true,true,true,true,true,true,true,true,false,true,true);
             }
         });
@@ -1113,31 +1203,47 @@ private void initInstancesDrawer() {
        countryButtonRany = (Button) dialog.findViewById(R.id.buttonTen);
         countryButtonRany.setText(Countries.Rany.getName());
         countryButtonRany.setVisibility(View.INVISIBLE);
-        countryButtonRany.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
         countryButtonRany.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonKing);
         countryButtonRany.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 countryOfUser=(Countries.Rany);
-                countryDetailTextView.setText(Countries.Rany.getName() + '\n' + "Taxes:$" + Countries.Rany.getTaxes() + "\n Required Influence: " + Countries.Rany.getRequiredInfluence()
-                        +"\n Required Wealth: "+Countries.Rany.getRequireedWealth()+"\nRequired Friends: "+Countries.Rany.getRequiredInfluence());
+                if(human.getCountryString().equals(Countries.Rany.getName())) {//TO show the User that they are in this Country
+                    countryDetailTitle.setText(getString(R.string.currentCountry_String)+Countries.Rany.getName());
+                    selectCountryButton.setVisibility(View.INVISIBLE);
+                }else{
+                    countryDetailTitle.setText(Countries.Rany.getName());
+                    selectCountryButton.setVisibility(View.VISIBLE);
+                }
+                countryDetailTax.setText(getString(R.string.tax_text) + ":" + currencyFormat.format(Countries.Rany.getTaxes()));
+                countryDetailRequireWealth.setText(getString(R.string.overallWelathTextView_text) + ":" + currencyFormat.format(Countries.Rany.getRequireedWealth()));
+                countryDetailRequiredInfluence.setText(getString(R.string.influenceAmountTextView_String) + ":" + Countries.Rany.getRequiredInfluence());
+                countryDetailRequireFriends.setText(getString(R.string.friendsAmountTextView_String) + ":" + Countries.Rany.getRequiredFriends());
                countryButtonActivation(true,true,true,true,true,true,true,true,true,false,true);
             }
         });
         //Heaven
-       countryButtonHeaven = (Button) dialog.findViewById(R.id.buttonEleven);
+        countryButtonHeaven = (Button) dialog.findViewById(R.id.buttonEleven);
         countryButtonHeaven.setText(Countries.Heaven.getName());
         countryButtonHeaven.setVisibility(View.INVISIBLE);
-        countryButtonHeaven.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
-        countryButtonHeaven.setBackgroundResource(R.drawable.button_style);
+         countryButtonHeaven.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonSultan);
         countryButtonHeaven.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 countryOfUser=Countries.Heaven;
-                countryDetailTextView.setText(Countries.Heaven.getName() + '\n' + "Taxes:$" + Countries.Heaven.getTaxes() + "\n Required Influence: " + Countries.Heaven.getRequiredInfluence()
-                        +"\n Required Wealth: "+Countries.Heaven.getRequireedWealth()+"\nRequired Friends: "+Countries.Heaven.getRequiredInfluence());
+                if(human.getCountryString().equals(Countries.Heaven.getName())) {//TO show the User that they are in this Country
+                    countryDetailTitle.setText(getString(R.string.currentCountry_String)+Countries.Heaven.getName());
+                    selectCountryButton.setVisibility(View.INVISIBLE);
+                }else{
+                    countryDetailTitle.setText(Countries.Heaven.getName());
+                    selectCountryButton.setVisibility(View.VISIBLE);
+                }
+                countryDetailTax.setText(getString(R.string.tax_text) + ":" + currencyFormat.format(Countries.Heaven.getTaxes()));
+                countryDetailRequireWealth.setText(getString(R.string.overallWelathTextView_text) + ":" + currencyFormat.format(Countries.Heaven.getRequireedWealth()));
+                countryDetailRequiredInfluence.setText(getString(R.string.influenceAmountTextView_String) + ":" + Countries.Heaven.getRequiredInfluence());
+                countryDetailRequireFriends.setText(getString(R.string.friendsAmountTextView_String) + ":" + Countries.Heaven.getRequiredFriends());
                 countryButtonActivation(true,true,true,true,true,true,true,true,true,true,false);
             }
         });
@@ -1166,7 +1272,7 @@ private void initInstancesDrawer() {
             if (human.getOverAllWealth() >= Countries.Albico.getRequiredFriends() && human.getFriends() >= Countries.Albico.getRequiredFriends() &&
                     human.getInfluence() >= Countries.Albico.getRequiredInfluence()) {
                 //layout.addView(countryButtonAlbico);//Albico
-                countryButtonAlbaq.setVisibility(View.VISIBLE);
+                countryButtonAlbico.setVisibility(View.VISIBLE);
             }
             if (human.getOverAllWealth() >= Countries.Ugeria.getRequiredFriends() && human.getFriends() >= Countries.Ugeria.getRequiredFriends() &&
                     human.getInfluence() >= Countries.Ugeria.getRequiredInfluence()) {
@@ -1200,7 +1306,6 @@ private void initInstancesDrawer() {
             }
         }
 
-        Button selectCountryButton = (Button) dialog.findViewById(R.id.buttonSelect);
         selectCountryButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1218,14 +1323,14 @@ private void initInstancesDrawer() {
                     //You can chain .get commands as long as that .get returns a class/object with its own getters
                     taxTextView.setText("Tax:" + currencyFormat.format(human.getCountry().getTaxes()));
                     tax = human.getCountry().getTaxes();
-                    keepStatsUpToDate(-(human.getCountry().getTaxes() + 100 * human.getCountry().getMultiplier()), 0, job, human.getCountry().getTaxes(), 0, 0, 0, 0);
+                    //keepStatsUpToDate(-(human.getCountry().getTaxes() + 100 * human.getCountry().getMultiplier()), 0, job, human.getCountry().getTaxes(), 0, 0, 0, 0);
+                    wealth+=-(human.getCountry().getTaxes() + 100 * human.getCountry().getMultiplier());
                     buttonActivation(false);
                 }
 
             }
         });
 
-        Button cancelCountrySelectionButton = (Button) dialog.findViewById(R.id.buttonCancel);
         cancelCountrySelectionButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1480,7 +1585,7 @@ private void initInstancesDrawer() {
 
 ///->IDEAL APPLICATION USER INITIALIZATION CODE
     private void init() {
-        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.AlertDialogCutomTheme);
+        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.SplashTheme);
         AlertDialog.Builder ad = new AlertDialog.Builder(ctw);
        ad
                 .setMessage("Welcome!The purpose of this Android Application is to create your fantasy ideal life.." +
@@ -1537,7 +1642,7 @@ private void initInstancesDrawer() {
         layout.addView(userNameFamily);
         //layout.addView(convertView);
         //Command used to set the theme of the AlertDialog
-        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.AlertDialogCutomTheme);
+        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.SplashTheme);
         AlertDialog.Builder ad = new AlertDialog.Builder(ctw);
         //AlertDialog ad = new AlertDialog.Builder(this)
         ad
@@ -1565,7 +1670,7 @@ private void initInstancesDrawer() {
 
         //Get the arrayLIst from the String xml
         final List<String> familyTypes = Arrays.asList(getResources().getStringArray(R.array.familyTypes));
-        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.AlertDialogCutomTheme);
+        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.SplashTheme);
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctw);
         //final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle("Choose A Family");

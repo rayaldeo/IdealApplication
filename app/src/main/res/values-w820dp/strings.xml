@@ -18,7 +18,7 @@
     <string name="influencePercentageString">Percantage</string>
     <string name="enterName_hint">Enter Name</string>
     <string name="profileImageprofileiamgedialog">Profile Image</string>
-    <string name="neighbourhoodTextView_text">Neigbourhood</string>
+    <string name="neighbourhoodTextView_text">Neighbourhood</string>
     <string name="friendsTextView_text">Friends</string>
     <string name="professionalAssociatesTextView_text">Professional Associates</string>
     <string name="looksTextView_text">Looks</string>
@@ -26,8 +26,9 @@
     <string name="custom_Family_Button_String">Custom Family</string>
     <string name="enter_amount">Enter Amount</string>
     <string name="customFamilyButton_String">Custom Family</string>
-    <string name="friendsAmountTextView_String">Friends</string>
+    <string name="friendsAmountTextView_String">Required Friends</string>
     <string name="influenceAmountTextView_String">Influence</string>
+    <string name="currentCountry_String">Current Country: </string>
 
 
     <string name="cusomFamilyToggle_String">Custom Family</string>
@@ -98,11 +99,7 @@
     </string-array>
 
 
-    <!--<string name="app_name">Slider Menu</string>-->
-    <!--<string name="action_settings">Settings</string>-->
-    <string name="hello_world">Hello world!</string>
-    <string name="drawer_open">Slider Menu Opened</string>
-    <string name="drawer_close">Slider Menu Closed</string>
+
 
 
 
