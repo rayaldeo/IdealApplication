@@ -52,8 +52,7 @@
         android:layout_weight="3"
         android:layout_gravity="center"
         />
-      <TextView
-        android:text="Required Friends"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/countryDetailRequireFriends"
@@ -174,6 +173,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/buttonTwelve"
+            android:visibility="gone"
             android:gravity="center"
             android:contentDescription="@string/country_button_description"
             android:textColor="@color/signatureColorOne"
@@ -183,6 +183,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/buttonThirteen"
+            android:visibility="gone"
             android:gravity="center"
             android:contentDescription="@string/country_button_description"
             android:textColor="@color/signatureColorOne"

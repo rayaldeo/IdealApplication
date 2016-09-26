@@ -35,10 +35,10 @@ enum Jobs {
 
 
     /*Non Paying Jobs that give incredible amount of Influence*/
-    GOD("GOD",0,10000000),
+    GOD("GOD",0,100000),
 
     /*Incredible amounts of money and Influence*/
-    OMEGA("OMEGA",1000000,10000000);
+    OMEGA("OMEGA",100000,100000);
 
 
     private  double income;

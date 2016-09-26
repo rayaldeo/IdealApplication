@@ -157,13 +157,11 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private Boolean influencActivation = false;
     private Boolean heavenBoolean = false;
     private int tempNum = age - 10;
-    private String savedata="NothingInFile";
-    private final ViewGroup nullParent =null;//This is to remove warning on the convertView
+   private final ViewGroup nullParent =null;//This is to remove warning on the convertView
     private ActionBarDrawerToggle actionBarDrawerToggle;
    //For selecting and image
     private static final int SELECT_PHOTO = 100;
     //Saving Data
-    private static final String SETTINGS_PREFERENCE = "SETTINGS_PREFERENCE";
     private String file_name = "dataOne";
     private  BackgroundSound mBackgroundSound = new BackgroundSound();//Background Music
     private boolean reset =false;
@@ -260,6 +258,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                         ///The game is finished at this point
                         informationalTextView.setText("You have created your ideal life at age:" + age + "  CONGRATULATIONS");
                         //Disable everything
+                        continueButton.setEnabled(false);
+                        continueButton.setVisibility(View.INVISIBLE);
                         buttonActivation(false);
                         //countryButtonActivation(false,false,false,false,false,false,false,false,false,false,false);
                         //jobButtonActivation(false,false,false,false,false,false,false,false,false,false,false,false,false);
@@ -578,8 +578,22 @@ private void initInstancesDrawer() {
                 jobButtonActivation(true,true,true,true,true,true,true,true,true,true,false,true,true);
             }
         });
+        //God
+        jobButtonGod=(Button) dialog.findViewById(R.id.buttonTwelve);
+        jobButtonGod.setText(Jobs.GOD.getName() +'\n'+"Income:$"+Jobs.GOD.getIncome()+"\n Influence:"+Jobs.GOD.getInfluence());
+        jobButtonGod.setBackgroundResource(R.drawable.button_style);
+        //layout.addView(jobButtonGod);
+        jobButtonGod.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                professionalAssociates += 1500;
+                friends += 1000;
+                job = Jobs.GOD;
+                jobButtonActivation(true,true,true,true,true,true,true,true,true,true,true,false,true);
+            }
+        });
         //Omega//12
-        jobButtonOmega = (Button) dialog.findViewById(R.id.buttonTwelve);
+        jobButtonOmega = (Button) dialog.findViewById(R.id.buttonThirteen);
         jobButtonOmega.setText("\u03A9" + "mega" +'\n'+"Income:$"+Jobs.OMEGA.getIncome()+"\n Influence:"+Jobs.OMEGA.getInfluence());
         jobButtonOmega.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonOmega);
@@ -592,20 +606,7 @@ private void initInstancesDrawer() {
                 jobButtonActivation(true,true,true,true,true,true,true,true,true,true,true,true,false);
             }
         });
-        jobButtonGod=(Button) dialog.findViewById(R.id.buttonThirteen);
-        jobButtonGod.setText(Jobs.GOD.getName() +'\n'+"Income:$"+Jobs.GOD.getIncome()+"\n Influence:"+Jobs.GOD.getInfluence());
-        jobButtonGod.setBackgroundResource(R.drawable.button_style);
-        //layout.addView(jobButtonGod);
-        jobButtonGod.setOnClickListener(new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            professionalAssociates += 1500;
-            friends += 1000;
-            job = Jobs.GOD;
-            jobButtonActivation(true,true,true,true,true,true,true,true,true,true,true,false,true);
-        }
-    });
-        //Make the AlertDialog Scrollable->Maybe
+
         //If statements to show only certain Buttons
         if(genie) {//If the genie is active..this will show up if the jobButton is selected..Genie can not be activated until the user is >=20
             jobButtonBeggar.setVisibility(View.VISIBLE); //Begger
@@ -1643,7 +1644,7 @@ private void initInstancesDrawer() {
         //ad.setView();
         ad.show();
     }
-    //SELECT COUNTRY IS BOTH INITIALIZATION AND A BUTTON FUNCTIONALITY
+    //SELECT COUNTRY starts at the beginning of the program and it is an Action Item Button
     private void selectAFamilyType() {
 
         //Get the arrayLIst from the String xml
@@ -2026,7 +2027,7 @@ private void initInstancesDrawer() {
     private void chancesOfLife() {
         ///If you want to test any specific chance of life just place in the case number into switch bracket..the program will only run that switch
         //7randomNum
-        switch (randomNum) {
+        switch (7) {
             case 0:
               if(age<20){
                   chainString+="Your family got robbed";
@@ -2356,16 +2357,10 @@ private void initInstancesDrawer() {
             if(human.getInfluence()>7000000&& human.getProfessionalAssociates()>=200000 && !influencActivation
                     ||human.getFriends()>=1000000){
                 influencActivation=true;
-                chainString+="\n" +Html.fromHtml("<font color='blue'>You have gained 50000 in wealth</font><br/>");
-                chainString+="\n" + Html.fromHtml("<font color='blue'>You have gained enough Influence and Professional Associates that you will now gain a steady source of money</font><br/>");
+                chainString+="\n" +"You have gained 50000 in wealth";
+                chainString+="\n" + "You have gained enough Influence and Professional Associates that you will now gain a steady source of money";
                 wealth += 50000;
-
             }
-
-
-
-
-
     }
 ///->
 
@@ -2677,9 +2672,9 @@ private void initInstancesDrawer() {
 ///->Save and Read User Profile
     private void saveUserProfile(){
         String data;
-        if(reset){
+        /*if(reset){
             firstNamePart="NOName";                                     //First Name
-            lastNamePart="NOName";
+            lastNamePart="NOName";                                      //lastName
             data= Integer.toString(100) + '\n' +//Health Bar Progress
                     family.getFamilyCountry().getName() + '\n' +                 //Family Country
                     Integer.toString(0) + '\n' +        //Family Friends
@@ -2690,8 +2685,8 @@ private void initInstancesDrawer() {
                     Integer.toString(0) + '\n' +              //School Attendance
                     Integer.toString(0) + '\n' +                //Physical Appearance
                     Integer.toString(0) + '\n' +             //Socialize
-                    firstNamePart + '\n' +                                        //First Name
-                    lastNamePart + '\n' +                                         //Last Name
+                    //firstNamePart + '\n' +                                        //First Name
+                    //lastNamePart + '\n' +                                         //Last Name
                     Jobs.NOJOB.getName() + '\n' +                               //Job
                     human.getCountryString() + '\n' +                                //Human Country
                     Integer.toString(0) + '\n' +                     //Human Friends
@@ -2705,7 +2700,7 @@ private void initInstancesDrawer() {
             //"DONE"
             ;
             reset=false;
-        }else {
+        }else {*/
             data= Integer.toString(healthProgressBar.getProgress()) + '\n' +//Health Bar Progress
                     family.getFamilyCountry().getName() + '\n' +                 //Family Country
                     Integer.toString(family.getFamilyFriends()) + '\n' +        //Family Friends
@@ -2730,7 +2725,7 @@ private void initInstancesDrawer() {
                     Boolean.toString(actionItemTaken)                ///Keep Track on whether an Action Button was taken or not
                     //"DONE"
                     ;
-        }
+        //}
         System.out.println("-------------------------------------");
         System.out.println(data);
         System.out.println("-------------------------------------");
