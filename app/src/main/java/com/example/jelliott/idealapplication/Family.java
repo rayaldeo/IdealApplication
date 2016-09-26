@@ -4,7 +4,7 @@ import java.util.ArrayList;
 /**
  * Created by jelliott on 4/9/2016.
  */
-public class Family {
+class Family {
 
 
     /**
@@ -21,7 +21,7 @@ public class Family {
         private Countries country;
 
 
-    public Family(){
+    Family(){
         this.familyWealth=0.0;
         this.familyInfluence=0;
         this.familyWorshippers=0;
@@ -30,7 +30,7 @@ public class Family {
         this.country=Countries.NoCountry;
     }
 
-    public Family( double familyWealthA,int influenceA,int friendsA,String familyNameA,FamilyMember brotherA, FamilyMember sisterA, FamilyMember fatherA, FamilyMember motherA){
+    Family(double familyWealthA, int influenceA, int friendsA, String familyNameA, FamilyMember brotherA, FamilyMember sisterA, FamilyMember fatherA, FamilyMember motherA){
         this.familyName = familyNameA;
         this.familyFatherName ="Mr."+familyName;
         this.familyBrotherName = "Brother "+ familyName;
@@ -54,7 +54,7 @@ public class Family {
         //FamilyMemeber Constructor
         //(String firstNameA,String familyNameA,Jobs jobA,Countries countryA,int friendsA,int worshippers
         //Custom Family with a custom name
-        public Family(String familyNameA,FamilyMember brotherA, FamilyMember sisterA, FamilyMember fatherA, FamilyMember motherA) {
+        Family(String familyNameA, FamilyMember brotherA, FamilyMember sisterA, FamilyMember fatherA, FamilyMember motherA) {
             this.familyName = familyNameA;
             this.familyFatherName ="Mr."+familyName;
             this.familyBrotherName = "Brother "+ familyName;
@@ -80,33 +80,33 @@ public class Family {
         public Family(int fatherA, int motherA, int sisterA, int brotherA) {}
 
         ///Getters
-        public double getFamilyWealth() {
+        double getFamilyWealth() {
             return familyWealth;
         }
 
-        public int getFamilyInfluence() {
+         int getFamilyInfluence() {
             return familyInfluence;
         }
 
         public String getFamilyName(){ return familyName;   }
 
-        public Countries getFamilyCountry(){return country;}
+         Countries getFamilyCountry(){return country;}
 
-        public int getFamilyFriends(){return familyFriends;}
+         int getFamilyFriends(){return familyFriends;}
 
-        public int getFamilyWorshippers(){return familyWorshippers;}
+         int getFamilyWorshippers(){return familyWorshippers;}
 
-        public String getFamilyNeighborhood(){return neighborhood;}
+         String getFamilyNeighborhood(){return neighborhood;}
 
-         public int getFamilyProfessionalAssociates(){return familyProfessionalAssociates;};
+          int getFamilyProfessionalAssociates(){return familyProfessionalAssociates;};
 
 
     //Setters
-        public void setFamilyWealth(double familyWealthA) {
+         void setFamilyWealth(double familyWealthA) {
             this.familyWealth = familyWealthA;
         }
 
-        public void setFamilyInfluence(int familyInfluenceA) {
+         void setFamilyInfluence(int familyInfluenceA) {
             this.familyInfluence = familyInfluenceA;
         }
 
@@ -114,15 +114,15 @@ public class Family {
             familyName = familyNameA;
         }
 
-        public void setNeighborhood(String neighborhoodA){neighborhood=neighborhoodA;}
+         void setNeighborhood(String neighborhoodA){neighborhood=neighborhoodA;}
 
-        public void setCountry(Countries countryA){country=countryA;}
+         void setCountry(Countries countryA){country=countryA;}
 
-        public void setFamilyProfessionalAssociates(int professionalAssociatesA){this.familyProfessionalAssociates=professionalAssociatesA;}
+         void setFamilyProfessionalAssociates(int professionalAssociatesA){this.familyProfessionalAssociates=professionalAssociatesA;}
 
-        public void setFamilyFriends(int familyFriendsA){this.familyFriends=familyFriendsA;}
+         void setFamilyFriends(int familyFriendsA){this.familyFriends=familyFriendsA;}
 
-        public void setFamilyWorshippers(int familyWorshippersA){this.familyWorshippers= familyWorshippersA;}
+         void setFamilyWorshippers(int familyWorshippersA){this.familyWorshippers= familyWorshippersA;}
 
 
 }

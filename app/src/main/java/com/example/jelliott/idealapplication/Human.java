@@ -28,7 +28,7 @@ public class Human {
     User needs to specify skin color
      */
     //Empty Constructor
-    public Human(){
+    Human(){
         looks=0;
         worshippers=0;
         familyWealth= 0;
@@ -69,7 +69,7 @@ public class Human {
 
     //This constructor is used specifically for  the FamilyMember class
     //Deleting this constructor ruins a core mechanic of this program
-    public Human(boolean sex,String familyNameA,Jobs jobA,Countries countryA,int friendsA,int worshippersA){
+    Human(boolean sex, String familyNameA, Jobs jobA, Countries countryA, int friendsA, int worshippersA){
         //generatedName =  new NameGenerator(sex);
         //name = generatedName.getFirstName()+""+familyNameA;
         //color=colorA;
@@ -90,9 +90,9 @@ public class Human {
     }
 
     //Getters
-    public int getLooks(){return looks;}
+    int getLooks(){return looks;}
 
-    public String getNeighborhood(){return neighborhood;}
+    String getNeighborhood(){return neighborhood;}
 
     public String getName(){return name;}
 
@@ -100,25 +100,25 @@ public class Human {
 
     public double getFamilyWealth(){return familyWealth;}
 
-    public int getInfluence(){return influence;}
+    int getInfluence(){return influence;}
 
-    public double getOverAllWealth(){return overAllWealth;}
+    double getOverAllWealth(){return overAllWealth;}
 
     public double getInitialWealth(){return initialWealth;}
 
-    public int getFriends(){return friends;}
+    int getFriends(){return friends;}
 
-    public int getProfessionalAssociates(){return professionAssociates;}
+    int getProfessionalAssociates(){return professionAssociates;}
 
-    public int getWorshippers(){return worshippers;}
+    int getWorshippers(){return worshippers;}
 
-    public double getIncome(){return income;}
+    double getIncome(){return income;}
 
-    public Jobs getJob() {return job;}
+    Jobs getJob() {return job;}
 
-    public  Countries getCountry(){return country;}
+    Countries getCountry(){return country;}
 
-    public String getCountryString(){return country.getName();}
+    String getCountryString(){return country.getName();}
 
 
 

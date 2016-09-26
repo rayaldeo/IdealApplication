@@ -3,7 +3,7 @@ package com.example.jelliott.idealapplication;
 /**
  * Created by jelliott on 4/9/2016.
  */
-public class FamilyMember extends Human {
+class FamilyMember extends Human {
 
     /**
      * Created by jelliott on 9/30/2015.From Ideal Java Program
@@ -15,7 +15,7 @@ public class FamilyMember extends Human {
         //private String familyName,firstName,name;
 
         //For a Custom Family
-        public FamilyMember(boolean sex,String familyNameA,Jobs jobA,Countries countryA,int friendsA,int worshippers) {
+    FamilyMember(boolean sex, String familyNameA, Jobs jobA, Countries countryA, int friendsA, int worshippers) {
 
             super(sex, familyNameA, jobA, countryA, friendsA, worshippers);
 

@@ -13,6 +13,7 @@
     <string name="socialize_button">Socialize</string>
     <string name="moveTo_Button">Move</string>
     <string name="overallWelathTextView_text">Wealth</string>
+    <string name="overallWealthRequiredView_text">Required Wealth</string>
     <string name="influenceTextView">Influence</string>
     <string name="overallWealthPercantage">Percentage</string>
     <string name="influencePercentageString">Percantage</string>
@@ -27,6 +28,7 @@
     <string name="enter_amount">Enter Amount</string>
     <string name="customFamilyButton_String">Custom Family</string>
     <string name="friendsAmountTextView_String">Required Friends</string>
+    <string name="influenceRequiredAmountTextView_String">Required Influence</string>
     <string name="influenceAmountTextView_String">Influence</string>
     <string name="currentCountry_String">Current Country: </string>
 
@@ -60,6 +62,7 @@
     <string name="alertDialog_content_text">New Text</string>
     <string name="alertDialog_icon_text">Alert Dialog Icon</string>
     <string name="reset_text">Reset</string>
+    <string name="country_button_description">Country Button</string>
 
     <string-array name="countries">
         <item>Irada</item>
