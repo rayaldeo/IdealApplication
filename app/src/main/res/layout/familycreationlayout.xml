@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/friendsAmountEditText"
-        android:hint="@string/friendsAmountTextView_String"
+        android:hint="@string/friendsTextView_text"
         android:gravity="fill_horizontal"
         android:background="@color/amount_background"
         android:padding="@dimen/paddingOnFamilyCreationDialog"

@@ -59,6 +59,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
+import static android.view.View.GONE;
+
 public class MainActivity extends AppCompatActivity implements DialogInterface.OnClickListener  {
 
     private static final NumberFormat percentFormat = NumberFormat.getPercentInstance();
@@ -259,7 +261,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                         informationalTextView.setText("You have created your ideal life at age:" + age + "  CONGRATULATIONS");
                         //Disable everything
                         continueButton.setEnabled(false);
-                        continueButton.setVisibility(View.INVISIBLE);
+                        //continueButton.setVisibility(View.INVISIBLE);
                         buttonActivation(false);
                         //countryButtonActivation(false,false,false,false,false,false,false,false,false,false,false);
                         //jobButtonActivation(false,false,false,false,false,false,false,false,false,false,false,false,false);
@@ -406,24 +408,20 @@ private void initInstancesDrawer() {
         final Button selectCountryButton = (Button) dialog.findViewById(R.id.buttonSelect);
         final Button cancelCountrySelectionButton = (Button) dialog.findViewById(R.id.buttonCancel);
         //Initializing Text Views
-        final TextView jobDetailTitle = (TextView) dialog.findViewById(R.id.countryDetailTitle);//Define the Text Box
-        //countryDetailTitle.setText("Select a Country"+"\n Current Country: "+human.getCountryString());
-
-        final TextView jobDetailTax = (TextView) dialog.findViewById(R.id.countryDetailTax);//Define the Text Box
-        //countryDetailTax.setText(getString(R.string.tax_text) + ":" + currencyFormat.format(tax));
-
-        final TextView countryDetailRequireWealth = (TextView) dialog.findViewById(R.id.countryDetailRequireWealth);//Define the Text Box
-        //countryDetailRequireWealth.setText(getString(R.string.overallWelathTextView_text) + ":" + currencyFormat.format(human.getCountry().getRequireedWealth()));
-
-        final TextView countryDetailRequiredInfluence = (TextView) dialog.findViewById(R.id.countryDetailRequiredInfluence);//Define the Text Box
-        //countryDetailRequiredInfluence.setText(getString(R.string.influenceAmountTextView_String) + ":" + human.getCountry().getRequiredInfluence());
-
+        final TextView countryDetailTitle = (TextView) dialog.findViewById(R.id.countryDetailTitle);//Define the Text Box
+        countryDetailTitle.setVisibility(GONE);
+        final TextView jobDetailTitle = (TextView) dialog.findViewById(R.id.countryDetailTax);//Define the Text Box
+        jobDetailTitle.setText(getString(R.string.getJob_text));
+        final TextView jobDetailIncome = (TextView) dialog.findViewById(R.id.countryDetailRequireWealth);//Define the Text Box
+        jobDetailIncome.setText(getString(R.string.income_String) );
+        final TextView jobDetailInfluence = (TextView) dialog.findViewById(R.id.countryDetailRequiredInfluence);//Define the Text Box
+        jobDetailInfluence.setText(getString(R.string.influenceAmountTextView_String));
         final TextView countryDetailRequireFriends = (TextView) dialog.findViewById(R.id.countryDetailRequireFriends);//Define the Text Box
-        //countryDetailRequireFriends.setText(getString(R.string.friendsAmountTextView_String) + ":" + human.getCountry().getRequiredFriends());
+        countryDetailRequireFriends.setVisibility(GONE);
 
         //Beggar//1
         jobButtonBeggar =(Button) dialog.findViewById(R.id.buttonOne);
-        jobButtonBeggar.setText(Jobs.BEGGER.getName() + '\n' + "Income:$" + Jobs.BEGGER.getIncome() + "\n Influence:" + Jobs.BEGGER.getInfluence());
+        jobButtonBeggar.setText(Jobs.BEGGER.getName());
         //jobButtonBeggar.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
         jobButtonBeggar.setBackgroundResource(R.drawable.button_style);
        jobButtonBeggar.setOnClickListener(new OnClickListener() {
@@ -435,11 +433,14 @@ private void initInstancesDrawer() {
             /*private void jobButtonActivation(boolean beggerA,boolean vagrantA,boolean internA,boolean packingboyA,boolean firefighterA,boolean bankerA,boolean scientistA
                     ,boolean businessowerA,boolean independentA, boolean kingA, boolean sultanA,boolean godA,boolean omeageA){*/
                 jobButtonActivation(false,true,true,true,true,true,true,true,true,true,true,true,true);
+                jobDetailTitle.setText(Jobs.BEGGER.getName());
+                jobDetailIncome.setText(currencyFormat.format(Jobs.BEGGER.getIncome()) );
+                jobDetailInfluence.setText(Double.toString(Jobs.BEGGER.getInfluence()));
                         }
         });
         //Vagrant//2
         jobButtonVagrant = (Button) dialog.findViewById(R.id.buttonTwo);
-        jobButtonVagrant.setText(Jobs.VAGRANT.getName() +'\n'+"Income:$"+Jobs.VAGRANT.getIncome()+"\n Influence:"+Jobs.VAGRANT.getInfluence());
+        jobButtonVagrant.setText(Jobs.VAGRANT.getName());
         jobButtonVagrant.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonVagrant);
         jobButtonVagrant.setOnClickListener(new OnClickListener() {
@@ -449,11 +450,14 @@ private void initInstancesDrawer() {
                 friends += 25;
                 job=Jobs.VAGRANT;
                 jobButtonActivation(true,false,true,true,true,true,true,true,true,true,true,true,true);
+                jobDetailTitle.setText(Jobs.VAGRANT.getName());
+                jobDetailIncome.setText(currencyFormat.format(Jobs.VAGRANT.getIncome()) );
+                jobDetailInfluence.setText(Double.toString(Jobs.VAGRANT.getInfluence()));
             }
         });
         //Intern//3
        jobButtonIntern = (Button) dialog.findViewById(R.id.buttonThree);
-        jobButtonIntern.setText(Jobs.INTERN.getName() +'\n'+"Income:$"+Jobs.INTERN.getIncome()+"\n Influence:"+Jobs.INTERN.getInfluence());
+        jobButtonIntern.setText(Jobs.INTERN.getName());
        jobButtonIntern.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonIntern);
         jobButtonIntern.setOnClickListener(new OnClickListener() {
@@ -463,11 +467,14 @@ private void initInstancesDrawer() {
                 friends += 15;
                 job=Jobs.INTERN;
                 jobButtonActivation(true,true,false,true,true,true,true,true,true,true,true,true,true);
+                jobDetailTitle.setText(Jobs.INTERN.getName());
+                jobDetailIncome.setText(currencyFormat.format(Jobs.INTERN.getIncome()) );
+                jobDetailInfluence.setText(Double.toString(Jobs.INTERN.getInfluence()));
             }
         });
         //PackingBoy//4
         jobButtonPackingBoy = (Button) dialog.findViewById(R.id.buttonFour);
-        jobButtonPackingBoy.setText(Jobs.PACKINGBOY.getName() +'\n'+"Income:$"+Jobs.PACKINGBOY.getIncome()+"\n Influence:"+Jobs.PACKINGBOY.getInfluence());
+        jobButtonPackingBoy.setText(Jobs.PACKINGBOY.getName());
        jobButtonPackingBoy.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonPackingBoy);
         jobButtonPackingBoy.setOnClickListener(new OnClickListener() {
@@ -477,11 +484,14 @@ private void initInstancesDrawer() {
                 friends += 10;
                 job=Jobs.PACKINGBOY;
                 jobButtonActivation(true,true,true,false,true,true,true,true,true,true,true,true,true);
+                jobDetailTitle.setText(Jobs.PACKINGBOY.getName());
+                jobDetailIncome.setText(currencyFormat.format(Jobs.PACKINGBOY.getIncome()) );
+                jobDetailInfluence.setText(Double.toString(Jobs.PACKINGBOY.getInfluence()));
             }
         });
         //Firefighter//5
         jobButtonFirefighter = (Button) dialog.findViewById(R.id.buttonFive);
-        jobButtonFirefighter.setText(Jobs.FIREFIGHTER.getName() +'\n'+"Income:$"+Jobs.FIREFIGHTER.getIncome()+"\n Influence:"+Jobs.FIREFIGHTER.getInfluence());
+        jobButtonFirefighter.setText(Jobs.FIREFIGHTER.getName());
         jobButtonFirefighter.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonFirefighter);
         jobButtonFirefighter.setOnClickListener(new OnClickListener() {
@@ -491,12 +501,15 @@ private void initInstancesDrawer() {
                 friends += 25;
                 job=Jobs.FIREFIGHTER;
                 jobButtonActivation(true,true,true,true,false,true,true,true,true,true,true,true,true);
+                jobDetailTitle.setText(Jobs.FIREFIGHTER.getName());
+                jobDetailIncome.setText(currencyFormat.format(Jobs.FIREFIGHTER.getIncome()) );
+                jobDetailInfluence.setText(Double.toString(Jobs.FIREFIGHTER.getInfluence()));
 
             }
         });
         //Banker//6
         jobButtonBanker =(Button) dialog.findViewById(R.id.buttonSix);
-        jobButtonBanker.setText(Jobs.BANKER.getName() +'\n'+"Income:$"+Jobs.BANKER.getIncome()+"\n Influence:"+Jobs.BANKER.getInfluence());
+        jobButtonBanker.setText(Jobs.BANKER.getName() );
         jobButtonBanker.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonBanker);
         jobButtonBanker.setOnClickListener(new OnClickListener() {
@@ -506,11 +519,14 @@ private void initInstancesDrawer() {
                 friends += 50;
                 job=Jobs.BANKER;
                 jobButtonActivation(true,true,true,true,true,false,true,true,true,true,true,true,true);
+                jobDetailTitle.setText(Jobs.BANKER.getName());
+                jobDetailIncome.setText(currencyFormat.format(Jobs.BANKER.getIncome()) );
+                jobDetailInfluence.setText(Double.toString(Jobs.BANKER.getInfluence()));
             }
         });
         //Scientist//7
         jobButtonScientist = (Button) dialog.findViewById(R.id.buttonSeven);
-        jobButtonScientist.setText(Jobs.SCIENTIST.getName() +'\n'+"Income:$"+Jobs.SCIENTIST.getIncome()+"\n Influence:"+Jobs.SCIENTIST.getInfluence());
+        jobButtonScientist.setText(Jobs.SCIENTIST.getName());
         jobButtonScientist.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonScientist);
         jobButtonScientist.setOnClickListener(new OnClickListener() {
@@ -520,11 +536,14 @@ private void initInstancesDrawer() {
                 friends += 75;
                 job=Jobs.SCIENTIST;
                 jobButtonActivation(true,true,true,true,true,true,false,true,true,true,true,true,true);
+                jobDetailTitle.setText(Jobs.SCIENTIST.getName());
+                jobDetailIncome.setText(currencyFormat.format(Jobs.SCIENTIST.getIncome()) );
+                jobDetailInfluence.setText(Double.toString(Jobs.SCIENTIST.getInfluence()));
             }
         });
         //Independent//8
         jobButtonIndependent = (Button) dialog.findViewById(R.id.buttonEight);
-        jobButtonIndependent.setText(Jobs.INDEPENDENT.getName() +'\n'+"Income:$"+Jobs.INDEPENDENT.getIncome()+"\n Influence:"+Jobs.INDEPENDENT.getInfluence());
+        jobButtonIndependent.setText(Jobs.INDEPENDENT.getName());
         jobButtonIndependent.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonIndependent);
         jobButtonIndependent.setOnClickListener(new OnClickListener() {
@@ -534,11 +553,14 @@ private void initInstancesDrawer() {
                 friends += 100;
                 job=Jobs.INDEPENDENT;
                 jobButtonActivation(true,true,true,true,true,true,true,true,false,true,true,true,true);
+                jobDetailTitle.setText(Jobs.INDEPENDENT.getName());
+                jobDetailIncome.setText(currencyFormat.format(Jobs.INDEPENDENT.getIncome()) );
+                jobDetailInfluence.setText(Double.toString(Jobs.INDEPENDENT.getInfluence()));
             }
         });
         //Buisness Owner//9
          jobButtonBusinessOwner = (Button) dialog.findViewById(R.id.buttonNine);
-        jobButtonBusinessOwner.setText(Jobs.BUSINESSOWNER.getName() +'\n'+"Income:$"+Jobs.BUSINESSOWNER.getIncome()+"\n Influence:"+Jobs.BUSINESSOWNER.getInfluence());
+        jobButtonBusinessOwner.setText(Jobs.BUSINESSOWNER.getName());
         jobButtonBusinessOwner.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonBusinessOwner);
         jobButtonBusinessOwner.setOnClickListener(new OnClickListener() {
@@ -548,11 +570,14 @@ private void initInstancesDrawer() {
                 friends += 200;
                 human.setJob(Jobs.BUSINESSOWNER);
                 jobButtonActivation(true,true,true,true,true,true,true,false,true,true,true,true,true);
+                jobDetailTitle.setText(Jobs.BUSINESSOWNER.getName());
+                jobDetailIncome.setText(currencyFormat.format(Jobs.BUSINESSOWNER.getIncome()) );
+                jobDetailInfluence.setText(Double.toString(Jobs.BUSINESSOWNER.getInfluence()));
             }
         });
         //King//10
          jobButtonKing = (Button) dialog.findViewById(R.id.buttonTen);
-        jobButtonKing.setText(Jobs.KING.getName() +'\n'+"Income:$"+Jobs.KING.getIncome()+"\n Influence:"+Jobs.KING.getInfluence());
+        jobButtonKing.setText(Jobs.KING.getName() );
         jobButtonKing.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonKing);
         jobButtonKing.setOnClickListener(new OnClickListener() {
@@ -562,11 +587,14 @@ private void initInstancesDrawer() {
                 friends += 500;
                 job=Jobs.KING;
                 jobButtonActivation(true,true,true,true,true,true,true,true,true,false,true,true,true);
+                jobDetailTitle.setText(Jobs.KING.getName());
+                jobDetailIncome.setText(currencyFormat.format(Jobs.KING.getIncome()) );
+                jobDetailInfluence.setText(Double.toString(Jobs.KING.getInfluence()));
             }
         });
         //Sultan//11
         jobButtonSultan =(Button) dialog.findViewById(R.id.buttonEleven);
-        jobButtonSultan.setText(Jobs.SULTAN.getName() +'\n'+"Income:$"+Jobs.SULTAN.getIncome()+"\n Influence:"+Jobs.SULTAN.getInfluence());
+        jobButtonSultan.setText(Jobs.SULTAN.getName() );
        jobButtonSultan.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonSultan);
         jobButtonSultan.setOnClickListener(new OnClickListener() {
@@ -576,11 +604,14 @@ private void initInstancesDrawer() {
                 friends += 1000;
                 job=Jobs.SULTAN;
                 jobButtonActivation(true,true,true,true,true,true,true,true,true,true,false,true,true);
+                jobDetailTitle.setText(Jobs.SULTAN.getName());
+                jobDetailIncome.setText(currencyFormat.format(Jobs.SULTAN.getIncome()) );
+                jobDetailInfluence.setText(Double.toString(Jobs.SULTAN.getInfluence()));
             }
         });
         //God
         jobButtonGod=(Button) dialog.findViewById(R.id.buttonTwelve);
-        jobButtonGod.setText(Jobs.GOD.getName() +'\n'+"Income:$"+Jobs.GOD.getIncome()+"\n Influence:"+Jobs.GOD.getInfluence());
+        jobButtonGod.setText(Jobs.GOD.getName());
         jobButtonGod.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonGod);
         jobButtonGod.setOnClickListener(new OnClickListener() {
@@ -590,11 +621,14 @@ private void initInstancesDrawer() {
                 friends += 1000;
                 job = Jobs.GOD;
                 jobButtonActivation(true,true,true,true,true,true,true,true,true,true,true,false,true);
+                jobDetailTitle.setText(Jobs.GOD.getName());
+                jobDetailIncome.setText(currencyFormat.format(Jobs.GOD.getIncome()) );
+                jobDetailInfluence.setText(Double.toString(Jobs.GOD.getInfluence()));
             }
         });
         //Omega//12
         jobButtonOmega = (Button) dialog.findViewById(R.id.buttonThirteen);
-        jobButtonOmega.setText("\u03A9" + "mega" +'\n'+"Income:$"+Jobs.OMEGA.getIncome()+"\n Influence:"+Jobs.OMEGA.getInfluence());
+        jobButtonOmega.setText("\u03A9" + "mega" );
         jobButtonOmega.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonOmega);
         jobButtonOmega.setOnClickListener(new OnClickListener() {
@@ -604,9 +638,11 @@ private void initInstancesDrawer() {
                 friends += 2000;
                 job=Jobs.OMEGA;
                 jobButtonActivation(true,true,true,true,true,true,true,true,true,true,true,true,false);
+                jobDetailTitle.setText(Jobs.OMEGA.getName());
+                jobDetailIncome.setText(currencyFormat.format(Jobs.OMEGA.getIncome()));
+                jobDetailInfluence.setText(Double.toString(Jobs.OMEGA.getInfluence()));
             }
         });
-
         //If statements to show only certain Buttons
         if(genie) {//If the genie is active..this will show up if the jobButton is selected..Genie can not be activated until the user is >=20
             jobButtonBeggar.setVisibility(View.VISIBLE); //Begger
@@ -1663,9 +1699,9 @@ private void initInstancesDrawer() {
         final EditText influenceAmountEditText = (EditText) convertView.findViewById(R.id.influenceAmountEditText);
         final EditText wealthAmountEditText = (EditText) convertView.findViewById(R.id.wealthAmountEditText);
         //I don't want the TextView to show up when..View.GONE takes care of that
-        friendsAmountEditText.setVisibility(View.GONE);
-        influenceAmountEditText.setVisibility((View.GONE));
-        wealthAmountEditText.setVisibility(View.GONE);
+        friendsAmountEditText.setVisibility(GONE);
+        influenceAmountEditText.setVisibility((GONE));
+        wealthAmountEditText.setVisibility(GONE);
         final Switch customFamilySwitch = (Switch) convertView.findViewById(R.id.customFamilySwitch);
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, familyTypes);
         customFamilySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -1696,9 +1732,9 @@ private void initInstancesDrawer() {
                     familyListView.setItemChecked(2, false);
                     familyListView.setItemChecked(3, false);
                     //Remove TextViews
-                    friendsAmountEditText.setVisibility(View.GONE);
-                    influenceAmountEditText.setVisibility(View.GONE);
-                    wealthAmountEditText.setVisibility(View.GONE);
+                    friendsAmountEditText.setVisibility(GONE);
+                    influenceAmountEditText.setVisibility(GONE);
+                    wealthAmountEditText.setVisibility(GONE);
 
                 }
             }
@@ -2027,7 +2063,7 @@ private void initInstancesDrawer() {
     private void chancesOfLife() {
         ///If you want to test any specific chance of life just place in the case number into switch bracket..the program will only run that switch
         //7randomNum
-        switch (7) {
+        switch (randomNum) {
             case 0:
               if(age<20){
                   chainString+="Your family got robbed";

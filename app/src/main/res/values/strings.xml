@@ -32,6 +32,8 @@
     <string name="influenceAmountTextView_String">Influence</string>
     <string name="currentCountry_String">Current Country: </string>
 
+    <string name="income_String">Income </string>
+
 
     <string name="cusomFamilyToggle_String">Custom Family</string>
     <string name ="tax_text">Tax</string>

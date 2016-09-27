@@ -32,6 +32,8 @@
     <string name="influenceAmountTextView_String">Influence</string>
     <string name="currentCountry_String">Current Country: </string>
 
+    <string name="income_String">Income </string>
+
 
     <string name="cusomFamilyToggle_String">Custom Family</string>
     <string name ="tax_text">Tax</string>
@@ -62,7 +64,7 @@
     <string name="alertDialog_content_text">New Text</string>
     <string name="alertDialog_icon_text">Alert Dialog Icon</string>
     <string name="reset_text">Reset</string>
-    <string name="country_button_description">Country Button</string>
+    <string name="country_button_description">Country or Job Button Selection</string>
 
     <string-array name="countries">
         <item>Irada</item>
