@@ -23,7 +23,6 @@ import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -1610,6 +1609,193 @@ private void initInstancesDrawer() {
 ///->
 
 ///->IDEAL APPLICATION USER INITIALIZATION CODE
+    private void initDialog(){
+       final Dialog dialog = new Dialog(MainActivity.this,android.R.style.Theme_Light_NoTitleBar);
+        dialog.setContentView(R.layout.initilization_layout);
+        //Initializing Buttons
+        final Button initSelectionButton = (Button) dialog.findViewById(R.id.buttonSelect);
+        final Button initCancelButton = (Button) dialog.findViewById(R.id.buttonCancel);
+        //Set up First Name Text View
+        final EditText userNameFirst = (EditText) dialog.findViewById(R.id.firstNameEditText);
+        //Setup the Last Name Text View
+        final EditText userNameFamily =(EditText) dialog.findViewById(R.id.lastNameEditText);
+
+        //Country Buttons
+        final Button countryButtonOne = (Button) dialog.findViewById(R.id.buttonOne);
+        countryButtonOne.setText(Countries.Irada.getName() + '\n' + "Taxes:$" + Countries.Irada.getTaxes() + "\n Required Influence: " + Countries.Irada.getRequiredInfluence()
+                +"\n Required Wealth: "+Countries.Irada.getRequireedWealth()+"\nRequired Friends: "+Countries.Irada.getRequiredInfluence());
+
+        final Button countryButtonTwo = (Button) dialog.findViewById(R.id.buttonTwo);
+        countryButtonTwo.setText(Countries.Itican.getName() + '\n' + "Taxes:$" + Countries.Itican.getTaxes() + "\n Required Influence: " + Countries.Itican.getRequiredInfluence()
+                +"\n Required Wealth: "+Countries.Itican.getRequireedWealth()+"\nRequired Friends: "+Countries.Itican.getRequiredInfluence());
+
+        countryButtonOne.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                countryOfUser=Countries.Irada;
+                countryButtonOne.setEnabled(false);
+                countryButtonTwo.setEnabled(true);
+            }
+        });
+        countryButtonTwo.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                countryOfUser=Countries.Itican;
+                countryButtonOne.setEnabled(true);
+                countryButtonTwo.setEnabled(false);
+            }
+        });
+
+       //Family
+        //Get the arrayLIst from the String xml
+        final List<String> familyTypes = Arrays.asList(getResources().getStringArray(R.array.familyTypes));
+        final ListView familyListView = (ListView) dialog.findViewById(R.id.familyChoiceList);
+        final EditText friendsAmountEditText = (EditText) dialog.findViewById(R.id.friendsAmountEditText);
+        final EditText influenceAmountEditText = (EditText) dialog.findViewById(R.id.influenceAmountEditText);
+        final EditText wealthAmountEditText = (EditText) dialog.findViewById(R.id.wealthAmountEditText);
+        friendsAmountEditText.setVisibility(GONE);
+        influenceAmountEditText.setVisibility((GONE));
+        wealthAmountEditText.setVisibility(GONE);
+        final Switch customFamilySwitch = (Switch) dialog.findViewById(R.id.customFamilySwitch);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, familyTypes);
+
+        customFamilySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // The toggle is enabled
+                    //Toast.makeText(MainActivity.this, "All Values need to be greater than 0 or you will have to create a new Family",
+                    //Toast.LENGTH_LONG).show();
+                    familyListView.setEnabled(false);
+                    familyListView.setVisibility(GONE);
+                    familyListView.setItemChecked(0, false);
+                    familyListView.setItemChecked(1, false);
+                    familyListView.setItemChecked(2, false);
+                    familyListView.setItemChecked(3, false);
+                    //Show TextView
+                    friendsAmountEditText.setVisibility(View.VISIBLE);
+                    influenceAmountEditText.setVisibility(View.VISIBLE);
+                    wealthAmountEditText.setVisibility(View.VISIBLE);
+
+                } else {
+                    // The toggle is disabled
+                    //isChecked=false;
+                    //selectAFamilyType();
+                    familyListView.setEnabled(true);
+                    familyListView.setVisibility(View.VISIBLE);
+                    familyListView.setItemChecked(0, false);
+                    familyListView.setItemChecked(1, false);
+                    familyListView.setItemChecked(2, false);
+                    familyListView.setItemChecked(3, false);
+                    //Remove TextViews
+                    friendsAmountEditText.setVisibility(GONE);
+                    influenceAmountEditText.setVisibility(GONE);
+                    wealthAmountEditText.setVisibility(GONE);
+
+                }
+            }
+        });
+
+
+
+        initSelectionButton.setOnClickListener(new OnClickListener() {
+                                                   @Override
+                                                   public void onClick(View v) {
+                                                       firstNamePart = userNameFirst.getText().toString();
+                                                       playerNameTextView.setText(firstNamePart);
+                                                       lastNamePart = userNameFamily.getText().toString();
+                                                       Object checkedItem;
+                                                       if (customFamilySwitch.isChecked()) {
+
+                                                           try {
+                                                               //Constructor being called:public Family( double familyWealthA,double influenceA,int friendsA)NOTE:This constructor was upgraded because of the family update method calling the indiviual family members
+                                                               father = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
+                                                               mother = new FamilyMember(false, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
+                                                               sister = new FamilyMember(false, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
+                                                               brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
+                                                               //Cusom Family Constructor
+                                                               //public Family( double familyWealthA,int influenceA,int friendsA,String familyNameA,FamilyMember brotherA, FamilyMember sisterA, FamilyMember fatherA, FamilyMember motherA){
+                                                               family = new Family(Double.parseDouble(wealthAmountEditText.getText().toString()), Integer.parseInt(influenceAmountEditText.getText().toString()),
+                                                                       Integer.parseInt(friendsAmountEditText.getText().toString()), familyName, brother, sister, father, mother);
+
+                                                               //keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), human.getJob(),
+                                                               //tax, human.getLooks(), human.getWorshippers(), family.getFamilyFriends(), human.getProfessionalAssociates());
+                                                               updatingStateOfFamily(family.getFamilyWealth(), family.getFamilyInfluence());
+                                                               human.setFriends(Integer.parseInt(friendsAmountEditText.getText().toString()));
+                                                               //Null point
+                                                               Toast.makeText(MainActivity.this, "You have selected a Custom Family" + family,
+                                                                       Toast.LENGTH_LONG).show();
+                                                           } catch (Exception e) {
+                                                               Toast.makeText(MainActivity.this, "A Custom Family with <=0 values",
+                                                                       Toast.LENGTH_LONG).show();
+                                                               initDialog();
+
+                                                           }
+                                                       } else {
+                                                           try {
+                                                               checkedItem = familyListView.getAdapter().getItem(familyListView.getCheckedItemPosition());
+                                                               //Getting the String from the selected item from the Family List View
+                                                               String selectedFamilyType = checkedItem.toString();
+                                                               //This  try/catch block code catches the (Null Pointer) exception if nothing is selected
+
+
+                                                               switch (selectedFamilyType) {
+
+                                                                   case "Rich Family":
+                                                                       father = new FamilyMember(true, familyName, Jobs.BUSINESSOWNER, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
+                                                                       mother = new FamilyMember(false, familyName, Jobs.BANKER, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
+                                                                       sister = new FamilyMember(false, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
+                                                                       brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
+                                                                       family = new Family(familyName, brother, sister, father, mother);
+
+
+                                                                       break;
+                                                                   case "Middle Family":
+                                                                       father = new FamilyMember(true, familyName, Jobs.FIREFIGHTER, countryOfUser, randomNum * 150, (int) (randomNum * 1.5));
+                                                                       mother = new FamilyMember(false, familyName, Jobs.FIREFIGHTER, countryOfUser, randomNum * 150, (int) (randomNum * 1.5));
+                                                                       sister = new FamilyMember(false, familyName, Jobs.NOJOB, countryOfUser, randomNum * 150, (int) (randomNum * 1.5));
+                                                                       brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 150, (int) (randomNum * 1.5));
+                                                                       family = new Family(familyName, brother, sister, father, mother);
+
+
+                                                                       break;
+                                                                   default:
+                                                                       father = new FamilyMember(true, familyName, Jobs.BEGGER, countryOfUser, randomNum * 75, (int) (randomNum * 1.5));
+                                                                       mother = new FamilyMember(false, familyName, Jobs.PACKINGBOY, countryOfUser, randomNum * 75, (int) (randomNum * 1.5));
+                                                                       sister = new FamilyMember(false, familyName, Jobs.INTERN, countryOfUser, randomNum * 75, (int) (randomNum * 1.5));
+                                                                       brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 75, (int) (randomNum * 1.5));
+                                                                       family = new Family(familyName, brother, sister, father, mother);
+
+                                                                       break;
+                                                               }
+                                                               //keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), human.getJob(),
+                                                               //tax, human.getLooks(), human.getWorshippers(), family.getFamilyFriends(), human.getProfessionalAssociates());
+                                                               updatingStateOfFamily(family.getFamilyWealth(), family.getFamilyInfluence());
+
+
+                                                               Toast.makeText(MainActivity.this, "You have selected " + checkedItem.toString() + family,
+                                                                       Toast.LENGTH_LONG).show();
+
+                                                           } catch (Exception e) {
+                                                               Toast.makeText(MainActivity.this, "A Family Type is needed",
+                                                                       Toast.LENGTH_LONG).show();
+                                                               initDialog();
+
+                                                           }
+                                                       }
+                dialog.dismiss();
+
+            }
+        });
+        initCancelButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        familyListView.setAdapter(adapter);
+        dialog.show();
+
+    }
     private void init() {
         ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.SplashTheme);
         AlertDialog.Builder ad = new AlertDialog.Builder(ctw);
@@ -1645,221 +1831,7 @@ private void initInstancesDrawer() {
         ad.show();
 
     }
-    private void makeYourName() {
-        //Call the XML List view and set it with  the countries array
-        //LayoutInflater inflater = getLayoutInflater();
-        //View convertView = inflater.inflate(R.layout.alertdialog_layout, null, false);
-        //Creating a Layout for the EditTextViews
-        LinearLayout layout = new LinearLayout(this);
-        layout.setOrientation(LinearLayout.VERTICAL);
 
-        //Set up First Name Text View
-        final EditText userNameFirst = new EditText(this);
-        userNameFirst.setHintTextColor(Color.WHITE);
-        userNameFirst.setTextColor(Color.WHITE);
-        userNameFirst.setHint("Enter In First Name");
-        layout.addView(userNameFirst);
-
-        //Setup the Last Name Text View
-        final EditText userNameFamily = new EditText(this);
-        userNameFamily.setHintTextColor(Color.WHITE);
-        userNameFamily.setTextColor(Color.WHITE);
-        userNameFamily.setHint("Enter In Last Name");
-        layout.addView(userNameFamily);
-        //layout.addView(convertView);
-        //Command used to set the theme of the AlertDialog
-        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.SplashTheme);
-        AlertDialog.Builder ad = new AlertDialog.Builder(ctw);
-        //AlertDialog ad = new AlertDialog.Builder(this)
-        ad
-                .setMessage("Enter in a Name(MAX:11 CHARACTERS)")
-                        //.setIcon(R.drawable.ic_launcher)
-                .setTitle("IDEAL")
-                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        firstNamePart = userNameFirst.getText().toString();
-                        playerNameTextView.setText(firstNamePart);
-                        lastNamePart = userNameFamily.getText().toString();
-
-
-                    }
-                })
-                .setCancelable(false)
-                .setIcon(R.mipmap.ic_launcher)
-                .setView(layout)
-                .create();
-        //ad.setView();
-        ad.show();
-    }
-    //SELECT COUNTRY starts at the beginning of the program and it is an Action Item Button
-    private void selectAFamilyType() {
-
-        //Get the arrayLIst from the String xml
-        final List<String> familyTypes = Arrays.asList(getResources().getStringArray(R.array.familyTypes));
-        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.SplashTheme);
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctw);
-        //final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-        alertDialog.setTitle("Choose A Family");
-
-        //Call the XML List view and set it with  the countries array
-        LayoutInflater inflater = getLayoutInflater();
-        final View convertView = inflater.inflate(R.layout.familycreationlayout, nullParent, false);
-        alertDialog.setView(convertView);
-        final ListView familyListView = (ListView) convertView.findViewById(R.id.familyChoiceList);
-        final EditText friendsAmountEditText = (EditText) convertView.findViewById(R.id.friendsAmountEditText);
-        final EditText influenceAmountEditText = (EditText) convertView.findViewById(R.id.influenceAmountEditText);
-        final EditText wealthAmountEditText = (EditText) convertView.findViewById(R.id.wealthAmountEditText);
-        //I don't want the TextView to show up when..View.GONE takes care of that
-        friendsAmountEditText.setVisibility(GONE);
-        influenceAmountEditText.setVisibility((GONE));
-        wealthAmountEditText.setVisibility(GONE);
-        final Switch customFamilySwitch = (Switch) convertView.findViewById(R.id.customFamilySwitch);
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, familyTypes);
-        customFamilySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    // The toggle is enabled
-                    //Toast.makeText(MainActivity.this, "All Values need to be greater than 0 or you will have to create a new Family",
-                    //Toast.LENGTH_LONG).show();
-                    familyListView.setEnabled(false);
-                    familyListView.setBackgroundColor(Color.parseColor("#3f3f3f"));
-                    familyListView.setItemChecked(0, false);
-                    familyListView.setItemChecked(1, false);
-                    familyListView.setItemChecked(2, false);
-                    familyListView.setItemChecked(3, false);
-                    //Show TextView
-                    friendsAmountEditText.setVisibility(View.VISIBLE);
-                    influenceAmountEditText.setVisibility(View.VISIBLE);
-                    wealthAmountEditText.setVisibility(View.VISIBLE);
-
-                } else {
-                    // The toggle is disabled
-                    //isChecked=false;
-                    //selectAFamilyType();
-                    familyListView.setEnabled(true);
-                    familyListView.setBackgroundColor(Color.parseColor("#3f3f3f"));
-                    familyListView.setItemChecked(0, false);
-                    familyListView.setItemChecked(1, false);
-                    familyListView.setItemChecked(2, false);
-                    familyListView.setItemChecked(3, false);
-                    //Remove TextViews
-                    friendsAmountEditText.setVisibility(GONE);
-                    influenceAmountEditText.setVisibility(GONE);
-                    wealthAmountEditText.setVisibility(GONE);
-
-                }
-            }
-        });
-        alertDialog
-                .setIcon(R.mipmap.ic_launcher)
-                //Use this Button to unlock the Custom Family Text View-> Don't use this because in an
-                // AlertDialog all the attached buttons close the Dialog
-                /*.setNeutralButton("Custom Family", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-
-
-                        friendsAmountEditText.setVisibility(View.VISIBLE);
-                        influenceAmountEditText.setVisibility(View.VISIBLE);
-                        wealthAmountEditText.setVisibility(View.VISIBLE);
-                    }
-                })*/
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
-
-                        {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                Object checkedItem;
-
-                                if (customFamilySwitch.isChecked()) {
-
-                                    try {
-                                        //Constructor being called:public Family( double familyWealthA,double influenceA,int friendsA)NOTE:This constructor was upgraded because of the family update method calling the indiviual family members
-                                        father = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
-                                        mother = new FamilyMember(false, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
-                                        sister = new FamilyMember(false, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
-                                        brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
-                                        //Cusom Family Constructor
-                                        //public Family( double familyWealthA,int influenceA,int friendsA,String familyNameA,FamilyMember brotherA, FamilyMember sisterA, FamilyMember fatherA, FamilyMember motherA){
-                                        family = new Family(Double.parseDouble(wealthAmountEditText.getText().toString()), Integer.parseInt(influenceAmountEditText.getText().toString()),
-                                                Integer.parseInt(friendsAmountEditText.getText().toString()), familyName, brother, sister, father, mother);
-
-                                        //keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), human.getJob(),
-                                                //tax, human.getLooks(), human.getWorshippers(), family.getFamilyFriends(), human.getProfessionalAssociates());
-                                        updatingStateOfFamily(family.getFamilyWealth(),family.getFamilyInfluence());
-                                         human.setFriends(Integer.parseInt(friendsAmountEditText.getText().toString()));
-                                        //Null point
-                                        Toast.makeText(MainActivity.this, "You have selected a Custom Family" + family,
-                                                Toast.LENGTH_LONG).show();
-                                    } catch (Exception e) {
-                                        Toast.makeText(MainActivity.this, "A Custom Family with <=0 values",
-                                                Toast.LENGTH_LONG).show();
-                                        selectAFamilyType();
-
-                                    }
-                                } else {
-                                    try {
-                                    checkedItem = familyListView.getAdapter().getItem(familyListView.getCheckedItemPosition());
-                                    //Getting the String from the selected item from the Family List View
-                                    String selectedFamilyType = checkedItem.toString();
-                                    //This  try/catch block code catches the (Null Pointer) exception if nothing is selected
-
-
-                                    switch (selectedFamilyType) {
-
-                                        case "Rich Family":
-                                            father = new FamilyMember(true, familyName, Jobs.BUSINESSOWNER, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
-                                            mother = new FamilyMember(false, familyName, Jobs.BANKER, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
-                                            sister = new FamilyMember(false, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
-                                            brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
-                                            family = new Family(familyName, brother, sister, father, mother);
-
-
-                                            break;
-                                        case "Middle Family":
-                                            father = new FamilyMember(true, familyName, Jobs.FIREFIGHTER, countryOfUser, randomNum * 150, (int) (randomNum * 1.5));
-                                            mother = new FamilyMember(false, familyName, Jobs.FIREFIGHTER, countryOfUser, randomNum * 150, (int) (randomNum * 1.5));
-                                            sister = new FamilyMember(false, familyName, Jobs.NOJOB, countryOfUser, randomNum * 150, (int) (randomNum * 1.5));
-                                            brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 150, (int) (randomNum * 1.5));
-                                            family = new Family(familyName, brother, sister, father, mother);
-
-
-                                            break;
-                                        default:
-                                            father = new FamilyMember(true, familyName, Jobs.BEGGER, countryOfUser, randomNum * 75, (int) (randomNum * 1.5));
-                                            mother = new FamilyMember(false, familyName, Jobs.PACKINGBOY, countryOfUser, randomNum * 75, (int) (randomNum * 1.5));
-                                            sister = new FamilyMember(false, familyName, Jobs.INTERN, countryOfUser, randomNum * 75, (int) (randomNum * 1.5));
-                                            brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 75, (int) (randomNum * 1.5));
-                                            family = new Family(familyName, brother, sister, father, mother);
-
-                                            break;
-                                    }
-                                    //keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), human.getJob(),
-                                            //tax, human.getLooks(), human.getWorshippers(), family.getFamilyFriends(), human.getProfessionalAssociates());
-                                        updatingStateOfFamily(family.getFamilyWealth(),family.getFamilyInfluence());
-
-
-                                    Toast.makeText(MainActivity.this, "You have selected " + checkedItem.toString() + family,
-                                            Toast.LENGTH_LONG).show();
-
-                                    } catch (Exception e) {
-                                    Toast.makeText(MainActivity.this, "A Family Type is needed",
-                                     Toast.LENGTH_LONG).show();
-                                    selectAFamilyType();
-
-                                    }
-                                }
-
-
-                            }
-
-
-                        }
-
-                );
-        familyListView.setAdapter(adapter);
-        alertDialog.show();
-
-    }
 ///->
 
 ///->GETTING AND SETTING THE IMAGE FOR THE APPLICATION
@@ -2460,14 +2432,11 @@ private void initInstancesDrawer() {
             saveUserProfile();//Try to Save Profile
                  //Tutorial for the first 5 years;
                    if(age==1) {
-                       System.out.println("A0");
-                       init();
-                       System.out.println("A1");
+                       initDialog();
+                       /*init();
                        makeYourName();
-                       System.out.println("A2");
                        selectAFamilyType();
-                       System.out.println("A3");
-                       selectACountry();
+                       selectACountry();*/
                        continueButton.startAnimation(animationFade);
                        informationalTextView.setText("Press the 'Continue Button' to begin the game");
                    } else if (age == 2) {
@@ -2999,9 +2968,6 @@ private void initInstancesDrawer() {
 
     }
 
-
 //->
-
-
-    }
+ }
 

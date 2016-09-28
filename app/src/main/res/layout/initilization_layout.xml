@@ -19,12 +19,12 @@
         android:id="@+id/contractTitleTextVIew"
         android:gravity="center"
         android:layout_gravity="top"
-        android:background="@drawable/health_progressbar_drawable"
+        android:background="@android:drawable/toast_frame"
         android:layout_weight="0.09"
         android:textSize="30sp" />
 
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/purplebackground_color"
     android:id="@+id/contractScrollLayout"
@@ -46,20 +46,6 @@
     android:theme="@style/SplashTheme"
     android:gravity="center"
     app:layout_anchorGravity="center">
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:background="@drawable/border"
-            android:id="@+id/nameLinearLayout"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/SplashTheme"
-            android:gravity="center"
-            app:layout_anchorGravity="center"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:weightSum="1">
     <TextView
         android:text="@string/playerTutorialMessage"
         android:layout_width="match_parent"
@@ -69,37 +55,51 @@
         android:layout_gravity="top"
         android:textColor="@color/signatureColorOne"
         android:textSize="24sp"
-        android:layout_weight="0.63"
-        android:padding="@dimen/textView_padding" />
+        android:padding="@dimen/textView_padding"
+        android:layout_weight="0.75" />
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:background="@drawable/border"
+            android:id="@+id/nameLinearLayout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="203dp"
+            android:theme="@style/SplashTheme"
+            android:gravity="center"
+            app:layout_anchorGravity="center"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:weightSum="1">
+
     <TextView
         android:text="@string/enterName_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/nameTitleTextVIew"
-        android:gravity="left"
+        android:gravity="start"
         android:layout_gravity="top"
         android:textColor="@color/signatureColorOne"
         android:textSize="24sp"
-        android:background="@drawable/health_progressbar_drawable" />
+        android:background="@android:drawable/toast_frame" />
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/firstNameEditText"
         android:inputType="textPersonName"
-        />
+        android:hint="First Name" />
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/lastNameEditText"
         android:inputType="textPersonName"
-
-        />
+        android:hint="Last/FamilyName" />
 </LinearLayout>
-
- <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:theme="@style/AppTheme"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="302dp"
         android:background="@drawable/border"
      android:paddingTop="@dimen/activity_vertical_margin"
      android:paddingBottom="@dimen/activity_vertical_margin">
@@ -133,7 +133,7 @@
         android:digits="0123456789."
         android:inputType="numberDecimal"
         android:maxLength="5"
-        android:visibility="invisible"
+        android:visibility="gone"
         android:layout_below="@+id/influenceAmountEditText"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -152,7 +152,7 @@
         android:digits="0123456789."
         android:inputType="numberDecimal"
         android:maxLength="5"
-        android:visibility="invisible"
+        android:visibility="gone"
         android:layout_below="@+id/wealthAmountEditText"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -170,7 +170,7 @@
         android:digits="0123456789."
         android:inputType="numberDecimal"
         android:maxLength="5"
-        android:visibility="invisible"
+        android:visibility="gone"
         android:layout_below="@+id/customFamilySwitch"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -182,20 +182,81 @@
         android:text="@string/cusomFamilyToggle_String"
         android:id="@+id/customFamilySwitch"
         android:checked="false"
-        android:padding="@dimen/paddingOnFamilyCreationDialog"
         android:textColor="@color/signatureColorOne"
         android:textSize="20sp"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:background="@drawable/health_progressbar_drawable" />
+        android:background="@android:drawable/toast_frame" />
 </RelativeLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@drawable/border"
+        android:id="@+id/selectCountryLayout"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="271dp"
+        android:theme="@style/SplashTheme"
+        android:gravity="center"
+        app:layout_anchorGravity="center"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:weightSum="2">
+    <TextView
+        android:text="Select A Country"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/countryTitleTextVIew"
+        android:gravity="start"
+        android:layout_gravity="top"
+        android:textColor="@color/signatureColorOne"
+        android:textSize="24sp"
+        android:layout_weight="0.20"
+        android:background="@android:drawable/toast_frame" />
+
+        <LinearLayout
+            android:background="@color/purplebackground_color"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.19">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/buttonOne"
+                android:gravity="center"
+                android:layout_weight="1"
+                style="@android:style/Holo.SegmentedButton"
+                android:textColor="@color/signatureColorOne"
+                android:contentDescription="@string/country_button_description"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/buttonTwo"
+                android:gravity="center"
+                android:layout_weight="1"
+                style="@android:style/Holo.SegmentedButton"
+                android:contentDescription="@string/country_button_description"
+                android:textColor="@color/signatureColorOne"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 
 
 
 </LinearLayout>
 </ScrollView>
-    <LinearLayout
+
+
+
+<LinearLayout
+        android:background="@color/purplebackground_color"
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_height="wrap_content">
