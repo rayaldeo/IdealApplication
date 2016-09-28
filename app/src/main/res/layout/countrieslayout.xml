@@ -198,24 +198,24 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:text="Cancel"
+            android:text="@string/cancel_String"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:id="@+id/buttonCancel"
             android:gravity="center"
             android:layout_weight="1"
-            android:contentDescription="Cancel Country Button Selection"
+            android:contentDescription="@string/cancel_country_button_selection_descritption"
             android:paddingTop="10dp"
             style="@android:style/Holo.SegmentedButton"
             android:paddingBottom="10dp" />
         <Button
-            android:text="Select"
+            android:text=""
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:id="@+id/buttonSelect"
             android:gravity="center"
             android:layout_weight="1"
-            android:contentDescription="Select Country Button"
+            android:contentDescription="@string/select_country_button_description"
             android:paddingTop="10dp"
             style="@android:style/Holo.SegmentedButton"
             android:paddingBottom="10dp" />

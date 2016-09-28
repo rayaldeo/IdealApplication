@@ -154,8 +154,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private Boolean scientist = false;
     private Boolean god = false;
     private Boolean sultan = false;
-    private Boolean worshippersFollow = false;
     private Boolean omega = false;
+    private Boolean worshippersFollow = false;
     private Boolean influencActivation = false;
     private Boolean heavenBoolean = false;
     private int tempNum = age - 10;
@@ -424,7 +424,7 @@ private void initInstancesDrawer() {
         jobButtonBeggar.setText(Jobs.BEGGER.getName());
         //jobButtonBeggar.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.signatureColorOne));
         jobButtonBeggar.setBackgroundResource(R.drawable.button_style);
-       jobButtonBeggar.setOnClickListener(new OnClickListener() {
+        jobButtonBeggar.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 professionalAssociates += 0;
@@ -475,6 +475,7 @@ private void initInstancesDrawer() {
         //PackingBoy//4
         jobButtonPackingBoy = (Button) dialog.findViewById(R.id.buttonFour);
         jobButtonPackingBoy.setText(Jobs.PACKINGBOY.getName());
+        jobButtonPackingBoy.setVisibility(GONE);
        jobButtonPackingBoy.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonPackingBoy);
         jobButtonPackingBoy.setOnClickListener(new OnClickListener() {
@@ -493,6 +494,7 @@ private void initInstancesDrawer() {
         jobButtonFirefighter = (Button) dialog.findViewById(R.id.buttonFive);
         jobButtonFirefighter.setText(Jobs.FIREFIGHTER.getName());
         jobButtonFirefighter.setBackgroundResource(R.drawable.button_style);
+        jobButtonFirefighter.setVisibility(GONE);
         //layout.addView(jobButtonFirefighter);
         jobButtonFirefighter.setOnClickListener(new OnClickListener() {
             @Override
@@ -511,6 +513,7 @@ private void initInstancesDrawer() {
         jobButtonBanker =(Button) dialog.findViewById(R.id.buttonSix);
         jobButtonBanker.setText(Jobs.BANKER.getName() );
         jobButtonBanker.setBackgroundResource(R.drawable.button_style);
+        jobButtonBanker.setVisibility(GONE);
         //layout.addView(jobButtonBanker);
         jobButtonBanker.setOnClickListener(new OnClickListener() {
             @Override
@@ -527,6 +530,7 @@ private void initInstancesDrawer() {
         //Scientist//7
         jobButtonScientist = (Button) dialog.findViewById(R.id.buttonSeven);
         jobButtonScientist.setText(Jobs.SCIENTIST.getName());
+        jobButtonScientist.setVisibility(GONE);
         jobButtonScientist.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonScientist);
         jobButtonScientist.setOnClickListener(new OnClickListener() {
@@ -544,6 +548,7 @@ private void initInstancesDrawer() {
         //Independent//8
         jobButtonIndependent = (Button) dialog.findViewById(R.id.buttonEight);
         jobButtonIndependent.setText(Jobs.INDEPENDENT.getName());
+        jobButtonIndependent.setVisibility(GONE);
         jobButtonIndependent.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonIndependent);
         jobButtonIndependent.setOnClickListener(new OnClickListener() {
@@ -561,6 +566,7 @@ private void initInstancesDrawer() {
         //Buisness Owner//9
          jobButtonBusinessOwner = (Button) dialog.findViewById(R.id.buttonNine);
         jobButtonBusinessOwner.setText(Jobs.BUSINESSOWNER.getName());
+        jobButtonBusinessOwner.setVisibility(GONE);
         jobButtonBusinessOwner.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonBusinessOwner);
         jobButtonBusinessOwner.setOnClickListener(new OnClickListener() {
@@ -578,6 +584,7 @@ private void initInstancesDrawer() {
         //King//10
          jobButtonKing = (Button) dialog.findViewById(R.id.buttonTen);
         jobButtonKing.setText(Jobs.KING.getName() );
+        jobButtonKing.setVisibility(GONE);
         jobButtonKing.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonKing);
         jobButtonKing.setOnClickListener(new OnClickListener() {
@@ -595,6 +602,7 @@ private void initInstancesDrawer() {
         //Sultan//11
         jobButtonSultan =(Button) dialog.findViewById(R.id.buttonEleven);
         jobButtonSultan.setText(Jobs.SULTAN.getName() );
+        jobButtonSultan.setVisibility(GONE);
        jobButtonSultan.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonSultan);
         jobButtonSultan.setOnClickListener(new OnClickListener() {
@@ -612,6 +620,7 @@ private void initInstancesDrawer() {
         //God
         jobButtonGod=(Button) dialog.findViewById(R.id.buttonTwelve);
         jobButtonGod.setText(Jobs.GOD.getName());
+        jobButtonGod.setVisibility(GONE);
         jobButtonGod.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonGod);
         jobButtonGod.setOnClickListener(new OnClickListener() {
@@ -630,6 +639,7 @@ private void initInstancesDrawer() {
         jobButtonOmega = (Button) dialog.findViewById(R.id.buttonThirteen);
         jobButtonOmega.setText("\u03A9" + "mega" );
         jobButtonOmega.setBackgroundResource(R.drawable.button_style);
+        jobButtonOmega.setVisibility(GONE);
         //layout.addView(jobButtonOmega);
         jobButtonOmega.setOnClickListener(new OnClickListener() {
             @Override
@@ -658,14 +668,15 @@ private void initInstancesDrawer() {
             jobButtonSultan.setVisibility(View.VISIBLE); //SULTAN
             jobButtonGod.setVisibility(View.VISIBLE);//GOD
             jobButtonOmega.setVisibility(View.VISIBLE);  //OMEGA
-                }else if (age < 20 || schoolAttendanceAmount<1) {
+        }else if (age >20 || schoolAttendanceAmount<1) {
             if (packingboy){ jobButtonPackingBoy.setVisibility(View.VISIBLE);}//PackingBoy
             if (intern){ jobButtonIntern.setVisibility(View.VISIBLE);}//Intern;}//Intern
         }else{
             if (human.getCountry() == Countries.Irada ||
                     human.getCountry() == Countries.Itican ||
                     human.getCountry() == Countries.Albaq) {
-                if (begger) { jobButtonBeggar.setVisibility(View.VISIBLE);; }//Begger
+                if (begger) { jobButtonBeggar.setVisibility(View.VISIBLE);
+                }//Begger
                 if (vagrant) { jobButtonVagrant.setVisibility(View.VISIBLE);}//Vagrant
                 if (packingboy) {  jobButtonPackingBoy.setVisibility(View.VISIBLE);  }//PackingBoy
             }
@@ -1048,7 +1059,7 @@ private void initInstancesDrawer() {
         //Albaq
         countryButtonAlbaq = (Button) dialog.findViewById(R.id.buttonThree);
         countryButtonAlbaq.setText(Countries.Albaq.getName());
-        countryButtonAlbaq.setVisibility(View.INVISIBLE);
+        countryButtonAlbaq.setVisibility(View.GONE);
         countryButtonAlbaq.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonIntern);
         countryButtonAlbaq.setOnClickListener(new OnClickListener() {
@@ -1072,7 +1083,7 @@ private void initInstancesDrawer() {
         //Trinentina
         countryButtonTrinentina = (Button) dialog.findViewById(R.id.buttonFour);
         countryButtonTrinentina.setText(Countries.Trinentina.getName() );
-        countryButtonTrinentina.setVisibility(View.INVISIBLE);
+        countryButtonTrinentina.setVisibility(View.GONE);
          countryButtonTrinentina.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonPackingBoy);
         countryButtonTrinentina.setOnClickListener(new OnClickListener() {
@@ -1096,7 +1107,7 @@ private void initInstancesDrawer() {
         //Albico
         countryButtonAlbico = (Button) dialog.findViewById(R.id.buttonFive);
         countryButtonAlbico.setText(Countries.Albico.getName());
-        countryButtonAlbico.setVisibility(View.INVISIBLE);
+        countryButtonAlbico.setVisibility(View.GONE);
         countryButtonAlbico.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonFirefighter);
         countryButtonAlbico.setOnClickListener(new OnClickListener() {
@@ -1120,7 +1131,7 @@ private void initInstancesDrawer() {
         //Ugeria
          countryButtonUgeria = (Button) dialog.findViewById(R.id.buttonSix);
         countryButtonUgeria.setText(Countries.Ugeria.getName());
-        countryButtonUgeria.setVisibility(View.INVISIBLE);
+        countryButtonUgeria.setVisibility(View.GONE);
         countryButtonUgeria.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonBanker);
         countryButtonUgeria.setOnClickListener(new OnClickListener() {
@@ -1144,7 +1155,7 @@ private void initInstancesDrawer() {
         //Portada
         countryButtonPortada = (Button) dialog.findViewById(R.id.buttonSeven);
         countryButtonPortada.setText(Countries.Portada.getName());
-        countryButtonPortada.setVisibility(View.INVISIBLE);
+        countryButtonPortada.setVisibility(View.GONE);
         countryButtonPortada.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonScientist);
         countryButtonPortada.setOnClickListener(new OnClickListener() {
@@ -1169,7 +1180,7 @@ private void initInstancesDrawer() {
         //Kuwador
         countryButtonKuwador = (Button) dialog.findViewById(R.id.buttonEight);
         countryButtonKuwador.setText(Countries.Kuwador.getName());
-        countryButtonKuwador.setVisibility(View.INVISIBLE);
+        countryButtonKuwador.setVisibility(View.GONE);
         countryButtonKuwador.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonIndependent);
         countryButtonKuwador.setOnClickListener(new OnClickListener() {
@@ -1193,7 +1204,7 @@ private void initInstancesDrawer() {
         //Ukrark
         countryButtonUkrark = (Button) dialog.findViewById(R.id.buttonNine);
         countryButtonUkrark.setText(Countries.Ukrark.getName());
-        countryButtonUkrark.setVisibility(View.INVISIBLE);
+        countryButtonUkrark.setVisibility(View.GONE);
         countryButtonUkrark.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonBusinessOwner);
         countryButtonUkrark.setOnClickListener(new OnClickListener() {
@@ -1217,7 +1228,7 @@ private void initInstancesDrawer() {
         //Rany
        countryButtonRany = (Button) dialog.findViewById(R.id.buttonTen);
         countryButtonRany.setText(Countries.Rany.getName());
-        countryButtonRany.setVisibility(View.INVISIBLE);
+        countryButtonRany.setVisibility(View.GONE);
         countryButtonRany.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonKing);
         countryButtonRany.setOnClickListener(new OnClickListener() {
@@ -1241,7 +1252,7 @@ private void initInstancesDrawer() {
         //Heaven
         countryButtonHeaven = (Button) dialog.findViewById(R.id.buttonEleven);
         countryButtonHeaven.setText(Countries.Heaven.getName());
-        countryButtonHeaven.setVisibility(View.INVISIBLE);
+        countryButtonHeaven.setVisibility(View.GONE);
          countryButtonHeaven.setBackgroundResource(R.drawable.button_style);
         //layout.addView(jobButtonSultan);
         countryButtonHeaven.setOnClickListener(new OnClickListener() {

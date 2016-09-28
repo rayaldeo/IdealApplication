@@ -32,6 +32,14 @@
     <string name="influenceAmountTextView_String">Influence</string>
     <string name="currentCountry_String">Current Country: </string>
 
+    <string name="playerTutorialMessage">Welcome!The purpose of this Android Application is to create your fantasy ideal life..
+    "Create a character at the bottom of society."
+
+    "Progress this character through the world and accumulate influence, wealth, and associates."
+
+    "Don't hold back,accumulating everything the world has the offer is the key of winning the game"
+    "Good Luck!" </string>
+
     <string name="income_String">Income </string>
 
 
@@ -65,6 +73,11 @@
     <string name="alertDialog_icon_text">Alert Dialog Icon</string>
     <string name="reset_text">Reset</string>
     <string name="country_button_description">Country or Job Button Selection</string>
+    <string name="cancel_country_button_selection_descritption">Cancel Country Button Selection</string>
+    <string name="cancel_String">Cancel</string>
+    <string name="select_country_button_description">Select Country Button</string>
+    <string name="select_String">Select</string>
+    <string name="contract_String">CONTRACT</string>
 
     <string-array name="countries">
         <item>Irada</item>
