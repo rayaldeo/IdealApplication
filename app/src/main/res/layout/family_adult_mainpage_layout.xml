@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/rootLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -42,13 +41,11 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:id="@+id/framelayouandprogressbars"
-               android:layout_weight="4.07">
+                android:layout_weight="4.07">
                 <!-- Header aligned to top -->
                 <FrameLayout
                     android:layout_width="135dp"
-                    android:layout_height="match_parent"
-                    android:id="@+id/frameLayout">
+                    android:layout_height="match_parent">
 
                     <ImageView
                         android:layout_width="fill_parent"
@@ -87,13 +84,11 @@
                     android:layout_width="wrap_content"
                     android:orientation="vertical"
                     android:layout_height="fill_parent"
-                    android:id="@+id/health_wealth_influence_linearlayout"
-                   android:weightSum="3">
+                    android:weightSum="3">
 
                     <!--Healh-->
                     <RelativeLayout
                         android:layout_width="fill_parent"
-                        android:id="@+id/healthlayout"
                         android:layout_height="0dp"
                         android:orientation="horizontal"
                         android:layout_weight="0.75">
@@ -121,7 +116,6 @@
                     </RelativeLayout>
                     <!--Wealth-->
                     <RelativeLayout
-                        android:id="@+id/header"
                         android:background="#000"
                         android:gravity="center"
                         android:layout_weight="1.25"
@@ -168,7 +162,6 @@
                     </RelativeLayout>
                     <!--Influence-->
                     <RelativeLayout
-                        android:id="@+id/header1"
                         android:background="#000"
                         android:gravity="center"
                         android:layout_weight="1"
@@ -218,7 +211,6 @@
             <!--Job/Country/Tax-->
             <LinearLayout
                 android:orientation="horizontal"
-                android:id="@+id/job_country_tax_layout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:gravity="center"
@@ -272,7 +264,6 @@
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:id="@+id/content"
                 android:gravity="center"
                 android:layout_weight="7"
                 >
@@ -329,7 +320,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
                         android:layout_weight="1.00"
-                        android:id="@+id/moveto_layout"
                         android:layout_gravity="end">
                         <Button
                             android:layout_width="fill_parent"
@@ -347,7 +337,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
                         android:layout_weight="1.00"
-                        android:id="@+id/school_layout"
                         android:layout_gravity="end">
                         <TextView
                             android:layout_width="fill_parent"
@@ -375,7 +364,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
                         android:layout_weight="1.00"
-                        android:id="@+id/physical_layout"
                         android:layout_gravity="end">
                         <TextView
                             android:layout_width="fill_parent"
@@ -402,8 +390,7 @@
                         android:orientation="vertical"
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
-                        android:layout_weight="1.00"
-                        android:id="@+id/socialize_layout">
+                        android:layout_weight="1.00">
                         <TextView
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -430,8 +417,7 @@
                         android:orientation="vertical"
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
-                        android:layout_weight="1.00"
-                        android:id="@+id/job_layout">
+                        android:layout_weight="1.00">
 
                         <Button
                             android:layout_width="fill_parent"
@@ -458,7 +444,6 @@
     </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView
-        android:id="@+id/navigation_drawer"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"

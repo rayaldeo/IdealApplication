@@ -2,12 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/purplebackground_color"
-    android:id="@+id/countriesLayout"
     android:orientation="vertical"
     android:layout_weight="3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/SplashTheme"
+    android:theme="@style/InitDialogTheme"
     android:gravity="center"
     android:layout_alignParentTop="false"
     app:layout_anchorGravity="center">
@@ -209,7 +208,7 @@
             style="@android:style/Holo.SegmentedButton"
             android:paddingBottom="10dp" />
         <Button
-            android:text=""
+            android:text="@string/select_String"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:id="@+id/buttonSelect"

@@ -441,7 +441,6 @@ private void initInstancesDrawer() {
         jobButtonVagrant = (Button) dialog.findViewById(R.id.buttonTwo);
         jobButtonVagrant.setText(Jobs.VAGRANT.getName());
         jobButtonVagrant.setBackgroundResource(R.drawable.button_style);
-        //layout.addView(jobButtonVagrant);
         jobButtonVagrant.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -458,8 +457,7 @@ private void initInstancesDrawer() {
        jobButtonIntern = (Button) dialog.findViewById(R.id.buttonThree);
         jobButtonIntern.setText(Jobs.INTERN.getName());
        jobButtonIntern.setBackgroundResource(R.drawable.button_style);
-        //layout.addView(jobButtonIntern);
-        jobButtonIntern.setOnClickListener(new OnClickListener() {
+       jobButtonIntern.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 professionalAssociates += 500;
@@ -475,8 +473,7 @@ private void initInstancesDrawer() {
         jobButtonPackingBoy = (Button) dialog.findViewById(R.id.buttonFour);
         jobButtonPackingBoy.setText(Jobs.PACKINGBOY.getName());
         jobButtonPackingBoy.setVisibility(GONE);
-       jobButtonPackingBoy.setBackgroundResource(R.drawable.button_style);
-        //layout.addView(jobButtonPackingBoy);
+        jobButtonPackingBoy.setBackgroundResource(R.drawable.button_style);
         jobButtonPackingBoy.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -494,7 +491,6 @@ private void initInstancesDrawer() {
         jobButtonFirefighter.setText(Jobs.FIREFIGHTER.getName());
         jobButtonFirefighter.setBackgroundResource(R.drawable.button_style);
         jobButtonFirefighter.setVisibility(GONE);
-        //layout.addView(jobButtonFirefighter);
         jobButtonFirefighter.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -513,7 +509,6 @@ private void initInstancesDrawer() {
         jobButtonBanker.setText(Jobs.BANKER.getName() );
         jobButtonBanker.setBackgroundResource(R.drawable.button_style);
         jobButtonBanker.setVisibility(GONE);
-        //layout.addView(jobButtonBanker);
         jobButtonBanker.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -531,7 +526,6 @@ private void initInstancesDrawer() {
         jobButtonScientist.setText(Jobs.SCIENTIST.getName());
         jobButtonScientist.setVisibility(GONE);
         jobButtonScientist.setBackgroundResource(R.drawable.button_style);
-        //layout.addView(jobButtonScientist);
         jobButtonScientist.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -549,7 +543,6 @@ private void initInstancesDrawer() {
         jobButtonIndependent.setText(Jobs.INDEPENDENT.getName());
         jobButtonIndependent.setVisibility(GONE);
         jobButtonIndependent.setBackgroundResource(R.drawable.button_style);
-        //layout.addView(jobButtonIndependent);
         jobButtonIndependent.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -567,7 +560,6 @@ private void initInstancesDrawer() {
         jobButtonBusinessOwner.setText(Jobs.BUSINESSOWNER.getName());
         jobButtonBusinessOwner.setVisibility(GONE);
         jobButtonBusinessOwner.setBackgroundResource(R.drawable.button_style);
-        //layout.addView(jobButtonBusinessOwner);
         jobButtonBusinessOwner.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -585,7 +577,6 @@ private void initInstancesDrawer() {
         jobButtonKing.setText(Jobs.KING.getName() );
         jobButtonKing.setVisibility(GONE);
         jobButtonKing.setBackgroundResource(R.drawable.button_style);
-        //layout.addView(jobButtonKing);
         jobButtonKing.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -602,8 +593,7 @@ private void initInstancesDrawer() {
         jobButtonSultan =(Button) dialog.findViewById(R.id.buttonEleven);
         jobButtonSultan.setText(Jobs.SULTAN.getName() );
         jobButtonSultan.setVisibility(GONE);
-       jobButtonSultan.setBackgroundResource(R.drawable.button_style);
-        //layout.addView(jobButtonSultan);
+        jobButtonSultan.setBackgroundResource(R.drawable.button_style);
         jobButtonSultan.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -621,8 +611,7 @@ private void initInstancesDrawer() {
         jobButtonGod.setText(Jobs.GOD.getName());
         jobButtonGod.setVisibility(GONE);
         jobButtonGod.setBackgroundResource(R.drawable.button_style);
-        //layout.addView(jobButtonGod);
-        jobButtonGod.setOnClickListener(new OnClickListener() {
+       jobButtonGod.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 professionalAssociates += 1500;
@@ -639,7 +628,6 @@ private void initInstancesDrawer() {
         jobButtonOmega.setText("\u03A9" + "mega" );
         jobButtonOmega.setBackgroundResource(R.drawable.button_style);
         jobButtonOmega.setVisibility(GONE);
-        //layout.addView(jobButtonOmega);
         jobButtonOmega.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1610,10 +1598,11 @@ private void initInstancesDrawer() {
 
 ///->IDEAL APPLICATION USER INITIALIZATION CODE
     private void initDialog(){
-       final Dialog dialog = new Dialog(MainActivity.this,android.R.style.Theme_Light_NoTitleBar);
+       final Dialog dialog = new Dialog(MainActivity.this);
         dialog.setContentView(R.layout.initilization_layout);
         //Initializing Buttons
         final Button initSelectionButton = (Button) dialog.findViewById(R.id.buttonSelect);
+        initSelectionButton.setVisibility(View.INVISIBLE);
         final Button initCancelButton = (Button) dialog.findViewById(R.id.buttonCancel);
         //Set up First Name Text View
         final EditText userNameFirst = (EditText) dialog.findViewById(R.id.firstNameEditText);
@@ -1635,6 +1624,7 @@ private void initInstancesDrawer() {
                 countryOfUser=Countries.Irada;
                 countryButtonOne.setEnabled(false);
                 countryButtonTwo.setEnabled(true);
+                initSelectionButton.setVisibility(View.VISIBLE);
             }
         });
         countryButtonTwo.setOnClickListener(new OnClickListener() {
@@ -1643,6 +1633,7 @@ private void initInstancesDrawer() {
                 countryOfUser=Countries.Itican;
                 countryButtonOne.setEnabled(true);
                 countryButtonTwo.setEnabled(false);
+                initSelectionButton.setVisibility(View.VISIBLE);
             }
         });
 
@@ -1657,11 +1648,14 @@ private void initInstancesDrawer() {
         influenceAmountEditText.setVisibility((GONE));
         wealthAmountEditText.setVisibility(GONE);
         final Switch customFamilySwitch = (Switch) dialog.findViewById(R.id.customFamilySwitch);
+        //customFamilySwitch.getBackground().setAlpha(0);
+        customFamilySwitch.setText("Select A Family");
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, familyTypes);
 
         customFamilySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
+                    customFamilySwitch.setText(getString(R.string.cusomFamilyToggle_String));
                     // The toggle is enabled
                     //Toast.makeText(MainActivity.this, "All Values need to be greater than 0 or you will have to create a new Family",
                     //Toast.LENGTH_LONG).show();
@@ -1677,6 +1671,7 @@ private void initInstancesDrawer() {
                     wealthAmountEditText.setVisibility(View.VISIBLE);
 
                 } else {
+                    customFamilySwitch.setText("Select A Family");
                     // The toggle is disabled
                     //isChecked=false;
                     //selectAFamilyType();
@@ -1694,8 +1689,6 @@ private void initInstancesDrawer() {
                 }
             }
         });
-
-
 
         initSelectionButton.setOnClickListener(new OnClickListener() {
                                                    @Override

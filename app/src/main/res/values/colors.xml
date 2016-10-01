@@ -4,16 +4,7 @@
     <color name="backgroundColor">#3f3f3f</color>
     <color name="amount_background">#BBDEFB</color>
     <color name="purplebackground_color">#3f1930</color>
-    <color name="lighter_purplebackground_color">#785e6e</color>
-    <color name="list_item_title">#fff</color>
-    <color name="list_background">#303030</color>
-    <color name="list_background_pressed">#992416</color>
-    <color name="list_divider">#272727</color>
     <color name="counter_text_bg">#626262</color>
-    <color name="counter_text_color">#c5c4c4</color>
     <color name="blood_red">#8A0707</color>
-    <color name="colorPrimary">#1c90ec</color>
-    <color name="colorPrimaryDark">#1570c0</color>
-    <color name="colorAccent">#d71356</color>
-    <color name="secondary_text_dark_nodisable">#d71356</color>
+
 </resources>

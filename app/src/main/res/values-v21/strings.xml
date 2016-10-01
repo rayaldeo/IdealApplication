@@ -2,7 +2,6 @@
     <string name="app_name">IdealApplication</string>
     <string name="action_settings">Information About Application</string>
     <string name ="familyTutorial">Family Stats</string>
-    <string name="profilePicture_fragment">profilePicture</string>
     <string name="profilePicture">Profile Picture</string>
     <string name="getJob_text">Job</string>
     <string name="getCountry_text">Country</string>
@@ -18,15 +17,11 @@
     <string name="overallWealthPercantage">Percentage</string>
     <string name="influencePercentageString">Percantage</string>
     <string name="enterName_hint">Enter Name</string>
-    <string name="profileImageprofileiamgedialog">Profile Image</string>
     <string name="neighbourhoodTextView_text">Neighbourhood</string>
     <string name="friendsTextView_text">Friends</string>
     <string name="professionalAssociatesTextView_text">Professional Associates</string>
     <string name="looksTextView_text">Looks</string>
     <string name="worshippersTextView_text">Worshippers</string>
-    <string name="custom_Family_Button_String">Custom Family</string>
-    <string name="enter_amount">Enter Amount</string>
-    <string name="customFamilyButton_String">Custom Family</string>
     <string name="friendsAmountTextView_String">Required Friends</string>
     <string name="influenceRequiredAmountTextView_String">Required Influence</string>
     <string name="influenceAmountTextView_String">Influence</string>
@@ -49,28 +44,19 @@
     <string name ="poorFamily_text">Poor Family</string>
     <string name ="middleFamily_text">Middle Family</string>
     <string name ="richFamily_text">Rich Family</string>
-    <string name ="customFamily_text">Custom Family</string>
 
     <string name="age_Turn_text">AGE/TURN</string>
 
     <string name="schoolAttendanceAmount_text">0</string>
     <string name="workingOnPhysicalApp_text">0</string>
     <string name="socialisingWithFriends_text">0</string>
-    <string name="familyButton_txt">Accept Family</string>
-    <string name="accept_Country_text">Accept Country</string>
     <string name="playerNameText">N/A</string>
 
-    <string name="customFamily_fatherTab_text">Father</string>
-    <string name="customFamily_motherTab_text">Mother</string>
-    <string name="customFamily_sisterTab_text">Sister</string>
-    <string name="customFamily_brotherTab_text">Brother</string>
     <string name="continueButton_text">Continue</string>
     <string name="splash_screen_text">SplashImage</string>
     <string name="idealstudios_text">IDEAL Studios</string>
     <string name="health_text">Health</string>
     <string name="profile_image_text">Profile Image</string>
-    <string name="alertDialog_content_text">New Text</string>
-    <string name="alertDialog_icon_text">Alert Dialog Icon</string>
     <string name="reset_text">Reset</string>
     <string name="country_button_description">Country or Job Button Selection</string>
     <string name="cancel_country_button_selection_descritption">Cancel Country Button Selection</string>
@@ -79,46 +65,11 @@
     <string name="select_String">Select</string>
     <string name="contract_String">CONTRACT</string>
 
-    <string-array name="countries">
-        <item>Irada</item>
-        <item>Itican</item>
-        <item>Albaq</item>
-        <item>Trinentina</item>
-        <item>Albico</item>
-        <item>Ugeria</item>
-        <item>Portada</item>
-        <item>Kuwador</item>
-        <item>Ukrark</item>
-        <item>Rany</item>
-        <item>Heaven</item>
-    </string-array>
-
     <string-array name="familyTypes">
         <item>@string/poorFamily_text</item>
         <item>@string/middleFamily_text</item>
         <item>@string/richFamily_text</item>
     </string-array>
-
-
-    <string-array name="jobChoices">
-        <item>(1)Beggar</item>
-        <item>(2)Vagrant</item>
-        <item>(3)Intern</item>
-        <item>(4)PackingBoy</item>
-        <item>(5)Firefighter</item>
-        <item>(6)Banker</item>
-        <item>(7)Scientist</item>
-        <item>(8)Independent</item>
-        <item>(9)Business Owner</item>
-        <item>(10)King</item>
-        <item>(11)God</item>
-        <item>(12)Omega</item>
-
-    </string-array>
-
-
-
-
 
 
 </resources>
