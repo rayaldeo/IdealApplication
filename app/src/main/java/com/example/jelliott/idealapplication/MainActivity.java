@@ -2496,6 +2496,9 @@ private void initInstancesDrawer() {
                       if(!shownOne) {
                           System.out.println("Shown is false");
                           //buttonActivation(true);
+                          if (human.getCountry().equals(Countries.NoCountry)) {//If the game has just started, the human should not have a country and therefore I manually update the human Country
+                              human.setCountries(family.getFamilyCountry());
+                          }
                            keepStatsUpToDate(family.getFamilyWealth(), family.getFamilyInfluence(), job, family.getFamilyCountry().getTaxes()
                                       , 0, family.getFamilyWorshippers(), family.getFamilyFriends(), 0);
                           informationalTextView.setText("IDEAL:Adult Life" + "\n" + "You are now an adult an inherited everything from your family. Now you will have to work on your own to secure your IDEAL Life" + "\n"
