@@ -62,8 +62,6 @@
             android:theme="@style/SplashTheme"
             android:gravity="center"
             app:layout_anchorGravity="center"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     android:weightSum="1">
 
     <TextView
@@ -71,10 +69,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_gravity="top"
         android:textColor="@color/signatureColorOne"
         android:textSize="30sp"
-        android:background="@android:drawable/toast_frame" />
+        android:background="@android:drawable/toast_frame"
+        android:id="@+id/textView3" />
 
     <EditText
         android:layout_width="match_parent"
@@ -92,10 +90,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:theme="@style/AppTheme"
         android:layout_width="wrap_content"
-        android:layout_height="302dp"
-        android:background="@drawable/border"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin">
+    android:layout_height="300dp"
+    android:background="@drawable/border">
 
     <ListView
         android:id="@+id/familyChoiceList"
@@ -189,9 +185,7 @@
         android:theme="@style/SplashTheme"
         android:gravity="center"
         app:layout_anchorGravity="center"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:weightSum="2">
+    android:weightSum="2">
     <TextView
         android:text="Select A Country"
         android:layout_width="match_parent"

@@ -250,9 +250,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             continueButton.setOnClickListener(new OnClickListener() {
                 public void onClick(View v) {
                     age++;
+                    age_Turn_textView.setText("Age: " + age);
                     if (human.getOverAllWealth() < maxOverallWealth && human.getInfluence() < maxInfluence) {
-                        age_Turn_textView.setText("Age: " + age);
-                          IDEALLifeProgram();
+                        IDEALLifeProgram();
                         if(age>=20) {actionItemTaken = false; }//This should only be active at and after age 20
                     } else {
                         actionItemTaken=true;
@@ -305,8 +305,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             workingOnPhysicalAppTextView.setText(Integer.toString(workingOnPhysicalApp));
             socialisingWithFriendsTextView.setText(Integer.toString(socialisingWithFriends));
             schoolAttendanceAmountTextView.setText(Integer.toString(schoolAttendanceAmount));
-
-
 ////------------------------------------------------------------------------------------------->//Drawer
         initInstancesDrawer();
 ////------------------------------------------------------------------------------------------------------->
@@ -402,7 +400,7 @@ private void initInstancesDrawer() {
     private void selectAJob() {
         final Dialog dialog = new Dialog(MainActivity.this, android.R.style.Theme_DeviceDefault_Dialog);
         dialog.setContentView(R.layout.countrieslayout);
-        dialog.setTitle("Select a Country");
+        dialog.setTitle("Select a Job");
         //Initializing Buttons
         final Button selectCountryButton = (Button) dialog.findViewById(R.id.buttonSelect);
         final Button cancelCountrySelectionButton = (Button) dialog.findViewById(R.id.buttonCancel);
@@ -655,10 +653,10 @@ private void initInstancesDrawer() {
             jobButtonSultan.setVisibility(View.VISIBLE); //SULTAN
             jobButtonGod.setVisibility(View.VISIBLE);//GOD
             jobButtonOmega.setVisibility(View.VISIBLE);  //OMEGA
-        }else if (age >20 || schoolAttendanceAmount<1) {
+        } else {
             if (packingboy){ jobButtonPackingBoy.setVisibility(View.VISIBLE);}//PackingBoy
             if (intern){ jobButtonIntern.setVisibility(View.VISIBLE);}//Intern;}//Intern
-        }else{
+
             if (human.getCountry() == Countries.Irada ||
                     human.getCountry() == Countries.Itican ||
                     human.getCountry() == Countries.Albaq) {
@@ -727,19 +725,19 @@ private void initInstancesDrawer() {
         ad
                 .setMessage("Available Jobs."  + "\n" +
 
-                                "Beggar:" + begger.toString() + "\n" +
-                                "Vagrant:" + vagrant.toString() + "\n" +
-                                "PackingBoy:" + packingboy.toString() + "\n" +
-                                "Intern:" + intern.toString() + "\n" +
-                                "Firefighter:" + firefighter.toString() + "\n" +
-                                "Banker:" + banker.toString() + "\n" +
-                                "Independent:" + independent.toString() + "\n" +
-                                "Scientist:" + scientist.toString() + "\n" +
-                                "Business Owner:" + businessowner.toString() + "\n" +
-                                "King:" + king.toString() + "\n" +
-                                "God:" + god.toString() + "\n" +
-                                "Sultan:" + sultan.toString() + "\n" +
-                                "Omega:" + omega.toString()
+                        "Beggar :" + begger.toString() + "\n" +
+                        "Vagrant :" + vagrant.toString() + "\n" +
+                        "PackingBoy :" + packingboy.toString() + "\n" +
+                        "Intern :" + intern.toString() + "\n" +
+                        "Firefighter :" + firefighter.toString() + "\n" +
+                        "Banker :" + banker.toString() + "\n" +
+                        "Independent :" + independent.toString() + "\n" +
+                        "Scientist :" + scientist.toString() + "\n" +
+                        "Business Owner :" + businessowner.toString() + "\n" +
+                        "King :" + king.toString() + "\n" +
+                        "God :" + god.toString() + "\n" +
+                        "Sultan :" + sultan.toString() + "\n" +
+                        "Omega :" + omega.toString()
                 )
                 .setTitle("IDEAL")
                 .setNeutralButton("Cancel", null)
@@ -2455,7 +2453,7 @@ private void initInstancesDrawer() {
                        schoolButton.startAnimation(animationShake);
                        workOnPhysicalAppearanceButton.startAnimation(animationShake);
                        socializeWithPeopleButton.startAnimation(animationShake);
-                   } else if (age < 20 && age > 5) {
+                   } else if (age < 19 && age > 5) {
                        changeCountryButton.clearAnimation();
                        selectAJobButton.clearAnimation();
                        schoolButton.clearAnimation();
@@ -2770,8 +2768,9 @@ private void initInstancesDrawer() {
             socialisingWithFriends = 0;        //Socialize
             firstNamePart = "";                                   //First Name
             lastNamePart = "";                                   //Last Name
-            job = (Jobs.NOJOB);                         //Job
-            human.setCountries(getThisCountry(Countries.NoCountry.getName()));            //Human Country
+            job = (Jobs.NOJOB);
+            human.setJob(job);                        //Job
+            human.setCountries(Countries.NoCountry);            //Human Country
             human.setFriends(0);              //Human Friends
             human.setProfessionalAssociates(0);   //Human Professional Associates
             human.setWorshippers(0);     //Human Worshippers
@@ -2849,7 +2848,7 @@ private void initInstancesDrawer() {
                 human.setInfluence(influence=(Integer.parseInt(lines.get(19))));       //Human Influence
                 age = Integer.parseInt(lines.get(20));                       //Age
                 actionItemTaken= Boolean.parseBoolean(lines.get(21));
-                if(actionItemTaken&&age>=20){//If user Made an Action Item before the closing the App..then lock the buttons when the user comes back..if not....buttons activate
+                if (actionItemTaken && age >= 20 || age < 20) {//If user Made an Action Item before the closing the App..then lock the buttons when the user comes back..if not....buttons activate
                     buttonActivation(false);
                 }else{
                     buttonActivation(true);
@@ -2863,16 +2862,24 @@ private void initInstancesDrawer() {
                     overallWealthTextView.setText(currencyFormat.format(human.getOverAllWealth()));
                     String influenceAmountString = Double.toString(human.getInfluence());
                     influenceTextView.setText(influenceAmountString);
+                    jobTextView.setText(getString(R.string.getJob_text) + ":" + human.getJob());
+                    countryTextView.setText(getString(R.string.getCountry_text) + ":" + human.getCountryString());
+                    taxTextView.setText(getString(R.string.tax_text) + ":" + currencyFormat.format(tax));
                 }else{
                     tax = family.getFamilyCountry().getTaxes();
                     overallWealthTextView.setText(currencyFormat.format(family.getFamilyWealth()));
                     String influenceAmountString = Double.toString(family.getFamilyInfluence());
                     influenceTextView.setText(influenceAmountString);
+
+                    job = Jobs.NOJOB;//When Updating Values..these ones should be at default because the human is less then 20 and should not have anything
+                    jobTextView.setText(getString(R.string.getJob_text) + ":" + human.getJob());
+
+                    countryOfUser = family.getFamilyCountry();//When Updating Values..these ones should be at default because the human is less then 20 and should not have anything
+                    countryTextView.setText(getString(R.string.getCountry_text) + ":" + family.getFamilyCountry().getName());
+                    taxTextView.setText(getString(R.string.tax_text) + ":" + currencyFormat.format(tax));
                 }
 
-                jobTextView.setText(getString(R.string.getJob_text) + ":"  + human.getJob());
-                countryTextView.setText(getString(R.string.getCountry_text) + ":" +  human.getCountryString());
-                taxTextView.setText(getString(R.string.tax_text) + ":" + currencyFormat.format(tax));
+
                 //Make sure these values are at least greater than zero before setting them
                 if (socialisingWithFriends > 0) {
                     socialisingWithFriendsTextView.setText(String.valueOf(socialisingWithFriends));

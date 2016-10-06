@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/counter_text_bg</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:textColor">@color/signatureColorOne</item>
 
 
     </style>
