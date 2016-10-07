@@ -4,13 +4,16 @@
 
     <group android:checkableBehavior="all">
         <item
+            android:id="@+id/level_menu_Item"
             android:icon="@android:drawable/ic_dialog_map"
             android:title="Levels" />
         <item
+            android:id="@+id/settings_menu_Item"
             android:icon="@android:drawable/ic_dialog_info"
             android:title="Settings" />
 
         <item
+            android:id="@+id/about_menu_Item"
             android:icon="@android:drawable/ic_menu_share"
             android:title="About" />
     </group>

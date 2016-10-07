@@ -37,6 +37,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -158,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private Boolean influencActivation = false;
     private Boolean heavenBoolean = false;
     private int tempNum = age - 10;
-   private final ViewGroup nullParent =null;//This is to remove warning on the convertView
+    private final ViewGroup nullParent = null;//This is to remove warning on the convertView
     private ActionBarDrawerToggle actionBarDrawerToggle;
    //For selecting and image
     private static final int SELECT_PHOTO = 100;
@@ -168,6 +169,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private boolean reset =false;
     private boolean actionItemTaken= false;//If an Action item was taken right before the User closes the game then it needs to be saved to determine
 
+    //Level GridView
+    GridView levelGridView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -357,6 +360,15 @@ private void initInstancesDrawer() {
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
+            int id = item.getItemId();
+            if (id == R.id.level_menu_Item) {
+                init();
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
+        }
+
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -365,20 +377,23 @@ private void initInstancesDrawer() {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             init();
-            return true;
 
-        }if(id==R.id.familyTutorial){
+
+        }
+        if (id == R.id.familyTutorial) {
             profilePictureDialogFamilyTutorial();
-            return true;
 
-        }if(id==R.id.action_reset){
-            reset=true;
+
+        }
+        if (id == R.id.action_reset) {
+            reset = true;
             saveUserProfile();
             readFromFile();
             shown = false;//Display text for Family Mode and Adult Mode in Game
-            shownOne=false;
+            shownOne = false;
             IDEALLifeProgram();
             informationalTextView.setText("Press the Continue Button to Start a New Game");
+
            /* File dir = getFilesDir();//This Reset works but causing two instances of the AsynTask to play...Not Good
             File file = new File(dir, file_name);
             boolean deleted = file.delete();
@@ -388,8 +403,7 @@ private void initInstancesDrawer() {
             startActivity(i);*/
 
         }
-
-        return super.onOptionsItemSelected(item);
+        return true;
     }
     @Override
     public void onClick(DialogInterface dialog, int which) {
