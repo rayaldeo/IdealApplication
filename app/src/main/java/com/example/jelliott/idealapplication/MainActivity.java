@@ -16,6 +16,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private TextView worshippersTextViewprofileDialog;
 
     //For the Progress Bars
-    //private static final int PROGRESS = 0x1;//May use
+//private static final int PROGRESS = 0x1;//May use
     private Handler mHandler;
     private int mProgressStatusOverAllWealth = 0, mProgressStatusInfluence = 0;
     private ProgressBar overallWealthProgressBar;
@@ -317,7 +318,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
     }
-
 ///->TOP RIGHT SIDE MENU FUNCTIONALITY
 ///----------------------------------->Drawer
 private void initInstancesDrawer() {
@@ -325,15 +325,38 @@ private void initInstancesDrawer() {
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
-    DrawerLayout androidDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_design_support_layout);
-    actionBarDrawerToggle = new ActionBarDrawerToggle(MainActivity.this, androidDrawerLayout, R.string.app_name, R.string.app_name);
+    final DrawerLayout androidDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_design_support_layout);
+    actionBarDrawerToggle = new ActionBarDrawerToggle(MainActivity.this, androidDrawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
     androidDrawerLayout.addDrawerListener(actionBarDrawerToggle);
+
+    NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+    navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(MenuItem menuItem) {
+            int id = menuItem.getItemId();
+            switch (id) {
+                case R.id.level_menu_Item:
+                    Toast.makeText(getApplicationContext(), "Levels", Toast.LENGTH_SHORT).show();
+                    androidDrawerLayout.closeDrawers();
+                    break;
+                case R.id.settings_menu_Item:
+                    Toast.makeText(getApplicationContext(), "Settings", Toast.LENGTH_SHORT).show();
+                    androidDrawerLayout.closeDrawers();
+                    break;
+                case R.id.about_menu_Item:
+                    Toast.makeText(getApplicationContext(), "About IDEAL", Toast.LENGTH_SHORT).show();
+                    androidDrawerLayout.closeDrawers();
+                    break;
+
+            }
+            return true;
+        }
+    });
 
     assert getSupportActionBar() != null;//Make sure the supportBar return not null
     getSupportActionBar().setHomeButtonEnabled(true);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 }
-
     /**
      * When using the ActionBarDrawerToggle, you must call it during
      * onPostCreate() and onConfigurationChanged()...
@@ -343,7 +366,6 @@ private void initInstancesDrawer() {
         super.onPostCreate(savedInstanceState);
         actionBarDrawerToggle.syncState();
     }
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -351,7 +373,6 @@ private void initInstancesDrawer() {
     }
 
 ///------------------------------------->
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -361,11 +382,11 @@ private void initInstancesDrawer() {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
-            int id = item.getItemId();
+            /*int id = item.getItemId();
             if (id == R.id.level_menu_Item) {
                 init();
                 return true;
-            }
+            }*/
             return super.onOptionsItemSelected(item);
         }
 
@@ -374,6 +395,10 @@ private void initInstancesDrawer() {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        if (id == R.id.level_menu_Item) {
+            init();
+            return true;
+        }
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             init();

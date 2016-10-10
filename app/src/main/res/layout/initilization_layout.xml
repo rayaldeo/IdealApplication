@@ -71,8 +71,7 @@
         android:gravity="center"
         android:textColor="@color/signatureColorOne"
         android:textSize="30sp"
-        android:background="@android:drawable/toast_frame"
-        android:id="@+id/textView3" />
+        android:background="@android:drawable/toast_frame" />
 
     <EditText
         android:layout_width="match_parent"

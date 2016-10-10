@@ -1,6 +1,5 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="button_elevation">5dp</dimen>
     <dimen name="textView_padding">12dp</dimen>
     <dimen name="paddingOnFamilyCreationDialog">2dp</dimen>

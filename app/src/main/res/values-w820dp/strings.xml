@@ -26,6 +26,8 @@
     <string name="influenceRequiredAmountTextView_String">Required Influence</string>
     <string name="influenceAmountTextView_String">Influence</string>
     <string name="currentCountry_String">Current Country: </string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="playerTutorialMessage">Welcome!The purpose of this Android Application is to create your fantasy ideal life..
     "Create a character at the bottom of society."
