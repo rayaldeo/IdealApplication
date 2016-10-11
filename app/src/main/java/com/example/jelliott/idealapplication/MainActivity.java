@@ -38,7 +38,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -170,8 +169,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private boolean reset =false;
     private boolean actionItemTaken= false;//If an Action item was taken right before the User closes the game then it needs to be saved to determine
 
-    //Level GridView
-    GridView levelGridView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -318,6 +316,11 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 
     }
+
+    private void gridViewOnCreate() {
+        Intent intent = new Intent(getApplicationContext(), LevelsActivity.class);
+        startActivity(intent);
+    }
 ///->TOP RIGHT SIDE MENU FUNCTIONALITY
 ///----------------------------------->Drawer
 private void initInstancesDrawer() {
@@ -337,10 +340,12 @@ private void initInstancesDrawer() {
             switch (id) {
                 case R.id.level_menu_Item:
                     Toast.makeText(getApplicationContext(), "Levels", Toast.LENGTH_SHORT).show();
+                    gridViewOnCreate();
                     androidDrawerLayout.closeDrawers();
                     break;
                 case R.id.settings_menu_Item:
                     Toast.makeText(getApplicationContext(), "Settings", Toast.LENGTH_SHORT).show();
+                    init();
                     androidDrawerLayout.closeDrawers();
                     break;
                 case R.id.about_menu_Item:
