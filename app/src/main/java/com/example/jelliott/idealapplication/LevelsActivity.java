@@ -57,6 +57,10 @@ public class LevelsActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 int id = menuItem.getItemId();
                 switch (id) {
+                    case R.id.mainGame_menu_Item:
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                        break;
                     case R.id.level_menu_Item:
                         Toast.makeText(getApplicationContext(), "You are already on the Levels Activity", Toast.LENGTH_SHORT).show();
                         androidDrawerLayout.closeDrawers();

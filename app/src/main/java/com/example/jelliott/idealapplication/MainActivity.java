@@ -10,9 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -165,10 +163,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private static final int SELECT_PHOTO = 100;
     //Saving Data
     private String file_name = "dataOne";
-    private  BackgroundSound mBackgroundSound = new BackgroundSound();//Background Music
     private boolean reset =false;
     private boolean actionItemTaken= false;//If an Action item was taken right before the User closes the game then it needs to be saved to determine
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -338,6 +334,10 @@ private void initInstancesDrawer() {
         public boolean onNavigationItemSelected(MenuItem menuItem) {
             int id = menuItem.getItemId();
             switch (id) {
+                case R.id.mainGame_menu_Item:
+                    Toast.makeText(getApplicationContext(), "You are already on the Main Activity", Toast.LENGTH_SHORT).show();
+                    androidDrawerLayout.closeDrawers();
+                    break;
                 case R.id.level_menu_Item:
                     Toast.makeText(getApplicationContext(), "Levels", Toast.LENGTH_SHORT).show();
                     gridViewOnCreate();
@@ -394,12 +394,10 @@ private void initInstancesDrawer() {
             }*/
             return super.onOptionsItemSelected(item);
         }
-
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         if (id == R.id.level_menu_Item) {
             init();
             return true;
@@ -407,13 +405,9 @@ private void initInstancesDrawer() {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             init();
-
-
         }
         if (id == R.id.familyTutorial) {
             profilePictureDialogFamilyTutorial();
-
-
         }
         if (id == R.id.action_reset) {
             reset = true;
@@ -423,7 +417,6 @@ private void initInstancesDrawer() {
             shownOne = false;
             IDEALLifeProgram();
             informationalTextView.setText("Press the Continue Button to Start a New Game");
-
            /* File dir = getFilesDir();//This Reset works but causing two instances of the AsynTask to play...Not Good
             File file = new File(dir, file_name);
             boolean deleted = file.delete();
@@ -431,7 +424,6 @@ private void initInstancesDrawer() {
                     .getLaunchIntentForPackage( getBaseContext().getPackageName() );
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(i);*/
-
         }
         return true;
     }
@@ -802,43 +794,44 @@ private void initInstancesDrawer() {
         schoolAttendanceAmount++;
         schoolAttendanceAmountTextView.setText(String.format(Locale.US,"%02d",schoolAttendanceAmount));
         //schoolAttendanceAmountTextView.setText(Integer.toString(schoolAttendanceAmount));
-
         //This String Variable is used to hold all of the messages in one string
         String chainText="";
-            //This Dialog is used to show which jobs were unlocked
-        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.SplashTheme);
-        final AlertDialog.Builder adNotifier = new AlertDialog.Builder(ctw);
-         //adNotifier.setView(convertView);
-        //alertDialog_content_textView = (TextView) findViewById(R.id.alertDialog_content_textView);
-        adNotifier
-                .setNeutralButton("Confirm", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-
-                        if (genie) {
-                            wishes++;
-                            schoolButton.setEnabled(false);
-                            Toast.makeText(MainActivity.this, "Wishes Left:" + (3 - wishes),
-                                    Toast.LENGTH_LONG).show();
-                         genieDoSomething();
-                        } else {
-                            wealth += -2500.0 * human.getCountry().getMultiplier();
-                            buttonActivation(false);
-                            continueButton.setEnabled(true);
-
-                        }
-
-
-                    }
-                })
-                .setMessage("Go a school:Raises the amount of professional Associates" + "\n" +
+        final Dialog dialog = new Dialog(MainActivity.this);
+        dialog.setContentView(R.layout.message_dialog);
+        //Initializing Buttons
+        final Button initSelectionButton = (Button) dialog.findViewById(R.id.buttonSelect);
+        final Button initCancelButton = (Button) dialog.findViewById(R.id.buttonCancel);
+        //Set up First Name Text View
+        final TextView tittleTextView = (TextView) dialog.findViewById(R.id.dialog_Title);
+        //Setup the Last Name Text View
+        final TextView messageTextView = (TextView) dialog.findViewById(R.id.dialog_Details);
+        initSelectionButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (genie) {
+                    wishes++;
+                    schoolButton.setEnabled(false);
+                    Toast.makeText(MainActivity.this, "Wishes Left:" + (3 - wishes),
+                            Toast.LENGTH_LONG).show();
+                    genieDoSomething();
+                } else {
+                    wealth += -2500.0 * human.getCountry().getMultiplier();
+                    buttonActivation(false);
+                    continueButton.setEnabled(true);
+                }
+                dialog.dismiss();
+            }
+        });
+        initCancelButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        messageTextView.setText("Go a school:Raises the amount of professional Associates" + "\n" +
                         "Unlocks jobs" + "\n" +
-                        "Raises the amount of friends")
-                .setTitle("IDEAL:Going to School")
-                .setIcon(R.mipmap.ic_launcher)
-                .setCancelable(false)
-                .create();
-
-
+                "Raises the amount of friends");
+        tittleTextView.setText("IDEAL:Going to School");
         if ( schoolAttendanceAmount>=1) {
             if(!begger) {
                 begger = true;
@@ -912,109 +905,123 @@ private void initInstancesDrawer() {
         //There should be at least 6 words in the chainText and if not then the user has not unlocked any job
 
         if(unlockjobInt==0){
-            adNotifier.setMessage("No job was unlocked.You need more schooling");
+            messageTextView.setText("No job was unlocked.You need more schooling");
         }else {
-            adNotifier.setMessage(chainText);
+            messageTextView.setText(chainText);
         }
-
-        //alertDialog_content_textView.setText(chainText);
-        adNotifier.show();
-
+        dialog.show();
     }
     private void workOnPhysical(){
         workingOnPhysicalApp++;
         //workingOnPhysicalAppTextView.setText(Integer.toString(workingOnPhysicalApp));
         workingOnPhysicalAppTextView.setText(String.format(Locale.US,"%02d",workingOnPhysicalApp));
-        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.SplashTheme);
-        final AlertDialog.Builder ad = new AlertDialog.Builder(ctw);
-    ad
-                .setNeutralButton("Confirm", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        if (genie) {
-                            wishes++;
-                           Toast.makeText(MainActivity.this, "Wishes Left:" + (3 - wishes),
-                                    Toast.LENGTH_LONG).show();
-                            workOnPhysicalAppearanceButton.setEnabled(false);
-                            influence+=1000;
-                            friends+=1000;
-                            worshippers+=100;
-                            looks+=1;
-                         genieDoSomething();
+        final Dialog dialog = new Dialog(MainActivity.this);
+        dialog.setContentView(R.layout.message_dialog);
+        //Initializing Buttons
+        final Button initSelectionButton = (Button) dialog.findViewById(R.id.buttonSelect);
+        final Button initCancelButton = (Button) dialog.findViewById(R.id.buttonCancel);
+        //Set up First Name Text View
+        final TextView tittleTextView = (TextView) dialog.findViewById(R.id.dialog_Title);
+        //Setup the Last Name Text View
+        final TextView messageTextView = (TextView) dialog.findViewById(R.id.dialog_Details);
+        initSelectionButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (genie) {
+                    wishes++;
+                    Toast.makeText(MainActivity.this, "Wishes Left:" + (3 - wishes),
+                            Toast.LENGTH_LONG).show();
+                    workOnPhysicalAppearanceButton.setEnabled(false);
+                    influence += 1000;
+                    friends += 1000;
+                    worshippers += 100;
+                    looks += 1;
+                    genieDoSomething();
 
-                        }else{
-                            buttonActivation(false);
-                            wealth+=-100 * human.getCountry().getMultiplier();
-                            influence+=1000;
-                            friends+=1000;
-                            worshippers+=100;
-                            looks+=1;
-                            if(randomNum>25) {
-                                healthUpdater(5);
-                            }
-
-
-                        }
-
-
-
+                } else {
+                    buttonActivation(false);
+                    wealth += -100 * human.getCountry().getMultiplier();
+                    influence += 1000;
+                    friends += 1000;
+                    worshippers += 100;
+                    looks += 1;
+                    if (randomNum > 25) {
+                        healthUpdater(5);
                     }
-                })
-
-                .setMessage(
-                        "Your looks got increased by 1" + "\n" +
+                }
+                dialog.dismiss();
+            }
+        });
+        initCancelButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                workingOnPhysicalApp--;
+                workingOnPhysicalAppTextView.setText(String.format(Locale.US, "%02d", workingOnPhysicalApp));
+                dialog.dismiss();
+            }
+        });
+        messageTextView.setText(
+                "Looks +1" + "\n" +
                                 "There is a chance your health will get boosted"+ "\n" +
-                                "The amount of worshippers got increased by 100" + "\n" +
-                                "Your influence got increased by 1000" + "\n" +
-                                "The amount of friends increased by 1000" + "\n" +
-                                "You got charged:$" + 100 * human.getCountry().getMultiplier())
+                        " Worshippers +100" +/*'\&#x25b2;'+*/ "\n" +
+                        "Influence +1000" + "\n" +
+                        "Friends +1000" + "\n" +
+                        "Wealth - $" + 100 * human.getCountry().getMultiplier());
 
-                .setTitle("IDEAL:Work on your Physical")
-                .setIcon(R.mipmap.ic_launcher)
-                .setCancelable(false)
-                .create();
-        ad.show();
+        tittleTextView.setText("IDEAL:Work on your Physical");
+        dialog.show();
       }
     private void socializeWithPeople(){
         socialisingWithFriends++;
         socialisingWithFriendsTextView.setText(String.format(Locale.US,"%02d",socialisingWithFriends));
         //socialisingWithFriendsTextView.setText(Integer.toString(socialisingWithFriends));
-        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.SplashTheme);
-        final AlertDialog.Builder ad = new AlertDialog.Builder(ctw);
-     ad
-                .setNeutralButton("Confirm", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        if (genie) {
-                            wishes++;
-                            Toast.makeText(MainActivity.this, "Wishes Left:" + (3 - wishes),
-                                    Toast.LENGTH_LONG).show();
-                            socializeWithPeopleButton.setEnabled(false);
-                            influence += 1000;
-                            professionalAssociates += 1000;
-                            friends += 1000;
-                         genieDoSomething();
+        final Dialog dialog = new Dialog(MainActivity.this);
+        dialog.setContentView(R.layout.message_dialog);
+        //Initializing Buttons
+        final Button initSelectionButton = (Button) dialog.findViewById(R.id.buttonSelect);
+        final Button initCancelButton = (Button) dialog.findViewById(R.id.buttonCancel);
+        //Set up First Name Text View
+        final TextView tittleTextView = (TextView) dialog.findViewById(R.id.dialog_Title);
+        //Setup the Last Name Text View
+        final TextView messageTextView = (TextView) dialog.findViewById(R.id.dialog_Details);
+        initSelectionButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (genie) {
+                    wishes++;
+                    Toast.makeText(MainActivity.this, "Wishes Left:" + (3 - wishes),
+                            Toast.LENGTH_LONG).show();
+                    socializeWithPeopleButton.setEnabled(false);
+                    influence += 1000;
+                    professionalAssociates += 1000;
+                    friends += 1000;
+                    genieDoSomething();
+                } else {
+                    wealth += -50 * human.getCountry().getMultiplier();
+                    influence += 1000;
+                    professionalAssociates += 1000;
+                    friends += 1000;
+                    buttonActivation(false);
+                }
+                dialog.dismiss();
+            }
+        });
+        initCancelButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                socialisingWithFriends--;
+                socialisingWithFriendsTextView.setText(String.format(Locale.US, "%02d", socialisingWithFriends));
+                dialog.dismiss();
+            }
+        });
+        messageTextView.setText("Worshippers +100" + "\n" +
+                "Influence +1000" + "\n" +
+                "Friends +1000" + "\n" +
+                "Professional Associates +1000" + "\n" +
+                "Wealth - $" + 100 * human.getCountry().getMultiplier());
 
-                        } else {
-                            wealth += -50 * human.getCountry().getMultiplier();
-                            influence += 1000;
-                            professionalAssociates += 1000;
-                            friends += 1000;
-                            buttonActivation(false);
-
-                        }
-                    }
-                })
-
-                .setMessage("The amount of worshippers got increased by 100" + "\n" +
-                        "Your influence got increased by 1000" + "\n" +
-                        "The amount of friends increased by 1000" + "\n" +
-                        "Your professional Associates got increased by 1000" + "\n" +
-                        "You got charged:$" + 100 * human.getCountry().getMultiplier())
-
-                .setTitle("IDEAL:Work on your Physical")
-                .setIcon(R.mipmap.ic_launcher)
-                .setCancelable(false)
-                .create();
-        ad.show();
+        tittleTextView.setText("IDEAL:Socialize with People");
+        dialog.show();
     }
     private void selectACountry(){
         final Dialog dialog = new Dialog(MainActivity.this, android.R.style.Theme_DeviceDefault_Dialog);
@@ -1832,41 +1839,36 @@ private void initInstancesDrawer() {
 
     }
     private void init() {
-        ContextThemeWrapper ctw = new ContextThemeWrapper(this, R.style.SplashTheme);
-        AlertDialog.Builder ad = new AlertDialog.Builder(ctw);
-       ad
-                .setMessage("Welcome!The purpose of this Android Application is to create your fantasy ideal life.." +
-                        ("\n") + "Create a character at the bottom of society." +
-                        ("\n") + "Progress this character through the world and accumulate influence, wealth, and associates." +
-                        ("\n") + "Don't hold back,accumulating everything the world has the offer is the key of winning the game" +
-                        ("\n") + "Good Luck!")
-                        //.setIcon(R.drawable.ic_launcher)
-                .setTitle("IDEAL")
-                .setNeutralButton("Confirm", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        /*if (dialogShown) {
-                            IDEALLifeProgram();
-                        }*/
-                        /*try {
-                            tutorialWithFamily();
-
-                        } catch (NullPointerException e) {
-                            Toast.makeText(MainActivity.this, "Ooops,something went wrong.Let's try again!",
-                                    Toast.LENGTH_LONG).show();
-                            tutorialWithFamily();
-                        }*/
-                        //dialogShown = false;
-
-                    }
-                })
-                .setCancelable(false)
-               .setIcon(R.mipmap.ic_launcher)
-                .create();
-
-        ad.show();
-
+        final Dialog dialog = new Dialog(MainActivity.this);
+        dialog.setContentView(R.layout.message_dialog);
+        //Initializing Buttons
+        final Button initSelectionButton = (Button) dialog.findViewById(R.id.buttonSelect);
+        final Button initCancelButton = (Button) dialog.findViewById(R.id.buttonCancel);
+        //Set up First Name Text View
+        final TextView tittleTextView = (TextView) dialog.findViewById(R.id.dialog_Title);
+        //Setup the Last Name Text View
+        final TextView messageTextView = (TextView) dialog.findViewById(R.id.dialog_Details);
+        messageTextView.setText("Welcome!The purpose of this Android Application is to create your fantasy ideal life.." +
+                ("\n") + "Create a character at the bottom of society." +
+                ("\n") + "Progress this character through the world and accumulate influence, wealth, and associates." +
+                ("\n") + "Don't hold back,accumulating everything the world has the offer is the key of winning the game" +
+                ("\n") + "Good Luck!");
+        //.setIcon(R.drawable.ic_launcher)
+        tittleTextView.setText("IDEAL");
+        initSelectionButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        initCancelButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
-
 ///->
 
 ///->GETTING AND SETTING THE IMAGE FOR THE APPLICATION
@@ -2601,22 +2603,20 @@ private void initInstancesDrawer() {
 ///->
     @Override
     protected void onResume() {
-      mBackgroundSound.doInBackground();
-      super.onResume();
+        super.onResume();
 
     }
     @Override
     protected void onPause() {
-       mBackgroundSound.cancel(true);
+        //Save File
+        saveUserProfile();
         super.onPause();
-        //saveUserProfile();
     }
     @Override
     protected void onStop(){
-        mBackgroundSound.cancel(true);
-        super.onStop();
         //Save File
         saveUserProfile();
+        super.onStop();
 
 
     }
@@ -2996,24 +2996,7 @@ private void initInstancesDrawer() {
        return tempJob;
     }
 
-    private class BackgroundSound extends AsyncTask<Void, Void, Void> {
-        private  MediaPlayer mediaPlayer;
-        private volatile boolean running = true;
 
-        @Override
-        protected Void doInBackground(Void... params) {
-            if (!isCancelled()) {
-                mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.quantum_music);
-                mediaPlayer.setLooping(true); // Set looping
-                mediaPlayer.setVolume(100, 100);
-                mediaPlayer.start();
-            }
-
-            return null;
-        }
-
-
-    }
 
 //->
  }

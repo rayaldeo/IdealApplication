@@ -39,9 +39,10 @@ public class LevelAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ImageView img;
+        ImageView img = null;
         TextView text;
-        if (convertView == null) {
+        for (int i = 0; i < 100; i++) {
+            //if (convertView == null) {
             img = new ImageView(CTX);
             img.setLayoutParams(new GridView.LayoutParams(160, 160));
             img.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -49,13 +50,15 @@ public class LevelAdapter extends BaseAdapter {
             text = new TextView(CTX);
             text.setText("Level");
             text.setLayoutParams(new GridView.LayoutParams(100, 100));
+            img.setImageResource(levelID[position]);
 
-        } else {
-            img = (ImageView) convertView;
-            text = new TextView(CTX);
-            text.setText("Level");
+//            } else {
+//                img = (ImageView) convertView;
+//                text = new TextView(CTX);
+//                text.setText("Level");
+//            }
         }
-        img.setImageResource(levelID[position]);
+        //img.setImageResource(levelID[position]);
         return img;
     }
 }
