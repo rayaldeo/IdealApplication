@@ -3,11 +3,6 @@ package com.example.jelliott.idealapplication;
 /**
  * Created by jelliott on 4/9/2016.
  */
-
-/**
- * Created by jelliott on 9/16/2015.
- */
-
 enum Jobs {
 
     /*Very Low Paying Jobs */
@@ -61,9 +56,6 @@ enum Jobs {
     }
 
     public String getName(){return name;}
-
-
-
 
 }
 

@@ -19,16 +19,15 @@ import android.widget.Toast;
  */
 
 public class LevelsActivity extends AppCompatActivity {
-    ActionBarDrawerToggle actionBarDrawerToggle;
-    //Level GridView
-    private GridView levelGridView;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
+    private MainActivity mainActivity = new MainActivity(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.levels_layout);
         initInstancesDrawer();
-        levelGridView = (GridView) findViewById(R.id.level_gridView);
+        GridView levelGridView = (GridView) findViewById(R.id.level_gridView);
         levelGridView.setAdapter(new LevelAdapter(this));
         levelGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -87,44 +86,22 @@ public class LevelsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.levels_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
-            /*int id = item.getItemId();
-            if (id == R.id.level_menu_Item) {
-                init();
-                return true;
-            }*/
             return super.onOptionsItemSelected(item);
         }
-
-        // Handle action bar item clicks here. The action bar will
+// Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        if (id == R.id.level_menu_Item) {
-
-            return true;
-        }
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
-
-
-        }
-        if (id == R.id.familyTutorial) {
-            return true;
-
-
-        }
-        if (id == R.id.action_reset) {
-            return true;
-
+            mainActivity.init();
         }
         return true;
     }

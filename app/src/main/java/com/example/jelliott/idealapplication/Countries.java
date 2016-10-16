@@ -3,10 +3,7 @@ package com.example.jelliott.idealapplication;
 /**
  * Created by jelliott on 4/9/2016.
  */
-/**
- * Created by jelliott on 9/25/2015.
- */
-public enum Countries {
+enum Countries {
 
     NoCountry("Null",0,0,0,"Poor","Poor","Rich",0,0,0),
    /*Countries with the lowest taxes*/

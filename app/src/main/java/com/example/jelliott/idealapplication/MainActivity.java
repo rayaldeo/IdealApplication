@@ -1,5 +1,6 @@
 package com.example.jelliott.idealapplication;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -166,6 +167,9 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private boolean reset =false;
     private boolean actionItemTaken= false;//If an Action item was taken right before the User closes the game then it needs to be saved to determine
 
+    MainActivity(Activity activity) {
+        Activity activity1 = activity;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -387,21 +391,12 @@ private void initInstancesDrawer() {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
-            /*int id = item.getItemId();
-            if (id == R.id.level_menu_Item) {
-                init();
-                return true;
-            }*/
             return super.onOptionsItemSelected(item);
         }
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.level_menu_Item) {
-            init();
-            return true;
-        }
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             init();
@@ -1838,7 +1833,8 @@ private void initInstancesDrawer() {
         dialog.show();
 
     }
-    private void init() {
+
+    void init() {
         final Dialog dialog = new Dialog(MainActivity.this);
         dialog.setContentView(R.layout.message_dialog);
         //Initializing Buttons

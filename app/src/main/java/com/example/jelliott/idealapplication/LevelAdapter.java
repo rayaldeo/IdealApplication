@@ -12,12 +12,12 @@ import android.widget.TextView;
  * Created by jelliott on 10/10/2016.
  */
 
-public class LevelAdapter extends BaseAdapter {
+class LevelAdapter extends BaseAdapter {
     private Context CTX;
     private Integer levelID[] = {R.drawable.family_photo};
 
 
-    public LevelAdapter(Context CTX) {
+    LevelAdapter(Context CTX) {
         this.CTX = CTX;
     }
 

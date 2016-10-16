@@ -5,14 +5,6 @@ import java.util.ArrayList;
  * Created by jelliott on 4/9/2016.
  */
 class Family {
-
-
-    /**
-     * Created by jelliott on 10/4/2015.From Ideal Java Program
-     */
-
-
-
         private ArrayList<FamilyMember> family = new ArrayList<>();
         private int familyFriends,familyWorshippers,familyInfluence,familyProfessionalAssociates;
         private double familyWealth;
@@ -98,7 +90,9 @@ class Family {
 
          String getFamilyNeighborhood(){return neighborhood;}
 
-          int getFamilyProfessionalAssociates(){return familyProfessionalAssociates;};
+    int getFamilyProfessionalAssociates() {
+        return familyProfessionalAssociates;
+    }
 
 
     //Setters

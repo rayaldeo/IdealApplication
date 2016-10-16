@@ -5,15 +5,6 @@ package com.example.jelliott.idealapplication;
  */
 class FamilyMember extends Human {
 
-    /**
-     * Created by jelliott on 9/30/2015.From Ideal Java Program
-     */
-
-        //private Jobs job;
-        //private String name;
-        //private Countries country;
-        //private String familyName,firstName,name;
-
         //For a Custom Family
     FamilyMember(boolean sex, String familyNameA, Jobs jobA, Countries countryA, int friendsA, int worshippers) {
 

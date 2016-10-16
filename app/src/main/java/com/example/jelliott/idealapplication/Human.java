@@ -2,13 +2,10 @@ package com.example.jelliott.idealapplication;
 
 /**
  * Created by jelliott on 4/9/2016.
+ *
  */
 
-/**
- * Created by jelliott on 9/8/2015.From Ideal Java Program
- */
-
-public class Human {
+class Human {
 
     private Integer looks,influence;
     private String color,neighborhood="nothing",name,countryName;
@@ -21,8 +18,6 @@ public class Human {
     private double overAllWealth;
     private double income;
     private double familyWealth;
-
-
     /*
     Create an average Human in the poorest neighborhood,average looks, and zero wealth or friends
     User needs to specify skin color
@@ -41,7 +36,6 @@ public class Human {
         neighborhood ="poor";
         job=Jobs.NOJOB;
         country=Countries.NoCountry;
-
     }
 
     //This contructor can be used after the game is beaten specifically for the player
@@ -63,8 +57,6 @@ public class Human {
         job=jobA;
         country=countriesA;
         countryName =countriesA.getName();
-
-
     }
 
     //This constructor is used specifically for  the FamilyMember class
@@ -86,9 +78,7 @@ public class Human {
         job=jobA;
         country=countryA;
         countryName =countryA.getName();
-
     }
-
     //Getters
     int getLooks(){return looks;}
 
@@ -120,41 +110,52 @@ public class Human {
 
     String getCountryString(){return country.getName();}
 
-
-
-
     //Setters
-    public void setLooks(int looksA){ looks=looksA;}
+    void setLooks(int looksA) {
+        looks = looksA;
+    }
 
-    public void setNeighborhood(String neighborhoodA){ neighborhood=neighborhoodA;}
+    void setNeighborhood(String neighborhoodA) {
+        neighborhood = neighborhoodA;
+    }
 
     //public void setName(String nameA){ name= nameA;}
 
-    public void setJob(Jobs jobA){job = jobA;}
+    void setJob(Jobs jobA) {
+        job = jobA;
+    }
 
-    public void setCountries(Countries countryA){country =countryA;}
+    void setCountries(Countries countryA) {
+        country = countryA;
+    }
 
     public void setFamilyWealth(double familyWealthA){ familyWealth=familyWealthA;}
 
-    public void setInfluence(int influenceA){ influence=influenceA;}
+    void setInfluence(int influenceA) {
+        influence = influenceA;
+    }
 
     //This is the amount of money that character owns at anytime in the game
-    public void setOverAllwealth(double wealthA){ overAllWealth =wealthA;}
+    void setOverAllwealth(double wealthA) {
+        overAllWealth = wealthA;
+    }
 
-    public void setFriends(int friendsA){friends=friendsA;}
+    void setFriends(int friendsA) {
+        friends = friendsA;
+    }
 
-    public void setProfessionalAssociates(int professionAssociatesA){ professionAssociates=professionAssociatesA;}
+    void setProfessionalAssociates(int professionAssociatesA) {
+        professionAssociates = professionAssociatesA;
+    }
 
     public void setColor(String colorA){ color=colorA;}
 
-    public void setWorshippers(int worshippersA){worshippers= worshippersA;}
+    void setWorshippers(int worshippersA) {
+        worshippers = worshippersA;
+    }
 
-    public void setIncome(double incomeA){income=incomeA;}
-
-
-
-
-
-
+    void setIncome(double incomeA) {
+        income = incomeA;
+    }
 }
 
