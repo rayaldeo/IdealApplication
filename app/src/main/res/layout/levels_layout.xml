@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_design_support_layout"
     android:layout_width="match_parent"
+    android:background="@color/purplebackground_color"
     android:layout_height="match_parent">
 
     <android.support.design.widget.CoordinatorLayout

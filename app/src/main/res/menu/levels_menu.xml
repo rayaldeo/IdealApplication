@@ -4,8 +4,8 @@
     tools:context=".MainActivity">
 
     <item
-        android:id="@+id/action_settings"
-        android:title="@string/action_settings"
+        android:id="@+id/level_action"
+        android:title="What to do here?"
         android:orderInCategory="100"
         app:showAsAction="never" />
 </menu>

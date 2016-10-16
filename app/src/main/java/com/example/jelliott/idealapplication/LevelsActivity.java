@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 public class LevelsActivity extends AppCompatActivity {
     private ActionBarDrawerToggle actionBarDrawerToggle;
-    private MainActivity mainActivity = new MainActivity(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,8 +99,9 @@ public class LevelsActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            mainActivity.init();
+        if (id == R.id.level_action) {
+            Toast.makeText(this, "Pick a Level",
+                    Toast.LENGTH_LONG).show();
         }
         return true;
     }

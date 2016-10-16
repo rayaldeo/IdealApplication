@@ -1,6 +1,5 @@
 package com.example.jelliott.idealapplication;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -21,7 +20,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -167,9 +165,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private boolean reset =false;
     private boolean actionItemTaken= false;//If an Action item was taken right before the User closes the game then it needs to be saved to determine
 
-    MainActivity(Activity activity) {
-        Activity activity1 = activity;
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -1834,7 +1829,7 @@ private void initInstancesDrawer() {
 
     }
 
-    void init() {
+    private void init() {
         final Dialog dialog = new Dialog(MainActivity.this);
         dialog.setContentView(R.layout.message_dialog);
         //Initializing Buttons
@@ -2364,7 +2359,6 @@ private void initInstancesDrawer() {
 
 ///->Two Different Stages of IDEAL
     private void tutorialWithFamily(){
-
             randomNum = rand.nextInt(30);
             //System.out.println(randomNum);
             if (randomNum <= 13) {
@@ -2372,13 +2366,8 @@ private void initInstancesDrawer() {
             }else{
         chainString+="\n Nothing Happened this time";
     }
-
-
-
     }
     private void grownUpHuman(){
-
-
             randomNum = rand.nextInt(30);
             //System.out.println(randomNum);
             if (randomNum <= 13) {
@@ -2386,33 +2375,27 @@ private void initInstancesDrawer() {
             }else{
                 chainString+="\n Nothing Happened this time";
             }
-
-
             System.out.println("Turn: " + age + "\n" + "|Adult" + "|" + human.getOverAllWealth() + "|" + "|" + human.getCountry().getName() + "|" + "|" + human.getCountry().getTaxes());
-
-            //Once the player reaches 1000000 worshippers, the player will become a god
             //it only needs to be activated once and the benefit should automatically apply without the player being notified again
             //Permanent benefit once it is activated
-            if(human.getWorshippers()>maxOverallWealth&&workingOnPhysicalApp>=10&&socialisingWithFriends>=10&&schoolAttendanceAmount>=10) {
-                Boolean worshippersActivation = true;
-                worshippersFollow(worshippersActivation);
-                //job = Jobs.GOD;
-                heavenBoolean=true;
-                //schoolButton.setText(Html.fromHtml("<font color='red'>First line</font><br/><font color='blue'>Second line</font>"));
-                chainString+="\n"+Html.fromHtml("<font color='blue'>You have gained access to heaven and will gain worshippers for the next 10 years</font><br/>");
-            }
-
-
+//            if(human.getWorshippers()>maxOverallWealth&&workingOnPhysicalApp>=10&&socialisingWithFriends>=10&&schoolAttendanceAmount>=10) {
+//                worshippersFollow = true;
+//                worshippersFollow(true);
+//                //job = Jobs.GOD;
+//                heavenBoolean=true;
+//                //schoolButton.setText(Html.fromHtml("<font color='red'>First line</font><br/><font color='blue'>Second line</font>"));
+//                chainString+="\n"+"You have gained access to heaven and will gain worshippers for the next 10 years";
+//            }
             //Once the player reaches 100000 in influence, the player will get paid $100000 every turn
             //it only needs to be activated once and the benefit should automatically apply without the player being notified again
             //Permanent benefit once it is activated
-            if(human.getInfluence()>7000000&& human.getProfessionalAssociates()>=200000 && !influencActivation
-                    ||human.getFriends()>=1000000){
-                influencActivation=true;
-                chainString+="\n" +"You have gained 50000 in wealth";
-                chainString+="\n" + "You have gained enough Influence and Professional Associates that you will now gain a steady source of money";
-                wealth += 50000;
-            }
+//            if(human.getInfluence()>7000000&& human.getProfessionalAssociates()>=200000 && !influencActivation
+//                    ||human.getFriends()>=1000000){
+//                influencActivation=true;
+//                chainString+="\n" +"You have gained 50000 in wealth";
+//                chainString+="\n" + "You have gained enough Influence and Professional Associates that you will now gain a steady source of money";
+//                wealth += 50000;
+//            }
     }
 ///->
 
