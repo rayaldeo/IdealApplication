@@ -50,15 +50,13 @@ class LevelAdapter extends BaseAdapter {
         View levelView;
 //        ImageView img = null;
 //        TextView text;
-        //for (int i = 0; i < 100; i++) {
-        if (convertView == null) {
-
+        //if (convertView == null) {
             LayoutInflater li = LayoutInflater.from(CTX);
             levelView = li.inflate(R.layout.level_adapter_layout, null);
-            levelView.setLayoutParams(new GridView.LayoutParams(200, 300));
+        levelView.setLayoutParams(new GridView.LayoutParams(250, 300));
             TextView tv = (TextView) levelView.findViewById(R.id.levelIcon_title);
 //                tv.setPadding(8, 8, 8, 8);
-            tv.setText(String.valueOf(position));
+        tv.setText(String.valueOf(position + 1));
             ImageView iv = (ImageView) levelView.findViewById(R.id.levelIcon_imageView);
             iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
 //                iv.setPadding(8, 8, 8, 8);
@@ -73,13 +71,12 @@ class LevelAdapter extends BaseAdapter {
             //parent.addView(img);
             //parent.addView(text);
             //img.setImageResource(levelID[position]);
-        } else {
+        //} else {
 //                img = (ImageView) convertView;
 //                text = new TextView(CTX);
 //                text.setText("Level");
 
-            levelView = convertView;
-        }
+        //levelView = convertView;
         //}
 //        img.setImageResource(levelID[position]);
 //        return img;

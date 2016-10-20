@@ -34,7 +34,9 @@ public class LevelsActivity extends AppCompatActivity {
                 //init();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
-                Toast.makeText(getBaseContext(), "You click on Level " + position, Toast.LENGTH_SHORT).show();
+                intent.putExtra("levelID", position);
+                intent.putExtra("intentFromIevelActivity", true);
+                Toast.makeText(getBaseContext(), "LevelActivity:You click on Level " + position, Toast.LENGTH_SHORT).show();
             }
         });
 

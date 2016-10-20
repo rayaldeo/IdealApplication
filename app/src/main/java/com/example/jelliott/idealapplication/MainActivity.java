@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -164,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private String file_name = "dataOne";
     private boolean reset =false;
     private boolean actionItemTaken= false;//If an Action item was taken right before the User closes the game then it needs to be saved to determine
-
+    Boolean levelClicked;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -302,12 +301,20 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             workingOnPhysicalAppTextView.setText(Integer.toString(workingOnPhysicalApp));
             socialisingWithFriendsTextView.setText(Integer.toString(socialisingWithFriends));
             schoolAttendanceAmountTextView.setText(Integer.toString(schoolAttendanceAmount));
+
 ////------------------------------------------------------------------------------------------->//Drawer
         initInstancesDrawer();
 ////------------------------------------------------------------------------------------------------------->
-         buttonActivation(false);
-         readFromFile();
-         IDEALLifeProgram();
+        buttonActivation(false);
+        //levelClicked = getIntent().getExtras().getBoolean("intentFromIevelActivity");
+        //if(levelClicked) {
+        //int intValue = getIntent().getExtras().getInt("levelID");
+        //Toast.makeText(getBaseContext(), "MainActivity:You click on Level " + intValue, Toast.LENGTH_SHORT).show();
+        //age=0;
+        //}else {
+        readFromFile();
+        IDEALLifeProgram();
+        //}
 
 
     }
@@ -1637,7 +1644,7 @@ private void initInstancesDrawer() {
 
 ///->IDEAL APPLICATION USER INITIALIZATION CODE
     private void initDialog(){
-       final Dialog dialog = new Dialog(MainActivity.this);
+        final Dialog dialog = new Dialog(MainActivity.this);
         dialog.setContentView(R.layout.initilization_layout);
         //Initializing Buttons
         final Button initSelectionButton = (Button) dialog.findViewById(R.id.buttonSelect);
@@ -1872,7 +1879,6 @@ private void initInstancesDrawer() {
             if (requestCode == SELECT_PHOTO && resultCode == RESULT_OK
                     && null != imageReturnedIntent) {
                 // Get the Image from data
-
                 Uri selectedImage = imageReturnedIntent.getData();
                 String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
@@ -1882,15 +1888,12 @@ private void initInstancesDrawer() {
                 // Move to first row
                 assert cursor != null;
                 cursor.moveToFirst();
-
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                 String selectedImagePath = cursor.getString(columnIndex);
                 cursor.close();
                 //ImageView imgView = (ImageView) findViewById(R.id.profileImageView);
                 // Set the Image in ImageView after decoding the String
-                profileImage.setImageBitmap(BitmapFactory
-                        .decodeFile(selectedImagePath));
-
+                profileImage.setImageURI(selectedImage);
             } else {
                 Toast.makeText(this, "You haven't picked Image",
                         Toast.LENGTH_LONG).show();
@@ -2402,8 +2405,6 @@ private void initInstancesDrawer() {
 ///->Calling a Thread for the application
     //Genie Thread
     private void genieDoSomething(){
-
-
             //chainString+="You magically found a genie and he is able to grant you three wishes!";//When this String is Displayed the genie would have already been completed
             LinearLayout linearLayout =(LinearLayout)findViewById(R.id.footer);
             linearLayout.setBackgroundColor(Color.parseColor("#3f3f3f"));
@@ -2420,8 +2421,6 @@ private void initInstancesDrawer() {
                 linearLayout.setBackgroundColor(Color.parseColor("#3f1930"));
 
             }
-
-
     }
 
     //MainThread
@@ -2582,8 +2581,7 @@ private void initInstancesDrawer() {
 ///->
     @Override
     protected void onResume() {
-        super.onResume();
-
+        super.onResume();//Resume normal game
     }
     @Override
     protected void onPause() {
