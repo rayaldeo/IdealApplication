@@ -1,5 +1,6 @@
 package com.example.jelliott.idealapplication;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 public class LevelsActivity extends AppCompatActivity {
     private ActionBarDrawerToggle actionBarDrawerToggle;
+    private static final int SELECT_LEVEL = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +34,16 @@ public class LevelsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //init();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
+                //Bundle bundle = new Bundle();
+                Intent intent = new Intent();
+                //startActivity(intent);
                 intent.putExtra("levelID", position);
                 intent.putExtra("intentFromIevelActivity", true);
-                Toast.makeText(getBaseContext(), "LevelActivity:You click on Level " + position, Toast.LENGTH_SHORT).show();
+                //intent.putExtras(bundle);
+                //startActivityForResult(intent, SELECT_LEVEL);
+                setResult(Activity.RESULT_OK, intent);
+                finish();
+                //Toast.makeText(getBaseContext(), "LevelActivity:You click on Level " + position, Toast.LENGTH_SHORT).show();
             }
         });
 

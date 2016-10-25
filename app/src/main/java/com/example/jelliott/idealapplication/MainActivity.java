@@ -155,15 +155,17 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private Boolean influencActivation = false;
     private Boolean heavenBoolean = false;
     private int tempNum = age - 10;
+    public int level = 0;
     private final ViewGroup nullParent = null;//This is to remove warning on the convertView
     private ActionBarDrawerToggle actionBarDrawerToggle;
    //For selecting and image
-    private static final int SELECT_PHOTO = 100;
+   private static final int SELECT_PHOTO = 100, SELECT_LEVEL = 101;
     //Saving Data
     private String file_name = "dataOne";
     private boolean reset =false;
     private boolean actionItemTaken= false;//If an Action item was taken right before the User closes the game then it needs to be saved to determine
-    Boolean levelClicked;
+    Boolean levelClicked = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -301,27 +303,19 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             workingOnPhysicalAppTextView.setText(Integer.toString(workingOnPhysicalApp));
             socialisingWithFriendsTextView.setText(Integer.toString(socialisingWithFriends));
             schoolAttendanceAmountTextView.setText(Integer.toString(schoolAttendanceAmount));
-
 ////------------------------------------------------------------------------------------------->//Drawer
         initInstancesDrawer();
 ////------------------------------------------------------------------------------------------------------->
         buttonActivation(false);
-        //levelClicked = getIntent().getExtras().getBoolean("intentFromIevelActivity");
-        //if(levelClicked) {
-        //int intValue = getIntent().getExtras().getInt("levelID");
-        //Toast.makeText(getBaseContext(), "MainActivity:You click on Level " + intValue, Toast.LENGTH_SHORT).show();
-        //age=0;
-        //}else {
         readFromFile();
         IDEALLifeProgram();
-        //}
-
-
     }
 
     private void gridViewOnCreate() {
+//        Intent intent = new Intent(getApplicationContext(), LevelsActivity.class);
+//        startActivity(intent);
         Intent intent = new Intent(getApplicationContext(), LevelsActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, SELECT_LEVEL);
     }
 ///->TOP RIGHT SIDE MENU FUNCTIONALITY
 ///----------------------------------->Drawer
@@ -408,6 +402,7 @@ private void initInstancesDrawer() {
         }
         if (id == R.id.action_reset) {
             reset = true;
+            calculateTheProgressBarPercentage(0.0, 0);
             saveUserProfile();
             readFromFile();
             shown = false;//Display text for Family Mode and Adult Mode in Game
@@ -1473,13 +1468,10 @@ private void initInstancesDrawer() {
     if(overallWealthProgressBar.getProgress()> overallwealthvalue){
         overallWealthProgressBar.setProgress((int) overallwealthvalue);
         overallWealthPercentageTextView.setText((int) overallwealthvalue+"%");
-
-
     }
     if(influenceProgressBar.getProgress()> influencevalue){
         influenceProgressBar.setProgress((int) influencevalue);
         influencePercentageTextView.setText((int) influencevalue +"%");
-
     }
 
     //INCREMENT PROGRESSBAR
@@ -1489,7 +1481,6 @@ private void initInstancesDrawer() {
 
     }
     if ( influencevalue*100 <= 1 ) {
-
         influenceProgressBar.setProgress(1);
         influencePercentageTextView.setText("<" + percentFormat.format(0.01));
     }
@@ -1522,12 +1513,9 @@ private void initInstancesDrawer() {
                     e.printStackTrace();
                 }
             }
-
-
         }
 
     }).start();
-
     // Start lengthy operation in a background thread
     new Thread(new Runnable() {
         public void run() {
@@ -1881,7 +1869,6 @@ private void initInstancesDrawer() {
                 // Get the Image from data
                 Uri selectedImage = imageReturnedIntent.getData();
                 String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
                 // Get the cursor
                 Cursor cursor = getContentResolver().query(selectedImage,
                         filePathColumn, null, null, null);
@@ -1894,9 +1881,13 @@ private void initInstancesDrawer() {
                 //ImageView imgView = (ImageView) findViewById(R.id.profileImageView);
                 // Set the Image in ImageView after decoding the String
                 profileImage.setImageURI(selectedImage);
-            } else {
-                Toast.makeText(this, "You haven't picked Image",
-                        Toast.LENGTH_LONG).show();
+            }
+            if (requestCode == SELECT_LEVEL) {
+                levelClicked = imageReturnedIntent.getExtras().getBoolean("intentFromIevelActivity");
+                int levelSelected = imageReturnedIntent.getExtras().getInt("levelID");
+                Toast.makeText(MainActivity.this, "MainActivity:This Level was selected: " + levelSelected + 1, Toast.LENGTH_SHORT).show();
+                age = 0;
+                IDEALLifeProgram();
             }
         } catch (Exception e) {
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
@@ -1904,6 +1895,14 @@ private void initInstancesDrawer() {
         }
 
     }
+
+//    protected void onLevelActivityResult(int requestCode, int resultCode, Intent levelsIntent) {
+//        super.onActivityResult(requestCode, resultCode, levelsIntent);
+//        Bundle extras = levelsIntent.getExtras();
+//        levelClicked = extras.getBoolean("intentFromIevelActivity");
+//        int levelSelected =extras.getInt("levelID");
+//        Toast.makeText(MainActivity.this,"This Level was selected: "+ levelSelected,Toast.LENGTH_SHORT).show();
+//    }
 //->
 
 ///->Family and Player Profile Dialogs
@@ -2972,9 +2971,6 @@ private void initInstancesDrawer() {
         System.out.println("TempJob: "+tempJob);
        return tempJob;
     }
-
-
-
 //->
  }
 
