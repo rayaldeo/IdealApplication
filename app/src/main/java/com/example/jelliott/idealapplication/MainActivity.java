@@ -1885,7 +1885,8 @@ private void initInstancesDrawer() {
             if (requestCode == SELECT_LEVEL) {
                 levelClicked = imageReturnedIntent.getExtras().getBoolean("intentFromIevelActivity");
                 int levelSelected = imageReturnedIntent.getExtras().getInt("levelID");
-                Toast.makeText(MainActivity.this, "MainActivity:This Level was selected: " + levelSelected + 1, Toast.LENGTH_SHORT).show();
+                levelSelected++;//Levels starts from Zero ,so 1 is added to each level
+                Toast.makeText(MainActivity.this, "MainActivity:This Level was selected: " + levelSelected, Toast.LENGTH_SHORT).show();
                 age = 0;
                 IDEALLifeProgram();
             }
