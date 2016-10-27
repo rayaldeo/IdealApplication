@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     private static final NumberFormat percentFormat = NumberFormat.getPercentInstance();
     private static final NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
-    private static final double maxOverallWealth = 10000000.0;
-    private static final int maxInfluence = 2000000;
+    private static double maxOverallWealth = 10000000.0;
+    private static int maxInfluence = 2000000;
     //private int influenceAmountDefault = 500000; //May use at a later date
     //private double overallWealthDefault = 5000000.0;
     private int influence;
@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private String file_name = "dataOne";
     private boolean reset =false;
     private boolean actionItemTaken= false;//If an Action item was taken right before the User closes the game then it needs to be saved to determine
-    Boolean levelClicked = false;
+    private Boolean levelClicked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1631,13 +1631,18 @@ private void initInstancesDrawer() {
 ///->
 
 ///->IDEAL APPLICATION USER INITIALIZATION CODE
-    private void initDialog(){
+private void initDialog(final double maxOverAllWealthA, final int maxInfluenceA) {
         final Dialog dialog = new Dialog(MainActivity.this);
         dialog.setContentView(R.layout.initilization_layout);
         //Initializing Buttons
         final Button initSelectionButton = (Button) dialog.findViewById(R.id.buttonSelect);
         initSelectionButton.setVisibility(View.INVISIBLE);
         final Button initCancelButton = (Button) dialog.findViewById(R.id.buttonCancel);
+    //TextViews
+    final TextView wealthGoalTextView = (TextView) dialog.findViewById(R.id.wealthGoalTextView);
+    wealthGoalTextView.setText(currencyFormat.format(maxOverAllWealthA));
+    final TextView influenceGoalTextView = (TextView) dialog.findViewById(R.id.influenceGoalTextView);
+    influenceGoalTextView.setText(Integer.toString(maxInfluenceA));
         //Set up First Name Text View
         final EditText userNameFirst = (EditText) dialog.findViewById(R.id.firstNameEditText);
         //Setup the Last Name Text View
@@ -1754,7 +1759,7 @@ private void initInstancesDrawer() {
                                                            } catch (Exception e) {
                                                                Toast.makeText(MainActivity.this, "A Custom Family with <=0 values",
                                                                        Toast.LENGTH_LONG).show();
-                                                               initDialog();
+                                                               initDialog(maxOverallWealth, maxInfluence);
 
                                                            }
                                                        } else {
@@ -1805,7 +1810,7 @@ private void initInstancesDrawer() {
                                                            } catch (Exception e) {
                                                                Toast.makeText(MainActivity.this, "A Family Type is needed",
                                                                        Toast.LENGTH_LONG).show();
-                                                               initDialog();
+                                                               initDialog(maxOverallWealth, maxInfluence);
 
                                                            }
                                                        }
@@ -1886,8 +1891,21 @@ private void initInstancesDrawer() {
                 levelClicked = imageReturnedIntent.getExtras().getBoolean("intentFromIevelActivity");
                 int levelSelected = imageReturnedIntent.getExtras().getInt("levelID");
                 levelSelected++;//Levels starts from Zero ,so 1 is added to each level
+                maxOverallWealth = maxOverallWealth * levelSelected;
+                maxInfluence = maxInfluence * levelSelected;
                 Toast.makeText(MainActivity.this, "MainActivity:This Level was selected: " + levelSelected, Toast.LENGTH_SHORT).show();
-                age = 0;
+                healthUpdater(100);//To make sure health Progress Bar text match the Progress of the Progress Bar
+                //Reset all the additional values for a  returning and a new reset Game
+                System.out.println("Reseting the Values......................................");
+                wealth = 0;
+                influence = 0;
+                tax = 0;
+                looks = 0;
+                worshippers = 0;
+                friends = 0;
+                professionalAssociates = 0;
+                System.out.println(".............................................................");
+                age = 1;
                 IDEALLifeProgram();
             }
         } catch (Exception e) {
@@ -1896,16 +1914,6 @@ private void initInstancesDrawer() {
         }
 
     }
-
-//    protected void onLevelActivityResult(int requestCode, int resultCode, Intent levelsIntent) {
-//        super.onActivityResult(requestCode, resultCode, levelsIntent);
-//        Bundle extras = levelsIntent.getExtras();
-//        levelClicked = extras.getBoolean("intentFromIevelActivity");
-//        int levelSelected =extras.getInt("levelID");
-//        Toast.makeText(MainActivity.this,"This Level was selected: "+ levelSelected,Toast.LENGTH_SHORT).show();
-//    }
-//->
-
 ///->Family and Player Profile Dialogs
    private void profilePictureDialog() {
 
@@ -2447,7 +2455,7 @@ private void initInstancesDrawer() {
             saveUserProfile();//Try to Save Profile
                  //Tutorial for the first 5 years;
                    if(age==1) {
-                       initDialog();
+                       initDialog(maxOverallWealth, maxInfluence);
                        /*init();
                        makeYourName();
                        selectAFamilyType();
@@ -2972,6 +2980,9 @@ private void initInstancesDrawer() {
         System.out.println("TempJob: "+tempJob);
        return tempJob;
     }
+
+    private void reset() {
+    }//This will contain the Code for a Proper Reset
 //->
  }
 
