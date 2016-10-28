@@ -43,10 +43,13 @@ public class LevelsActivity extends AppCompatActivity {
                 //startActivityForResult(intent, SELECT_LEVEL);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
+                view.setAlpha((float) 0.8);//Set the selected View transparent
+                view.setEnabled(false);//Disable the Selected Item->User Should already be on the Level
+                //parent.getSelectedView().setAlpha((float)0.8);//Set the selected View transparent
+                //parent.getSelectedView().setEnabled(false);//Disable the Selected Item->User Should already be on the Level
                 //Toast.makeText(getBaseContext(), "LevelActivity:You click on Level " + position, Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     private void initInstancesDrawer() {

@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private TextView countryTextViewprofileDialog;
     private TextView taxTextViewprofileDialog;
     private TextView worshippersTextViewprofileDialog;
-
+    private TextView objectivesNavigationTextView, wealthGoalNavigationTextView, influenceGoalNavigationTextView;
     //For the Progress Bars
 //private static final int PROGRESS = 0x1;//May use
     private Handler mHandler;
@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private Boolean influencActivation = false;
     private Boolean heavenBoolean = false;
     private int tempNum = age - 10;
-    public int level = 0;
+    private int level = 1;
     private final ViewGroup nullParent = null;//This is to remove warning on the convertView
     private ActionBarDrawerToggle actionBarDrawerToggle;
    //For selecting and image
@@ -303,8 +303,15 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             workingOnPhysicalAppTextView.setText(Integer.toString(workingOnPhysicalApp));
             socialisingWithFriendsTextView.setText(Integer.toString(socialisingWithFriends));
             schoolAttendanceAmountTextView.setText(Integer.toString(schoolAttendanceAmount));
+
 ////------------------------------------------------------------------------------------------->//Drawer
         initInstancesDrawer();
+        objectivesNavigationTextView = (TextView) findViewById(R.id.objectivesNavigationTextView);
+        //objectivesNavigationTextView.setText("Level:"+level);
+        wealthGoalNavigationTextView = (TextView) findViewById(R.id.wealthGoalNavigationTextView);
+        //wealthGoalNavigationTextView.setText(currencyFormat.format(maxOverallWealth));
+        influenceGoalNavigationTextView = (TextView) findViewById(R.id.influenceGoalNavigationTextView);
+        //influenceGoalNavigationTextView.setText(Integer.toString(maxInfluence));
 ////------------------------------------------------------------------------------------------------------->
         buttonActivation(false);
         readFromFile();
@@ -1888,25 +1895,14 @@ private void initDialog(final double maxOverAllWealthA, final int maxInfluenceA)
                 profileImage.setImageURI(selectedImage);
             }
             if (requestCode == SELECT_LEVEL) {
+                level = 1;//Reset Level so that it does not go above the Levels Adapter Levels
                 levelClicked = imageReturnedIntent.getExtras().getBoolean("intentFromIevelActivity");
                 int levelSelected = imageReturnedIntent.getExtras().getInt("levelID");
-                levelSelected++;//Levels starts from Zero ,so 1 is added to each level
-                maxOverallWealth = maxOverallWealth * levelSelected;
-                maxInfluence = maxInfluence * levelSelected;
-                Toast.makeText(MainActivity.this, "MainActivity:This Level was selected: " + levelSelected, Toast.LENGTH_SHORT).show();
-                healthUpdater(100);//To make sure health Progress Bar text match the Progress of the Progress Bar
-                //Reset all the additional values for a  returning and a new reset Game
-                System.out.println("Reseting the Values......................................");
-                wealth = 0;
-                influence = 0;
-                tax = 0;
-                looks = 0;
-                worshippers = 0;
-                friends = 0;
-                professionalAssociates = 0;
-                System.out.println(".............................................................");
-                age = 1;
-                IDEALLifeProgram();
+                level = level + levelSelected;//Levels starts from Zero ,so 1 is added to each level
+                maxOverallWealth = maxOverallWealth * level;
+                maxInfluence = maxInfluence * level;
+                Toast.makeText(MainActivity.this, "MainActivity:This Level was selected: " + level, Toast.LENGTH_SHORT).show();
+                newLevel();
             }
         } catch (Exception e) {
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
@@ -2981,8 +2977,60 @@ private void initDialog(final double maxOverAllWealthA, final int maxInfluenceA)
        return tempJob;
     }
 
-    private void reset() {
-    }//This will contain the Code for a Proper Reset
+    //This will contain the Code for a Proper Start of a New Level
+    private void newLevel() {
+        //Reset all the additional values for a  returning and a new reset Game
+        System.out.println("Reseting the Values for a New Level......................................");
+        healthUpdater(100);//To make sure health Progress Bar text match the Progress of the Progress Bar
+        //calculateTheProgressBarPercentage(0.0,0);
+        overallWealthProgressBar.setProgress(0);
+        influenceProgressBar.setProgress(0);
+        wealth = 0;
+        influence = 0;
+        tax = 0;
+        looks = 0;
+        worshippers = 0;
+        friends = 0;
+        professionalAssociates = 0;
+
+        //Family
+        tax = family.getFamilyCountry().getTaxes();
+        overallWealthTextView.setText(currencyFormat.format(family.getFamilyWealth()));
+        String influenceAmountString = Double.toString(family.getFamilyInfluence());
+        influenceTextView.setText(influenceAmountString);
+        family.setFamilyWealth(family.getFamilyWealth() + mother.getIncome() + brother.getIncome() + sister.getIncome() + father.getIncome());
+        family.setFamilyInfluence(family.getFamilyInfluence());
+
+        //Human
+        job = Jobs.NOJOB;//When Updating Values..these ones should be at default because the human is less then 20 and should not have anything
+        jobTextView.setText(getString(R.string.getJob_text) + ":" + human.getJob());
+        human.setJob(job);
+        human.setIncome(job.getIncome());
+        human.setOverAllwealth(0);
+        human.setInfluence(0);
+        human.setProfessionalAssociates(0);
+        human.setFriends(0);
+        human.setLooks(0);
+        human.setWorshippers(0);
+
+        countryOfUser = family.getFamilyCountry();//When Updating Values..these ones should be at default because the human is less then 20 and should not have anything
+        countryTextView.setText(getString(R.string.getCountry_text) + ":" + family.getFamilyCountry().getName());
+        taxTextView.setText(getString(R.string.tax_text) + ":" + currencyFormat.format(tax));
+
+        System.out.println(".............................................................");
+        //Objectives for Navigation_header Layout
+        objectivesNavigationTextView = (TextView) findViewById(R.id.objectivesNavigationTextView);
+        objectivesNavigationTextView.setText("Level:" + level);
+
+        wealthGoalNavigationTextView = (TextView) findViewById(R.id.wealthGoalNavigationTextView);
+        wealthGoalNavigationTextView.setText(currencyFormat.format(maxOverallWealth));
+
+        influenceGoalNavigationTextView = (TextView) findViewById(R.id.influenceGoalNavigationTextView);
+        influenceGoalNavigationTextView.setText(Integer.toString(maxInfluence));
+        age = 1;
+        IDEALLifeProgram();
+        saveUserProfile();
+    }
 //->
  }
 

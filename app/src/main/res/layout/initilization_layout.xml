@@ -54,7 +54,7 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         android:background="@drawable/border">
 
         <TextView
@@ -91,12 +91,8 @@
             android:background="@drawable/border"
     android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="203dp"
-            android:theme="@style/SplashTheme"
-            android:gravity="center"
-            app:layout_anchorGravity="center"
-    android:weightSum="1">
-
+    android:layout_height="125dp"
+    android:theme="@style/SplashTheme">
     <TextView
         android:text="@string/enterName_hint"
         android:layout_width="match_parent"
@@ -104,7 +100,9 @@
         android:gravity="center"
         android:textColor="@color/signatureColorOne"
         android:textSize="30sp"
-        android:background="@android:drawable/title_bar" />
+        android:background="@android:drawable/title_bar"
+        android:layout_gravity="top"
+        android:id="@+id/textView" />
 
     <EditText
         android:layout_width="match_parent"
