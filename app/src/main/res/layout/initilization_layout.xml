@@ -101,8 +101,7 @@
         android:textColor="@color/signatureColorOne"
         android:textSize="30sp"
         android:background="@android:drawable/title_bar"
-        android:layout_gravity="top"
-        android:id="@+id/textView" />
+        android:layout_gravity="top" />
 
     <EditText
         android:layout_width="match_parent"

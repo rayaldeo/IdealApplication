@@ -21,7 +21,6 @@ import android.widget.Toast;
 
 public class LevelsActivity extends AppCompatActivity {
     private ActionBarDrawerToggle actionBarDrawerToggle;
-    private static final int SELECT_LEVEL = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

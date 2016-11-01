@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private ImageView profileImage,profileImageViewProfileDialog;
 //Separate Dialogs
     private Dialog alertDialogProfile;
+    private View header;
     private Human human;
     private int age = 1, schoolAttendanceAmount = 0, socialisingWithFriends = 0, workingOnPhysicalApp = 0 , wishes = 0;
     private int looks = 0, worshippers = 0, friends = 0, professionalAssociates = 0;
@@ -154,7 +155,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private Boolean worshippersFollow = false;
     private Boolean influencActivation = false;
     private Boolean heavenBoolean = false;
-    private int tempNum = age - 10;
     private int level = 1;
     private final ViewGroup nullParent = null;//This is to remove warning on the convertView
     private ActionBarDrawerToggle actionBarDrawerToggle;
@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private String file_name = "dataOne";
     private boolean reset =false;
     private boolean actionItemTaken= false;//If an Action item was taken right before the User closes the game then it needs to be saved to determine
-    private Boolean levelClicked = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -306,12 +306,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
 ////------------------------------------------------------------------------------------------->//Drawer
         initInstancesDrawer();
-        objectivesNavigationTextView = (TextView) findViewById(R.id.objectivesNavigationTextView);
-        //objectivesNavigationTextView.setText("Level:"+level);
-        wealthGoalNavigationTextView = (TextView) findViewById(R.id.wealthGoalNavigationTextView);
-        //wealthGoalNavigationTextView.setText(currencyFormat.format(maxOverallWealth));
-        influenceGoalNavigationTextView = (TextView) findViewById(R.id.influenceGoalNavigationTextView);
-        //influenceGoalNavigationTextView.setText(Integer.toString(maxInfluence));
 ////------------------------------------------------------------------------------------------------------->
         buttonActivation(false);
         readFromFile();
@@ -334,8 +328,16 @@ private void initInstancesDrawer() {
     final DrawerLayout androidDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_design_support_layout);
     actionBarDrawerToggle = new ActionBarDrawerToggle(MainActivity.this, androidDrawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
     androidDrawerLayout.addDrawerListener(actionBarDrawerToggle);
-
-    NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+    final NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+    //Objectives for Navigation_header Layout
+    header = navigationView.getHeaderView(0);
+    objectivesNavigationTextView = (TextView) header.findViewById(R.id.objectivesNavigationTextView);
+    wealthGoalNavigationTextView = (TextView) header.findViewById(R.id.wealthGoalNavigationTextView);
+    influenceGoalNavigationTextView = (TextView) header.findViewById(R.id.influenceGoalNavigationTextView);
+    objectivesNavigationTextView.setText("Level:" + level);
+    wealthGoalNavigationTextView.setText(currencyFormat.format(maxOverallWealth));
+    influenceGoalNavigationTextView.setText(Integer.toString(maxInfluence));
+    //TextViews on Navigation Slider
     navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -1780,10 +1782,10 @@ private void initDialog(final double maxOverAllWealthA, final int maxInfluenceA)
                                                                switch (selectedFamilyType) {
 
                                                                    case "Rich Family":
-                                                                       father = new FamilyMember(true, familyName, Jobs.BUSINESSOWNER, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
-                                                                       mother = new FamilyMember(false, familyName, Jobs.BANKER, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
-                                                                       sister = new FamilyMember(false, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
-                                                                       brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 1.5));
+                                                                       father = new FamilyMember(true, familyName, Jobs.BUSINESSOWNER, countryOfUser, randomNum * 250, (int) (randomNum * 2.5));
+                                                                       mother = new FamilyMember(false, familyName, Jobs.BANKER, countryOfUser, randomNum * 250, (int) (randomNum * 2.5));
+                                                                       sister = new FamilyMember(false, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 2.5));
+                                                                       brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 250, (int) (randomNum * 2.5));
                                                                        family = new Family(familyName, brother, sister, father, mother);
 
 
@@ -1798,10 +1800,10 @@ private void initDialog(final double maxOverAllWealthA, final int maxInfluenceA)
 
                                                                        break;
                                                                    default:
-                                                                       father = new FamilyMember(true, familyName, Jobs.BEGGER, countryOfUser, randomNum * 75, (int) (randomNum * 1.5));
-                                                                       mother = new FamilyMember(false, familyName, Jobs.PACKINGBOY, countryOfUser, randomNum * 75, (int) (randomNum * 1.5));
-                                                                       sister = new FamilyMember(false, familyName, Jobs.INTERN, countryOfUser, randomNum * 75, (int) (randomNum * 1.5));
-                                                                       brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 75, (int) (randomNum * 1.5));
+                                                                       father = new FamilyMember(true, familyName, Jobs.BEGGER, countryOfUser, randomNum * 75, randomNum);
+                                                                       mother = new FamilyMember(false, familyName, Jobs.PACKINGBOY, countryOfUser, randomNum * 75, randomNum);
+                                                                       sister = new FamilyMember(false, familyName, Jobs.INTERN, countryOfUser, randomNum * 75, randomNum);
+                                                                       brother = new FamilyMember(true, familyName, Jobs.NOJOB, countryOfUser, randomNum * 75, randomNum);
                                                                        family = new Family(familyName, brother, sister, father, mother);
 
                                                                        break;
@@ -1896,7 +1898,9 @@ private void initDialog(final double maxOverAllWealthA, final int maxInfluenceA)
             }
             if (requestCode == SELECT_LEVEL) {
                 level = 1;//Reset Level so that it does not go above the Levels Adapter Levels
-                levelClicked = imageReturnedIntent.getExtras().getBoolean("intentFromIevelActivity");
+                maxOverallWealth = 10000000.0;//Reset these values so that the amount does no stack
+                maxInfluence = 2000000;
+                Boolean levelClicked = imageReturnedIntent.getExtras().getBoolean("intentFromIevelActivity");
                 int levelSelected = imageReturnedIntent.getExtras().getInt("levelID");
                 level = level + levelSelected;//Levels starts from Zero ,so 1 is added to each level
                 maxOverallWealth = maxOverallWealth * level;
@@ -1905,7 +1909,7 @@ private void initDialog(final double maxOverAllWealthA, final int maxInfluenceA)
                 newLevel();
             }
         } catch (Exception e) {
-            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
+            Toast.makeText(this, "Something went wrong" + e, Toast.LENGTH_LONG)
                     .show();
         }
 
@@ -2345,25 +2349,6 @@ private void initDialog(final double maxOverAllWealthA, final int maxInfluenceA)
 
     }
 
-    private void worshippersFollow(boolean worshippersFollow) {
-
-        if (worshippersFollow && tempNum != age) {
-
-           worshippers+= 100;
-            chainString+="You attracted 100 worshippers";
-            tempNum++;
-
-        }
-        if (worshippersFollow && god) {
-
-
-            worshippers += 1000;
-            chainString+="You attracted 1000 worshippers";
-
-
-        }
-    }
-
 ///->Two Different Stages of IDEAL
     private void tutorialWithFamily(){
             randomNum = rand.nextInt(30);
@@ -2446,7 +2431,6 @@ private void initDialog(final double maxOverAllWealthA, final int maxInfluenceA)
         animRotate.setInterpolator(new LinearInterpolator());
         animRotate.setRepeatCount(Animation.INFINITE);
         animRotate.setDuration(700);
-
         try {
             saveUserProfile();//Try to Save Profile
                  //Tutorial for the first 5 years;
@@ -2998,10 +2982,10 @@ private void initDialog(final double maxOverAllWealthA, final int maxInfluenceA)
         overallWealthTextView.setText(currencyFormat.format(family.getFamilyWealth()));
         String influenceAmountString = Double.toString(family.getFamilyInfluence());
         influenceTextView.setText(influenceAmountString);
-        family.setFamilyWealth(family.getFamilyWealth() + mother.getIncome() + brother.getIncome() + sister.getIncome() + father.getIncome());
-        family.setFamilyInfluence(family.getFamilyInfluence());
+        family = new Family();
 
         //Human
+        human = new Human();
         job = Jobs.NOJOB;//When Updating Values..these ones should be at default because the human is less then 20 and should not have anything
         jobTextView.setText(getString(R.string.getJob_text) + ":" + human.getJob());
         human.setJob(job);
@@ -3017,15 +3001,21 @@ private void initDialog(final double maxOverAllWealthA, final int maxInfluenceA)
         countryTextView.setText(getString(R.string.getCountry_text) + ":" + family.getFamilyCountry().getName());
         taxTextView.setText(getString(R.string.tax_text) + ":" + currencyFormat.format(tax));
 
+        socialisingWithFriends = 0;
+        schoolAttendanceAmount = 0;
+        workingOnPhysicalApp = 0;
+
+        workingOnPhysicalAppTextView.setText(String.format(Locale.US, "%02d", workingOnPhysicalApp));
+        schoolAttendanceAmountTextView.setText(String.format(Locale.US, "%02d", schoolAttendanceAmount));
+        socialisingWithFriendsTextView.setText(String.format(Locale.US, "%02d", socialisingWithFriends));
+
         System.out.println(".............................................................");
         //Objectives for Navigation_header Layout
-        objectivesNavigationTextView = (TextView) findViewById(R.id.objectivesNavigationTextView);
+        objectivesNavigationTextView = (TextView) header.findViewById(R.id.objectivesNavigationTextView);
+        wealthGoalNavigationTextView = (TextView) header.findViewById(R.id.wealthGoalNavigationTextView);
+        influenceGoalNavigationTextView = (TextView) header.findViewById(R.id.influenceGoalNavigationTextView);
         objectivesNavigationTextView.setText("Level:" + level);
-
-        wealthGoalNavigationTextView = (TextView) findViewById(R.id.wealthGoalNavigationTextView);
         wealthGoalNavigationTextView.setText(currencyFormat.format(maxOverallWealth));
-
-        influenceGoalNavigationTextView = (TextView) findViewById(R.id.influenceGoalNavigationTextView);
         influenceGoalNavigationTextView.setText(Integer.toString(maxInfluence));
         age = 1;
         IDEALLifeProgram();
